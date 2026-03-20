@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717525168cee76941a3f15d2500943fc, type: 3}
+  m_Name: JumpEnd_AnimationConfig
+  m_EditorClassIdentifier: 
+  layer: 0
+  animationStateName: JumpEnd
+  animationClip: {fileID: 0}
+  animationHash: -1429049299
+  animationType: 8
+  loop: 0
+  crossFadeTime: 0.1
+  ignores:
+  - ignoreType: 8
+    ignoreTime: 0.4
+  nextAnimConfig: {fileID: 0}

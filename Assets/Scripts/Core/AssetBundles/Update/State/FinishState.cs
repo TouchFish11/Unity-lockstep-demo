@@ -1,0 +1,47 @@
+using System.IO;
+using System.Threading.Tasks;
+using Core.AssetBundles.Update.Core;
+using Core.Log;
+using Core.Pool;
+using Core.Serialize.Json;
+using Core.Utility;
+
+namespace Core.AssetBundles.Update.State
+{
+    /// <summary>
+    /// 更新完成状态类
+    /// 处理更新完成后的收尾逻辑，标记更新结束并切换到空状态
+    /// </summary>
+    public class FinishState : UpdateState
+    {
+        public FinishState(IAssetBundleUpdater assetBundleUpdater, IPoolManager poolManager, IJsonManager jsonManager) : base(assetBundleUpdater, poolManager, jsonManager)
+        {
+        }
+
+        /// <summary>
+        /// 执行更新完成收尾逻辑
+        /// </summary>
+        /// <returns>是否执行成功（固定返回true）</returns>
+        public override async Task<UpdateResult> Execute()
+        {
+            await Task.Delay(1000);
+            
+            // 删除缓存文件
+            if (File.Exists(PathUtility.GetAbLoadPath(FileUtility.CacheDefaultName)))
+            {
+                File.Delete(PathUtility.GetAbLoadPath(FileUtility.CacheDefaultName));
+                LogManager.Log($"{nameof(FinishState)}.{nameof(Execute)}:已删除缓存文件{FileUtility.CacheDefaultName}");
+            }
+            
+            // 触发更新完成回调
+            var result = UpdateResult.CreateSuccess();
+            assetBundleUpdater.GetContext().UpdateOver(result);
+            return result;
+        }
+
+        /// <summary>
+        /// 当前更新阶段标识
+        /// </summary>
+        public override EUpdatePhase UpdatePhase => EUpdatePhase.Finished;
+    }
+}
