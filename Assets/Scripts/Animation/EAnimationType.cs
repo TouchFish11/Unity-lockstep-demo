@@ -8,7 +8,7 @@ namespace Animation
     [Flags]
     public enum EAnimationType
     {
-        None = 0,          // 无
+        Null = 0,          // 无
         Idle = 1 << 0,     // 待机
         Walk = 1 << 1,     // 行走
         Run = 1 << 2,      // 奔跑
@@ -18,6 +18,6 @@ namespace Animation
         Die = 1 << 6,      // 死亡
         Interact = 1 << 7, // 交互
         Attack = 1 << 8,   // 攻击
-        All = Idle | Walk | Run | Jump | Fall | Dash | Die | Interact | Attack  // 所有类型
+        All = Null | Idle | Walk | Run | Jump | Fall | Dash | Die | Interact | Attack  // 所有类型
     }
 }

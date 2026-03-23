@@ -11,14 +11,14 @@ namespace Animation
     public class AnimatorController : MonoBehaviour
     {
         [SerializeField] private List<AnimationConfig> animationConfigs;
-        private AnimationConfig _currentConfig;
+        private readonly Dictionary<int, AnimationConfig> _currentConfigs = new();
         private Animator _animator;
         
         public bool IsAttacking 
         {
             get 
             {
-                var info = _animator.GetCurrentAnimatorStateInfo((int)EAnimationLayer.BaseLayer);
+                var info = _animator.GetCurrentAnimatorStateInfo((int)EAnimationLayer.ShootLayer);
                 return info.IsName(nameof(EAnimationType.Attack)) && info.normalizedTime < 1f;
             }
         }
@@ -35,6 +35,11 @@ namespace Animation
         private void Awake()
         {
             _animator = this.GetComponent<Animator>();
+
+            var defaultConfig = ScriptableObject.CreateInstance<AnimationConfig>();
+            defaultConfig.ignores = new List<AnimationIgnore>();
+            _currentConfigs.Add((int)EAnimationLayer.BaseLayer, defaultConfig);
+            _currentConfigs.Add((int)EAnimationLayer.ShootLayer, defaultConfig);
             Play(EAnimationType.Idle);
         }
 
@@ -56,18 +61,19 @@ namespace Animation
             Play(EAnimationType.Dash);
         }
 
-        private void OnAttack()
+        private void OnAttack(bool isDown)
         {
-            Play(EAnimationType.Attack);
+            Play(isDown ? EAnimationType.Attack : EAnimationType.Null);
         }
 
         private void OnMove(Vector2 vector2)
         {
-            if (_currentConfig.animationType == EAnimationType.Run && vector2 == Vector2.zero)
+            var config = _currentConfigs[(int)EAnimationLayer.BaseLayer];
+            if (config.animationType == EAnimationType.Run && vector2 == Vector2.zero)
             {
                 Play(EAnimationType.Idle);
             }
-            else if (_currentConfig.animationType == EAnimationType.Idle && vector2 != Vector2.zero)
+            else if (config.animationType == EAnimationType.Idle && vector2 != Vector2.zero)
             {
                 Play(EAnimationType.Run);
             }
@@ -91,17 +97,13 @@ namespace Animation
             {
                 return;
             }
-            
+
+            if (!_currentConfigs.TryGetValue((int)config.layer, out _)) return;
             // 切换动画
-            PlayInternal(
-                config.animationHash, 
-                !_currentConfig ? 0 : _currentConfig.crossFadeTime,
-                (int)EAnimationLayer.BaseLayer, 
-                0); 
-            
-            // 更新当前配置
-            _currentConfig = config;
-            RefreshIgnores();
+            PlayInternal(config.animationHash, !config ? 0 : config.transitionInTime, (int)config.layer, 0); 
+            // 更新当前层级配置
+            _currentConfigs[(int)config.layer] = config;
+            RefreshIgnores(config);
         }
 
         internal void PlayInternal(int stateHashName, float normalizedTransitionDuration, int layer, float normalizedTimeOffset)
@@ -114,19 +116,22 @@ namespace Animation
         /// </summary>
         private void UpdateIgnores()
         {
-            for (var i = _currentConfig.ignores.Count - 1; i >= 0; i--)
+            foreach (var configs in _currentConfigs.Values)
             {
-                var ignore = _currentConfig.ignores[i];
-                ignore.Update(Time.deltaTime);
+                for (var i = configs.ignores.Count - 1; i >= 0; i--)
+                {
+                    var ignore = configs.ignores[i];
+                    ignore.Update(Time.deltaTime);
+                }
             }
         }
         
         /// <summary>
         /// 刷新忽略时间
         /// </summary>
-        private void RefreshIgnores()
+        private static void RefreshIgnores(AnimationConfig config)
         {
-            foreach (var currentConfigIgnore in _currentConfig.ignores)
+            foreach (var currentConfigIgnore in config.ignores)
             {
                 currentConfigIgnore.Reset();
             }
@@ -139,12 +144,21 @@ namespace Animation
         /// <returns>true为忽略，false为不忽略</returns>
         public bool IsIgnore(EAnimationType type)
         {
-            if (!_currentConfig)
+            AnimationConfig animationConfig = null;
+            foreach (var config in _currentConfigs.Values)
+            {
+                if (config.animationType == type)
+                {
+                    animationConfig = config;
+                }
+            }
+
+            if (!animationConfig)
             {
                 return false;
             }
             
-            foreach (var currentConfigIgnore in _currentConfig.ignores)
+            foreach (var currentConfigIgnore in animationConfig.ignores)
             {
                 // 当前动画不能被打断
                 if (!currentConfigIgnore.IgnoreOver && (currentConfigIgnore.ignoreType & type) != 0)
@@ -186,20 +200,23 @@ namespace Animation
         /// </summary>
         private void CheckAnimationFinished()
         {
-            // 获取当前播放的动画信息
-            var stateInfo = _animator.GetCurrentAnimatorStateInfo((int)EAnimationLayer.BaseLayer);
-            if (!_currentConfig.loop && stateInfo.fullPathHash == _currentConfig.animationHash && stateInfo.normalizedTime >= 1f)
+            foreach (var (currentLayer, currentConfig) in _currentConfigs)
             {
-                Debug.Log($"当前动画：{_currentConfig.animationStateName}：{stateInfo.fullPathHash}播放完成");
-                if (_currentConfig.nextAnimConfig)
+                // 获取当前层级播放的动画信息
+                var stateInfo = _animator.GetCurrentAnimatorStateInfo(currentLayer);
+                if (currentConfig.loop || stateInfo.fullPathHash != currentConfig.animationHash || !(stateInfo.normalizedTime >= 1f)) continue;
+                Debug.Log($"当前动画：{currentConfig.animationStateName}：{stateInfo.fullPathHash}播放完成");
+                
+                // 是否存在下一个连携的动画
+                if (currentConfig.nextAnimConfig)
                 {
-                    PlayInternal(_currentConfig.nextAnimConfig.animationHash, _currentConfig.crossFadeTime, (int)EAnimationLayer.BaseLayer, 0);
-                    _currentConfig = _currentConfig.nextAnimConfig;
-                    RefreshIgnores();
+                    PlayInternal(currentConfig.nextAnimConfig.animationHash, currentConfig.nextAnimConfig.transitionInTime, (int)currentConfig.nextAnimConfig.layer, 0);
+                    _currentConfigs[currentLayer] = currentConfig.nextAnimConfig;
+                    RefreshIgnores(currentConfig);
                 }
                 else
                 {
-                    Play(EAnimationType.Idle);
+                    Play(currentLayer == 0 ? EAnimationType.Idle : EAnimationType.Null);
                 }
             }
         }

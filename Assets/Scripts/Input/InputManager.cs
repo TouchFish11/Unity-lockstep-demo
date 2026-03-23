@@ -32,12 +32,24 @@ namespace Input
             remove => _activeInput.OnInteract -= value;
         }
         
-        public event Action OnAttack
+        public event Action<bool> OnAttack
         {
             add => _activeInput.OnAttack += value;
             remove => _activeInput.OnAttack -= value;
         }
+
+        public event Action<float> OnMouseX
+        {
+            add => _activeInput.OnMouseX += value;
+            remove => _activeInput.OnMouseX -= value;
+        }
         
+        public event Action<float> OnMouseY
+        {
+            add => _activeInput.OnMouseY += value;
+            remove => _activeInput.OnMouseY -= value;
+        }
+
         private void Awake()
         {
             Instance = this;

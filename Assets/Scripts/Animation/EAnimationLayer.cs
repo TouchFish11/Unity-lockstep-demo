@@ -6,6 +6,6 @@ namespace Animation
     public enum EAnimationLayer
     {
         BaseLayer,
-        
+        ShootLayer,
     }
 }

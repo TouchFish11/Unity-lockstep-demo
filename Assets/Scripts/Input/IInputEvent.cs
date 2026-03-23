@@ -13,6 +13,10 @@ namespace Input
         
         event Action OnInteract;
         
-        event Action OnAttack;
+        event Action<bool> OnAttack;
+
+        event Action<float> OnMouseX;
+        
+        event Action<float> OnMouseY;
     }
 }
