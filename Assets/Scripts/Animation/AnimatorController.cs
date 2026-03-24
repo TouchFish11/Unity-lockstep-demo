@@ -144,28 +144,18 @@ namespace Animation
         /// <returns>true为忽略，false为不忽略</returns>
         public bool IsIgnore(EAnimationType type)
         {
-            AnimationConfig animationConfig = null;
             foreach (var config in _currentConfigs.Values)
             {
-                if (config.animationType == type)
+                foreach (var currentConfigIgnore in config.ignores)
                 {
-                    animationConfig = config;
+                    // 当前动画不能被打断
+                    if (!currentConfigIgnore.IgnoreOver && (currentConfigIgnore.ignoreType & type) != 0)
+                    {
+                        return true;
+                    }
                 }
             }
 
-            if (!animationConfig)
-            {
-                return false;
-            }
-            
-            foreach (var currentConfigIgnore in animationConfig.ignores)
-            {
-                // 当前动画不能被打断
-                if (!currentConfigIgnore.IgnoreOver && (currentConfigIgnore.ignoreType & type) != 0)
-                {
-                    return true;
-                }
-            }
             return false;
         }
 
@@ -212,7 +202,7 @@ namespace Animation
                 {
                     PlayInternal(currentConfig.nextAnimConfig.animationHash, currentConfig.nextAnimConfig.transitionInTime, (int)currentConfig.nextAnimConfig.layer, 0);
                     _currentConfigs[currentLayer] = currentConfig.nextAnimConfig;
-                    RefreshIgnores(currentConfig);
+                    RefreshIgnores(currentConfig.nextAnimConfig);
                 }
                 else
                 {
