@@ -1,6 +1,8 @@
 using System;
 using kcp2k;
+using Net.Sync;
 using UnityEngine;
+using KcpClient = kcp2k.KcpClient;
 
 namespace Net.Test
 {
@@ -12,12 +14,29 @@ namespace Net.Test
 
         private void Start()
         {
-            // 初始化KCP客户端，注册回调
-            client = new KcpClient(OnConnected, OnDataReceived, OnDisconnected, OnError, new KcpConfig());
-
-            // 连接服务端
-            client.Connect(serverIp, serverPort);
+            var config = new NetConfig
+            {
+                ServerIp = "127.0.0.1",
+                ServerPort = 8080,
+                Serializer = MessageSerializerGetter.BinaryMessageSerializer(),
+                ClientType = EClientType.Kcp,
+                KcpConfig = new KcpConfig()
+            };
+            
+            var manager = new NetManager(config);
+            manager.OnConnected += OnConnected;
+            manager.OnMessageReceived += OnMessageReceived;
+            manager.OnDisconnected += OnDisconnected;
+            manager.OnError += OnError;
+            
+            manager.Connect();
             Debug.Log("正在连接KCP服务端...");
+            
+            // // 初始化KCP客户端，注册回调
+            // client = new KcpClient(OnConnected, OnDataReceived, OnDisconnected, OnError, new KcpConfig());
+            // // 连接服务端
+            // client.Connect(serverIp, serverPort);
+            // Debug.Log("正在连接KCP服务端...");
         }
 
         // Unity每帧调用，驱动KCP协议
@@ -29,29 +48,30 @@ namespace Net.Test
         // 连接成功回调
         private void OnConnected()
         {
-            Debug.Log("连接KCP服务端成功！");
+            Debug.Log("连接服务端成功！");
             // 给服务端发消息
             var msg = System.Text.Encoding.UTF8.GetBytes("控制台服务端你好！我是Unity客户端");
             client.Send(new ArraySegment<byte>(msg), KcpChannel.Reliable);
         }
 
         // 接收服务端数据回调
-        private static void OnDataReceived(ArraySegment<byte> data, KcpChannel channel)
+        private static void OnMessageReceived(Message message)
         {
-            var msg = System.Text.Encoding.UTF8.GetString(data.Array, data.Offset, data.Count);
-            Debug.Log($"收到服务端：{msg}");
+            
+            
+            Debug.Log($"收到服务端：{message}");
         }
 
         // 断开连接回调
         private static void OnDisconnected()
         {
-            Debug.Log("与KCP服务端断开连接");
+            Debug.Log("与服务端断开连接");
         }
 
         // 错误回调
-        private static void OnError(ErrorCode error, string message)
+        private static void OnError(string message)
         {
-            Debug.LogError($"KCP错误：{error}，信息：{message}");
+            Debug.LogError($"连接错误：{message}");
         }
 
         // 关闭Unity时断开连接
