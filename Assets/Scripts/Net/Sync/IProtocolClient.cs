@@ -7,7 +7,7 @@ namespace Net.Sync
     /// </summary>
     public interface IProtocolClient
     {
-        event Action<byte[]> OnDataReceived;
+        event Action<byte[], EProtocolChannel> OnDataReceived;
         event Action OnConnected;
         event Action OnDisconnected;
         event Action<string> OnError;

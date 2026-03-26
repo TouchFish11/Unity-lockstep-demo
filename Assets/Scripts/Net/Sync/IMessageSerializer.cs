@@ -5,8 +5,8 @@ namespace Net.Sync
     /// </summary>
     public interface IMessageSerializer
     {
-        byte[] Serialize(Message message);
+        byte[] Serialize(Message message, EProtocolChannel channel);
 
-        Message Deserialize(byte[] data);
+        Message Deserialize(byte[] data, EProtocolChannel channel);
     }
 }

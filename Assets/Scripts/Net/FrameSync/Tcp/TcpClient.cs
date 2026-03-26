@@ -8,6 +8,7 @@ using Net.FrameSync.Manager;
 using Net.FrameSync.Tcp.Message;
 using Net.FrameSync.Tcp.Message.C2S;
 using Net.FrameSync.Tcp.Message.S2C;
+using Net.Sync.Msg.S2C;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -57,7 +58,7 @@ namespace Net.FrameSync.Tcp
         {
             // Ĭ��
             _idToHandlerMap.Add(typeof(S2C_HeartMessage), new S2C_HeartMessageHandler());
-            _idToHandlerMap.Add(typeof(S2C_ConnectMessage), new S2C_ConnectMessageHandler());
+            _idToHandlerMap.Add(typeof(ConnectMessage), new S2C_ConnectMessageHandler());
 
             // �Զ��������Ϣ
             _idToHandlerMap.Add(typeof(S2C_ConfirmMessage), new S2C_ConfirmMessageHandler());
@@ -313,9 +314,10 @@ namespace Net.FrameSync.Tcp
                     if (hasHeader && _cacheLength - nowIndex >= msgLength)
                     {
                         // TODO：待实现
-                        var msgData = new byte[msgLength];
-                        Array.Copy(_cacheBuffer, nowIndex - 4, msgData, 0, msgLength + 4);
-                        // 放入msgData到接收对吗，tick中通过事件传递給外部一个包含msgID，msgLength和消息体的字节数组
+                        var dataLength = 4 + 4 + msgLength;
+                        var msgData = new byte[dataLength];
+                        Array.Copy(_cacheBuffer, nowIndex - 8, msgData, 0, dataLength);
+                        // 放入msgData到接收队列，tick中通过事件传递給外部一个包含msgID，msgLength和消息体的字节数组
                         
                         // ����������Ϣ
                         TcpMessage baseMassage = TcpMessageFactory.CreateMessage(msgID, _cacheBuffer, nowIndex);

@@ -5,7 +5,14 @@ namespace Net.Sync
     /// </summary>
     public enum EProtocolChannel : byte
     {
+        /// <summary>
+        /// 可靠的
+        /// </summary>
         Reliable   = 1,
+        
+        /// <summary>
+        /// 不可靠的
+        /// </summary>
         Unreliable = 2
     }
 }

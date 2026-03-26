@@ -12,7 +12,7 @@ namespace Net.Sync
         private readonly kcp2k.KcpClient _kcp2kClient;
         private KcpConfig _kcp2kConfig;
         
-        public event Action<byte[]> OnDataReceived;
+        public event Action<byte[], EProtocolChannel> OnDataReceived;
         public event Action OnConnected;
         public event Action OnDisconnected;
         public event Action<string> OnError;
@@ -21,10 +21,11 @@ namespace Net.Sync
         {
             _kcp2kClient = new kcp2k.KcpClient(
                 () => OnConnected?.Invoke(),
-                (data, _) => OnDataReceived?.Invoke(data.Array),
+                (data, kcp2kChannel) => OnDataReceived?.Invoke(data.Array, kcp2kChannel == KcpChannel.Reliable ? EProtocolChannel.Reliable : EProtocolChannel.Unreliable),
                 () => OnDisconnected?.Invoke(),
                 (code, msg) => OnError?.Invoke($"{code}_{msg}"),
                 kcp2kConfig);
+            _kcp2kConfig = kcp2kConfig;
         }
 
         public void Connect(string serverIp, ushort serverPort)

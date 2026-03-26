@@ -1,3 +1,6 @@
+using System;
+using Net.Sync.Msg.S2C;
+
 namespace Net.Sync
 {
     /// <summary>
@@ -15,44 +18,52 @@ namespace Net.Sync
         public static Message CreateMessage(int msgId, byte[] bytes, int nowIndex)
         {
             Message message = null;
-            //������Ϣ��
             switch (msgId)
             {
-                case 2000:
-                    message = new S2C_HeartMessage();
-                    break;
+                // case 2000:
+                //     message = new S2C_HeartMessage();
+                //     break;
                 case 2001:
-                    message = new S2C_ConnectMessage();
+                    message = new ConnectMessage();
                     break;
-                case 2002:
-                    message = new S2C_MatchSuccessMessage();
-                    break;
-                case 2003:
-                    message = new S2C_ConfirmMessage();
-                    break;
-                case 2004:
-                    message = new S2C_PrepareReceMessage();
-                    break;
-                case 2005:
-                    message = new S2C_StartRaceMessage();
-                    break;
-                case 2006:
-                    message = new S2C_LeaveRaceMessage();
-                    break;
-                case 2007:
-                    message = new S2C_ReconnecRaceMessage();
-                    break;
-                case 2008:
-                    message = new S2C_ConnectConfirmMessage();
-                    break;
+                // case 2002:
+                //     message = new S2C_MatchSuccessMessage();
+                //     break;
+                // case 2003:
+                //     message = new S2C_ConfirmMessage();
+                //     break;
+                // case 2004:
+                //     message = new S2C_PrepareReceMessage();
+                //     break;
+                // case 2005:
+                //     message = new S2C_StartRaceMessage();
+                //     break;
+                // case 2006:
+                //     message = new S2C_LeaveRaceMessage();
+                //     break;
+                // case 2007:
+                //     message = new S2C_ReconnecRaceMessage();
+                //     break;
+                // case 2008:
+                //     message = new S2C_ConnectConfirmMessage();
+                //     break;
                 default:
-                    Debug.LogError($"δ�������Ϣ���ͣ�{msgId}");
-                    break;
+                    throw new ArgumentOutOfRangeException(msgId.ToString());
             }
 
-            // ������Ϣ
+            // 序列化消息体
             message.Deserialize(bytes, nowIndex);
             return message;
+        }
+
+        public static int GetMessageID(Message message)
+        {
+            if (message is ConnectMessage)
+            {
+                return 2001;
+            }
+            
+            throw new ArgumentOutOfRangeException(message.ToString());
         }
     }
 }

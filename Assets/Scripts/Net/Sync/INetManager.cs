@@ -7,7 +7,7 @@ namespace Net.Sync
     /// </summary>
     public interface INetManager
     {
-        event Action<Message> OnMessageReceived;
+        event Action<Message, EProtocolChannel> OnMessageReceived;
         event Action OnConnected;
         event Action OnDisconnected;
         event Action<string> OnError;

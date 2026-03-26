@@ -11,7 +11,7 @@ namespace Net.Sync
         private Socket _tcpSocket;
         private Socket _updSocket;
         
-        public event Action<byte[]> OnDataReceived;
+        public event Action<byte[], EProtocolChannel> OnDataReceived;
         public event Action OnConnected;
         public event Action OnDisconnected;
         public event Action<string> OnError;

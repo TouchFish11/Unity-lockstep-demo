@@ -39,7 +39,7 @@ namespace Net.Sync.Msg
             var index = 0;
             var bytes = new byte[GetMsgLength()];
             // 序列化所有字段
-            MessageUtil.WriteField(bytes, ClientID, ref index);
+            MessageUtil.WriteField(bytes, SessionID, ref index);
             MessageUtil.WriteField(bytes, OptType, ref index);
             MessageUtil.WriteField(bytes, Arg1, ref index);
             MessageUtil.WriteField(bytes, Arg2, ref index);
@@ -51,7 +51,7 @@ namespace Net.Sync.Msg
         {
             var index = beginIndex;
             // 赋值所有字段
-            ClientID = MessageUtil.ReadInt(bytes, ref index);
+            SessionID = MessageUtil.ReadInt(bytes, ref index);
             OptType = MessageUtil.ReadByte(bytes, ref index);
             Arg1 = MessageUtil.ReadInt(bytes, ref index);
             Arg2 = MessageUtil.ReadInt(bytes, ref index);

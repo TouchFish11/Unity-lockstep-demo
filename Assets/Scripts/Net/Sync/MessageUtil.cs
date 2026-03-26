@@ -54,8 +54,8 @@ namespace Net.Sync
                     index += 2;
                     break;
                 case string stringValue:
-                    byte[] strBytes = Encoding.UTF8.GetBytes(stringValue);
-                    int length = strBytes.Length;
+                    var strBytes = Encoding.UTF8.GetBytes(stringValue);
+                    var length = strBytes.Length;
                     BitConverter.GetBytes(length).CopyTo(bytes, index);
                     index += 4;
                     strBytes.CopyTo(bytes, index);
@@ -78,7 +78,7 @@ namespace Net.Sync
         /// <returns></returns>
         public static  byte ReadByte(byte[] bytes, ref int index)
         {
-            byte byteValue = bytes[index];
+            var byteValue = bytes[index];
             index += 1;
             return byteValue;
         }
@@ -91,7 +91,7 @@ namespace Net.Sync
         /// <returns></returns>
         public static  short ReadShort(byte[] bytes, ref int index)
         {
-            short shortValue = BitConverter.ToInt16(bytes, index);
+            var shortValue = BitConverter.ToInt16(bytes, index);
             index += 2;
             return shortValue;
         }
@@ -104,7 +104,7 @@ namespace Net.Sync
         /// <returns></returns>
         public static  int ReadInt(byte[] bytes, ref int index)
         {
-            int intValue = BitConverter.ToInt32(bytes, index);
+            var intValue = BitConverter.ToInt32(bytes, index);
             index += 4;
             return intValue;
         }
@@ -117,7 +117,7 @@ namespace Net.Sync
         /// <returns></returns>
         public static  long ReadLong(byte[] bytes, ref int index)
         {
-            long longValue = BitConverter.ToInt64(bytes, index);
+            var longValue = BitConverter.ToInt64(bytes, index);
             index += 8;
             return longValue;
         }
@@ -130,7 +130,7 @@ namespace Net.Sync
         /// <returns></returns>
         public static  float Readfloat(byte[] bytes, ref int index)
         {
-            float floatValue = BitConverter.ToSingle(bytes, index);
+            var floatValue = BitConverter.ToSingle(bytes, index);
             index += 4;
             return floatValue;
         }
@@ -143,7 +143,7 @@ namespace Net.Sync
         /// <returns></returns>
         public static  double ReadDouble(byte[] bytes, ref int index)
         {
-            double doubleValue = BitConverter.ToDouble(bytes, index);
+            var doubleValue = BitConverter.ToDouble(bytes, index);
             index += 8;
             return doubleValue;
         }
@@ -156,7 +156,7 @@ namespace Net.Sync
         /// <returns></returns>
         public static  char ReadChar(byte[] bytes, ref int index)
         {
-            char charValue = BitConverter.ToChar(bytes, index);
+            var charValue = BitConverter.ToChar(bytes, index);
             index += 2;
             return charValue;
         }
@@ -169,7 +169,7 @@ namespace Net.Sync
         /// <returns></returns>
         public static  bool ReadBool(byte[] bytes, ref int index)
         {
-            bool boolValue = BitConverter.ToBoolean(bytes, index);
+            var boolValue = BitConverter.ToBoolean(bytes, index);
             index += 1;
             return boolValue;
         }
@@ -182,8 +182,8 @@ namespace Net.Sync
         /// <returns></returns>
         public static  string ReadString(byte[] bytes, ref int index)
         {
-            int length = ReadInt(bytes, ref index);
-            string strValue = Encoding.UTF8.GetString(bytes, index, length);
+            var length = ReadInt(bytes, ref index);
+            var strValue = Encoding.UTF8.GetString(bytes, index, length);
             index += length;
             return strValue;
         }

@@ -6,9 +6,9 @@ namespace Net.Sync
     public abstract class Message
     {
         /// <summary>
-        /// 客户端ID，由服务器下发
+        /// 发送消息的客户端会话ID，由服务器下发
         /// </summary>
-        public int ClientID {  get; set; }
+        public int SessionID {  get; set; }
         
         /// <summary>
         /// 获取消息总长度

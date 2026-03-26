@@ -1,6 +1,7 @@
 using System;
 using kcp2k;
 using Net.Sync;
+using Net.Sync.Msg;
 using UnityEngine;
 using KcpClient = kcp2k.KcpClient;
 
@@ -55,9 +56,18 @@ namespace Net.Test
         }
 
         // 接收服务端数据回调
-        private static void OnMessageReceived(Message message)
+        private static void OnMessageReceived(Message message, EProtocolChannel channel)
         {
-            
+            if (channel == EProtocolChannel.Reliable)
+            {
+                
+            }
+            else
+            {
+                // 帧同步模块处理
+                var frameMessage = message as OneFrameMessage;
+                // ...
+            }
             
             Debug.Log($"收到服务端：{message}");
         }

@@ -26,7 +26,7 @@ namespace Net.Sync
         // 当前网络配置
         private readonly NetConfig _config;
         
-        public event Action<Message> OnMessageReceived;
+        public event Action<Message, EProtocolChannel> OnMessageReceived;
         public event Action OnConnected;
         public event Action OnDisconnected;
         public event Action<string> OnError;
@@ -47,7 +47,7 @@ namespace Net.Sync
             _client.OnConnected += () => OnConnected?.Invoke();
             _client.OnDisconnected += () => OnDisconnected?.Invoke();
             _client.OnError +=  error => OnError?.Invoke(error);
-            _client.OnDataReceived += messageData => OnMessageReceived?.Invoke(_messageSerializer.Deserialize(messageData));
+            _client.OnDataReceived += (messageData, channel) => OnMessageReceived?.Invoke(_messageSerializer.Deserialize(messageData, channel), channel);
             _config = config;
             
             MonoAdapter.Instance.AddUpdateListener(OnUpdate);
@@ -63,7 +63,7 @@ namespace Net.Sync
 
         public void Send(Message message, EProtocolChannel channel)
         {
-            var messageBytes = _messageSerializer.Serialize(message);
+            var messageBytes = _messageSerializer.Serialize(message, channel);
             _client.Send(messageBytes, channel);
         }
 
