@@ -1,14 +1,22 @@
 using System.Threading.Tasks;
+using Core.DI;
+using Core.EditorRes;
+using Core.Loader.Object;
 using Core.Service;
 using Core.UI.MVC;
+using HotUpdate.Main.Chat;
 using Net.Sync;
 using Net.Sync.Msg;
 using Net.Sync.Msg.Chat;
+using UnityEngine;
 
 namespace HotUpdate.Main.UI
 {
     public class MainController : UIController<MainPanel, MainModel>
     {
+        private readonly IPrefabLoader _prefabLoader = DIContainer.GetDependency<IPrefabLoader>();
+        private readonly IEditorResManager _editorResManager = DIContainer.GetDependency<IEditorResManager>();
+        
         protected override Task OnShow()
         {
             throw new System.NotImplementedException();
@@ -26,7 +34,11 @@ namespace HotUpdate.Main.UI
 
         public void AddChat(int sessionId, string chatMsg)
         {
-            
+            var chatObj = _editorResManager.LoadEditorAsset<GameObject>(nameof(ChatUI));
+            chatObj.transform.SetParent(view.svChat.content, false);
+            var chatUI = chatObj.GetComponent<ChatUI>();
+            chatUI.SetMessage(sessionId, chatMsg);
+            model.Cache(chatUI);
         }
 
         protected override void InputFieldValueChanged(string fieldName, string inputStr)
@@ -45,11 +57,17 @@ namespace HotUpdate.Main.UI
             }
             else if (btnName == nameof(view.btnSend))
             {
-                var netGameProxy = ServiceLocator.Get<INetGameProxy>();
+                var netGameProxy = DIContainer.GetDependency<INetGameProxy>();
+                var chatStr = model.GetChatInput();
+                
+                // 本地创建自己发送的消息
+                AddChat(netGameProxy.SessionId, chatStr);
+                
                 var chatMessage = new ChatMessage
                 {
-                    ChatMsg = model.GetChatInput()
+                    ChatMsg = chatStr
                 };
+                // 发送消息
                 netGameProxy.Send(chatMessage, EProtocolChannel.Reliable);
             }
         }

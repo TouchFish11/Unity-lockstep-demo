@@ -5,7 +5,7 @@ namespace HotUpdate.Main.Chat
 {
     public class FriendUI : UIBehaviourBase
     {
-        [Inject] private TextMeshProUGUI txtID;
+        [Core.DI.Inject] private TextMeshProUGUI txtID;
 
         public void SetFriendUI(int clientID)
         {

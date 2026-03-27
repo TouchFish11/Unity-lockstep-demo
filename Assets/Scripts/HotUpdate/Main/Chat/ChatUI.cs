@@ -1,15 +1,18 @@
+using Core.DI;
 using Core.UI;
+using Net.Sync;
 using TMPro;
 
 namespace HotUpdate.Main.Chat
 {
     public class ChatUI : UIBehaviourBase
     {
-        [Inject] private TextMeshProUGUI txtChatMsg;
+        [Core.DI.Inject] private TextMeshProUGUI txtChatMsg;
         
         public void SetMessage(int clientID, string msg)
         {
-            txtChatMsg.text = $"{clientID}：{msg}";
+            var userName = clientID == DIContainer.GetDependency<INetGameProxy>().SessionId ? "我" : $"{clientID}";
+            txtChatMsg.text = $"{userName}：{msg}";
         }
     }
 }

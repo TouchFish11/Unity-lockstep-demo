@@ -35,5 +35,11 @@ namespace Net.Sync
         /// 与服务器断开连接
         /// </summary>
         void Disconnect();
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="netConfig"></param>
+        INetGameProxy Init(NetConfig netConfig);
     }
 }

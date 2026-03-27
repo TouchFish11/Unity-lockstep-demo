@@ -9,10 +9,9 @@ namespace Net.Sync
     public class NetGameProxy : INetGameProxy
     {
         // 封装底层网络管理器
-        private readonly INetManager _netManager;
+        private INetManager _netManager;
         // 消息路由处理
-        private readonly MessageRouter _router;
-        
+        private MessageRouter _router;
         // 游戏层关注的事件
         public event Action<int> OnGameConnected;
         public event Action OnGameDisconnected;
@@ -20,12 +19,13 @@ namespace Net.Sync
         /// 服务器下发的当前连接的客户端Token
         public int SessionId { get; private set; }
         
-        public NetGameProxy(NetConfig netConfig)
+        public INetGameProxy Init(NetConfig netConfig)
         {
             _netManager = new NetManager(netConfig);
             _netManager.OnConnected += OnGameConnectedInternal;
             _netManager.OnMessageReceived += OnMessageReceive;
             _router = new MessageRouter();
+            return this;
         }
     
         // 游戏层调用接口

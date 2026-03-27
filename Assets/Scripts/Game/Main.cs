@@ -25,6 +25,7 @@ namespace Game
             {
                 // 初始化游戏设置
                 InitSettings();
+                InitDI();
                 // 注册框架核心服务
                 await ServiceLocator.RegisterServices();
                 // 初始化指定AB包
@@ -44,7 +45,12 @@ namespace Game
                 LogManager.LogError($"{nameof(Main)}.{nameof(Start)}: 游戏启动错误，{e.Message}");
             }
         }
-                                          
+
+        private static void InitDI()
+        {
+            
+        }
+        
         /// <summary>
         /// 初始化设置
         /// </summary>

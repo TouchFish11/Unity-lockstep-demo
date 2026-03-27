@@ -1,3 +1,4 @@
+using Core.DI;
 using Core.HotUpdate;
 using Core.Loader.Audio;
 using Core.Loader.Object;
@@ -17,19 +18,19 @@ namespace Core.Loader
         {
             FactoryUtility.ScanAllType(typeToInterfaceMap, ServiceLocator.Get<IHotUpdateManager>().GetCoreModule());
             
-            // 注册加载器到全局定位器中
+            // 注册加载器到依赖容器中
             foreach (var assetLoader in typeToInterfaceMap.Values)
             {
                 switch (assetLoader)
                 {
                     case ISpriteLoader spriteLoader:
-                        ServiceLocator.Register(spriteLoader); 
+                        DIContainer.InjectInstance(spriteLoader);
                         break;
                     case IAudioLoader audioLoader:
-                        ServiceLocator.Register(audioLoader);
+                        DIContainer.InjectInstance(audioLoader);
                         break;
                     case IPrefabLoader prefabLoader:
-                        ServiceLocator.Register(prefabLoader);
+                        DIContainer.InjectInstance(prefabLoader);
                         break;
                 }
             }

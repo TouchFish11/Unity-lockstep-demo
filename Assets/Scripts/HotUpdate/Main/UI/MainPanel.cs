@@ -10,15 +10,15 @@ namespace HotUpdate.Main.UI
     /// </summary>
     public class MainPanel : UIView
     {
-        [Inject] public TextMeshProUGUI txtFrameRate;
-        [Inject] public TextMeshProUGUI txtRTT;
+        [Core.DI.Inject] public TextMeshProUGUI txtFrameRate;
+        [Core.DI.Inject] public TextMeshProUGUI txtRTT;
 
-        [Inject] public ScrollRect svFriends;
-        [Inject] public ScrollRect svChat;
+        [Core.DI.Inject] public ScrollRect svFriends;
+        [Core.DI.Inject] public ScrollRect svChat;
 
-        [Inject] public InputField inputField;
+        [Core.DI.Inject] public InputField inputField;
         
-        [Inject] public Button btnSend;
-        [Inject]  public Button btnMatch;
+        [Core.DI.Inject] public Button btnSend;
+        [Core.DI.Inject]  public Button btnMatch;
     }
 }

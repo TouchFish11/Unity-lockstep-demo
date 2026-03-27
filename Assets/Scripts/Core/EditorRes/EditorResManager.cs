@@ -23,6 +23,7 @@ namespace Core.EditorRes
         /// 编辑器资源根目录
         /// </summary>
         private const string RootPath = "Assets/Editor/ArtRes/";
+        
         // 文件信息列表
         private List<FileInfo> _fileInfoList = new();
 
@@ -76,9 +77,9 @@ namespace Core.EditorRes
 
             // 加载资源
             var res = AssetDatabase.LoadAssetAtPath<T>(targetInfo.FullName[targetInfo.FullName.IndexOf("Assets", StringComparison.Ordinal)..]);
-            if (res != null)
+            if (res)
             {
-                return res;
+                return res is GameObject ? Object.Instantiate(res) : res;
             }
             LogManager.LogError($"不存在该文件路径:{targetInfo.FullName[targetInfo.FullName.IndexOf("Assets", StringComparison.Ordinal)..]}");
             return null;
