@@ -11,7 +11,7 @@ namespace HotUpdate.Main.Chat
         
         public void SetMessage(int clientID, string msg)
         {
-            var userName = clientID == DIContainer.GetDependency<INetGameProxy>().SessionId ? "我" : $"{clientID}";
+            var userName = clientID == DIContainer.GetInstance<INetGameProxy>().SessionId ? "我" : $"{clientID}";
             txtChatMsg.text = $"{userName}：{msg}";
         }
     }

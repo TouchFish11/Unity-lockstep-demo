@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Core.EditorRes;
+using Core.AssetBundles.Management;
+using Core.DI;
+using Core.Tasks.Extensions;
 using UnityEngine;
 
 namespace Core.Serialize.Binary
@@ -27,15 +29,9 @@ namespace Core.Serialize.Binary
         
         public override async Task LoadConfigAsync<T, K>()
         {
-#if EDITOR_TEST_AB || !UNITY_EDITOR
             // 异步加载数据，资源名不需要后缀。
-            var assetBundle = await ServiceLocator.Get<IAssetBundleManager>().LoadBundleAsync(assetbundleName);
+            var assetBundle = await DIContainer.GetInstance<IAssetBundleManager>().LoadBundleAsync(assetBundleName);
             var config = await assetBundle.LoadAssetAsync<TextAsset>($"{typeof(K).Name}").ToTask<TextAsset>();
-#else
-            // 加载编辑器数据
-            TextAsset config = EditorResManager.Instance.LoadEditorAsset<TextAsset>($"{typeof(K).Name}");
-            await Task.CompletedTask;
-#endif
             // 转换二进制到数据类
             ConvertFrom<T, K>(config);
         }
@@ -46,7 +42,7 @@ namespace Core.Serialize.Binary
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="K"></typeparam>
         /// <param name="textAsset"></param>
-        private void ConvertFrom<T, K>(TextAsset textAsset)
+        protected void ConvertFrom<T, K>(TextAsset textAsset)
         {
             //读取excel表对于的二进制文件
             byte[] bytes = textAsset.bytes;

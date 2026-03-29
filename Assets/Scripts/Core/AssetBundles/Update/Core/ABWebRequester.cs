@@ -90,7 +90,7 @@ namespace Core.AssetBundles.Update.Core
                 if (_request?.result != UnityWebRequest.Result.Success)
                 {
                     // 请求失败：打印错误日志（包含错误信息、响应码），触发失败回调
-                    LogManager.LogError($"{FileName}下载失败：错误信息={_request?.error}，结果={_request?.result}，响应码={_request?.responseCode}");
+                    Logger.LogError($"{FileName}下载失败：错误信息={_request?.error}，结果={_request?.result}，响应码={_request?.responseCode}");
                     overCallback?.Invoke(false);
                 }
                 else
@@ -101,7 +101,7 @@ namespace Core.AssetBundles.Update.Core
             }
             catch (System.Exception e)
             {
-                LogManager.LogError($"下载异常，{e.Message}，StackTrace：{e.StackTrace}");
+                Logger.LogError($"下载异常，{e.Message}，StackTrace：{e.StackTrace}");
                 overCallback?.Invoke(false);
             }
         }

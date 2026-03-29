@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Serialize.Binary.Loader;
 using Core.Singleton;
 using Core.Utility;
 using Newtonsoft.Json;
@@ -12,9 +13,9 @@ namespace Core.Serialize.Binary
     /// <summary>
     /// 二进制数据管理器
     /// </summary>
-    public class BinaryDataManager : SingletonBase<BinaryDataManager>, IBinaryDataManager
+    public class BinaryDataManager : IBinaryDataManager, IInitializable
     {
-        public override int InitPriority => 0;
+        public int InitPriority => 0;
         // 配置加载类型到加载器的映射
         private readonly Dictionary<EConfigLoadType, IConfigLoader> typeToLoaderMap = new();
 
@@ -23,10 +24,15 @@ namespace Core.Serialize.Binary
 
         }
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
+#if !UNITY_EDITOR || EDITOR_TEST_AB
             typeToLoaderMap.Add(EConfigLoadType.Excel, new ExcelConfigLoader());
             typeToLoaderMap.Add(EConfigLoadType.Editor, new EditorConfigLoader());
+#else
+            typeToLoaderMap.Add(EConfigLoadType.Excel, new ExcelConfigMockLoader());
+            typeToLoaderMap.Add(EConfigLoadType.Editor, new EditorConfigMockLoader());
+#endif
             return Task.CompletedTask;
         }
 

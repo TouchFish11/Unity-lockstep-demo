@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Core.DI;
 using Core.Log;
 using Core.Mono;
 using Core.Pool;
@@ -14,9 +15,9 @@ namespace Core.AssetBundles.Update.Core
     /// <summary>
     /// AssetBundle更新管理器
     /// </summary>
-    public class AssetBundleUpdater : SingletonBase<AssetBundleUpdater>, IAssetBundleUpdater, IApplicationExitNotify
+    public class AssetBundleUpdater : IAssetBundleUpdater, IApplicationExitNotify, IInitializable
     {
-        public override int InitPriority => 1;
+        public int InitPriority => 1;
         public int QuitPriority => 0;
         // 更新上下文
         private ABUpdateContext _updateContext;
@@ -27,7 +28,7 @@ namespace Core.AssetBundles.Update.Core
         // 当前更新状态索引
         private int _stateIndex;
         // 对象池管理器接口
-        private IPoolManager _poolManager;
+        [Inject] private IPoolManager _poolManager;
 
         /// <summary>
         /// 更新阶段
@@ -36,9 +37,8 @@ namespace Core.AssetBundles.Update.Core
         
         private AssetBundleUpdater(){}
         
-        public override Task InitAsync()
+        public Task InitAsync()
         {
-            _poolManager = ServiceLocator.Get<IPoolManager>();
             return Task.CompletedTask;
         }
 
@@ -94,7 +94,7 @@ namespace Core.AssetBundles.Update.Core
             }
             catch (System.Exception e)
             {
-                LogManager.LogError($"{nameof(AssetBundleUpdater)}.{nameof(CheckUpdate)}：下载异常：{e.Message}");
+                Logger.LogError($"{nameof(AssetBundleUpdater)}.{nameof(CheckUpdate)}：下载异常：{e.Message}");
                 _updateContext.UpdateOver(UpdateResult.CreateFailure(UpdateResult.EUpdateError.Unknown, e));
             }
         }
@@ -140,11 +140,11 @@ namespace Core.AssetBundles.Update.Core
             {
                 if (_currentUpdateState == null || UpdatePhase == EUpdatePhase.Finished) return;
                 UpdateUtil.CancelDownload(_updateContext);
-                LogManager.Log($"{nameof(AssetBundleUpdater)}.{nameof(OnAppQuit)}:已取消下载");
+                Logger.Log($"{nameof(AssetBundleUpdater)}.{nameof(OnAppQuit)}:已取消下载");
             }
             catch (System.Exception e)
             {
-                LogManager.LogError($"{nameof(AssetBundleUpdater)}.{nameof(OnAppQuit)}:取消下载错误，{e.Message})");
+                Logger.LogError($"{nameof(AssetBundleUpdater)}.{nameof(OnAppQuit)}:取消下载错误，{e.Message})");
             }
         }
     }

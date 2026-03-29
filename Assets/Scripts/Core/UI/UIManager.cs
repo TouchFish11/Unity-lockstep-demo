@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.DI;
 using Core.Loader.Object;
-using Core.Log;
+using Core.Reflection;
 using Core.Service;
 using Core.Singleton;
 using Core.UI.MVC;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 using Object = UnityEngine.Object;
 
 namespace Core.UI
@@ -14,9 +16,9 @@ namespace Core.UI
     /// <summary>
     /// UI管理器
     /// </summary>
-    public class UIManager : SingletonBase<UIManager>, IUIManager
+    public class UIManager : IUIManager, IInitializable
     {
-        public override int InitPriority => 2;
+        public  int InitPriority => 2;
         // 存储打开的界面
         private readonly List<IPanelInfo> _panels = new();
         // 上层
@@ -32,12 +34,13 @@ namespace Core.UI
         
         private UIManager()
         {
+            
         }
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
             // 要先初始化工厂才能拿到加载器实例
-            _prefabLoader = ServiceLocator.Get<IPrefabLoader>();
+            _prefabLoader = DIContainer.GetInstance<IPrefabLoader>();
             return Task.CompletedTask;
         }
 
@@ -92,7 +95,7 @@ namespace Core.UI
             }
             catch (Exception e)
             {
-                LogManager.LogError($"{nameof(UIManager)}.{nameof(CreateViewAsync)}：异步创建界面错误，{e.Message}");
+                Logger.LogError($"{nameof(UIManager)}.{nameof(CreateViewAsync)}：异步创建界面错误，{e.Message}");
                 return controller;
             }
         }
@@ -120,7 +123,7 @@ namespace Core.UI
             }
             catch (Exception e)
             {
-                LogManager.LogError($"{nameof(UIManager)}.{nameof(GetController)}：{e.Message}，{e.StackTrace}");
+                Logger.LogError($"{nameof(UIManager)}.{nameof(GetController)}：{e.Message}，{e.StackTrace}");
             }
         }
         
@@ -148,7 +151,7 @@ namespace Core.UI
                     return controller;
                 }
             }
-            LogManager.LogError($"{nameof(UIManager)}.{nameof(GetController)}：控制器{typeof(TController)}未找到");
+            Logger.LogError($"{nameof(UIManager)}.{nameof(GetController)}：控制器{typeof(TController)}未找到");
             return default;
         }
         

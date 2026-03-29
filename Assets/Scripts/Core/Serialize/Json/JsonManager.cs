@@ -12,9 +12,9 @@ namespace Core.Serialize.Json
     /// 负责JSON数据的序列化（保存）和反序列化（读取）操作
     /// 实现IJsonManager接口，基于Unity的JsonUtility封装
     /// </summary>
-    public class JsonManager : SingletonBase<JsonManager>, IJsonManager
+    public class JsonManager : IJsonManager, IInitializable
     {
-        public override int InitPriority => 0;
+        public  int InitPriority => 0;
 
         public static JsonSerializerSettings DefaultSettings => new()
         {
@@ -32,7 +32,7 @@ namespace Core.Serialize.Json
             
         }
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
             return Task.CompletedTask;
         }

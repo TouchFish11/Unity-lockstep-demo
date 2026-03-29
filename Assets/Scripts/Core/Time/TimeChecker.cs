@@ -63,7 +63,7 @@ namespace Core.Time
                 return _dateTimeDic[key].CalcRemainTime(current);
             }
 
-            LogManager.LogError($"δ�ҵ���ָ����ʱ�����KEY��{key}");
+            Logger.LogError($"δ�ҵ���ָ����ʱ�����KEY��{key}");
             return default;
         }
 
@@ -77,7 +77,7 @@ namespace Core.Time
             if (_dateTimeDic.ContainsKey(key))
                 return _dateTimeDic[key];
 
-            LogManager.LogError($"δ�ҵ���ָ����ʱ�����KEY��{key}");
+            Logger.LogError($"δ�ҵ���ָ����ʱ�����KEY��{key}");
             return default;
         }
 

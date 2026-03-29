@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
+using Core.DI;
 using Core.Log;
 using Core.Mono;
 using Core.Service;
@@ -11,30 +12,29 @@ using Core.Utility;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Logger = Core.Log.Logger;
 
 namespace Core.Scene
 {
     /// <summary>
     /// 场景管理类，负责场景的异步加载，继承单例基类并实现ISceneManager接口
     /// </summary>
-    public class SceneManager : SingletonBase<SceneManager>, ISceneManager
+    public class SceneManager : ISceneManager, IInitializable
     {
-        public override int InitPriority => 2;
+        public int InitPriority => 2;
 
         // 场景路径缓存
         private List<string> _scenePaths;
-        private IMonoAdapter _monoAdapter;
-        private IAssetBundleManager _assetBundleManager;
+        [Inject] private IMonoAdapter _monoAdapter;
+        [Inject] private IAssetBundleManager _assetBundleManager;
         
         private SceneManager()
         {
 
         }
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
-            _monoAdapter = ServiceLocator.Get<IMonoAdapter>();
-            _assetBundleManager = ServiceLocator.Get<IAssetBundleManager>();
             return Task.CompletedTask;
         }
 
@@ -55,7 +55,7 @@ namespace Core.Scene
                 // 检查是否包含指定路径的场景
                 if (!ContainPath(scenePath))
                 {
-                    LogManager.LogError($"不存在该场景路径：{scenePath}");
+                    Logger.LogError($"不存在该场景路径：{scenePath}");
                     return;
                 }
                 
@@ -65,11 +65,11 @@ namespace Core.Scene
                 _monoAdapter.StartCoroutine(UpdateProgress_Cor(ao, onLoadProgress));
                 // 等待场景加载结束
                 await TaskUtility.WaitUntil(() => ao != null && ao.isDone);
-                LogManager.Log($"{nameof(SceneManager)}.{nameof(LoadSceneAsync)}：场景({scenePath})加载结束");
+                Logger.Log($"{nameof(SceneManager)}.{nameof(LoadSceneAsync)}：场景({scenePath})加载结束");
             }
             catch (Exception exception)
             {
-                LogManager.LogError($"{nameof(SceneManager)}.{nameof(LoadSceneAsync)}：{exception.Message}");
+                Logger.LogError($"{nameof(SceneManager)}.{nameof(LoadSceneAsync)}：{exception.Message}");
             }
         }
 
@@ -90,7 +90,7 @@ namespace Core.Scene
             }
             else
             {
-                LogManager.LogError($"{nameof(SceneManager)}.{nameof(InitSceneBundle)}；重复初始化");
+                Logger.LogError($"{nameof(SceneManager)}.{nameof(InitSceneBundle)}；重复初始化");
             }
         }
 

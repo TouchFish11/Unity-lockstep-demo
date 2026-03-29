@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.Collection;
+using Core.DI;
 using Core.Log;
 using Core.Serialize.Json;
 using Core.Service;
@@ -14,28 +15,27 @@ using Core.Singleton;
 using Core.Tasks.Extensions;
 using HybridCLR;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Core.HotUpdate
 {
     /// <summary>
     /// 热更新管理器
     /// </summary>
-    public class HotUpdateManager : SingletonBase<HotUpdateManager>, IHotUpdateManager
+    public class HotUpdateManager : IHotUpdateManager, IInitializable
     {
-        public override int InitPriority => 2;
+        public int InitPriority => 2;
         // 缓存热更程序集名称
         private readonly ConcurrentBag<string> _assemblyNames = new();
         // 热更新程序集设置
         private HotUpdateAssemblySettings _hotupdateassemblySettings;
-        private IAssetBundleManager _assetBundleManager;
-        private IJsonManager _jsonManager;
+        [Inject] private IAssetBundleManager _assetBundleManager;
+        [Inject] private IJsonManager _jsonManager;
         
         private HotUpdateManager(){}
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
-            _assetBundleManager = ServiceLocator.Get<IAssetBundleManager>();
-            _jsonManager = ServiceLocator.Get<IJsonManager>();
             return Task.CompletedTask;
         }
 
@@ -45,7 +45,7 @@ namespace Core.HotUpdate
             {
                 var assemblyBytes = GetAssemblyBytes(aotDllName);
                 var errorCode = RuntimeApi.LoadMetadataForAOTAssembly(assemblyBytes, HomologousImageMode.SuperSet);
-                LogManager.Log($"{nameof(HotUpdateManager)}.{nameof(LoadMetadataForAOTAssemblies)}:已补充元数据{aotDllName}，错误码:{errorCode}");
+                Logger.Log($"{nameof(HotUpdateManager)}.{nameof(LoadMetadataForAOTAssemblies)}:已补充元数据{aotDllName}，错误码:{errorCode}");
             }
         }
 
@@ -62,17 +62,17 @@ namespace Core.HotUpdate
                 _hotupdateassemblySettings = _jsonManager.FromJson<HotUpdateAssemblySettings>(textAsset.text);
                 if (_hotupdateassemblySettings != null)
                 {
-                    LogManager.Log($"{nameof(HotUpdateManager)}.{nameof(PreLoadAssembliesAsync)}:内容长度{_hotupdateassemblySettings.preloadHotUpdateAssemblies.Length}");
+                    Logger.Log($"{nameof(HotUpdateManager)}.{nameof(PreLoadAssembliesAsync)}:内容长度{_hotupdateassemblySettings.preloadHotUpdateAssemblies.Length}");
                 }
                 else
                 {
-                    LogManager.LogWarning($"{nameof(HotUpdateManager)}.{nameof(PreLoadAssembliesAsync)}:HotUpdateAssemblySettings反序列化失败");
+                    Logger.LogWarning($"{nameof(HotUpdateManager)}.{nameof(PreLoadAssembliesAsync)}:HotUpdateAssemblySettings反序列化失败");
                     return;
                 }
             }
             else
             {
-                LogManager.LogWarning($"{nameof(HotUpdateManager)}.{nameof(PreLoadAssembliesAsync)}:HotUpdateAssemblySettings文件未找到");
+                Logger.LogWarning($"{nameof(HotUpdateManager)}.{nameof(PreLoadAssembliesAsync)}:HotUpdateAssemblySettings文件未找到");
                 return;
             }
             
@@ -111,7 +111,7 @@ namespace Core.HotUpdate
             }
             catch (Exception e)
             {
-                LogManager.LogError($"{nameof(HotUpdateManager)}.{nameof(LoadAssembliesAsync)}:{e.Message}");   
+                Logger.LogError($"{nameof(HotUpdateManager)}.{nameof(LoadAssembliesAsync)}:{e.Message}");   
             }
         }
 
@@ -199,12 +199,12 @@ namespace Core.HotUpdate
                 {
                     var assembly = Assembly.Load(bytes);
                     _assemblyNames.Add(assembly.GetName().Name);
-                    LogManager.Log($"{nameof(HotUpdateManager)}.{nameof(LoadAssemblyAsyncInternal)}:已加载热更程序集{assembly.GetName().Name}");
+                    Logger.Log($"{nameof(HotUpdateManager)}.{nameof(LoadAssemblyAsyncInternal)}:已加载热更程序集{assembly.GetName().Name}");
                 }
                 catch (Exception e)
                 {
                     Debug.LogError($"{nameof(HotUpdateManager)}.{nameof(LoadAssemblyAsyncInternal)}:热更程序集加载错误{e.Message}");
-                    LogManager.LogError($"{nameof(HotUpdateManager)}.{nameof(LoadAssemblyAsyncInternal)}:热更程序集加载错误{e.Message}");
+                    Logger.LogError($"{nameof(HotUpdateManager)}.{nameof(LoadAssemblyAsyncInternal)}:热更程序集加载错误{e.Message}");
                 }
             });
         }

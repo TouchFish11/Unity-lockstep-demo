@@ -113,7 +113,7 @@ namespace Core.Reflection
                     factory?.InitFactory();
                     if (!dic.TryAdd(type.ToIdentifier(), factory))
                     {
-                        LogManager.LogError($"{nameof(FactoryUtility)}.{nameof(ScanAllFactory)}：重复添加工厂类型：{type}");
+                        Logger.LogError($"{nameof(FactoryUtility)}.{nameof(ScanAllFactory)}：重复添加工厂类型：{type}");
                     }
                 }
             }

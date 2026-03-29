@@ -40,7 +40,7 @@ namespace Core.Loader.Sprite
                     return sprite;
                 }
 
-                LogManager.LogWarning($"{nameof(SpriteLoader)}.{nameof(LoadSpriteAsync)}，{abName}.{atlasName}.{assetName}资源获取失败，返回默认Sprite");
+                Logger.LogWarning($"{nameof(SpriteLoader)}.{nameof(LoadSpriteAsync)}，{abName}.{atlasName}.{assetName}资源获取失败，返回默认Sprite");
                 return null;
             }
             else
@@ -52,7 +52,7 @@ namespace Core.Loader.Sprite
                 // 图集加载失败，则返回默认精灵
                 if (!atlas)
                 {
-                    LogManager.LogWarning($"{nameof(SpriteLoader)}.{nameof(LoadSpriteAsync)}，{abName}.{atlasName}图集加载失败，返回默认Sprite");
+                    Logger.LogWarning($"{nameof(SpriteLoader)}.{nameof(LoadSpriteAsync)}，{abName}.{atlasName}图集加载失败，返回默认Sprite");
                     return null;
                 }
                 
@@ -60,7 +60,7 @@ namespace Core.Loader.Sprite
                 var newAtlasData = new AtlasData(atlas);
                 if (!_atlasDatas.TryAdd(atlasName, newAtlasData))
                 {
-                    LogManager.LogWarning($"{nameof(AtlasData)}.{nameof(LoadSpriteAsync)}：重复缓存{abName}中的SpriteAtlas，{atlasName}");
+                    Logger.LogWarning($"{nameof(AtlasData)}.{nameof(LoadSpriteAsync)}：重复缓存{abName}中的SpriteAtlas，{atlasName}");
                 }
                 
                 // 图集加载成功，从图集中获取指定名称的精灵
@@ -71,7 +71,7 @@ namespace Core.Loader.Sprite
                     return sprite;
                 }
             
-                LogManager.LogWarning($"{nameof(SpriteLoader)}.{nameof(LoadSpriteAsync)}，{abName}.{atlasName}.{assetName}资源获取失败，返回默认Sprite");
+                Logger.LogWarning($"{nameof(SpriteLoader)}.{nameof(LoadSpriteAsync)}，{abName}.{atlasName}.{assetName}资源获取失败，返回默认Sprite");
                 return null;
             }
         }

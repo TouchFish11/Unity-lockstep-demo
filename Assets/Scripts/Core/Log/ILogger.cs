@@ -2,10 +2,7 @@ using Core.Net;
 
 namespace Core.Log
 {
-    /// <summary>
-    /// ��־�������ӿ�
-    /// </summary>
-    public interface ILogManager
+    public interface ILogger
     {
         bool EnableLog { get; set; }
 

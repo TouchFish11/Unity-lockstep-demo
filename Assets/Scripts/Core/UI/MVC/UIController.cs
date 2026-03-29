@@ -32,7 +32,7 @@ namespace Core.UI.MVC
             }
             catch (Exception e)
             {
-                LogManager.LogError($"{nameof(UIController<TView, TModel>)}.{nameof(Init)}：控制器初始化异常，{e.Message}");
+                Logger.LogError($"{nameof(UIController<TView, TModel>)}.{nameof(Init)}：控制器初始化异常，{e.Message}");
             }
         }
 

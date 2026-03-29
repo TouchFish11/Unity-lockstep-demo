@@ -5,6 +5,7 @@ using Core.Log;
 using Core.Service;
 using Core.Tasks.Extensions;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Core.Loader.Audio
 {
@@ -30,7 +31,7 @@ namespace Core.Loader.Audio
 
             if (!audioClip)
             {
-                LogManager.LogWarning($"{nameof(AudioLoader)}.{nameof(LoadAudioClipAsync)}，音频：{assetName}，加载失败，返回null");
+                Logger.LogWarning($"{nameof(AudioLoader)}.{nameof(LoadAudioClipAsync)}，音频：{assetName}，加载失败，返回null");
                 return null;
             }
             

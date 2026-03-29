@@ -10,22 +10,18 @@ namespace Core.Pool
     /// <summary>
     /// 缓存池管理器
     /// </summary>
-    public class PoolManager : SingletonBase<PoolManager>, IPoolManager
+    public class PoolManager : IPoolManager
     {
-        public override int InitPriority => 0;
         // 存储继承Mono对象
         private readonly Dictionary<string, PoolObj> _poolObjDic = new();
         // 存储不继承Mono对象
         private readonly Dictionary<string, BasePoolData> _poolDataDic = new();
         // 缓存池根对象
         private GameObject _poolRootObj;
-        private int priority;
 
-        private PoolManager(){}
-
-        public override Task InitAsync()
+        private PoolManager()
         {
-            return Task.CompletedTask;
+            
         }
 
         public T GetObj<T>(string assetName) where T : Behaviour

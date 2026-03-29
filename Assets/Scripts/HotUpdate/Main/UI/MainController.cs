@@ -4,6 +4,7 @@ using Core.EditorRes;
 using Core.Loader.Object;
 using Core.Service;
 using Core.UI.MVC;
+using HotUpdate.Common;
 using HotUpdate.Main.Chat;
 using Net.Sync;
 using Net.Sync.Msg;
@@ -14,31 +15,31 @@ namespace HotUpdate.Main.UI
 {
     public class MainController : UIController<MainPanel, MainModel>
     {
-        private readonly IPrefabLoader _prefabLoader = DIContainer.GetDependency<IPrefabLoader>();
-        private readonly IEditorResManager _editorResManager = DIContainer.GetDependency<IEditorResManager>();
+        private readonly IPrefabLoader _prefabLoader = DIContainer.GetInstance<IPrefabLoader>();
         
         protected override Task OnShow()
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         protected override Task OnHide()
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         protected override Task OnInit()
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public void AddChat(int sessionId, string chatMsg)
         {
-            var chatObj = _editorResManager.LoadEditorAsset<GameObject>(nameof(ChatUI));
-            chatObj.transform.SetParent(view.svChat.content, false);
-            var chatUI = chatObj.GetComponent<ChatUI>();
-            chatUI.SetMessage(sessionId, chatMsg);
-            model.Cache(chatUI);
+            //_prefabLoader.GetObjectAsync<ChatUI>()
+            //var chatObj = _editorResManager.LoadEditorAsset<GameObject>(ResKeyCollection.ChatUI);
+            //chatObj.transform.SetParent(view.svChat.content, false);
+            //var chatUI = chatObj.GetComponent<ChatUI>();
+            //chatUI.SetMessage(sessionId, chatMsg);
+            //model.Cache(chatUI);
         }
 
         protected override void InputFieldValueChanged(string fieldName, string inputStr)
@@ -57,7 +58,7 @@ namespace HotUpdate.Main.UI
             }
             else if (btnName == nameof(view.btnSend))
             {
-                var netGameProxy = DIContainer.GetDependency<INetGameProxy>();
+                var netGameProxy = DIContainer.GetInstance<INetGameProxy>();
                 var chatStr = model.GetChatInput();
                 
                 // 本地创建自己发送的消息

@@ -10,7 +10,7 @@ namespace Net.FrameSync.Manager
     /// ������Ϸ������
     /// ���������������
     /// </summary>
-    public class NetGameManager : SingletonBase<NetGameManager>
+    public class NetGameManager : Core.DI.SingletonBase<NetGameManager>
     {
         //����������Ŀͻ��˻��棺�����ͻ���ID��ֵ����Ҷ���
         private readonly Dictionary<int, INetObject> _idToPlayerMap = new Dictionary<int, INetObject>();

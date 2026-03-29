@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.AssetBundles.Update.Collection;
+using Core.DI;
 using Core.Log;
 using Core.Serialize.Json;
 using Core.Service;
@@ -10,31 +11,33 @@ using Core.Singleton;
 using Core.Systems.Memorys;
 using Core.Utility;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Core.AssetBundles.Management
 {
     /// <summary>
     /// AB包管理器
     /// </summary>
-    public class AssetBundleManager : SingletonBase<AssetBundleManager>, IAssetBundleManager
+    public class AssetBundleManager : IAssetBundleManager, IInitializable
     {
-        public override int InitPriority => 1;
+        public int InitPriority => 1;
         // 缓存活跃的包包装器
         private readonly Dictionary<string, BundleWrapper> _nameToWrapperMap = new();
         // 未被引用的包装器缓存
         private readonly Dictionary<string, BundleWrapper> _nameToNonRefWrapperMap = new();
         // 清单文件集合
         private ABPackageCollection _abPackageCollection;
+        [Inject] private IMemoryMonitor _memoryMonitor;
         
         private AssetBundleManager()
         {
             
         }
         
-        public override Task InitAsync()
+        public Task InitAsync()
         {
             // 注册事件
-            ServiceLocator.Get<IMemoryMonitor>().Register(this);
+            _memoryMonitor.Register(this);
             return Task.CompletedTask;
         }
 
@@ -89,7 +92,7 @@ namespace Core.AssetBundles.Management
             
             if (!_nameToWrapperMap.TryGetValue(abName, out var wrapper))
             {
-                LogManager.LogError($"{nameof(AssetBundleManager)}.{nameof(LoadBundleAsync)}：AB包{abName}不存在");
+                Logger.LogError($"{nameof(AssetBundleManager)}.{nameof(LoadBundleAsync)}：AB包{abName}不存在");
                 return null;
             }
 
@@ -121,7 +124,7 @@ namespace Core.AssetBundles.Management
                 
                 var wrapper = _nameToWrapperMap[dependency];
                 await wrapper.LoadFromFileAsync(token);
-                LogManager.Log($"{nameof(AssetBundleManager)}.{nameof(LoadDependenciesAndTargetAsync)}：{abName}包依赖项{dependency}已加载");
+                Logger.Log($"{nameof(AssetBundleManager)}.{nameof(LoadDependenciesAndTargetAsync)}：{abName}包依赖项{dependency}已加载");
             }
 
             // 加载目标包
@@ -171,12 +174,12 @@ namespace Core.AssetBundles.Management
                 {
                     if (bundleWrapper.RefCount != 0)
                     {
-                        LogManager.LogWarning($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}：{bundleWrapper.BundelName}包和已加载资源已卸载，剩余引用计数{bundleWrapper.RefCount}，可能导致引用丢失");
+                        Logger.LogWarning($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}：{bundleWrapper.BundelName}包和已加载资源已卸载，剩余引用计数{bundleWrapper.RefCount}，可能导致引用丢失");
                     }
                 }
                 else
                 {
-                    LogManager.Log($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}：{bundleWrapper.BundelName}包已卸载，剩余引用计数{bundleWrapper.RefCount}");
+                    Logger.Log($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}：{bundleWrapper.BundelName}包已卸载，剩余引用计数{bundleWrapper.RefCount}");
                 }
             }
             
@@ -211,7 +214,7 @@ namespace Core.AssetBundles.Management
             }
             catch (Exception e)
             {
-                LogManager.LogError($"{nameof(AssetBundleManager)}.{nameof(OnReport)}：{e.Message}");
+                Logger.LogError($"{nameof(AssetBundleManager)}.{nameof(OnReport)}：{e.Message}");
             }
         }
     }

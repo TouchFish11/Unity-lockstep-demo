@@ -10,16 +10,16 @@ namespace Core.PreLoad
     /// <summary>
     /// 预加载管理器
     /// </summary>
-    public class PreLoadManager : SingletonBase<PreLoadManager>, IPreLoadManager
+    public class PreLoadManager : IPreLoadManager, IInitializable
     {
-        public override int InitPriority => 0;
+        public int InitPriority => 0;
 
         private PreLoadManager()
         {
         
         }
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
             return Task.CompletedTask;
         }

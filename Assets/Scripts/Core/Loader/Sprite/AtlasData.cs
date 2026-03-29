@@ -28,7 +28,7 @@ namespace Core.Loader.Sprite
         {
             if (!_sprites.TryAdd(spriteName, (sprite, 1)))
             {
-                LogManager.LogWarning($"{nameof(AtlasData)}.{nameof(TryAdd)}：重复缓存Sprite，{spriteName}");
+                Logger.LogWarning($"{nameof(AtlasData)}.{nameof(TryAdd)}：重复缓存Sprite，{spriteName}");
             }
         }
     

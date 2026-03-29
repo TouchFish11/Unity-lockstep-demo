@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.DI;
 using Core.HotUpdate;
 using Core.Log;
 using Core.Service;
@@ -13,9 +14,10 @@ namespace Core.Reflection
     /// 工厂管理器
     /// 管理器所有实现IFactory的工厂
     /// </summary>
-    public class FactoryManager : SingletonBase<FactoryManager> , IFactoryManager
+    public class FactoryManager : IFactoryManager, IInitializable
     {
-        public override int InitPriority => 1;
+        [Inject] private IHotUpdateManager _hotUpdateManager;
+        public int InitPriority => 1;
         // 工厂实例类型Type到工厂接口的映射
         private readonly Dictionary<TypeIdentifier, IFactory> typeToFactoryMap = new();
 
@@ -24,9 +26,9 @@ namespace Core.Reflection
 
         }
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
-            var coreAssembly = ServiceLocator.Get<IHotUpdateManager>().GetCoreModule();
+            var coreAssembly = _hotUpdateManager.GetCoreModule();
             FactoryUtility.ScanAllFactory(typeToFactoryMap, coreAssembly);
             return Task.CompletedTask;
         }
@@ -44,7 +46,7 @@ namespace Core.Reflection
                 return (TISubFactory)factory;
             }
             
-            LogManager.LogError($"未找到该工厂类型,{typeof(TFactory)}");
+            Logger.LogError($"未找到该工厂类型,{typeof(TFactory)}");
             return null;
         }
     }

@@ -15,9 +15,9 @@ namespace Core.DI.Test
             
             DIContainer.InjectDependencies();
         
-            DIContainer.GetDependency<ServiceA>().DoSomething();
-            DIContainer.GetDependency<ServiceB>().DoSomething();
-            DIContainer.GetDependency<FactoryC>().DoSomething();
+            DIContainer.GetInstance<ServiceA>().DoSomething();
+            DIContainer.GetInstance<ServiceB>().DoSomething();
+            DIContainer.GetInstance<FactoryC>().DoSomething();
         }
     }
 }

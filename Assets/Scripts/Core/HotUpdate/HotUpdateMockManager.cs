@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.Collection;
+using Core.DI;
 using Core.EditorRes;
 using Core.Log;
 using Core.Serialize.Json;
@@ -13,24 +14,24 @@ using Core.Service;
 using Core.Singleton;
 using Core.Tasks.Extensions;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Core.HotUpdate
 {
     /// <summary>
     /// 模拟热更新管理器
     /// </summary>
-    public class HotUpdateMockManager : SingletonBase<HotUpdateMockManager>, IHotUpdateManager
+    public class HotUpdateMockManager : IHotUpdateManager, IInitializable
     {
-        public override int InitPriority => 2;
+        public int InitPriority => 2;
         // 缓存热更程序集名称
         private readonly ConcurrentBag<string> _assemblyNames = new();
-        private IAssetBundleManager _assetBundleManager;
+        [Inject] private IAssetBundleManager _assetBundleManager;
         
         private HotUpdateMockManager(){}
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
-            _assetBundleManager = ServiceLocator.Get<IAssetBundleManager>();
             return Task.CompletedTask;
         }
 
@@ -68,7 +69,7 @@ namespace Core.HotUpdate
                     }
                     
                     _assemblyNames.Add(assembly.GetName().Name);
-                    LogManager.Log($"{nameof(HotUpdateMockManager)}.{nameof(PreLoadAssembliesAsync)}:已缓存编辑器加载热更程序集{dllText.name}");
+                    Logger.Log($"{nameof(HotUpdateMockManager)}.{nameof(PreLoadAssembliesAsync)}:已缓存编辑器加载热更程序集{dllText.name}");
                 }
             }
             

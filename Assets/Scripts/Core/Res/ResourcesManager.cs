@@ -12,30 +12,23 @@ namespace Core.Res
     /// <summary>
     /// Resources
     /// </summary>
-    public class ResourcesManager : SingletonBase<ResourcesManager>, IResourcesManager
+    public class ResourcesManager : IResourcesManager, IInitializable
     {
-        public override int InitPriority => 0;
+        public int InitPriority => 0;
 
         // 
         private readonly Dictionary<string, BaseResourcesInfo> _nameToResInfoMap = new Dictionary<string, BaseResourcesInfo>();
-        private int priority;
 
         private ResourcesManager()
         {
 
         }
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
             return Task.CompletedTask;
         }
-
-        /// <summary>
-        /// ͬ��������Դ
-        /// </summary>
-        /// <typeparam name="T">��Դ����</typeparam>
-        /// <param name="resPath">��Դ·��</param>
-        /// <returns></returns>
+        
         public T Load<T>(string resPath) where T : Object
         {
             //�Զ���洢����

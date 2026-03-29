@@ -6,22 +6,16 @@ using UnityEngine.Video;
 
 namespace Core.Video
 {
-    /// <summary>
-    /// ��Ƶ������
-    /// </summary>
-    public class VideoManager : SingletonBase<VideoManager>, IVideoManager
+    public class VideoManager : IVideoManager, IInitializable
     {
-        public override int InitPriority => 0;
+        public int InitPriority => 0;
 
         private VideoPlayer videoPlayer;
 
-        /// <summary>
-        /// �ڲ���ǰ
-        /// </summary>
         public event Action OnPrePlay;
 
         /// <summary>
-        /// �ڲ��ź�
+        /// 
         /// </summary>
         public event Action OnPostPlay;
 
@@ -30,7 +24,7 @@ namespace Core.Video
 
         }
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
             return Task.CompletedTask;
         }

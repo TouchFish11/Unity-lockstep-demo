@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Core.DI;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events;
 using Core.Log;
@@ -13,26 +14,22 @@ namespace Core.Global
     /// <summary>
     /// 游戏设置管理器
     /// </summary>
-    public class GameSettingManager : SingletonBase<GameSettingManager>, IGameSettingManager, IApplicationExitNotify
+    public class GameSettingManager : IGameSettingManager, IApplicationExitNotify, IInitializable
     {
-        public override int InitPriority => 1;
+        public int InitPriority => 1;
         public int QuitPriority => 0;
         
-        private IJsonManager _jsonManager;
-        private IMonoAdapter _monoAdapter;
-        private IEventCenter _eventCenter;
+        [Inject] private IJsonManager _jsonManager;
+        [Inject] private IMonoAdapter _monoAdapter;
+        [Inject] private IEventCenter _eventCenter;
 
         // 游戏设置
         public GameSetting GameSetting { get; private set; }
         
         private GameSettingManager(){}
         
-        public override async Task InitAsync()
+        public async Task InitAsync()
         {
-            _jsonManager = ServiceLocator.Get<IJsonManager>();
-            _monoAdapter = ServiceLocator.Get<IMonoAdapter>();
-            _eventCenter = ServiceLocator.Get<IEventCenter>();
-            
             GameSetting = await _jsonManager.FromJsonAsync<GameSetting>($"{PathUtility.GetUserDataLocalSavePath(FileUtility.GameSettingFileName)}");
             GameSetting.enableTypewriter = true;
         }
@@ -50,7 +47,7 @@ namespace Core.Global
         public void OnAppQuit()
         {
             _jsonManager.SaveToJson(GameSetting, $"{PathUtility.GetUserDataLocalSavePath(FileUtility.GameSettingFileName)}");
-            LogManager.Log($"{nameof(GameSettingManager)}.{nameof(OnAppQuit)}:游戏设置数据保存成功，{GameSetting}");
+            Logger.Log($"{nameof(GameSettingManager)}.{nameof(OnAppQuit)}:游戏设置数据保存成功，{GameSetting}");
         }
     }
 }

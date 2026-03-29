@@ -1,5 +1,6 @@
 using Core.Log;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Core.AssetBundles.Management
 {
@@ -32,7 +33,7 @@ namespace Core.AssetBundles.Management
             }
             
             --RefCount;
-            LogManager.Log($"尝试卸载：{_assetBundleName}包的：{AssetName}资源，更新资源引用数为：{RefCount}");
+            Logger.Log($"尝试卸载：{_assetBundleName}包的：{AssetName}资源，更新资源引用数为：{RefCount}");
         }
 
         /// <summary>

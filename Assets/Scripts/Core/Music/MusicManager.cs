@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.DI;
 using Core.Loader.Audio;
 using Core.Log;
 using Core.Mono;
@@ -7,6 +8,7 @@ using Core.Pool;
 using Core.Service;
 using Core.Singleton;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Core.Music
 {
@@ -15,10 +17,10 @@ namespace Core.Music
     /// 负责背景音乐和音效的加载、播放、暂停、停止、音量调节等核心逻辑
     /// 音效采用对象池管理，减少频繁创建销毁对象的性能开销
     /// </summary>
-    public class MusicManager : SingletonBase<MusicManager>, IMusicManager
+    public class MusicManager : IMusicManager, IInitializable
     {
-        public override int InitPriority => 0;
-
+        [Inject] private IMonoAdapter _monoAdapter;
+        public int InitPriority => 0;
         // 音效播放器列表
         private readonly Dictionary<int, AudioSource> _sounds = new();
         // 待移除的音频源Id
@@ -28,7 +30,7 @@ namespace Core.Music
         // 音效总开关标记（控制所有音效是否可播放）
         private bool isOpenSounds;
         // 音频源id
-        private int auidoId;
+        private int audioId;
         private int priority;
 
         /// <summary>
@@ -37,9 +39,9 @@ namespace Core.Music
         /// </summary>
         private MusicManager(){}
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
-            ServiceLocator.Get<IMonoAdapter>().AddUpdateListener(OnUpdate);
+            _monoAdapter.AddUpdateListener(OnUpdate);
             return Task.CompletedTask;
         }
 
@@ -117,7 +119,7 @@ namespace Core.Music
         {
             if (_backgroundMusic == null)
             {
-                LogManager.LogError("背景音乐播放器为Null，无法执行暂停操作");
+                Logger.LogError("背景音乐播放器为Null，无法执行暂停操作");
                 return;
             }
 
@@ -131,7 +133,7 @@ namespace Core.Music
         {
             if (_backgroundMusic == null)
             {
-                LogManager.LogError("背景音乐播放器为Null，无法执行停止操作");
+                Logger.LogError("背景音乐播放器为Null，无法执行停止操作");
                 return;
             }
             _backgroundMusic.Stop();
@@ -144,7 +146,7 @@ namespace Core.Music
         {
             if (_backgroundMusic == null)
             {
-                LogManager.LogError("背景音乐播放器为Null，无法执行停止操作");
+                Logger.LogError("背景音乐播放器为Null，无法执行停止操作");
                 return;
             }
             _backgroundMusic.Play();
@@ -162,7 +164,7 @@ namespace Core.Music
             }
             else
             {
-                LogManager.LogError("背景音乐播放器为Null，无法修改音量");
+                Logger.LogError("背景音乐播放器为Null，无法修改音量");
             }
         }
 
@@ -186,10 +188,10 @@ namespace Core.Music
             sound.volume = Volume;
             sound.mute = !open;
             // 添加到音效列表管理
-            _sounds.Add(++auidoId, sound);
+            _sounds.Add(++audioId, sound);
             // 开始播放
             sound.Play();
-            return auidoId;
+            return audioId;
         }
 
         /// <summary>

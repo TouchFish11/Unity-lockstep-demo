@@ -5,25 +5,22 @@ using Core.Singleton;
 
 namespace Core.ScriptableObject
 {
-    /// <summary>
-    /// SO������
-    /// </summary>
-    public class ScriptableObjectManager : SingletonBase<ScriptableObjectManager>, IScriptableObjectManager
+    public class ScriptableObjectManager : IScriptableObjectManager, IInitializable
     {
-        public override int InitPriority => 0;
+        public int InitPriority => 0;
 
         private ScriptableObjectManager()
         {
 
         }
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// ����ScriptableObject
+        /// 加载ScriptableObject
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="path"></param>

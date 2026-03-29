@@ -6,6 +6,7 @@ using Core.Pool;
 using Core.Service;
 using Core.Tasks.Extensions;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Core.Loader.Object
 {
@@ -155,7 +156,7 @@ namespace Core.Loader.Object
             var unUsedCount = _poolManager.GetUnUsedCount(assetName);
             if (prefabData.refCount != unUsedCount)
             {
-                LogManager.LogWarning($"{nameof(PrefabLoader)}.{nameof(RealseAsset)}：无法释放该{abName}.{assetName}资源。引用数：{prefabData.refCount}，未使用数：{unUsedCount}");
+                Logger.LogWarning($"{nameof(PrefabLoader)}.{nameof(RealseAsset)}：无法释放该{abName}.{assetName}资源。引用数：{prefabData.refCount}，未使用数：{unUsedCount}");
                 return;
             }
             

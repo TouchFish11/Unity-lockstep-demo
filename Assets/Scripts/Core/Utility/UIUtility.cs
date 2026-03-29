@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using Logger = Core.Log.Logger;
 
 namespace Core.Utility
 {
@@ -52,7 +53,7 @@ namespace Core.Utility
                 return true;
             }
 
-            LogManager.LogWarning("世界转UI坐标，转换失败");
+            Logger.LogWarning("世界转UI坐标，转换失败");
             return false;
         }
 

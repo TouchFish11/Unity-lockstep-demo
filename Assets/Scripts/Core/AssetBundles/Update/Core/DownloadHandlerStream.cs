@@ -52,16 +52,16 @@ namespace Core.AssetBundles.Update.Core
             }
             catch (System.Exception e)
             {
-                LogManager.Log($"{nameof(DownloadHandlerStream)}.{nameof(CompleteContent)}：写入异常，文件流，{_fileStream.Name}：已被释放");
+                Logger.Log($"{nameof(DownloadHandlerStream)}.{nameof(CompleteContent)}：写入异常，文件流，{_fileStream.Name}：已被释放");
                 CloseStream();
-                LogManager.LogError($"{nameof(DownloadHandlerStream)}.{nameof(ReceiveData)}: {e.Message}");
+                Logger.LogError($"{nameof(DownloadHandlerStream)}.{nameof(ReceiveData)}: {e.Message}");
                 return false;
             }
         }
 
         protected override void CompleteContent()
         {
-            LogManager.Log($"{nameof(DownloadHandlerStream)}.{nameof(CompleteContent)}：下载完成，文件流，{_fileStream.Name}：已被释放");
+            Logger.Log($"{nameof(DownloadHandlerStream)}.{nameof(CompleteContent)}：下载完成，文件流，{_fileStream.Name}：已被释放");
             CloseStream();
         }
 
@@ -75,7 +75,7 @@ namespace Core.AssetBundles.Update.Core
                 return;
             }
             
-            LogManager.Log($"已手动暂停文件流，{_fileStream.Name}：已被释放");
+            Logger.Log($"已手动暂停文件流，{_fileStream.Name}：已被释放");
             CloseStream();
         }
         

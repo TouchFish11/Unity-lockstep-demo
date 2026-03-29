@@ -5,6 +5,7 @@ using Core.Log;
 using Core.Service;
 using Core.Singleton;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Game
 {
@@ -42,7 +43,7 @@ namespace Game
             }
             catch (Exception e)
             {
-                LogManager.LogError($"{nameof(Main)}.{nameof(Start)}: 游戏启动错误，{e.Message}");
+                Logger.LogError($"{nameof(Main)}.{nameof(Start)}: 游戏启动错误，{e.Message}");
             }
         }
 

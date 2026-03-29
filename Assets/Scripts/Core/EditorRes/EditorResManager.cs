@@ -8,6 +8,7 @@ using Core.Utility;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
+using Logger = Core.Log.Logger;
 using Object = UnityEngine.Object;
 
 namespace Core.EditorRes
@@ -15,9 +16,9 @@ namespace Core.EditorRes
     /// <summary>
     /// 编辑器资源管理器
     /// </summary>
-    public class EditorResManager : SingletonBase<EditorResManager>, IEditorResManager
+    public class EditorResManager : IEditorResManager, IInitializable
     {
-        public override int InitPriority => 0;
+        public int InitPriority => 0;
 
         /// <summary>
         /// 编辑器资源根目录
@@ -29,7 +30,7 @@ namespace Core.EditorRes
 
         private EditorResManager(){}
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
             return Task.CompletedTask;
         }
@@ -40,7 +41,7 @@ namespace Core.EditorRes
             // 文件夹不存在
             if (!Directory.Exists(RootPath))
             {
-                LogManager.Log($"路径不存在:{RootPath}");
+                Logger.Log($"路径不存在:{RootPath}");
                 return null;
             }
 
@@ -71,7 +72,7 @@ namespace Core.EditorRes
             var targetInfo = _fileInfoList.Find(fileInfo => fileInfo.Name == $"{assetName}{suffixName}");
             if (targetInfo == null)
             {
-                LogManager.LogError($"未找到该资源:{assetName}{suffixName}");
+                Logger.LogError($"未找到该资源:{assetName}{suffixName}");
                 return null;
             }
 
@@ -81,7 +82,7 @@ namespace Core.EditorRes
             {
                 return res is GameObject ? Object.Instantiate(res) : res;
             }
-            LogManager.LogError($"不存在该文件路径:{targetInfo.FullName[targetInfo.FullName.IndexOf("Assets", StringComparison.Ordinal)..]}");
+            Logger.LogError($"不存在该文件路径:{targetInfo.FullName[targetInfo.FullName.IndexOf("Assets", StringComparison.Ordinal)..]}");
             return null;
 #else
             LogManager.LogError("发布环境不允许使用编辑器API");

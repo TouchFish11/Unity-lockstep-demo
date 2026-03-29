@@ -1,21 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.DI;
 using Core.Log;
 using Core.Mono;
 using Core.Service;
 using Core.Singleton;
 using Core.Utility;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Core.Systems.Memorys
 {
     /// <summary>
     /// 内存监视器
     /// </summary>
-    public class MemoryMonitor : SingletonBase<MemoryMonitor>, IMemoryMonitor
+    public class MemoryMonitor : IMemoryMonitor, IInitializable
     {
-        public override int InitPriority => 0;
+        [Inject] private IMonoAdapter _monoAdapter;
+        public int InitPriority => 0;
         // 监听者列表
         private readonly List<IMemoryListener> _listeners = new();
         // 当前内存占用级别
@@ -39,9 +42,9 @@ namespace Core.Systems.Memorys
             
         }
         
-        public override Task InitAsync()
+        public Task InitAsync()
         {
-            ServiceLocator.Get<IMonoAdapter>().AddUpdateListener(OnUpdate);
+            _monoAdapter.AddUpdateListener(OnUpdate);
             Application.lowMemory += OnLowMemory;
             return Task.CompletedTask;
         }
@@ -83,7 +86,7 @@ namespace Core.Systems.Memorys
 
         private void SetCurrentOccupationLevel(EMemoryOccupationLevel currentOccupationLevel)
         {
-            LogManager.Log($"当前内存占用级别：{currentOccupationLevel}。" +
+            Logger.Log($"当前内存占用级别：{currentOccupationLevel}。" +
                            $"当前内存占用：{TextUtility.ToByteUnit((ulong)currentMemory)}，" +
                            $"系统内存：{TextUtility.ToByteUnit((ulong)currentSystemMemory)}，" +
                            $"比值：{TextUtility.FloatToStr(currentRatio * 100, 2)}%");

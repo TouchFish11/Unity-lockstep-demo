@@ -3,7 +3,7 @@ using Core.Singleton;
 
 namespace Net.FrameSync.Test
 {
-    public class GameHandler : SingletonBase<GameHandler>
+    public class GameHandler : Core.DI.SingletonBase<GameHandler>
     {
         /// <summary>
         /// �Ƿ�ֹͣͬ����ģ����ߣ�

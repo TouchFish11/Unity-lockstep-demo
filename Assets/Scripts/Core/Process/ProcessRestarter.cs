@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using Core.Log;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Core.Process
 {
@@ -19,7 +20,7 @@ namespace Core.Process
         {
             if (Application.isEditor)
             {
-                LogManager.Log($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：模拟重启成功，请退出播放模式，重新进入");
+                Logger.Log($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：模拟重启成功，请退出播放模式，重新进入");
                 return;
             }
 
@@ -28,7 +29,7 @@ namespace Core.Process
                 Process.GetCurrentProcess().Refresh();
                 foreach (ProcessModule module in Process.GetCurrentProcess().Modules)
                 {
-                    LogManager.Log($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：模块文件：{module.FileName}，模块名称：{module.ModuleName}");
+                    Logger.Log($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：模块文件：{module.FileName}，模块名称：{module.ModuleName}");
                 }
                 
                 var processModule = Process.GetCurrentProcess().MainModule;
@@ -42,14 +43,14 @@ namespace Core.Process
                 {
                     throw new Exception($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：exePath路径为null");
                 }
-                LogManager.Log($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：exePath路径为:{exePath}");
+                Logger.Log($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：exePath路径为:{exePath}");
 
                 // 防止无限重启
                 if (Environment.CommandLine.Contains("--noRestart"))
                 {
                     throw new Exception($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：CommandLine包含noRestart");
                 }
-                LogManager.Log($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：CommandLine不包含noRestart");
+                Logger.Log($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：CommandLine不包含noRestart");
                 
                 var startInfo = new ProcessStartInfo
                 {
@@ -63,7 +64,7 @@ namespace Core.Process
             }
             catch (Exception e)
             {
-                LogManager.LogError($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：{e.Message}");
+                Logger.LogError($"{nameof(ProcessRestarter)}.{nameof(RestartProcess)}：{e.Message}");
                 Application.Quit(); // 至少退出
             }
         }

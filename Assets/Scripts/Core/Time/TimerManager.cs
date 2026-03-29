@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.DI;
 using Core.Mono;
 using Core.Pool;
 using Core.Service;
@@ -15,9 +16,10 @@ namespace Core.Time
     /// 负责统一管理所有基于游戏时间/真实时间的定时器，提供创建、重置、暂停、继续、移除定时器等功能
     /// 支持时间缩放（TimeScale）控制，定时器对象使用对象池复用
     /// </summary>
-    public class TimerManager : SingletonBase<TimerManager>, ITimerManager
+    public class TimerManager : ITimerManager, IInitializable
     {
-        public override int InitPriority => 0;
+        [Inject] private IMonoAdapter _monoAdapter;
+        public int InitPriority => 0;
         // 存储受游戏时间影响的定时器字典（Key：定时器唯一ID，Value：定时器对象）
         private readonly Dictionary<int, Timer> _timerDic = new();
         // 存储不受游戏时间影响的定时器字典（Key：定时器唯一ID，Value：定时器对象）
@@ -46,23 +48,23 @@ namespace Core.Time
 
         }
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
             // 初始化时间流速为正常速度
             _timeRate = E_TimeRate.Normal;
             // 启动受游戏时间影响的定时器轮询协程
-            _coroutine = ServiceLocator.Get<IMonoAdapter>().StartCoroutine(StartTiming(false, _timerDic));
+            _coroutine = _monoAdapter.StartCoroutine(StartTiming(false, _timerDic));
             // 启动不受游戏时间影响的定时器轮询协程
-            _realCoroutine = ServiceLocator.Get<IMonoAdapter>().StartCoroutine(StartTiming(true, _realTimerDic));
+            _realCoroutine = _monoAdapter.StartCoroutine(StartTiming(true, _realTimerDic));
             return Task.CompletedTask;
         }
 
         public void Close()
         {
             // 停止受游戏时间影响的定时器协程
-            ServiceLocator.Get<IMonoAdapter>().StopCoroutine(_coroutine);
+            _monoAdapter.StopCoroutine(_coroutine);
             // 停止不受游戏时间影响的定时器协程
-            ServiceLocator.Get<IMonoAdapter>().StopCoroutine(_realCoroutine);
+            _monoAdapter.StopCoroutine(_realCoroutine);
         }
 
         /// <summary>

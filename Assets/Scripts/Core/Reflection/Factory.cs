@@ -28,7 +28,7 @@ namespace Core.Reflection
                 return instance as TInterface;
             }
             
-            LogManager.LogError($"未找到类型实例：{typeof(TInstance)}");
+            Logger.LogError($"未找到类型实例：{typeof(TInstance)}");
             return null;
         }
     }

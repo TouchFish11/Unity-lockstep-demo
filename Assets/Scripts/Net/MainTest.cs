@@ -8,9 +8,13 @@ namespace Net
     public class MainTest : MonoBehaviour
     {
         // Start is called before the first frame update
-        private void Start()
+        private async void Start()
         {
+            // 注册单例
+            DIContainer.RegisterSingletons();
+            
             DIContainer.BindSingleton<NetGameProxy>();
+            // 注入依赖
             DIContainer.InjectDependencies();
             
             
@@ -23,9 +27,8 @@ namespace Net
                 KcpConfig = new KcpConfig()
             };
 
-            var proxy = DIContainer.GetDependency<INetGameProxy>().Init(config);
+            var proxy = DIContainer.GetInstance<INetGameProxy>().Init(config);
             proxy.OnGameConnected += OnOnGameConnected;
-            
             proxy.Connect();
         }
 

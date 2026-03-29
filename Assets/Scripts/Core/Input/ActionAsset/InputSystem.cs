@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
+using Core.DI;
 using Core.Log;
 using Core.Service;
 using Core.Singleton;
@@ -12,6 +13,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
+using Logger = Core.Log.Logger;
 
 namespace Core.Input.ActionAsset
 {
@@ -20,9 +22,9 @@ namespace Core.Input.ActionAsset
     /// 负责输入动作的初始化、启用/禁用、按键修改、冲突检测等核心逻辑
     /// 继承单例基类，保证全局唯一实例；实现IInputSystem接口（接口未展示）
     /// </summary>
-    public class InputSystem : SingletonBase<InputSystem>, IInputSystem
+    public class InputSystem : IInputSystem, IInitializable
     {
-        public override int InitPriority => 2;
+        public int InitPriority => 2;
         // 输入配置的JSON原始数据
         private string _jsonInputData;
         // 玩家输入组件引用，关联InputActionAsset
@@ -40,7 +42,7 @@ namespace Core.Input.ActionAsset
         // 数据容器
         private MainActionMapDataContainer _mapDataContainer;
         // AB包管理器接口
-        private IAssetBundleManager _assetBundleManager;
+        [Inject] private IAssetBundleManager _assetBundleManager;
         
         /// <summary>
         /// 私有构造函数
@@ -48,9 +50,8 @@ namespace Core.Input.ActionAsset
         /// </summary>
         private InputSystem(){}
         
-        public override Task InitAsync()
+        public Task InitAsync()
         {
-            _assetBundleManager = ServiceLocator.Get<IAssetBundleManager>();
             return Task.CompletedTask;
         }
 
@@ -234,12 +235,12 @@ namespace Core.Input.ActionAsset
             {
                 // 刷新现有PlayerInput的动作配置
                 _playerInput.actions = GetInputActionAsset();
-                LogManager.Log($"输入配置更新成功，{_playerInput.actions}");
+                Logger.Log($"输入配置更新成功，{_playerInput.actions}");
             }
             else
             {
                 // 日志：PlayerInput为空，更新失败
-                LogManager.LogError($"输入配置获取失败，{playerInput}");
+                Logger.LogError($"输入配置获取失败，{playerInput}");
                 return;
             }
         }

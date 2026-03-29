@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Collection;
+using Core.DI;
 using Core.Global;
 using Core.Mono;
 using Core.Net;
@@ -19,9 +20,9 @@ namespace Core.Log
     /// <summary>
     /// 日志管理器
     /// </summary>
-    public class LogManager : SingletonBase<LogManager>, ILogManager, IApplicationExitNotify
+    public class Logger : ILogger, IApplicationExitNotify, IInitializable
     {
-        public override int InitPriority => -1;
+        public int InitPriority => -1;
         public int QuitPriority => 1;
         // 日志队列
         private readonly ConcurrentQueue<string> _logs = new();
@@ -37,10 +38,11 @@ namespace Core.Log
         private static string LogSavePath;
         // 写入日志最大间隔时间
         private static ushort WriteLogMaxIntervalTime;
+        [Inject] private static Logger _logger;
 
-        private LogManager(){}
+        private Logger(){}
 
-        public override Task InitAsync()
+        public Task InitAsync()
         {
             LogSavePath = PathUtility.GetLogLocalSavePath(FileUtility.LocalLogFileName);
             WriteLogMaxIntervalTime = GlobalSettings.Instance.writeLogMaxIntervalTime;
@@ -55,7 +57,7 @@ namespace Core.Log
         /// <param name="msg"></param>
         public static void Log(object msg)
         {
-            Instance.GenerateLog(msg.ToString(), GetStackTrace(2), ELogLevel.Log);
+            _logger.GenerateLog(msg.ToString(), GetStackTrace(2), ELogLevel.Log);
 #if UNITY_EDITOR
             UnityEngine.Debug.Log(msg);
 #endif
@@ -67,7 +69,7 @@ namespace Core.Log
         /// <param name="msgWarning">������־</param>
         public static void LogWarning(object msgWarning)
         {
-            Instance.GenerateLog(msgWarning.ToString(), GetStackTrace(2), ELogLevel.Warning);
+            _logger.GenerateLog(msgWarning.ToString(), GetStackTrace(2), ELogLevel.Warning);
 #if UNITY_EDITOR
             UnityEngine.Debug.LogWarning(msgWarning);
 #endif
@@ -79,7 +81,7 @@ namespace Core.Log
         /// <param name="msgError">������־</param>
         public static void LogError(object msgError)
         {
-            Instance.GenerateLog(msgError.ToString(), GetStackTrace(2), ELogLevel.Error);
+            _logger.GenerateLog(msgError.ToString(), GetStackTrace(2), ELogLevel.Error);
 #if UNITY_EDITOR
             UnityEngine.Debug.LogError(msgError);
 #endif
@@ -91,7 +93,7 @@ namespace Core.Log
         /// <param name="exception">�쳣��־</param>
         public static void LogException(Exception exception)
         {
-            Instance.GenerateLog(exception.ToString(), GetStackTrace(2), ELogLevel.Exception);
+            _logger.GenerateLog(exception.ToString(), GetStackTrace(2), ELogLevel.Exception);
 #if UNITY_EDITOR
             UnityEngine.Debug.LogException(exception);
 #endif
@@ -209,13 +211,13 @@ namespace Core.Log
                     }
 
                     // 获取文件名
-                    var fileFunllName = frame.GetFileName();
-                    if (fileFunllName != null)
+                    var fileFullName = frame.GetFileName();
+                    if (fileFullName != null)
                     {
-                        var index = fileFunllName.LastIndexOf('\\');
+                        var index = fileFullName.LastIndexOf('\\');
                         if (index != -1)
                         {
-                            var fileName = fileFunllName.Substring(fileFunllName.LastIndexOf('\\') + 1);
+                            var fileName = fileFullName.Substring(fileFullName.LastIndexOf('\\') + 1);
                             sb.Append($"{fileName}");
                         }
                     }
@@ -269,7 +271,7 @@ namespace Core.Log
         {
             // 停止日志写入线程
             _isLogRunning = false;
-            Log($"{nameof(LogManager)}.{nameof(OnAppQuit)}:---日志写入结束---");
+            Log($"{nameof(Logger)}.{nameof(OnAppQuit)}:---日志写入结束---");
             // 保存未写入的日志
             SaveRemainLog();
         }

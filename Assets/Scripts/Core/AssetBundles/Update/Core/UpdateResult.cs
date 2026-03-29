@@ -86,7 +86,7 @@ namespace Core.AssetBundles.Update.Core
             result.UpdateError = updateError;
             
             // 记录日志
-            LogManager.LogError($"{nameof(UpdateResult)}.{nameof(CreateFailure)}：错误类型：{updateError}；异常：{exception.Message}");
+            Logger.LogError($"{nameof(UpdateResult)}.{nameof(CreateFailure)}：错误类型：{updateError}；异常：{exception.Message}");
             return result;
         }
 

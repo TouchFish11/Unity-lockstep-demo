@@ -51,7 +51,7 @@ namespace Core.Service
             // Mono适配器
             Register<IMonoAdapter>(MonoAdapter.Instance);
             
-            Register<ILogManager>(LogManager.Instance);
+            Register<ILogger>(Logger.Instance);
             Register<IMemoryMonitor>(MemoryMonitor.Instance);
             Register<IUWRManager>(UWRManager.Instance);
             Register<IPoolManager>(PoolManager.Instance);
@@ -143,7 +143,7 @@ namespace Core.Service
             {
                 return;
             }
-            LogManager.LogError($"{nameof(ServiceLocator)}.{nameof(Register)}：注册类型{type.Name}已存在");
+            Logger.LogError($"{nameof(ServiceLocator)}.{nameof(Register)}：注册类型{type.Name}已存在");
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Core.Service
                 return service as T;
             }
             
-            LogManager.LogError($"{nameof(ServiceLocator)}.{nameof(Get)}：该类型{typeof(T)}不存在");
+            Logger.LogError($"{nameof(ServiceLocator)}.{nameof(Get)}：该类型{typeof(T)}不存在");
             return null;
         }
 
