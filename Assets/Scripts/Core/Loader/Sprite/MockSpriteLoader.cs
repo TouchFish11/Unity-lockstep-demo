@@ -6,7 +6,7 @@ namespace Core.Loader.Sprite
     //     {
     //         await Task.CompletedTask;
     //
-    //         var sprite = ServiceLocator.Get<IEditorResManager>().LoadEditorAsset<Sprite>(assetName);
+    //         var sprite = DIContainer.GetInstance<IEditorResManager>().LoadEditorAsset<Sprite>(assetName);
     //         return sprite;
     //     }
     //

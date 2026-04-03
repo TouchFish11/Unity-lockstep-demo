@@ -23,6 +23,8 @@ namespace Editor.AssetBundle
 {
     public class ABPackerWindow : EditorWindow
     {
+        private JsonManager _jsonManager = Activator.CreateInstance<JsonManager>();
+        
         // --- GUI 状态 ---
         private Vector2 _scrollPos = Vector2.zero;
         private string _buildLog = "";
@@ -1090,7 +1092,7 @@ namespace Editor.AssetBundle
                 EditorUtility.ClearProgressBar();
                 
                 // 保存为JSON文件
-                JsonManager.Instance.SaveToJson(collection, filePath);
+                _jsonManager.SaveToJson(collection, filePath);
                 AssetDatabase.Refresh();
                 AppendToLog($"AssetBundle List File Created : {filePath}");
             }
@@ -1549,7 +1551,7 @@ namespace Editor.AssetBundle
             {
                 preloadHotUpdateAssemblies = baseHotUpdateAssemblies
             };
-            JsonManager.Instance.SaveToJson(settings, savePath);
+            _jsonManager.SaveToJson(settings, savePath);
             AssetDatabase.Refresh();
         }
         
@@ -1661,13 +1663,13 @@ namespace Editor.AssetBundle
             {
                 // 读取服务器数据清单
                 var serverListFileJson = File.ReadAllText($"{serverDataPath}{FileUtility.ListFileDefaultName}");
-                var serverCollections = JsonManager.Instance.FromJson<ABPackageCollection>(serverListFileJson);
+                var serverCollections = _jsonManager.FromJson<ABPackageCollection>(serverListFileJson);
 
                 try
                 {
                     // 读取输出路径的清单，这里可能不存在，会报错
                     var outPutListFileJson = File.ReadAllText($"{_outputPath}/{FileUtility.ListFileDefaultName}");
-                    var outPutCollections = JsonManager.Instance.FromJson<ABPackageCollection>(outPutListFileJson);
+                    var outPutCollections = _jsonManager.FromJson<ABPackageCollection>(outPutListFileJson);
 
                     // 处理差异，不用对比，因为都重新打包了，说明肯定是变化的，不然不会打包
                     foreach (var outPutAbInfo in outPutCollections.Values)
@@ -1745,7 +1747,7 @@ namespace Editor.AssetBundle
                 }
                 
                 // 覆盖原有的清单文件
-                JsonManager.Instance.SaveToJson(serverCollections, $"{serverDataPath}{FileUtility.ListFileDefaultName}");
+                _jsonManager.SaveToJson(serverCollections, $"{serverDataPath}{FileUtility.ListFileDefaultName}");
                 AssetDatabase.Refresh();
             }
             

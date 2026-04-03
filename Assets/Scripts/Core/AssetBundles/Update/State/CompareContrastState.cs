@@ -3,9 +3,9 @@ using System.IO;
 using System.Threading.Tasks;
 using Core.AssetBundles.Update.Collection;
 using Core.AssetBundles.Update.Core;
+using Core.DI;
 using Core.Pool;
 using Core.Serialize.Json;
-using Core.Service;
 using Core.Utility;
 
 namespace Core.AssetBundles.Update.State
@@ -92,7 +92,7 @@ namespace Core.AssetBundles.Update.State
             if (!string.IsNullOrEmpty(cacheContent))
             {
                 // 反序列化缓存文件到缓存集合
-                var abCacheCollection = ServiceLocator.Get<IJsonManager>().FromJson<AbPackageCacheCollection>(cacheContent);
+                var abCacheCollection = DIContainer.GetInstance<IJsonManager>().FromJson<AbPackageCacheCollection>(cacheContent);
                 foreach (var (abName, abPackageCacheInfo) in abCacheCollection)
                 {
                     cachePackageCollection.TryAdd(abName, abPackageCacheInfo);

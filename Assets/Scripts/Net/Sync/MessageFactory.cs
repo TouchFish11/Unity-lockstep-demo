@@ -1,4 +1,5 @@
 using System;
+using Core.Log;
 using Net.Sync.Msg.S2C;
 
 namespace Net.Sync
@@ -25,6 +26,7 @@ namespace Net.Sync
                 //     break;
                 case 2001:
                     message = new ConnectMessage();
+                    Logger.Log($"[MessageFactory] 创建连接消息");
                     break;
                 // case 2002:
                 //     message = new S2C_MatchSuccessMessage();
@@ -48,7 +50,8 @@ namespace Net.Sync
                 //     message = new S2C_ConnectConfirmMessage();
                 //     break;
                 default:
-                    throw new ArgumentOutOfRangeException(msgId.ToString());
+                    Logger.LogError($"无效的消息ID：{msgId}");
+                    return null;
             }
 
             // 序列化消息体

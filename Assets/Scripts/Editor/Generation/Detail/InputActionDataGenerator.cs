@@ -37,7 +37,7 @@ namespace Editor.Generation.Detail
         public override void GenerateScript()
         {
             // �������붯����Դ
-            inputActions = ResourcesManager.Instance.Load<InputActionAsset>("PlayerinputAction");
+            inputActions = Resources.Load<InputActionAsset>("PlayerinputAction");
 
             GenerateInputActionMapEnum();
 
@@ -307,7 +307,7 @@ namespace Editor.Generation.Detail
         private void GeneratePlayerActionAssetsJson()
         {
             Dictionary<string, string> nameToJsonMap = new Dictionary<string, string>();
-            InputActionAsset inputActions = ResourcesManager.Instance.Load<InputActionAsset>("PlayerinputAction");
+            InputActionAsset inputActions = Resources.Load<InputActionAsset>("PlayerinputAction");
             string json = inputActions.ToJson();
             StringBuilder sb = new StringBuilder(json);
 

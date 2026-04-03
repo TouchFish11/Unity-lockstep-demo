@@ -11,7 +11,6 @@ using Core.DI;
 using Core.Global;
 using Core.Mono;
 using Core.Net;
-using Core.Service;
 using Core.Singleton;
 using Core.Utility;
 
@@ -38,7 +37,7 @@ namespace Core.Log
         private static string LogSavePath;
         // 写入日志最大间隔时间
         private static ushort WriteLogMaxIntervalTime;
-        [Inject] private static Logger _logger;
+        [Inject] private static ILogger _logger;
 
         private Logger(){}
 
@@ -105,7 +104,7 @@ namespace Core.Log
         /// <param name="progressCallBack"></param>
         public void UploadLog(UploadProgressCallBack progressCallBack)
         {
-            ServiceLocator.Get<IUWRManager>().UploadAssetAsync(GlobalSettings.Instance.uploadServerIp, LogSavePath, progressCallBack: progressCallBack);
+            DIContainer.GetInstance<IUWRManager>().UploadAssetAsync(GlobalSettings.Instance.uploadServerIp, LogSavePath, progressCallBack: progressCallBack);
         }
 
         /// <summary>
@@ -149,7 +148,7 @@ namespace Core.Log
         /// <param name="condition"></param>
         /// <param name="stackTrace"></param>
         /// <param name="type"></param>
-        private void GenerateLog(string condition, string stackTrace, ELogLevel type)
+        public void GenerateLog(string condition, string stackTrace, ELogLevel type)
         {
             // 不启用日志
             if (!EnableLog)
@@ -182,7 +181,7 @@ namespace Core.Log
         private static string GetStackTrace(int skipFrames = 0)
         {
             var uniList = ListUtility.GetUniList<Assembly>();
-            //ServiceLocator.Get<IHotUpdateManager>().GetAssemblies(uniList.List);
+            //DIContainer.GetInstance<IHotUpdateManager>().GetAssemblies(uniList.List);
             
             try
             {

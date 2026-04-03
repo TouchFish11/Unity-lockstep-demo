@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Core.Global;
-using Core.Singleton;
 using UnityEngine;
 
 namespace Core.Pool

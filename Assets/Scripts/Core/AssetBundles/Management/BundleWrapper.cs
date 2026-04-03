@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Log;
 using Core.Tasks;
 using Core.Tasks.Extensions;
 using UnityEngine;
@@ -22,7 +21,7 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 包名称
         /// </summary>
-        public string BundelName { get; }
+        public string BundleName { get; }
 
         /// <summary>
         /// 包加载路径
@@ -40,7 +39,7 @@ namespace Core.AssetBundles.Management
         public DateTime LastUseTime { get; private set; }
         
         // AB包管理器
-        private AssetBundleManager _assetBundleManager;
+        private readonly AssetBundleManager _assetBundleManager;
         // AB包加载任务
         private AssetBundleCreateRequestTask _assetBundleCreateRequestTask;
         // AB包卸载任务
@@ -54,7 +53,7 @@ namespace Core.AssetBundles.Management
         /// <param name="assetBundleManager"></param>
         public BundleWrapper(string abName, string path, AssetBundleManager assetBundleManager)
         {
-            BundelName = abName;
+            BundleName = abName;
             LoadPath = path;
             _assetBundleManager = assetBundleManager;
         }
@@ -77,7 +76,7 @@ namespace Core.AssetBundles.Management
             {
                 RefCount += 1;
                 LastUseTime = DateTime.Now;
-                Logger.Log($"{BundelName}包被引用，引用计数更新为：{RefCount}");
+                Logger.Log($"{BundleName}包被引用，引用计数更新为：{RefCount}");
                 return;
             }
             
@@ -87,7 +86,7 @@ namespace Core.AssetBundles.Management
             RefCount += 1;
             LastUseTime = DateTime.Now;
             _assetBundleCreateRequestTask = null;
-            Logger.Log($"{BundelName}包被引用，引用计数更新为：{RefCount}");
+            Logger.Log($"{BundleName}包被引用，引用计数更新为：{RefCount}");
         }
 
         /// <summary>
@@ -105,7 +104,7 @@ namespace Core.AssetBundles.Management
             {
                 _assetBundleManager.PushUnUseBundle(this);
             }
-            Logger.Log($"{BundelName}包，引用计数减少，更新为：{RefCount}");
+            Logger.Log($"{BundleName}包，引用计数减少，更新为：{RefCount}");
         }
 
         /// <summary>
@@ -132,7 +131,7 @@ namespace Core.AssetBundles.Management
             // 卸载完成后置空
             AssetBundle = null;
             _assetBundleUnloadTask = null;
-            Logger.Log($"{BundelName}包已被卸载，引用计数为：{RefCount}");
+            Logger.Log($"{BundleName}包已被卸载，引用计数为：{RefCount}");
         }
     }
 }

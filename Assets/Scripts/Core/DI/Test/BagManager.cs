@@ -1,5 +1,3 @@
-using System;
-
 namespace Core.DI.Test
 {
     public class BagManager

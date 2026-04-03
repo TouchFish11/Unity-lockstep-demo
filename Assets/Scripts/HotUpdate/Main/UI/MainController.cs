@@ -1,15 +1,10 @@
 using System.Threading.Tasks;
 using Core.DI;
-using Core.EditorRes;
 using Core.Loader.Object;
-using Core.Service;
 using Core.UI.MVC;
-using HotUpdate.Common;
-using HotUpdate.Main.Chat;
 using Net.Sync;
 using Net.Sync.Msg;
 using Net.Sync.Msg.Chat;
-using UnityEngine;
 
 namespace HotUpdate.Main.UI
 {
@@ -54,7 +49,7 @@ namespace HotUpdate.Main.UI
         {
             if (btnName == nameof(view.btnMatch))
             {
-                ServiceLocator.Get<INetManager>().Send(new MatchGameMessage(), EProtocolChannel.Reliable);
+                DIContainer.GetInstance<INetManager>().Send(new MatchGameMessage(), EProtocolChannel.Reliable);
             }
             else if (btnName == nameof(view.btnSend))
             {

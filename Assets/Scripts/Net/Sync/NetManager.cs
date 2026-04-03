@@ -1,4 +1,5 @@
 using System;
+using Core.DI;
 using Core.Mono;
 using kcp2k;
 
@@ -50,7 +51,7 @@ namespace Net.Sync
             _client.OnDataReceived += (messageData, channel) => OnMessageReceived?.Invoke(_messageSerializer.Deserialize(messageData, channel), channel);
             _config = config;
             
-            MonoAdapter.Instance.AddUpdateListener(OnUpdate);
+            DIContainer.GetInstance<IMonoAdapter>().AddUpdateListener(OnUpdate);
         }
 
         /// <summary>
@@ -75,7 +76,7 @@ namespace Net.Sync
         public void Disconnect()
         {
             _client.Disconnect();
-            MonoAdapter.Instance.RemoveUpdateListener(OnUpdate);
+            DIContainer.GetInstance<IMonoAdapter>().RemoveUpdateListener(OnUpdate);
         }
     }
 }

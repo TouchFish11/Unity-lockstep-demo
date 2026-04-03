@@ -1,4 +1,3 @@
-using Core.UI;
 using Core.UI.MVC;
 using TMPro;
 using UnityEngine.UI;

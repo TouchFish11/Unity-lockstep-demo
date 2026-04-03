@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using Core.DI;
 using Core.Serialize.Json;
 using UnityEditor;
 using UnityEngine;
@@ -16,9 +18,9 @@ namespace Editor.Json
                 Debug.LogError("请先选择一个SO");
                 return;
             }
-
+            
             // 序列化数据
-            var json = JsonManager.Instance.ToJson(selected, settings: Core.Utility.NewtonsoftJsonUtility.SerializerSettings);
+            var json = Activator.CreateInstance<JsonManager>().ToJson(selected, settings: Core.Utility.NewtonsoftJsonUtility.SerializerSettings);
             
             // 保存到文件
             var path = EditorUtility.SaveFilePanel(

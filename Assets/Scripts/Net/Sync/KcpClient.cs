@@ -1,4 +1,5 @@
 using System;
+using Core.Log;
 using kcp2k;
 
 namespace Net.Sync
@@ -20,9 +21,22 @@ namespace Net.Sync
         public KcpClient(KcpConfig kcp2kConfig)
         {
             _kcp2kClient = new kcp2k.KcpClient(
-                () => OnConnected?.Invoke(),
-                (data, kcp2kChannel) => OnDataReceived?.Invoke(data.Array, kcp2kChannel == KcpChannel.Reliable ? EProtocolChannel.Reliable : EProtocolChannel.Unreliable),
-                () => OnDisconnected?.Invoke(),
+                () =>
+                {
+                    Logger.Log($"[KcpClient] 连接成功!");
+                    OnConnected?.Invoke();
+                },
+                (data, kcp2kChannel) =>
+                {
+                    Logger.Log($"[KcpClient] 收到数据包");
+                    OnDataReceived?.Invoke(data.Array,
+                        kcp2kChannel == KcpChannel.Reliable ? EProtocolChannel.Reliable : EProtocolChannel.Unreliable);
+                },
+                () =>
+                {
+                    Logger.Log($"[KcpClient] 断开连接");
+                    OnDisconnected?.Invoke();
+                },
                 (code, msg) => OnError?.Invoke($"{code}_{msg}"),
                 kcp2kConfig);
             _kcp2kConfig = kcp2kConfig;

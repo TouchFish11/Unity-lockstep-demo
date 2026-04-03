@@ -71,7 +71,7 @@ namespace Core.Tasks
                         if (ab != null)
                         {
                             // TODO：通知管理器卸载该AB包
-                            // ServiceLocator.Get<IAssetBundleManager>().UnloadBundleAsync()
+                            // DIContainer.GetInstance<IAssetBundleManager>().UnloadBundleAsync()
                         }
                     
                         // 标记任务为取消异常

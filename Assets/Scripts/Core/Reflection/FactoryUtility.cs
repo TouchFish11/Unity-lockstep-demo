@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Core.Components;
+using Core.DI;
 using Core.HotUpdate;
 using Core.Log;
-using Core.Service;
 using Core.Types;
 using Core.Utility;
 
@@ -125,7 +125,7 @@ namespace Core.Reflection
         public static void ScanComponents(IDictionary<string, Type> components)
         {
             // 获取热更的程序集
-            foreach (var assembly in ServiceLocator.Get<IHotUpdateManager>().GetHotAssemblies())
+            foreach (var assembly in DIContainer.GetInstance<IHotUpdateManager>().GetHotAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
                 {

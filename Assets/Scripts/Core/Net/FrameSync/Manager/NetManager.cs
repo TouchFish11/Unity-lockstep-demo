@@ -1,9 +1,8 @@
 using System.Net;
-using System.Threading.Tasks;
+using Core.DI;
 using Core.Mono;
 using Core.Net.FrameSync.Udp;
 using Core.Net.Tcp;
-using Core.Service;
 using Core.Singleton;
 
 namespace Core.Net.FrameSync.Manager
@@ -24,7 +23,7 @@ namespace Core.Net.FrameSync.Manager
 
         private void Awake()
         {
-            ServiceLocator.Get<IMonoAdapter>().AddUpdateListener(OnUpdate);
+            DIContainer.GetInstance<IMonoAdapter>().AddUpdateListener(OnUpdate);
         }
 
         /// <summary>

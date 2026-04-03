@@ -6,7 +6,6 @@ using Core.Log;
 using Core.Mono;
 using Core.Pool;
 using Core.Serialize.Json;
-using Core.Service;
 using Core.Singleton;
 using Core.Utility;
 
@@ -53,7 +52,7 @@ namespace Core.AssetBundles.Update.Core
             // 初始化更新上下文
             _updateContext = _poolManager.GetData<ABUpdateContext>();
 
-            var factory = new UpdateStateFactory(this, _poolManager, ServiceLocator.Get<IJsonManager>());
+            var factory = new UpdateStateFactory(this, _poolManager, DIContainer.GetInstance<IJsonManager>());
             foreach (var updateState in factory.GetStates())
             {
                 _updateStates.Add(updateState);

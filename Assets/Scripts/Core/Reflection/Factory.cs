@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using Core.DI;
 using Core.HotUpdate;
 using Core.Log;
-using Core.Service;
 using Core.Types;
 using Core.Utility;
 
@@ -18,7 +18,7 @@ namespace Core.Reflection
 
         public virtual void InitFactory()
         {
-            FactoryUtility.ScanAllType(typeToInterfaceMap, ServiceLocator.Get<IHotUpdateManager>().GetAssemblies());
+            FactoryUtility.ScanAllType(typeToInterfaceMap, DIContainer.GetInstance<IHotUpdateManager>().GetAssemblies());
         }
 
         public virtual TInterface GetTypeInstance<TInterface, TInstance>() where TInterface : class where TInstance : TInterface

@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.DI;
 using Core.Loader.Audio;
-using Core.Log;
 using Core.Mono;
 using Core.Pool;
-using Core.Service;
 using Core.Singleton;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -69,7 +67,7 @@ namespace Core.Music
                 // 停止播放、清空音频片段、回收对象到池
                 audioSource.Stop();
                 audioSource.clip = null;
-                ServiceLocator.Get<IPoolManager>().PushObj(audioSource.gameObject);
+                DIContainer.GetInstance<IPoolManager>().PushObj(audioSource.gameObject);
                 _soundIds.Add(id);
             }
             
@@ -100,9 +98,9 @@ namespace Core.Music
             }
 
             // 释放上次播放的音乐文件资源
-            ServiceLocator.Get<IAudioLoader>().UnloadClip(abName, _backgroundMusic.clip.name);
+            DIContainer.GetInstance<IAudioLoader>().UnloadClip(abName, _backgroundMusic.clip.name);
             // 从资源包异步加载背景音乐资源
-            var audioClip = await ServiceLocator.Get<IAudioLoader>().LoadAudioClipAsync(musicName);
+            var audioClip = await DIContainer.GetInstance<IAudioLoader>().LoadAudioClipAsync(musicName);
             // 配置背景音乐播放器参数
             _backgroundMusic.clip = audioClip;
             _backgroundMusic.loop = isLoop;
@@ -179,9 +177,9 @@ namespace Core.Music
         public async Task<int> CreateSoundAsync(string soundName, float Volume, bool open, bool isLoop = false)
         {
             // 从资源包异步加载音效资源
-            var audioClip = await ServiceLocator.Get<IAudioLoader>().LoadAudioClipAsync(soundName);
+            var audioClip = await DIContainer.GetInstance<IAudioLoader>().LoadAudioClipAsync(soundName);
             // 从对象池获取音效播放器
-            var sound = ServiceLocator.Get<IPoolManager>().GetObj<AudioSource>($"Sound_{soundName}");
+            var sound = DIContainer.GetInstance<IPoolManager>().GetObj<AudioSource>($"Sound_{soundName}");
             // 配置音效播放器参数
             sound.clip = audioClip;
             sound.loop = isLoop;
@@ -299,11 +297,11 @@ namespace Core.Music
                 // 停止音效播放
                 source.Stop();
                 // 释放上次播放的音乐文件资源
-                ServiceLocator.Get<IAudioLoader>().UnloadClip(abName, source.clip.name);
+                DIContainer.GetInstance<IAudioLoader>().UnloadClip(abName, source.clip.name);
                 // 清空音频片段引用
                 source.clip = null;
                 // 将音效对象回收至对象池
-                ServiceLocator.Get<IPoolManager>().PushObj(source.gameObject);
+                DIContainer.GetInstance<IPoolManager>().PushObj(source.gameObject);
             }
             
             // 清空列表

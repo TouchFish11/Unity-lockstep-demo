@@ -1,5 +1,7 @@
 using System;
+using System.Threading.Tasks;
 using Core.AssetBundles.Management;
+using Core.DI;
 using Core.HotUpdate;
 using Core.Log;
 using Core.Service;
@@ -26,18 +28,16 @@ namespace Game
             {
                 // 初始化游戏设置
                 InitSettings();
-                InitDI();
-                // 注册框架核心服务
-                await ServiceLocator.RegisterServices();
+                await InitDI();
                 // 初始化指定AB包
-                await ServiceLocator.Get<IAssetBundleManager>().InitSpecifyAsync(DefaultAbNames);
-                var hotUpdateManager = ServiceLocator.Get<IHotUpdateManager>();
+                await DIContainer.GetInstance<IAssetBundleManager>().InitSpecifyAsync(DefaultAbNames);
+                var hotUpdateManager = DIContainer.GetInstance<IHotUpdateManager>();
                 // 补充元数据
                 hotUpdateManager.LoadMetadataForAOTAssemblies(AOTGenericReferences.PatchedAOTAssemblyList);  
                 // 加载指定程序集
                 await hotUpdateManager.PreLoadAssembliesAsync(DefaultAbNames[3]);
                 // 实例化热更入口对象
-                var assetBundle = await ServiceLocator.Get<IAssetBundleManager>().LoadBundleAsync(DefaultAbNames[0]);
+                var assetBundle = await DIContainer.GetInstance<IAssetBundleManager>().LoadBundleAsync(DefaultAbNames[0]);
                 var entry = assetBundle.LoadAsset<GameObject>("HotUpdateEntry");
                 Instantiate(entry);
             }
@@ -47,9 +47,18 @@ namespace Game
             }
         }
 
-        private static void InitDI()
+        /// <summary>
+        /// 依赖注入
+        /// </summary>
+        /// <returns></returns>
+        private static Task InitDI()
         {
-            
+            // 注册框架单例
+            DIContainer.RegisterSingletons();
+            // 注入依赖
+            DIContainer.InjectDependencies();
+            // 初始化框架
+            return DIContainer.InitAsync();
         }
         
         /// <summary>

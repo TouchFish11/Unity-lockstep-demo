@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Core.DI;
 using Core.HotUpdate;
 using Core.Log;
-using Core.Service;
 using Core.Singleton;
 using Core.Types;
 using Core.Utility;
@@ -35,7 +34,7 @@ namespace Core.Reflection
 
         public void InitHotFactorys()
         {
-            var hotAssemblies = ServiceLocator.Get<IHotUpdateManager>().GetHotAssemblies();
+            var hotAssemblies = DIContainer.GetInstance<IHotUpdateManager>().GetHotAssemblies();
             FactoryUtility.ScanAllFactory(typeToFactoryMap, hotAssemblies);
         }
         

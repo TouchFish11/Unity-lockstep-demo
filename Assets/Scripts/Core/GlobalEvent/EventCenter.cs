@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.DI;
 using Core.Mono;
-using Core.Service;
 using Core.Singleton;
 
 namespace Core.GlobalEvent

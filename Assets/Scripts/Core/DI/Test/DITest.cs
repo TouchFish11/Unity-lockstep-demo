@@ -9,9 +9,9 @@ namespace Core.DI.Test
         private void Start()
         {
             // 创建单例
-            DIContainer.BindSingleton<ServiceA>();
-            DIContainer.BindSingleton<ServiceB>();
-            DIContainer.BindSingleton<FactoryC>();
+            // DIContainer.BindSingleton<ServiceA>();
+            // DIContainer.BindSingleton<ServiceB>();
+            // DIContainer.BindSingleton<FactoryC>();
             
             DIContainer.InjectDependencies();
         

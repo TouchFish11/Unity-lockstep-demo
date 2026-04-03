@@ -3,11 +3,11 @@ using System.IO;
 using System.Threading.Tasks;
 using Core.AssetBundles.Update.Core;
 using Core.AssetBundles.Update.Exception;
+using Core.DI;
 using Core.Global;
 using Core.Mono;
 using Core.Pool;
 using Core.Serialize.Json;
-using Core.Service;
 using Core.Utility;
 using UnityEngine;
 
@@ -65,7 +65,7 @@ namespace Core.AssetBundles.Update.State
             // 创建清单文件下载请求器（无需Hash校验，清单文件本身由服务器保证正确性）
             _abWebRequester = poolManager.GetData<ABWebRequester>().Init(GlobalSettings.Instance.resServerIp, FileUtility.ListFileDefaultName, false, string.Empty, string.Empty, 0);
 
-            _coroutine = ServiceLocator.Get<IMonoAdapter>().StartCoroutine(CheckCancel());
+            _coroutine = DIContainer.GetInstance<IMonoAdapter>().StartCoroutine(CheckCancel());
             
             // 按配置的最大重试次数执行下载
             var maxRetry = GlobalSettings.Instance.reDownloadCompareFileMaxNum;
@@ -82,9 +82,9 @@ namespace Core.AssetBundles.Update.State
                     continue;
                 }
                 
-                ServiceLocator.Get<IMonoAdapter>().StopCoroutine(_coroutine);
+                DIContainer.GetInstance<IMonoAdapter>().StopCoroutine(_coroutine);
                 _abWebRequester.Abort();
-                ServiceLocator.Get<IPoolManager>().PushData(_abWebRequester);
+                DIContainer.GetInstance<IPoolManager>().PushData(_abWebRequester);
                 _abWebRequester = null;
                 return;
             }

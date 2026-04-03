@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Core.DI;
 using Core.Mono;
 using Core.Pool;
-using Core.Service;
 using Core.Singleton;
 using UnityEngine;
 using UnityEngine.Events;
@@ -113,7 +112,7 @@ namespace Core.Time
                         if (timerDic.ContainsKey(_realDelTimerIDList[i]))
                         {
                             // 将定时器对象归还至对象池（复用）
-                            ServiceLocator.Get<IPoolManager>().PushData(timerDic[_realDelTimerIDList[i]]);
+                            DIContainer.GetInstance<IPoolManager>().PushData(timerDic[_realDelTimerIDList[i]]);
                             // 从字典中移除该定时器
                             timerDic.Remove(_realDelTimerIDList[i]);
                         }
@@ -130,7 +129,7 @@ namespace Core.Time
                         if (timerDic.ContainsKey(_delTimerIDList[i]))
                         {
                             // 将定时器对象归还至对象池（复用）
-                            ServiceLocator.Get<IPoolManager>().PushData(timerDic[_delTimerIDList[i]]);
+                            DIContainer.GetInstance<IPoolManager>().PushData(timerDic[_delTimerIDList[i]]);
                             // 从字典中移除该定时器
                             timerDic.Remove(_delTimerIDList[i]);
                         }
@@ -150,7 +149,7 @@ namespace Core.Time
         public int CreateTimer(bool isRealTime, int maxTime, UnityAction timeOverCallBack, int intervalTime = 0, UnityAction intervalTimeOverCallBack = null)
         {
             // 从对象池获取定时器对象（复用，避免频繁创建销毁）
-            var timer = ServiceLocator.Get<IPoolManager>().GetData<Timer>();
+            var timer = DIContainer.GetInstance<IPoolManager>().GetData<Timer>();
             // 初始化定时器参数（生成唯一ID，设置时长、回调等）
             timer.InitTimer(++_TimerKey, maxTime, timeOverCallBack, intervalTime, intervalTimeOverCallBack);
             // 根据是否为真实时间，将定时器加入对应字典

@@ -1,40 +1,49 @@
+using System;
 using Core.DI;
 using kcp2k;
 using Net.Sync;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Net
 {
     public class MainTest : MonoBehaviour
     {
-        // Start is called before the first frame update
         private async void Start()
         {
-            // 注册单例
+            Application.runInBackground = true;
+            // 注册框架单例
             DIContainer.RegisterSingletons();
-            
-            DIContainer.BindSingleton<NetGameProxy>();
             // 注入依赖
             DIContainer.InjectDependencies();
+            // 初始化框架
+            await DIContainer.InitAsync();
             
+            DIContainer.BindSingleton<INetGameProxy, NetGameProxy>();
             
+            // -----------------
             var config = new NetConfig
             {
                 ServerIp = "127.0.0.1",
                 ServerPort = 8080,
                 Serializer = MessageSerializerGetter.BinaryMessageSerializer(),
                 ClientType = EClientType.Kcp,
-                KcpConfig = new KcpConfig()
+                KcpConfig = new KcpConfig(DualMode:false, Timeout: 30000)
             };
-
+            
             var proxy = DIContainer.GetInstance<INetGameProxy>().Init(config);
             proxy.OnGameConnected += OnOnGameConnected;
             proxy.Connect();
         }
 
-        private void OnOnGameConnected(int obj)
+        private static void OnOnGameConnected(int clientId)
         {
-            
+            Logger.Log($"[Net Connect] 已初始化客户端ID:{clientId}");
+        }
+
+        private void OnDisable()
+        {
+            DIContainer.GetInstance<INetGameProxy>().Disconnect();
         }
     }
 }

@@ -4,9 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Core.AssetBundles.Update.Collection;
 using Core.DI;
-using Core.Log;
 using Core.Serialize.Json;
-using Core.Service;
 using Core.Singleton;
 using Core.Systems.Memorys;
 using Core.Utility;
@@ -51,7 +49,7 @@ namespace Core.AssetBundles.Management
             foreach (var abName in abNames)
             {
                 // 读取本地清单文件
-                _abPackageCollection = await ServiceLocator.Get<IJsonManager>().FromJsonAsync<ABPackageCollection>(PathUtility.GetAbLoadPath(FileUtility.ListFileDefaultName));
+                _abPackageCollection = await DIContainer.GetInstance<IJsonManager>().FromJsonAsync<ABPackageCollection>(PathUtility.GetAbLoadPath(FileUtility.ListFileDefaultName));
                 if(_abPackageCollection.TryGetValue(abName, out var defaultPackage))
                 {
                     _nameToWrapperMap.TryAdd(abName, new BundleWrapper(abName, PathUtility.GetAbLoadPath(defaultPackage.Name), this));
@@ -65,7 +63,7 @@ namespace Core.AssetBundles.Management
             await UnloadAllBundles(false);
             
             // 读取本地清单文件
-            _abPackageCollection = await ServiceLocator.Get<IJsonManager>().FromJsonAsync<ABPackageCollection>(PathUtility.GetAbLoadPath(FileUtility.ListFileDefaultName));
+            _abPackageCollection = await DIContainer.GetInstance<IJsonManager>().FromJsonAsync<ABPackageCollection>(PathUtility.GetAbLoadPath(FileUtility.ListFileDefaultName));
             // 构建全部AB包信息
             foreach (var abPackageInfo in _abPackageCollection.Values)
             {
@@ -153,8 +151,8 @@ namespace Core.AssetBundles.Management
         /// <param name="bundleWrapper"></param>
         public void PushUnUseBundle(BundleWrapper bundleWrapper)
         {
-            _nameToNonRefWrapperMap.Add(bundleWrapper.BundelName, bundleWrapper);
-            _nameToWrapperMap.Remove(bundleWrapper.BundelName);
+            _nameToNonRefWrapperMap.Add(bundleWrapper.BundleName, bundleWrapper);
+            _nameToWrapperMap.Remove(bundleWrapper.BundleName);
         }
 
         /// <summary>
@@ -174,12 +172,12 @@ namespace Core.AssetBundles.Management
                 {
                     if (bundleWrapper.RefCount != 0)
                     {
-                        Logger.LogWarning($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}：{bundleWrapper.BundelName}包和已加载资源已卸载，剩余引用计数{bundleWrapper.RefCount}，可能导致引用丢失");
+                        Logger.LogWarning($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}：{bundleWrapper.BundleName}包和已加载资源已卸载，剩余引用计数{bundleWrapper.RefCount}，可能导致引用丢失");
                     }
                 }
                 else
                 {
-                    Logger.Log($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}：{bundleWrapper.BundelName}包已卸载，剩余引用计数{bundleWrapper.RefCount}");
+                    Logger.Log($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}：{bundleWrapper.BundleName}包已卸载，剩余引用计数{bundleWrapper.RefCount}");
                 }
             }
             

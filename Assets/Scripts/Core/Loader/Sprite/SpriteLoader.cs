@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
+using Core.DI;
 using Core.Log;
-using Core.Service;
 using Core.Tasks.Extensions;
 using UnityEngine.U2D;
 
@@ -16,7 +16,7 @@ namespace Core.Loader.Sprite
     public class SpriteLoader : ISpriteLoader
     {
         // AB包管理器接口
-        private readonly IAssetBundleManager _assetBundleManager = ServiceLocator.Get<IAssetBundleManager>();
+        private readonly IAssetBundleManager _assetBundleManager = DIContainer.GetInstance<IAssetBundleManager>();
         // 图集缓存
         private readonly Dictionary<string, AtlasData> _atlasDatas =  new();
         

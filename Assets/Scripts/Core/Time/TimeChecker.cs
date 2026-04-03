@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using Core.DI;
 using Core.Log;
 using Core.Pool;
-using Core.Service;
 using UnityEngine.Events;
 
 namespace Core.Time
@@ -31,7 +31,7 @@ namespace Core.Time
         public int CreateTargetTime(System.DateTime currentTime, int targetDay, int targetHour, int targetMin, int targetSec)
         {
             // ��������ָ��ʱ��� DateTime ����
-            DateTime tagetTime = ServiceLocator.Get<IPoolManager>().GetData<DateTime>("GameUtility");
+            DateTime tagetTime = DIContainer.GetInstance<IPoolManager>().GetData<DateTime>("GameUtility");
             //��ʼ��ʱ�����
             tagetTime = tagetTime.Init(currentTime, targetDay, targetHour, targetMin, targetSec);
             //�洢���ֵ�

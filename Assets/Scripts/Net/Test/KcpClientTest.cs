@@ -15,29 +15,11 @@ namespace Net.Test
 
         private void Start()
         {
-            var config = new NetConfig
-            {
-                ServerIp = "127.0.0.1",
-                ServerPort = 8080,
-                Serializer = MessageSerializerGetter.BinaryMessageSerializer(),
-                ClientType = EClientType.Kcp,
-                KcpConfig = new KcpConfig()
-            };
-            
-            var manager = new NetManager(config);
-            manager.OnConnected += OnConnected;
-            manager.OnMessageReceived += OnMessageReceived;
-            manager.OnDisconnected += OnDisconnected;
-            manager.OnError += OnError;
-            
-            manager.Connect();
+            // 初始化KCP客户端，注册回调
+            client = new KcpClient(OnConnected, OnMessageReceived, OnDisconnected, OnError, new KcpConfig());
+            // 连接服务端
+            client.Connect(serverIp, serverPort);
             Debug.Log("正在连接KCP服务端...");
-            
-            // // 初始化KCP客户端，注册回调
-            // client = new KcpClient(OnConnected, OnDataReceived, OnDisconnected, OnError, new KcpConfig());
-            // // 连接服务端
-            // client.Connect(serverIp, serverPort);
-            // Debug.Log("正在连接KCP服务端...");
         }
 
         // Unity每帧调用，驱动KCP协议
@@ -56,19 +38,8 @@ namespace Net.Test
         }
 
         // 接收服务端数据回调
-        private static void OnMessageReceived(Message message, EProtocolChannel channel)
+        private static void OnMessageReceived(ArraySegment<byte> message, KcpChannel channel)
         {
-            if (channel == EProtocolChannel.Reliable)
-            {
-                
-            }
-            else
-            {
-                // 帧同步模块处理
-                var frameMessage = message as OneFrameMessage;
-                // ...
-            }
-            
             Debug.Log($"收到服务端：{message}");
         }
 
@@ -79,9 +50,9 @@ namespace Net.Test
         }
 
         // 错误回调
-        private static void OnError(string message)
+        private static void OnError(ErrorCode code, string message)
         {
-            Debug.LogError($"连接错误：{message}");
+            Debug.LogError($"连接错误：{code}.{message}");
         }
 
         // 关闭Unity时断开连接

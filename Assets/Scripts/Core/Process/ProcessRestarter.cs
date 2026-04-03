@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using Core.Log;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 

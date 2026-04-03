@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
-using Core.Log;
-using Core.Service;
+using Core.DI;
 using Core.Tasks.Extensions;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -25,7 +24,7 @@ namespace Core.Loader.Audio
             }
             
             // 加载音频包
-            var assetBundle = await ServiceLocator.Get<IAssetBundleManager>().LoadBundleAsync("music");
+            var assetBundle = await DIContainer.GetInstance<IAssetBundleManager>().LoadBundleAsync("music");
             // 加载音频资源
             var audioClip = await assetBundle.LoadAssetAsync<AudioClip>(assetName).ToTask<AudioClip>();
 
@@ -55,7 +54,7 @@ namespace Core.Loader.Audio
             }
             
             // 卸载音频包
-            ServiceLocator.Get<IAssetBundleManager>().UnloadBundle(abName);
+            DIContainer.GetInstance<IAssetBundleManager>().UnloadBundle(abName);
             _audioDatas.Remove(assetName);
         }
     }

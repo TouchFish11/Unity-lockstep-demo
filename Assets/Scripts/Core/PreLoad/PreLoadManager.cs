@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
-using Core.Service;
+using Core.DI;
 using Core.Singleton;
 using Core.Tasks.Extensions;
 using UnityEngine;
@@ -32,7 +32,7 @@ namespace Core.PreLoad
         {
             foreach (var preLoadData in preLoadDatas)
             {
-                var assetBundle = await ServiceLocator.Get<IAssetBundleManager>().LoadBundleAsync(preLoadData.AbName);
+                var assetBundle = await DIContainer.GetInstance<IAssetBundleManager>().LoadBundleAsync(preLoadData.AbName);
                 await assetBundle.LoadAssetAsync(preLoadData.AssetName, preLoadData.AssetType).ToTask<Object>();
             }
         }

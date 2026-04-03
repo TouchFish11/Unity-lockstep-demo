@@ -9,6 +9,15 @@ namespace Core.Extensions
     /// </summary>
     public static class DictionaryExtensions
     {
+        /// <summary>
+        /// 转换为数组，若返回值不为空才能转换成功，null会自动跳过
+        /// </summary>
+        /// <param name="valueCollection"></param>
+        /// <param name="func"></param>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <typeparam name="TReturn"></typeparam>
+        /// <returns></returns>
         public static TReturn[] ToArray<TKey, TValue, TReturn>(this Dictionary<TKey,TValue>.ValueCollection valueCollection, Func<TValue, TReturn> func)
         {
             var uniList = ListUtility.GetUniList<TReturn>();

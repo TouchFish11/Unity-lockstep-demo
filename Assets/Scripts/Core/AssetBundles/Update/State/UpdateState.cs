@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using Core.AssetBundles.Update.Collection;
 using Core.AssetBundles.Update.Core;
+using Core.DI;
 using Core.Pool;
 using Core.Serialize.Json;
-using Core.Service;
 
 namespace Core.AssetBundles.Update.State
 {
@@ -63,7 +63,7 @@ namespace Core.AssetBundles.Update.State
         protected void AnalyzeCompareFileInfo(string listInfo, EFileAnalyzeType analyzeType)
         {
             // 反序列化JSON到包集合
-            var collection = ServiceLocator.Get<IJsonManager>().FromJson<ABPackageCollection>(listInfo);
+            var collection = DIContainer.GetInstance<IJsonManager>().FromJson<ABPackageCollection>(listInfo);
             
             // 根据解析类型，将包信息加入本地/远程集合
             if (analyzeType == EFileAnalyzeType.Local)

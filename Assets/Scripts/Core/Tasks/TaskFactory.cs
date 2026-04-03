@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
+using Core.DI;
 using Core.Pool;
-using Core.Service;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -20,7 +20,7 @@ namespace Core.Tasks
         /// <returns>AB创建请求任务实例</returns>
         public static AssetBundleCreateRequestTask Create(AssetBundleCreateRequest req, CancellationToken token = default)
         {
-            var assetBundleCreateRequestTask = ServiceLocator.Get<IPoolManager>().GetData<AssetBundleCreateRequestTask>();
+            var assetBundleCreateRequestTask = DIContainer.GetInstance<IPoolManager>().GetData<AssetBundleCreateRequestTask>();
             assetBundleCreateRequestTask.Init(req, token);
             return assetBundleCreateRequestTask;
         }
@@ -34,7 +34,7 @@ namespace Core.Tasks
         /// <returns>泛型AB资源请求任务实例</returns>
         public static AssetBundleRequestTask<T> Create<T>(AssetBundleRequest req, CancellationToken token = default) where T : Object
         {
-            var assetBundleRequestTask = ServiceLocator.Get<IPoolManager>().GetData<AssetBundleRequestTask<T>>();
+            var assetBundleRequestTask = DIContainer.GetInstance<IPoolManager>().GetData<AssetBundleRequestTask<T>>();
             assetBundleRequestTask.Init(req, token);
             return assetBundleRequestTask;
         }
@@ -49,7 +49,7 @@ namespace Core.Tasks
         /// <returns>泛型AB资源请求任务实例</returns>
         public static AssetBundleRequestsTask<T> Create<T>(AssetBundleRequest req, IList<T> assets, CancellationToken token = default) where T : Object
         {
-            var assetBundleRequestsTask = ServiceLocator.Get<IPoolManager>().GetData<AssetBundleRequestsTask<T>>();
+            var assetBundleRequestsTask = DIContainer.GetInstance<IPoolManager>().GetData<AssetBundleRequestsTask<T>>();
             assetBundleRequestsTask.Init(req, assets, token);
             return assetBundleRequestsTask;
         }
@@ -62,7 +62,7 @@ namespace Core.Tasks
         /// <returns>AB卸载操作任务实例</returns>
         public static AssetBundleUnloadOperationTask Create(AssetBundleUnloadOperation req, CancellationToken token = default)
         {
-            var assetBundleUnloadOperationTask = ServiceLocator.Get<IPoolManager>().GetData<AssetBundleUnloadOperationTask>();
+            var assetBundleUnloadOperationTask = DIContainer.GetInstance<IPoolManager>().GetData<AssetBundleUnloadOperationTask>();
             assetBundleUnloadOperationTask.Init(req);
             return assetBundleUnloadOperationTask;
         }
@@ -75,7 +75,7 @@ namespace Core.Tasks
         /// <returns>UnityWebRequest异步操作任务实例</returns>
         public static UnityWebRequestAsyncOperationTask Create(UnityWebRequestAsyncOperation req, CancellationToken token = default)
         {
-            var unityWebRequestAsyncOperationTask = ServiceLocator.Get<IPoolManager>().GetData<UnityWebRequestAsyncOperationTask>();
+            var unityWebRequestAsyncOperationTask = DIContainer.GetInstance<IPoolManager>().GetData<UnityWebRequestAsyncOperationTask>();
             unityWebRequestAsyncOperationTask.Init(req, token);
             return unityWebRequestAsyncOperationTask;
         }

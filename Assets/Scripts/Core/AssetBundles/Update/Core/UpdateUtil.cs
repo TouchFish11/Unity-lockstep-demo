@@ -3,8 +3,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Core.AssetBundles.Update.Collection;
 using Core.Collection;
+using Core.DI;
 using Core.Serialize.Json;
-using Core.Service;
 using Core.Utility;
 
 namespace Core.AssetBundles.Update.Core
@@ -20,7 +20,7 @@ namespace Core.AssetBundles.Update.Core
         public static void WriteCacheFile(AbPackageCacheCollection cachePackageCollection)
         {
             var cacheFilePath = PathUtility.GetAbLoadPath(FileUtility.CacheDefaultName);
-            ServiceLocator.Get<IJsonManager>().SaveToJson(cachePackageCollection, cacheFilePath);
+            DIContainer.GetInstance<IJsonManager>().SaveToJson(cachePackageCollection, cacheFilePath);
         }
         
         /// <summary>
@@ -30,7 +30,7 @@ namespace Core.AssetBundles.Update.Core
         public static async Task WriteCacheFileAsync(AbPackageCacheCollection cachePackageCollection)
         {
             var cacheFilePath = PathUtility.GetAbLoadPath(FileUtility.CacheDefaultName);
-            await ServiceLocator.Get<IJsonManager>().SaveToJsonAsync(cachePackageCollection, cacheFilePath);
+            await DIContainer.GetInstance<IJsonManager>().SaveToJsonAsync(cachePackageCollection, cacheFilePath);
         }
         
         /// <summary>

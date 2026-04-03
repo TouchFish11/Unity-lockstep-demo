@@ -1,4 +1,5 @@
-using Core.Service;
+using Core.DI;
+using Core.Log;
 using Net.Sync.Msg.S2C;
 
 namespace Net.Sync.Handlers
@@ -13,7 +14,8 @@ namespace Net.Sync.Handlers
         protected override void OnHandleMessage()
         {
             // 设置当前连接的会话ID
-            ServiceLocator.Get<INetGameProxy>().SetSessionToken(Message.SessionID);
+            DIContainer.GetInstance<INetGameProxy>().SetSessionToken(Message.SessionID);
+            Logger.Log($"[ConnectMessageHandler] 已处理连接消息");
         }
     }
 }

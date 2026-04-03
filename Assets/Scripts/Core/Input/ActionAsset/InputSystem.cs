@@ -4,8 +4,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
-using Core.Log;
-using Core.Service;
 using Core.Singleton;
 using Core.Tasks.Extensions;
 using Core.Utility;

@@ -1,4 +1,5 @@
 using System;
+using Core.Log;
 using Net.Sync.Msg.S2C;
 
 namespace Net.Sync
@@ -18,6 +19,8 @@ namespace Net.Sync
         
         /// 服务器下发的当前连接的客户端Token
         public int SessionId { get; private set; }
+        
+        private NetGameProxy(){}
         
         public INetGameProxy Init(NetConfig netConfig)
         {
@@ -53,12 +56,12 @@ namespace Net.Sync
 
         private void OnGameConnectedInternal()
         {
-            // 发送连接消息
-            _netManager.Send(new ConnectMessage(), EProtocolChannel.Reliable);
+            Logger.Log($"[Net Connected] 连接服务器成功!");
         }
 
         private void OnMessageReceive(Message message, EProtocolChannel channel)
         {
+            if (message == null) return;
             _router.Dispatch(message);
         }
     }

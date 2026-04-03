@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Update.Collection;
 using Core.AssetBundles.Update.Core;
 using Core.AssetBundles.Update.Exception;
+using Core.DI;
 using Core.Extensions;
 using Core.Global;
 using Core.Mono;
 using Core.Pool;
 using Core.Serialize.Json;
-using Core.Service;
 using Core.Utility;
 
 namespace Core.AssetBundles.Update.State
@@ -50,7 +50,7 @@ namespace Core.AssetBundles.Update.State
                     assetBundleUpdater.GetContext().WaitDownloadCollection
                 );
                 // 初始化下载速度更新
-                ServiceLocator.Get<IMonoAdapter>().StartCoroutine(UpdateSpeed());
+                DIContainer.GetInstance<IMonoAdapter>().StartCoroutine(UpdateSpeed());
 
                 // 异步下载资源，传入进度回调，更新下载进度
                 await DownLoadAssetsAsync(bytesPerFrame =>

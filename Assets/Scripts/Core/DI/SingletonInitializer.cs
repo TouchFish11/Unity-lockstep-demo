@@ -32,7 +32,7 @@ namespace Core.DI
         /// </summary>
         public static void InitQuit(IMonoAdapter monoAdapter, List<IApplicationExitNotify> applicationExitNotifies)
         {
-            monoAdapter.AddApplicationExitNotifies(applicationExitNotifies);
+            monoAdapter.AddApplicationExitNotifies(applicationExitNotifies.ToArray());
         }
     }
 }

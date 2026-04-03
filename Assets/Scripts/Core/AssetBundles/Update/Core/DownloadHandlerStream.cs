@@ -1,6 +1,6 @@
 using System.IO;
+using Core.DI;
 using Core.Log;
-using Core.Service;
 using UnityEngine.Networking;
 
 namespace Core.AssetBundles.Update.Core
@@ -23,7 +23,7 @@ namespace Core.AssetBundles.Update.Core
         /// <param name="downloadedBytes">已下载字节数，当isAppend为false，忽略此参数</param>
         public DownloadHandlerStream(string savePath, bool isAppend, long downloadedBytes = 0) : base(preAllocatedBuffer)
         {
-            _updater = ServiceLocator.Get<IAssetBundleUpdater>();
+            _updater = DIContainer.GetInstance<IAssetBundleUpdater>();
             if (isAppend)
             {
                 _fileStream = new FileStream(savePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite, preAllocatedLength, FileOptions.SequentialScan | FileOptions.WriteThrough);

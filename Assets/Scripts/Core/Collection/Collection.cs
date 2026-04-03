@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Core.Log;
 using Newtonsoft.Json;
 using UnityEngine;
 using Logger = Core.Log.Logger;

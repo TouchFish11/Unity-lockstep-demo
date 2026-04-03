@@ -1,7 +1,6 @@
 using Net.FrameSync.Manager;
 using Net.FrameSync.Tcp.Message;
 using Net.FrameSync.Tcp.Message.S2C;
-using Net.FrameSync.Test;
 using UnityEngine;
 
 namespace Net.FrameSync.Handler
@@ -19,7 +18,7 @@ namespace Net.FrameSync.Handler
 
             if (TcpMessage.ClientID == NetManager.Instance.ClientID)
             {
-                GameHandler.Instance.IsStop = false;
+                //GameHandler.Instance.IsStop = false;
             }
             Debug.Log($"��ң�{TcpMessage.ClientID}����������");
         }

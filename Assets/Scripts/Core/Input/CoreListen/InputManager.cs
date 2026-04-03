@@ -1,6 +1,4 @@
 using System;
-using System.Threading.Tasks;
-using Core.Singleton;
 
 namespace Core.Input.CoreListen
 {
@@ -16,7 +14,7 @@ namespace Core.Input.CoreListen
 
         //    private InputManager()
         //    {
-        //        ServiceLocator.Get<IMonoManager>().AddUpdateListener(UpdateInput);
+        //        DIContainer.GetInstance<IMonoManager>().AddUpdateListener(UpdateInput);
         //    }
 
         //    /// <summary>
@@ -49,7 +47,7 @@ namespace Core.Input.CoreListen
         //    /// <param name="callBack">�Ľ������ص�</param>
         //    public void EditInput(Key oldKeyBoard, UnityAction callBack)
         //    {
-        //        ServiceLocator.Get<IMonoManager>().StartCoroutine(EditoInput_Cor());
+        //        DIContainer.GetInstance<IMonoManager>().StartCoroutine(EditoInput_Cor());
 
         //        IEnumerator EditoInput_Cor()
         //        {
@@ -95,15 +93,15 @@ namespace Core.Input.CoreListen
         //                {
         //                    case E_InputMode.Down:
         //                        if (Keyboard.current[_nowInputData.Key].wasPressedThisFrame)
-        //                            ServiceLocator.Get<IEventCenter>().TriggerEvent(eventType);
+        //                            DIContainer.GetInstance<IEventCenter>().TriggerEvent(eventType);
         //                        break;
         //                    case E_InputMode.Up:
         //                        if (Keyboard.current[_nowInputData.Key].wasReleasedThisFrame)
-        //                            ServiceLocator.Get<IEventCenter>().TriggerEvent(eventType);
+        //                            DIContainer.GetInstance<IEventCenter>().TriggerEvent(eventType);
         //                        break;
         //                    case E_InputMode.Press:
         //                        if (Keyboard.current[_nowInputData.Key].isPressed)
-        //                            ServiceLocator.Get<IEventCenter>().TriggerEvent(eventType);
+        //                            DIContainer.GetInstance<IEventCenter>().TriggerEvent(eventType);
         //                        break;
         //                }
         //            }
@@ -114,15 +112,15 @@ namespace Core.Input.CoreListen
         //                {
         //                    case E_InputMode.Down:
         //                        if (GetCurrentMouseButton(_nowInputData.Mouse).wasPressedThisFrame)
-        //                            ServiceLocator.Get<IEventCenter>().TriggerEvent(eventType);
+        //                            DIContainer.GetInstance<IEventCenter>().TriggerEvent(eventType);
         //                        break;
         //                    case E_InputMode.Up:
         //                        if (GetCurrentMouseButton(_nowInputData.Mouse).wasReleasedThisFrame)
-        //                            ServiceLocator.Get<IEventCenter>().TriggerEvent(eventType);
+        //                            DIContainer.GetInstance<IEventCenter>().TriggerEvent(eventType);
         //                        break;
         //                    case E_InputMode.Press:
         //                        if (GetCurrentMouseButton(_nowInputData.Mouse).isPressed)
-        //                            ServiceLocator.Get<IEventCenter>().TriggerEvent(eventType);
+        //                            DIContainer.GetInstance<IEventCenter>().TriggerEvent(eventType);
         //                        break;
         //                }
         //            }

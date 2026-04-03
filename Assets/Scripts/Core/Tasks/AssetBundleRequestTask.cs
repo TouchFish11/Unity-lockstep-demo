@@ -73,7 +73,7 @@ namespace Core.Tasks
                         if (ab != null)
                         {
                             // TODO：通知管理器卸载该资源
-                            //ServiceLocator.Get<IAssetBundleManager>().UnloadBundleAsync()
+                            //DIContainer.GetInstance<IAssetBundleManager>().UnloadBundleAsync()
                         }
                     
                         // 标记取消异常，供后续抛出

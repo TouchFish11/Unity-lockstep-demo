@@ -1,4 +1,4 @@
-using Core.Service;
+using Core.DI;
 using Core.UI;
 using HotUpdate.Main.UI;
 using Net.Sync.Msg.Chat;
@@ -14,7 +14,7 @@ namespace Net.Sync.Handlers
         
         protected override void OnHandleMessage()
         {
-            var controller = ServiceLocator.Get<IUIManager>().GetController<MainController>();
+            var controller = DIContainer.GetInstance<IUIManager>().GetController<MainController>();
             controller.AddChat(Message.SessionID, Message.ChatMsg);
         }
     }

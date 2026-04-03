@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Threading;
+using Core.DI;
 using Core.Global;
 using Core.Log;
 using Core.Mono;
 using Core.Pool;
-using Core.Service;
 using Core.Tasks.Extensions;
 using UnityEngine.Networking;
 
@@ -46,8 +46,8 @@ namespace Core.AssetBundles.Update.Core
         /// <param name="downloadedBytes"></param>
         public ABWebRequester Init(string url, string fileName, bool isAppend, string abName, string hash, long downloadedBytes)
         {
-            _monoAdapter = ServiceLocator.Get<IMonoAdapter>();
-            _updater = ServiceLocator.Get<IAssetBundleUpdater>();
+            _monoAdapter = DIContainer.GetInstance<IMonoAdapter>();
+            _updater = DIContainer.GetInstance<IAssetBundleUpdater>();
             
             _cancellationTokenSource = new CancellationTokenSource();
             Url = url;

@@ -1,6 +1,6 @@
 using Core.Collection.Generic;
+using Core.DI;
 using Core.Pool;
-using Core.Service;
 
 namespace Core.Collection
 {
@@ -16,7 +16,7 @@ namespace Core.Collection
         /// <returns></returns>
         public static UniList<T> GetUniList<T>()
         {
-            return ServiceLocator.Get<IPoolManager>().GetData<UniList<T>>();
+            return DIContainer.GetInstance<IPoolManager>().GetData<UniList<T>>();
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Core.Collection
         /// <typeparam name="T"></typeparam>
         public static void CollectUniList<T>(UniList<T> uniList)
         {
-            ServiceLocator.Get<IPoolManager>().PushData(uniList);
+            DIContainer.GetInstance<IPoolManager>().PushData(uniList);
         }
     }
 }

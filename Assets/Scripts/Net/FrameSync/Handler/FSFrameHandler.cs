@@ -119,13 +119,13 @@ namespace Net.FrameSync.Handler
                 }
             };
 
-            if (NetGameManager.Instance.TryGetPlayer(NetManager.Instance.ClientID, out INetObject netObject))
-            {
-                // ��ȡ���ƶ�����������ɼ�ָ��
-                netObject.CollectInput(c2S_NextFrameCommand.ClientFrameCommand);
-                // ����ָ���������
-                NetManager.Instance.SendToAsync(c2S_NextFrameCommand);
-            }
+            // if (NetGameManager.Instance.TryGetPlayer(NetManager.Instance.ClientID, out INetObject netObject))
+            // {
+            //     // ��ȡ���ƶ�����������ɼ�ָ��
+            //     netObject.CollectInput(c2S_NextFrameCommand.ClientFrameCommand);
+            //     // ����ָ���������
+            //     NetManager.Instance.SendToAsync(c2S_NextFrameCommand);
+            // }
         }
 
         /// <summary>
@@ -233,13 +233,14 @@ namespace Net.FrameSync.Handler
 
             foreach (ClientFrameCommand clientFrameCommand in oneFrameCommand.Commands)
             {
-                // ��ѯ�ĸ��ͻ���ID���в���
-                if (!NetGameManager.Instance.TryGetPlayer(clientFrameCommand.ClientID, out INetObject netObject))
-                {
-                    continue;
-                }
+                // // ��ѯ�ĸ��ͻ���ID���в���
+                // if (!NetGameManager.Instance.TryGetPlayer(clientFrameCommand.ClientID, out INetObject netObject))
+                // {
+                //     continue;
+                // }
 
-                yield return new OneFrameCommandInfo(netObject, clientFrameCommand);
+                //yield return new OneFrameCommandInfo(netObject, clientFrameCommand);
+                
             }
         }
     }

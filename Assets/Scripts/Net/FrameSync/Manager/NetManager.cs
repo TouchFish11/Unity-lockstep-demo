@@ -1,5 +1,4 @@
 using System.Net;
-using Core.Mono;
 using Core.Singleton;
 using Net.FrameSync.Command;
 using Net.FrameSync.Tcp;
@@ -31,7 +30,7 @@ namespace Net.FrameSync.Manager
 
         private void Awake()
         {
-            MonoAdapter.Instance.AddUpdateListener(OnUpdate);
+            //MonoAdapter.Instance.AddUpdateListener(OnUpdate);
         }
 
         /// <summary>
@@ -139,7 +138,7 @@ namespace Net.FrameSync.Manager
         private void OnDisable()
         {
             RequestCloseConnect();
-            MonoAdapter.Instance.RemoveUpdateListener(OnUpdate);
+            //MonoAdapter.Instance.RemoveUpdateListener(OnUpdate);
         }
     }
 }

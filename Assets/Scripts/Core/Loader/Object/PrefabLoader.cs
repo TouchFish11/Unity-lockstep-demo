@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
-using Core.Log;
+using Core.DI;
 using Core.Pool;
-using Core.Service;
 using Core.Tasks.Extensions;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -43,11 +42,11 @@ namespace Core.Loader.Object
                 refCount = 0;
             }
         }
-        
+
         // AB包管理器接口
-        private readonly IAssetBundleManager _assetBundleManager = ServiceLocator.Get<IAssetBundleManager>();
+        private readonly IAssetBundleManager _assetBundleManager = DIContainer.GetInstance<IAssetBundleManager>();
         // 缓存池接口
-        private readonly IPoolManager _poolManager = ServiceLocator.Get<IPoolManager>();
+        private readonly IPoolManager _poolManager = DIContainer.GetInstance<IPoolManager>();
         // 资源名称到预制体数据映射
         private readonly Dictionary<string, PrefabData> _assetNameToData = new();
 

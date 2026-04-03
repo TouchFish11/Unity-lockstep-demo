@@ -1,9 +1,6 @@
-using System.Threading.Tasks;
-using Core.Singleton;
-
 namespace Net.FrameSync.Test
 {
-    public class GameHandler : Core.DI.SingletonBase<GameHandler>
+    public class GameHandler
     {
         /// <summary>
         /// �Ƿ�ֹͣͬ����ģ����ߣ�
@@ -13,13 +10,6 @@ namespace Net.FrameSync.Test
         private GameHandler()
         {
 
-        }
-
-        public override int InitPriority => throw new System.NotImplementedException();
-
-        public override Task InitAsync()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

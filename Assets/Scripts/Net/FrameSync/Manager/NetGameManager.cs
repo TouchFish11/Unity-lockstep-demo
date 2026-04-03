@@ -1,16 +1,10 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Core.Singleton;
 using Net.FrameSync.Interface;
 using UnityEngine;
 
 namespace Net.FrameSync.Manager
 {
-    /// <summary>
-    /// ������Ϸ������
-    /// ���������������
-    /// </summary>
-    public class NetGameManager : Core.DI.SingletonBase<NetGameManager>
+    public class NetGameManager
     {
         //����������Ŀͻ��˻��棺�����ͻ���ID��ֵ����Ҷ���
         private readonly Dictionary<int, INetObject> _idToPlayerMap = new Dictionary<int, INetObject>();
@@ -42,13 +36,6 @@ namespace Net.FrameSync.Manager
             {
                 Debug.Log($"��ң�{clientId}��������Ϸ");
             }
-        }
-
-        public override int InitPriority => throw new System.NotImplementedException();
-
-        public override Task InitAsync()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
