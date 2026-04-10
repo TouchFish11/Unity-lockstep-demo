@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Core.DI;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events;
 using Core.Loader.Object;
@@ -16,11 +15,11 @@ namespace Core.UI.MVC
     {
         protected TView view;
         protected TModel model;
-        
-        protected readonly IUIManager uiManager = DIContainer.GetInstance<IUIManager>();
-        protected readonly IEventCenter eventCenter = DIContainer.GetInstance<IEventCenter>();
-        protected readonly IPoolManager poolManager = DIContainer.GetInstance<IPoolManager>();
-        protected readonly IPrefabLoader prefabLoader = DIContainer.GetInstance<IPrefabLoader>();
+
+        [DI.Inject] protected readonly IUIManager uiManager;
+        [DI.Inject] protected readonly IEventCenter eventCenter;
+        [DI.Inject] protected readonly IPoolManager poolManager;
+        [DI.Inject] protected readonly IPrefabLoader prefabLoader;
 
         public async Task Init(IuiView view, IuiModel model)
         {

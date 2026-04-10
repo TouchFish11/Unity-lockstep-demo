@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core.DI;
 using Net.Sync.Handlers;
 using Net.Sync.Msg.S2C;
 
@@ -14,7 +15,8 @@ namespace Net.Sync
 
         public MessageRouter()
         {
-            RegisterHandler(typeof(ConnectMessage), new ConnectMessageHandler());
+            RegisterHandler(typeof(ConnectMessage), DIContainer.Create<ConnectMessageHandler>());
+            // ...
         }
 
         private void RegisterHandler(Type msgType, IMessageHandler handler)

@@ -18,6 +18,7 @@ namespace Core.Time
     public class TimerManager : ITimerManager, IInitializable
     {
         [Inject] private IMonoAdapter _monoAdapter;
+        [Inject] private IPoolManager _poolManager;
         public int InitPriority => 0;
         // 存储受游戏时间影响的定时器字典（Key：定时器唯一ID，Value：定时器对象）
         private readonly Dictionary<int, Timer> _timerDic = new();
@@ -79,7 +80,7 @@ namespace Core.Time
             while (true)
             {
                 // 遍历所有定时器，更新时间并检查回调条件
-                foreach (Timer timer in timerDic.Values)
+                foreach (var timer in timerDic.Values)
                 {
                     // 跳过未运行状态的定时器
                     if (!timer.IsRunning)
@@ -94,28 +95,24 @@ namespace Core.Time
                     // 更新定时器总剩余时间（转换为毫秒计算）
                     timer.NowTime -= (int)(IntervalTime * 1000);
                     // 总时间耗尽时，执行结束回调并标记待删除
-                    if (timer.NowTime <= 0)
-                    {
-                        timer.OverInvoke();
-                        // 将定时器ID加入待删除列表（延迟删除，避免遍历中修改字典）
-                        _delTimerIDList.Add(timer.Id);
-                    }
+                    if (timer.NowTime > 0) continue;
+                    timer.OverInvoke();
+                    // 将定时器ID加入待删除列表（延迟删除，避免遍历中修改字典）
+                    _delTimerIDList.Add(timer.Id);
                 }
 
                 // 处理待删除的定时器（区分真实时间/游戏时间）
                 if (isRealTime)
                 {
                     // 遍历真实时间定时器的待删除列表
-                    for (int i = 0; i < _realDelTimerIDList.Count; i++)
+                    for (var i = 0; i < _realDelTimerIDList.Count; i++)
                     {
                         // 检查字典中是否存在该ID的定时器
-                        if (timerDic.ContainsKey(_realDelTimerIDList[i]))
-                        {
-                            // 将定时器对象归还至对象池（复用）
-                            DIContainer.GetInstance<IPoolManager>().PushData(timerDic[_realDelTimerIDList[i]]);
-                            // 从字典中移除该定时器
-                            timerDic.Remove(_realDelTimerIDList[i]);
-                        }
+                        if (!timerDic.ContainsKey(_realDelTimerIDList[i])) continue;
+                        // 将定时器对象归还至对象池（复用）
+                        _poolManager.PushData(timerDic[_realDelTimerIDList[i]]);
+                        // 从字典中移除该定时器
+                        timerDic.Remove(_realDelTimerIDList[i]);
                     }
                     // 清空真实时间定时器的待删除列表
                     _realDelTimerIDList.Clear();
@@ -123,16 +120,14 @@ namespace Core.Time
                 else
                 {
                     // 遍历游戏时间定时器的待删除列表
-                    for (int i = 0; i < _delTimerIDList.Count; i++)
+                    for (var i = 0; i < _delTimerIDList.Count; i++)
                     {
                         // 检查字典中是否存在该ID的定时器
-                        if (timerDic.ContainsKey(_delTimerIDList[i]))
-                        {
-                            // 将定时器对象归还至对象池（复用）
-                            DIContainer.GetInstance<IPoolManager>().PushData(timerDic[_delTimerIDList[i]]);
-                            // 从字典中移除该定时器
-                            timerDic.Remove(_delTimerIDList[i]);
-                        }
+                        if (!timerDic.ContainsKey(_delTimerIDList[i])) continue;
+                        // 将定时器对象归还至对象池（复用）
+                        _poolManager.PushData(timerDic[_delTimerIDList[i]]);
+                        // 从字典中移除该定时器
+                        timerDic.Remove(_delTimerIDList[i]);
                     }
                     // 清空游戏时间定时器的待删除列表
                     _delTimerIDList.Clear();
@@ -149,7 +144,7 @@ namespace Core.Time
         public int CreateTimer(bool isRealTime, int maxTime, UnityAction timeOverCallBack, int intervalTime = 0, UnityAction intervalTimeOverCallBack = null)
         {
             // 从对象池获取定时器对象（复用，避免频繁创建销毁）
-            var timer = DIContainer.GetInstance<IPoolManager>().GetData<Timer>();
+            var timer = _poolManager.GetData<Timer>();
             // 初始化定时器参数（生成唯一ID，设置时长、回调等）
             timer.InitTimer(++_TimerKey, maxTime, timeOverCallBack, intervalTime, intervalTimeOverCallBack);
             // 根据是否为真实时间，将定时器加入对应字典

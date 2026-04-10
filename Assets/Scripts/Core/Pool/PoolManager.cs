@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core.DI;
 using Core.Global;
 using UnityEngine;
 
@@ -71,16 +72,14 @@ namespace Core.Pool
         {
             // 自定义获取名称，与存储名称一致
             var dataName = $"{nameSpace}_{typeof(T).Name}";
-            if (!_poolDataDic.TryGetValue(dataName, out var basePoolData))
+            if (!_poolDataDic.TryGetValue(dataName, out var basePoolData) || basePoolData is not PoolData<T> poolData || poolData.UnUsedCount <= 0)
             {
-                return new T();
+                return DIContainer.Create<T>();
             }
 
-            if (basePoolData is PoolData<T> poolData && poolData.UnUsedCount > 0)
-            {
-                return poolData.Get();
-            }
-            return new T();
+            var data = poolData.Get();
+            DIContainer.InjectIntoInstance(data);
+            return data;
         }
 
         public void PushData<T>(T data, string nameSpace = "") where T : class, IPoolData, new()

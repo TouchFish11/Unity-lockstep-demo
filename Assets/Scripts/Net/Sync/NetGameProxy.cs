@@ -1,4 +1,5 @@
 using System;
+using Core.DI;
 using Core.Log;
 using Net.Sync.Msg.S2C;
 
@@ -24,10 +25,10 @@ namespace Net.Sync
         
         public INetGameProxy Init(NetConfig netConfig)
         {
-            _netManager = new NetManager(netConfig);
+            _netManager = DIContainer.Create<NetManager>(constructorArgs: netConfig);
             _netManager.OnConnected += OnGameConnectedInternal;
             _netManager.OnMessageReceived += OnMessageReceive;
-            _router = new MessageRouter();
+            _router = DIContainer.Create<MessageRouter>();
             return this;
         }
     

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Core.Singleton;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Editor.AssetBundle
 {
@@ -73,6 +72,7 @@ namespace Editor.AssetBundle
             /// <param name="assetPath">资源路径</param>
             /// <param name="assetBundleSize">资源大小（字节）</param>
             /// <param name="name">资源名称</param>
+            /// <param name="hash"></param>
             public AssetInfo(string assetPath, long assetBundleSize, string name, string hash)
             {
                 this.assetPath = assetPath;

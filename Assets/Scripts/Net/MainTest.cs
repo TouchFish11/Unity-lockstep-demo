@@ -1,4 +1,3 @@
-using System;
 using Core.DI;
 using kcp2k;
 using Net.Sync;
@@ -13,7 +12,7 @@ namespace Net
         {
             Application.runInBackground = true;
             // 注册框架单例
-            DIContainer.RegisterSingletons();
+            //DIContainer.RegisterSingletons();
             // 注入依赖
             DIContainer.InjectDependencies();
             // 初始化框架

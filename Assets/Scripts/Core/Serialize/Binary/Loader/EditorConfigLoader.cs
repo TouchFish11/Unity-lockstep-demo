@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
-using Core.Tasks.Extensions;
 using UnityEngine;
 
 namespace Core.Serialize.Binary.Loader
@@ -15,16 +14,19 @@ namespace Core.Serialize.Binary.Loader
     /// </summary>
     public class EditorConfigLoader : ConfigLoader
     {
+        [Inject] private IAssetBundleManager _assetBundleManager;
+        
         // 存储所有表数据的字典，键：容器名  值：容器
         private readonly Dictionary<string, object> _tableDic = new();
         
         public override async Task LoadConfigAsync<T, K>()
         {
             // 异步加载数据
-            var assetBundle = await DIContainer.GetInstance<IAssetBundleManager>().LoadBundleAsync(assetBundleName);
-            var config = await assetBundle.LoadAssetAsync<TextAsset>($"{typeof(K).Name}").ToTask<TextAsset>();
+            var handle = await GameAsset.LoadAssetAsync<TextAsset>($"{typeof(K).Name}");
             // 转换二进制到数据类
-            ConvertFrom<T, K>(config);
+            ConvertFrom<T, K>(handle.Asset);
+            // 释放资源
+            GameAsset.Release(handle);
         }
 
         public override T GetConfig<T>() where T : class

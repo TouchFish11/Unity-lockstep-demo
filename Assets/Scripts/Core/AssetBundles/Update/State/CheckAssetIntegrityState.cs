@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.AssetBundles.Update.Core;
 using Core.AssetBundles.Update.Exception;
-using Core.Pool;
-using Core.Serialize.Json;
 using Core.Utility;
 
 namespace Core.AssetBundles.Update.State
@@ -20,10 +18,6 @@ namespace Core.AssetBundles.Update.State
         // 损坏的AB包信息列表
         private readonly List<(string abName, long downloadedBytes, bool hashSame, string badHash)> _abBrokenInfos = new();
         
-        public CheckAssetIntegrityState(IAssetBundleUpdater assetBundleUpdater, IPoolManager poolManager, IJsonManager jsonManager) : base(assetBundleUpdater, poolManager, jsonManager)
-        {
-        }
-
         public override void Enter()
         {
             _abBrokenInfos.Clear();
@@ -51,7 +45,7 @@ namespace Core.AssetBundles.Update.State
                 File.Delete(tempListPath);
 
                 // 持久化缓存文件（记录已下载的AssetBundle信息）
-                await UpdateUtil.WriteCacheFileAsync(assetBundleUpdater.GetContext().CachePackageCollection);
+                await updateService.WriteCacheFileAsync(assetBundleUpdater.GetContext().CachePackageCollection);
             }
             catch (AssetBunleBrokenException assetBunleBrokenException)
             {

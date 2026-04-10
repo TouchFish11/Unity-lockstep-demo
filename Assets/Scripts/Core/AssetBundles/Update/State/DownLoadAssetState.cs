@@ -10,8 +10,6 @@ using Core.DI;
 using Core.Extensions;
 using Core.Global;
 using Core.Mono;
-using Core.Pool;
-using Core.Serialize.Json;
 using Core.Utility;
 
 namespace Core.AssetBundles.Update.State
@@ -24,6 +22,7 @@ namespace Core.AssetBundles.Update.State
     /// </summary>
     public class DownLoadAssetState : UpdateState
     {
+        [Inject] private IMonoAdapter _monoAdapter;
         // 上次更新下载速度的时间戳
         private float _lastSpeedUpdateTime;
         // 下载速度更新间隔（秒）
@@ -31,7 +30,7 @@ namespace Core.AssetBundles.Update.State
         // 是否正在下载中
         private bool _isDownloading;
         
-        public DownLoadAssetState(IAssetBundleUpdater assetBundleUpdater, IPoolManager poolManager, IJsonManager jsonManager) : base(assetBundleUpdater, poolManager, jsonManager)
+        public DownLoadAssetState()
         {
             _speedUpdateInterval = GlobalSettings.Instance.speedUpdateInterval;
         }
@@ -50,7 +49,7 @@ namespace Core.AssetBundles.Update.State
                     assetBundleUpdater.GetContext().WaitDownloadCollection
                 );
                 // 初始化下载速度更新
-                DIContainer.GetInstance<IMonoAdapter>().StartCoroutine(UpdateSpeed());
+                _monoAdapter.StartCoroutine(UpdateSpeed());
 
                 // 异步下载资源，传入进度回调，更新下载进度
                 await DownLoadAssetsAsync(bytesPerFrame =>
@@ -129,7 +128,7 @@ namespace Core.AssetBundles.Update.State
                             var fileInfo = new FileInfo(PathUtility.GetAbLoadPath(requester.FileName));
                             // 更新缓存信息
                             var cacheInfo = new AbPackageCacheInfo(requester.FileName, requester.Hash, fileInfo.Length);
-                            UpdateUtil.UpdateCacheFile(context, cacheInfo);
+                            updateService.UpdateCacheFile(context, cacheInfo);
                         }
                         // 下载失败，加入失败队列
                         else
@@ -148,7 +147,7 @@ namespace Core.AssetBundles.Update.State
                 }
 
                 // 处理下载失败的请求（重试/标记失败）
-                UpdateUtil.HandleFailReqeuster(context);
+                updateService.HandleFailRequester(context);
 
                 await Task.Yield(); // 帧间等待
             }

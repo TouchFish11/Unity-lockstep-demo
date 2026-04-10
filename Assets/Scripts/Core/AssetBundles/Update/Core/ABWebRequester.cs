@@ -19,11 +19,11 @@ namespace Core.AssetBundles.Update.Core
     public class ABWebRequester : IPoolData
     {
         // UnityWebRequest核心请求对象，用于发起网络下载请求
-        private UnityWebRequest _request;
+        [Inject] private UnityWebRequest _request;
         // Mono适配器
-        private IMonoAdapter _monoAdapter;
+        [Inject] private IMonoAdapter _monoAdapter;
         // AB包更新器
-        private IAssetBundleUpdater _updater;
+        [Inject] private IAssetBundleUpdater _updater;
         // 取消源
         private CancellationTokenSource _cancellationTokenSource;
         // 是否停止
@@ -46,9 +46,6 @@ namespace Core.AssetBundles.Update.Core
         /// <param name="downloadedBytes"></param>
         public ABWebRequester Init(string url, string fileName, bool isAppend, string abName, string hash, long downloadedBytes)
         {
-            _monoAdapter = DIContainer.GetInstance<IMonoAdapter>();
-            _updater = DIContainer.GetInstance<IAssetBundleUpdater>();
-            
             _cancellationTokenSource = new CancellationTokenSource();
             Url = url;
             FileName = fileName;
@@ -75,7 +72,7 @@ namespace Core.AssetBundles.Update.Core
                 // 设置连接超时时间
                 _request.timeout = GlobalSettings.Instance.connectTimeout;
                 // 设置自定义流下载处理器
-                _request.downloadHandler = new DownloadHandlerStream(savePath, IsAppend, DownloadedBytes);
+                _request.downloadHandler = DIContainer.Create<DownloadHandlerStream>(constructorArgs: new object[] { savePath, IsAppend, DownloadedBytes });
                 // 设置请求头：Range指定从已下载字节数的位置开始下载
                 _request?.SetRequestHeader("Range", $"bytes={DownloadedBytes}-");
  

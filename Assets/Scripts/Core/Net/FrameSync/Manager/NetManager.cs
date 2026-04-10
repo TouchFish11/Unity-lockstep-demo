@@ -12,6 +12,8 @@ namespace Core.Net.FrameSync.Manager
     /// </summary>
     public class NetManager : SingletonAutoMono<NetManager>, INetManager, IApplicationExitNotify
     {
+        [Inject] private IMonoAdapter _monoAdapter;
+        
         private TcpClient _tcpClient;
         private UdpClient _udpClient;
         public EndPoint serverEndPoint;
@@ -23,7 +25,7 @@ namespace Core.Net.FrameSync.Manager
 
         private void Awake()
         {
-            DIContainer.GetInstance<IMonoAdapter>().AddUpdateListener(OnUpdate);
+            _monoAdapter.AddUpdateListener(OnUpdate);
         }
 
         /// <summary>

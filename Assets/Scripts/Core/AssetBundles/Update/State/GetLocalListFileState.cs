@@ -2,8 +2,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Core.AssetBundles.Update.Core;
 using Core.AssetBundles.Update.Exception;
-using Core.Pool;
-using Core.Serialize.Json;
 using Core.Tasks.Extensions;
 using Core.Utility;
 using UnityEngine;
@@ -17,10 +15,6 @@ namespace Core.AssetBundles.Update.State
     /// </summary>
     public class GetLocalListFileState : UpdateState
     {
-        public GetLocalListFileState(IAssetBundleUpdater assetBundleUpdater, IPoolManager poolManager, IJsonManager jsonManager) : base(assetBundleUpdater, poolManager, jsonManager)
-        {
-        }
-
         /// <summary>
         /// 执行获取本地清单文件核心逻辑
         /// </summary>

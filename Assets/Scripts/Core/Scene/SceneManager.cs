@@ -43,7 +43,7 @@ namespace Core.Scene
         public async Task InitAsync(string abName)
         {
             // 初始化场景包
-            await InitSceneBundle(abName);
+            await InitSceneBundle();
         }
         
         public async Task LoadSceneAsync(string scenePath, LoadSceneMode mode, [CanBeNull] Action<float> onLoadProgress)
@@ -71,15 +71,14 @@ namespace Core.Scene
             }
         }
 
-        private async Task InitSceneBundle(string abName)
+        private async Task InitSceneBundle()
         {
             // 缓存所有场景名称
             if (_scenePaths == null)
             {
                 // 加载场景对应的AssetBundle资源包
-                var sceneBundle = await _assetBundleManager.LoadBundleAsync(abName);
-                _scenePaths = new List<string>();
-                foreach (var scenePath in sceneBundle.GetAllScenePaths())
+                var paths = await GameAsset.GetAllScenePathsAsync();
+                foreach (var scenePath in paths)
                 {
                     var sceneNames = scenePath.Split('/');
                     var sceneName = sceneNames[sceneNames.Length - 1];

@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.Singleton;
-using Core.Tasks.Extensions;
 using UnityEngine;
 
 namespace Core.PreLoad
@@ -12,6 +11,7 @@ namespace Core.PreLoad
     /// </summary>
     public class PreLoadManager : IPreLoadManager, IInitializable
     {
+        [Inject] private IAssetBundleManager _assetBundleManager;
         public int InitPriority => 0;
 
         private PreLoadManager()
@@ -32,8 +32,7 @@ namespace Core.PreLoad
         {
             foreach (var preLoadData in preLoadDatas)
             {
-                var assetBundle = await DIContainer.GetInstance<IAssetBundleManager>().LoadBundleAsync(preLoadData.AbName);
-                await assetBundle.LoadAssetAsync(preLoadData.AssetName, preLoadData.AssetType).ToTask<Object>();
+                await GameAsset.LoadAssetAsync<Object>(preLoadData.AssetName);
             }
         }
     }

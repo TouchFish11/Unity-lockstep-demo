@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Collection;
 using Core.DI;
 using Core.Global;
 using Core.Mono;
@@ -21,6 +21,9 @@ namespace Core.Log
     /// </summary>
     public class Logger : ILogger, IApplicationExitNotify, IInitializable
     {
+        [Inject] private static ILogger _logger;
+        [Inject] private IUWRManager _uWRManager;
+        
         public int InitPriority => -1;
         public int QuitPriority => 1;
         // 日志队列
@@ -37,7 +40,6 @@ namespace Core.Log
         private static string LogSavePath;
         // 写入日志最大间隔时间
         private static ushort WriteLogMaxIntervalTime;
-        [Inject] private static ILogger _logger;
 
         private Logger(){}
 
@@ -104,7 +106,7 @@ namespace Core.Log
         /// <param name="progressCallBack"></param>
         public void UploadLog(UploadProgressCallBack progressCallBack)
         {
-            DIContainer.GetInstance<IUWRManager>().UploadAssetAsync(GlobalSettings.Instance.uploadServerIp, LogSavePath, progressCallBack: progressCallBack);
+            _uWRManager.UploadAssetAsync(GlobalSettings.Instance.uploadServerIp, LogSavePath, progressCallBack: progressCallBack);
         }
 
         /// <summary>
@@ -180,7 +182,7 @@ namespace Core.Log
         /// <returns></returns>
         private static string GetStackTrace(int skipFrames = 0)
         {
-            var uniList = ListUtility.GetUniList<Assembly>();
+            var list = new List<Assembly>();
             //DIContainer.GetInstance<IHotUpdateManager>().GetAssemblies(uniList.List);
             
             try
@@ -229,10 +231,6 @@ namespace Core.Log
             catch (Exception e)
             {
                 return $"调用堆栈获取失败:{e.Message}";
-            }
-            finally
-            {
-                ListUtility.CollectUniList(uniList);
             }
         }
 

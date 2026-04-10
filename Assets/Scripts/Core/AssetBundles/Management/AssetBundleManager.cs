@@ -18,14 +18,16 @@ namespace Core.AssetBundles.Management
     /// </summary>
     public class AssetBundleManager : IAssetBundleManager, IInitializable
     {
+        [Inject] private IMemoryMonitor _memoryMonitor;
+        [Inject] private IJsonManager _jsonManager;
+        
         public int InitPriority => 1;
-        // 缓存活跃的包包装器
+        // 缓存包包装器
         private readonly Dictionary<string, BundleWrapper> _nameToWrapperMap = new();
-        // 未被引用的包装器缓存
-        private readonly Dictionary<string, BundleWrapper> _nameToNonRefWrapperMap = new();
         // 清单文件集合
         private ABPackageCollection _abPackageCollection;
-        [Inject] private IMemoryMonitor _memoryMonitor;
+        // 资源目录
+        private AssetCatalog _assetCatalog;
         
         private AssetBundleManager()
         {
@@ -38,6 +40,8 @@ namespace Core.AssetBundles.Management
             _memoryMonitor.Register(this);
             return Task.CompletedTask;
         }
+        
+        public AssetCatalog Catalog => _assetCatalog;
 
         /// <summary>
         /// 初始化指定包
@@ -49,7 +53,7 @@ namespace Core.AssetBundles.Management
             foreach (var abName in abNames)
             {
                 // 读取本地清单文件
-                _abPackageCollection = await DIContainer.GetInstance<IJsonManager>().FromJsonAsync<ABPackageCollection>(PathUtility.GetAbLoadPath(FileUtility.ListFileDefaultName));
+                _abPackageCollection = await _jsonManager.FromJsonAsync<ABPackageCollection>(PathUtility.GetAbLoadPath(FileUtility.ListFileDefaultName));
                 if(_abPackageCollection.TryGetValue(abName, out var defaultPackage))
                 {
                     _nameToWrapperMap.TryAdd(abName, new BundleWrapper(abName, PathUtility.GetAbLoadPath(defaultPackage.Name), this));
@@ -63,7 +67,7 @@ namespace Core.AssetBundles.Management
             await UnloadAllBundles(false);
             
             // 读取本地清单文件
-            _abPackageCollection = await DIContainer.GetInstance<IJsonManager>().FromJsonAsync<ABPackageCollection>(PathUtility.GetAbLoadPath(FileUtility.ListFileDefaultName));
+            _abPackageCollection = await _jsonManager.FromJsonAsync<ABPackageCollection>(PathUtility.GetAbLoadPath(FileUtility.ListFileDefaultName));
             // 构建全部AB包信息
             foreach (var abPackageInfo in _abPackageCollection.Values)
             {
@@ -79,25 +83,17 @@ namespace Core.AssetBundles.Management
         /// <param name="abName"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<AssetBundle> LoadBundleAsync(string abName, CancellationToken token = default)
+        public async Task<BundleWrapper> LoadBundleAsync(string abName, CancellationToken token = default)
         {
-            // 先检查未使用缓存是否有
-            if (_nameToNonRefWrapperMap.TryGetValue(abName, out var unUserWrapper))
-            {
-                _nameToWrapperMap.Add(abName, unUserWrapper);
-                _nameToNonRefWrapperMap.Remove(abName);
-            }
-            
             if (!_nameToWrapperMap.TryGetValue(abName, out var wrapper))
             {
-                Logger.LogError($"{nameof(AssetBundleManager)}.{nameof(LoadBundleAsync)}：AB包{abName}不存在");
-                return null;
+                throw new KeyNotFoundException($"{nameof(AssetBundleManager)}: {abName} key is not found");
             }
 
             // 加载依赖和目标AB包
             await LoadDependenciesAndTargetAsync(abName, token);
             // 返回指定AB包
-            return wrapper.AssetBundle;
+            return wrapper;
         }
 
         /// <summary>
@@ -113,14 +109,8 @@ namespace Core.AssetBundles.Management
             // 加载所有依赖包
             foreach (var dependency in dependencies)
             {
-                // 先检查未使用缓存是否有
-                if (_nameToNonRefWrapperMap.TryGetValue(dependency, out var unUserWrapper))
-                {
-                    _nameToWrapperMap.Add(dependency, unUserWrapper);
-                    _nameToNonRefWrapperMap.Remove(dependency);
-                }
-                
                 var wrapper = _nameToWrapperMap[dependency];
+                wrapper.IsActive = true;
                 await wrapper.LoadFromFileAsync(token);
                 Logger.Log($"{nameof(AssetBundleManager)}.{nameof(LoadDependenciesAndTargetAsync)}：{abName}包依赖项{dependency}已加载");
             }
@@ -139,9 +129,12 @@ namespace Core.AssetBundles.Management
         
         public async Task ForceUnloadUnuseBundle()
         {
-            foreach (var bundleWrapper in _nameToNonRefWrapperMap.Values)
+            foreach (var bundleWrapper in _nameToWrapperMap.Values)
             {
-                await bundleWrapper.TryUnloadAsync(false);
+                if (!bundleWrapper.IsActive)
+                {
+                    await bundleWrapper.TryUnloadAsync(false);
+                }
             }
         }
 
@@ -151,7 +144,6 @@ namespace Core.AssetBundles.Management
         /// <param name="bundleWrapper"></param>
         public void PushUnUseBundle(BundleWrapper bundleWrapper)
         {
-            _nameToNonRefWrapperMap.Add(bundleWrapper.BundleName, bundleWrapper);
             _nameToWrapperMap.Remove(bundleWrapper.BundleName);
         }
 
@@ -183,7 +175,6 @@ namespace Core.AssetBundles.Management
             
             // 清空缓存
             _nameToWrapperMap.Clear();
-            _nameToNonRefWrapperMap.Clear();
             // 置空清单集合
             _abPackageCollection = null;
             // 卸载所有AB包
@@ -196,18 +187,18 @@ namespace Core.AssetBundles.Management
             try
             {
                 // LRU
-                BundleWrapper unUsebundleWrapper = null;
-                foreach (var bundleWrapper in _nameToNonRefWrapperMap.Values)
+                BundleWrapper unUseBundleWrapper = null;
+                foreach (var bundleWrapper in _nameToWrapperMap.Values)
                 {
-                    if (unUsebundleWrapper == null || unUsebundleWrapper.LastUseTime > bundleWrapper.LastUseTime)
+                    if (unUseBundleWrapper == null || unUseBundleWrapper.LastUseTime > bundleWrapper.LastUseTime && !bundleWrapper.IsActive)
                     {
-                        unUsebundleWrapper = bundleWrapper;
+                        unUseBundleWrapper = bundleWrapper;
                     }
                 }
 
-                if (unUsebundleWrapper != null)
+                if (unUseBundleWrapper != null)
                 {
-                    await unUsebundleWrapper.TryUnloadAsync(false);
+                    await unUseBundleWrapper.TryUnloadAsync(false);
                 }
             }
             catch (Exception e)

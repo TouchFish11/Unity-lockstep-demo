@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.Singleton;
-using Core.Tasks.Extensions;
 using Core.Utility;
 using UnityEngine;
 using UnityEngine.Events;
@@ -61,8 +60,8 @@ namespace Core.Input.ActionAsset
         {
             // 从AssetBundle加载输入配置JSON
             var assetBundle = await _assetBundleManager.LoadBundleAsync(abName);
-            var json = await assetBundle.LoadAssetAsync<TextAsset>(FileUtility.InputActionLocalFileName).ToTask<TextAsset>();
-            _jsonInputData = json.text;
+            var handle= await GameAsset.LoadAssetAsync<TextAsset>(FileUtility.InputActionLocalFileName);
+            _jsonInputData = handle.Asset.text;
         }
 
         /// <summary>

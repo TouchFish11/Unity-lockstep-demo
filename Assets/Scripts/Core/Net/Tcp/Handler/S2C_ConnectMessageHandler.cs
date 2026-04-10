@@ -1,6 +1,3 @@
-using Core.DI;
-using Core.GlobalEvent;
-using Core.GlobalEvent.Events;
 using Core.Net.FrameSync.Manager;
 using Core.Net.Tcp.Message;
 using Core.Net.Tcp.Message.S2C;
@@ -33,7 +30,7 @@ namespace Core.Net.Tcp.Handler
             }
 
             // ������ɺ�
-            DIContainer.GetInstance<IEventCenter>().TriggerEvent(new PostConnectedEvent() { S2C_ConnectMessage = TcpMessage });
+            //DIContainer.GetInstance<IEventCenter>().TriggerEvent(new PostConnectedEvent() { S2C_ConnectMessage = TcpMessage });
         }
     }
 }

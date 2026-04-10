@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Core.DI;
 using Core.Serialize.Binary.Loader;
 using Core.Singleton;
 using Core.Utility;
@@ -27,11 +28,11 @@ namespace Core.Serialize.Binary
         public Task InitAsync()
         {
 #if !UNITY_EDITOR || EDITOR_TEST_AB
-            typeToLoaderMap.Add(EConfigLoadType.Excel, new ExcelConfigLoader());
-            typeToLoaderMap.Add(EConfigLoadType.Editor, new EditorConfigLoader());
+            typeToLoaderMap.Add(EConfigLoadType.Excel, DIContainer.Create<ExcelConfigLoader>());
+            typeToLoaderMap.Add(EConfigLoadType.Editor, DIContainer.Create<EditorConfigLoader>());
 #else
-            typeToLoaderMap.Add(EConfigLoadType.Excel, new ExcelConfigMockLoader());
-            typeToLoaderMap.Add(EConfigLoadType.Editor, new EditorConfigMockLoader());
+            typeToLoaderMap.Add(EConfigLoadType.Excel, DIContainer.Create<ExcelConfigMockLoader>());
+            typeToLoaderMap.Add(EConfigLoadType.Editor, DIContainer.Create<EditorConfigMockLoader>());
 #endif
             return Task.CompletedTask;
         }

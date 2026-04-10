@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Core.AssetBundles.Update.Collection;
-using Core.Collection;
 using Core.DI;
 using Core.Serialize.Json;
 using Core.Utility;
@@ -10,45 +9,49 @@ using Core.Utility;
 namespace Core.AssetBundles.Update.Core
 {
     /// <summary>
-    /// 更新工具类
+    /// 更新服务
     /// </summary>
-    public static class UpdateUtil
+    public class UpdateService
     {
+        [Inject] private IJsonManager _jsonManager;
+        
         /// <summary>
         /// 将缓存集合写入本地JSON文件，持久化缓存信息，用于下次启动时断点续传
         /// </summary>
-        public static void WriteCacheFile(AbPackageCacheCollection cachePackageCollection)
+        public void WriteCacheFile(AbPackageCacheCollection cachePackageCollection)
         {
             var cacheFilePath = PathUtility.GetAbLoadPath(FileUtility.CacheDefaultName);
-            DIContainer.GetInstance<IJsonManager>().SaveToJson(cachePackageCollection, cacheFilePath);
+            _jsonManager.SaveToJson(cachePackageCollection, cacheFilePath);
         }
         
         /// <summary>
         /// 将缓存集合异步写入本地JSON文件，持久化缓存信息，用于下次启动时断点续传
         /// </summary>
         /// <returns></returns>
-        public static async Task WriteCacheFileAsync(AbPackageCacheCollection cachePackageCollection)
+        public async Task WriteCacheFileAsync(AbPackageCacheCollection cachePackageCollection)
         {
             var cacheFilePath = PathUtility.GetAbLoadPath(FileUtility.CacheDefaultName);
-            await DIContainer.GetInstance<IJsonManager>().SaveToJsonAsync(cachePackageCollection, cacheFilePath);
+            await _jsonManager.SaveToJsonAsync(cachePackageCollection, cacheFilePath);
         }
         
         /// <summary>
         /// 取消所有下载请求并保存缓存信息，且将IsPauseDownload设置为true；保存未完成下载的AB包缓存信息,将缓存信息写入本地文件
         /// </summary>
-        public static void CancelDownload(ABUpdateContext context)
+        public void CancelDownload(ABUpdateContext context)
         {
             // 标记暂停下载
             context.IsPauseDownload = true;
             // 终止所有正在下载的请求
             AbortRequests(context.RequesterLoadingList);
+            
             // 临时收集所有未完成的请求（失败、下载中、等待）
-            var uniList = ListUtility.GetUniList<ABWebRequester>()
-                .AddRange(context.RequesterFailList)
-                .AddRange(context.RequesterLoadingList)
-                .AddRange(context.RequesterWaitList);
+            var list = new List<ABWebRequester>();
+            list.AddRange(context.RequesterFailList);
+            list.AddRange(context.RequesterLoadingList);
+            list.AddRange(context.RequesterWaitList);
+            
             // 遍历列表，保存未完成AB包的缓存信息
-            foreach (var abWebRequester in uniList.List)
+            foreach (var abWebRequester in list)
             {
                 var abLoadPath = PathUtility.GetAbLoadPath(abWebRequester.AbName);
                 // 本地文件不存在则跳过（未开始下载）
@@ -63,27 +66,27 @@ namespace Core.AssetBundles.Update.Core
             
             // 将缓存信息写入本地文件
             WriteCacheFile(context.CachePackageCollection);
-            // 回收列表
-            ListUtility.CollectUniList(uniList);
         }
         
         /// <summary>
         /// 取消所有下载请求并保存缓存信息，且将IsPauseDownload设置为true；保存未完成下载的AB包缓存信息,将缓存信息异步写入本地文件
         /// </summary>
         /// <returns></returns>
-        public static async Task CancelDownloadAsync(ABUpdateContext context)
+        public async Task CancelDownloadAsync(ABUpdateContext context)
         {
             // 标记暂停下载
             context.IsPauseDownload = true;
             // 终止所有正在下载的请求
             AbortRequests(context.RequesterLoadingList);
+            
             // 收集所有未完成的请求（失败、下载中、等待）
-            var uniList = ListUtility.GetUniList<ABWebRequester>()
-                .AddRange(context.RequesterFailList)
-                .AddRange(context.RequesterLoadingList)
-                .AddRange(context.RequesterWaitList);
+            var list = new List<ABWebRequester>();
+            list.AddRange(context.RequesterFailList);
+            list.AddRange(context.RequesterLoadingList);
+            list.AddRange(context.RequesterWaitList);
+            
             // 遍历列表，保存未完成AB包的缓存信息
-            foreach (var abWebRequester in uniList.List)
+            foreach (var abWebRequester in list)
             {
                 var abLoadPath = PathUtility.GetAbLoadPath(abWebRequester.AbName);
                 // 本地文件不存在则跳过（未开始下载）
@@ -98,8 +101,6 @@ namespace Core.AssetBundles.Update.Core
             
             // 将缓存信息异步写入本地文件
             await WriteCacheFileAsync(context.CachePackageCollection);
-            // 回收列表
-            ListUtility.CollectUniList(uniList);
         }
 
         /// <summary>
@@ -109,7 +110,7 @@ namespace Core.AssetBundles.Update.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="cacheInfo">待更新的AB包缓存信息</param>
-        public static void UpdateCacheFile(ABUpdateContext context, AbPackageCacheInfo cacheInfo)
+        public void UpdateCacheFile(ABUpdateContext context, AbPackageCacheInfo cacheInfo)
         {
             // 检查缓存集合中是否已存在该AB包
             if (context.CachePackageCollection.TryGetValue(cacheInfo.AbName, out var aBPackageCacheInfo))
@@ -135,7 +136,7 @@ namespace Core.AssetBundles.Update.Core
         /// 无重试次数的请求会保留在失败队列
         /// </summary>
         /// <param name="context"></param>
-        public static void HandleFailReqeuster(ABUpdateContext context)
+        public void HandleFailRequester(ABUpdateContext context)
         {
             if (context.RequesterFailList.Count <= 0)
             {
@@ -164,7 +165,7 @@ namespace Core.AssetBundles.Update.Core
         /// <summary>
         /// 终止所有正在下载的请求
         /// </summary>
-        private static void AbortRequests(LinkedList<ABWebRequester> requesterLoadingList)
+        private void AbortRequests(LinkedList<ABWebRequester> requesterLoadingList)
         {
             var node = requesterLoadingList.First;
             while (node != null)

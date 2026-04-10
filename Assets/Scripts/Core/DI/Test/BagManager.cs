@@ -4,7 +4,7 @@ namespace Core.DI.Test
     {
         public void Test()
         {
-            DIContainer.GetInstance<BagManager>().Test();
+            //DIContainer.GetInstance<BagManager>().Test();
         }
     }
 }

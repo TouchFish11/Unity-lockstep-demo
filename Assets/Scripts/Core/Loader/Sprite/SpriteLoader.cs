@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.Log;
-using Core.Tasks.Extensions;
 using UnityEngine.U2D;
 
 namespace Core.Loader.Sprite
@@ -45,26 +44,24 @@ namespace Core.Loader.Sprite
             }
             else
             {
-                // 加载图集包
-                var assetBundle = await _assetBundleManager.LoadBundleAsync(abName);
-                // 加载指定图集
-                var atlas = await assetBundle.LoadAssetAsync<SpriteAtlas>(atlasName).ToTask<SpriteAtlas>();
+                var handle = await GameAsset.LoadAssetAsync<SpriteAtlas>(atlasName);
+                
                 // 图集加载失败，则返回默认精灵
-                if (!atlas)
+                if (!handle.Asset)
                 {
                     Logger.LogWarning($"{nameof(SpriteLoader)}.{nameof(LoadSpriteAsync)}，{abName}.{atlasName}图集加载失败，返回默认Sprite");
                     return null;
                 }
                 
                 // 缓存图集
-                var newAtlasData = new AtlasData(atlas);
+                var newAtlasData = new AtlasData(handle.Asset);
                 if (!_atlasDatas.TryAdd(atlasName, newAtlasData))
                 {
                     Logger.LogWarning($"{nameof(AtlasData)}.{nameof(LoadSpriteAsync)}：重复缓存{abName}中的SpriteAtlas，{atlasName}");
                 }
                 
                 // 图集加载成功，从图集中获取指定名称的精灵
-                var sprite = atlas.GetSprite(assetName);
+                var sprite = handle.Asset.GetSprite(assetName);
                 if (sprite)
                 {
                     newAtlasData.TryAdd(assetName, sprite);

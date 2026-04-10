@@ -5,8 +5,6 @@ using Core.Components;
 using Core.DI;
 using Core.HotUpdate;
 using Core.Log;
-using Core.Types;
-using Core.Utility;
 
 namespace Core.Reflection
 {
@@ -79,7 +77,7 @@ namespace Core.Reflection
         /// <summary>
         /// 扫描所有实现TIValue的类型
         /// </summary>
-        public static void ScanAllType<TIValue>(Dictionary<TypeIdentifier, TIValue> dic, params Assembly[] assemblies) where TIValue : class
+        public static void ScanAllType<TIValue>(Dictionary<Type, TIValue> dic, params Assembly[] assemblies) where TIValue : class
         {
             foreach (var assembly in assemblies)
             {
@@ -87,7 +85,7 @@ namespace Core.Reflection
                 {
                     if (typeof(TIValue).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
                     {
-                        dic.Add(type.ToIdentifier(), Activator.CreateInstance(type) as TIValue);
+                        dic.Add(type, DIContainer.Create(type) as TIValue);
                     }
                 }
             }
@@ -99,7 +97,7 @@ namespace Core.Reflection
         /// <typeparam name="TValue"></typeparam>
         /// <param name="dic"></param>
         /// <param name="assemblies"></param>
-        public static void ScanAllFactory<TValue>(Dictionary<TypeIdentifier, TValue> dic, params Assembly[] assemblies) where TValue : class, IFactory
+        public static void ScanAllFactory<TValue>(Dictionary<Type, TValue> dic, params Assembly[] assemblies) where TValue : class, IFactory
         {
             foreach (var assembly in assemblies)
             {
@@ -109,9 +107,11 @@ namespace Core.Reflection
                     {
                         continue;
                     }
-                    var factory = Activator.CreateInstance(type) as TValue;
+                    
+                    // 通过DI创建类型
+                    var factory = DIContainer.Create(type) as TValue;
                     factory?.InitFactory();
-                    if (!dic.TryAdd(type.ToIdentifier(), factory))
+                    if (!dic.TryAdd(type, factory))
                     {
                         Logger.LogError($"{nameof(FactoryUtility)}.{nameof(ScanAllFactory)}：重复添加工厂类型：{type}");
                     }

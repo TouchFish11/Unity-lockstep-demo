@@ -16,27 +16,32 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// AssetBundle对象
         /// </summary>
-        public AssetBundle AssetBundle { get; private set; }
+        internal AssetBundle AssetBundle { get; private set; }
         
         /// <summary>
         /// 包名称
         /// </summary>
-        public string BundleName { get; }
+        internal string BundleName { get; }
 
         /// <summary>
         /// 包加载路径
         /// </summary>
-        public string LoadPath { get; }
+        internal string LoadPath { get; }
         
         /// <summary>
         /// 包引用数
         /// </summary>
-        public uint RefCount { get; private set; }
+        internal uint RefCount { get; private set; }
         
         /// <summary>
         /// 上次使用的时间
         /// </summary>
-        public DateTime LastUseTime { get; private set; }
+        internal DateTime LastUseTime { get; private set; }
+        
+        /// <summary>
+        /// 是否有效
+        /// </summary>
+        internal bool IsActive { get; set; }
         
         // AB包管理器
         private readonly AssetBundleManager _assetBundleManager;
@@ -65,10 +70,10 @@ namespace Core.AssetBundles.Management
         /// <returns></returns>
         public async Task LoadFromFileAsync(CancellationToken token = default)
         {
-            // 正在异步加载，返回任务
+            // 正在异步加载，等待加载完成，避免多线程并发问题
             if (_assetBundleCreateRequestTask != null)
             {
-                return;
+                await _assetBundleCreateRequestTask;
             }
             
             // 已加载完成，直接返回，避免重复加载
@@ -102,7 +107,7 @@ namespace Core.AssetBundles.Management
 
             if (RefCount == 0)
             {
-                _assetBundleManager.PushUnUseBundle(this);
+                IsActive = false;
             }
             Logger.Log($"{BundleName}包，引用计数减少，更新为：{RefCount}");
         }

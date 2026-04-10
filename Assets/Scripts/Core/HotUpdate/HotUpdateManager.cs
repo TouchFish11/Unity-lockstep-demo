@@ -6,11 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
-using Core.Collection;
 using Core.DI;
 using Core.Serialize.Json;
 using Core.Singleton;
-using Core.Tasks.Extensions;
 using HybridCLR;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -50,11 +48,9 @@ namespace Core.HotUpdate
         public async Task PreLoadAssembliesAsync(string abName)
         {
             // 加载热更新AB包资源
-            var dllTexts = new List<TextAsset>();
-            var assetBundle = await _assetBundleManager.LoadBundleAsync(abName);
-            await assetBundle.LoadAllAssetsAsync<TextAsset>().ToTask(dllTexts);
-
-            var textAsset = dllTexts.Find(text => text.name.Contains(nameof(HotUpdateAssemblySettings)));
+            var batchHandle = await GameAsset.LoadAssetsAsync<TextAsset>();
+            
+            var textAsset = batchHandle.Assets.Find(text => text.name.Contains(nameof(HotUpdateAssemblySettings)));
             if (textAsset)
             {
                 _hotupdateassemblySettings = _jsonManager.FromJson<HotUpdateAssemblySettings>(textAsset.text);
@@ -77,7 +73,7 @@ namespace Core.HotUpdate
             // 顺序加载程序集资源
             foreach (var nameWithExtension in _hotupdateassemblySettings.preloadHotUpdateAssemblies)
             {
-                foreach (var dllText in dllTexts)
+                foreach (var dllText in batchHandle.Assets)
                 {
                     if (nameWithExtension != dllText.name) continue;
                     // 多线程加载程序集
@@ -85,7 +81,8 @@ namespace Core.HotUpdate
                     break;
                 }
             }
-            _assetBundleManager.UnloadBundle(abName);
+
+            GameAsset.Release(batchHandle);
         }
 
         public async Task LoadAssembliesAsync(string abName)
@@ -93,11 +90,9 @@ namespace Core.HotUpdate
             try
             {
                 // 加载热更新AB包资源
-                var dllTexts = new List<TextAsset>();
-                var assetBundle = await _assetBundleManager.LoadBundleAsync(abName);
-                await assetBundle.LoadAllAssetsAsync<TextAsset>().ToTask(dllTexts);
+                var batchHandle = await GameAsset.LoadAssetsAsync<TextAsset>();
             
-                foreach (var dllText in dllTexts)
+                foreach (var dllText in batchHandle.Assets)
                 {
                     if (dllText.name == nameof(HotUpdateAssemblySettings)) continue;
                     if (_assemblyNames.Contains(dllText.name[..dllText.name.LastIndexOf('.')])) continue;
@@ -134,7 +129,6 @@ namespace Core.HotUpdate
         /// <returns></returns>
         public Assembly[] GetAssemblies()
         {
-            ListUtility.GetUniList<Assembly>();
             var assemblies = new List<Assembly>
             {
                 GetCoreModule(),

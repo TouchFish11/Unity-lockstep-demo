@@ -5,7 +5,6 @@ using Core.DI;
 using Core.Log;
 using Core.Mono;
 using Core.Pool;
-using Core.Serialize.Json;
 using Core.Singleton;
 using Core.Utility;
 
@@ -16,6 +15,10 @@ namespace Core.AssetBundles.Update.Core
     /// </summary>
     public class AssetBundleUpdater : IAssetBundleUpdater, IApplicationExitNotify, IInitializable
     {
+        // 对象池管理器接口
+        [Inject] private IPoolManager _poolManager;
+        [Inject] private UpdateService _updateService;
+        
         public int InitPriority => 1;
         public int QuitPriority => 0;
         // 更新上下文
@@ -26,9 +29,7 @@ namespace Core.AssetBundles.Update.Core
         private IUpdateState _currentUpdateState;
         // 当前更新状态索引
         private int _stateIndex;
-        // 对象池管理器接口
-        [Inject] private IPoolManager _poolManager;
-
+        
         /// <summary>
         /// 更新阶段
         /// </summary>
@@ -51,9 +52,7 @@ namespace Core.AssetBundles.Update.Core
             InitLocalPath();
             // 初始化更新上下文
             _updateContext = _poolManager.GetData<ABUpdateContext>();
-
-            var factory = new UpdateStateFactory(this, _poolManager, DIContainer.GetInstance<IJsonManager>());
-            foreach (var updateState in factory.GetStates())
+            foreach (var updateState in UpdateStateFactory.GetStates())
             {
                 _updateStates.Add(updateState);
             }
@@ -138,7 +137,7 @@ namespace Core.AssetBundles.Update.Core
             try
             {
                 if (_currentUpdateState == null || UpdatePhase == EUpdatePhase.Finished) return;
-                UpdateUtil.CancelDownload(_updateContext);
+                _updateService.CancelDownload(_updateContext);
                 Logger.Log($"{nameof(AssetBundleUpdater)}.{nameof(OnAppQuit)}:已取消下载");
             }
             catch (System.Exception e)

@@ -10,10 +10,12 @@ namespace Core.Serialize.Binary.Loader
     /// </summary>
     public class ExcelConfigMockLoader : ExcelConfigLoader
     {
+        [Inject] private IEditorResManager _editorResManager;
+        
         public override async Task LoadConfigAsync<T, K>()
         {
             // 加载编辑器数据
-            var config = DIContainer.GetInstance<IEditorResManager>().LoadEditorAsset<TextAsset>($"{typeof(K).Name}");
+            var config = _editorResManager.LoadEditorAsset<TextAsset>($"{typeof(K).Name}");
             await Task.CompletedTask;
             // 转换二进制到数据类
             ConvertFrom<T, K>(config);

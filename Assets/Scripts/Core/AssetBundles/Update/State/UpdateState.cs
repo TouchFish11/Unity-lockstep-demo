@@ -14,23 +14,13 @@ namespace Core.AssetBundles.Update.State
     public abstract class UpdateState : IUpdateState
     {
         // 持有AssetBundle更新器实例
-        protected readonly IAssetBundleUpdater assetBundleUpdater;
+        [Inject] protected readonly IAssetBundleUpdater assetBundleUpdater;
         // 对象池管理器接口
-        protected readonly IPoolManager poolManager;
-        protected  readonly IJsonManager jsonManager;
-        
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="assetBundleUpdater">AssetBundle更新器实例</param>
-        /// <param name="poolManager"></param>
-        /// <param name="jsonManager"></param>
-        protected UpdateState(IAssetBundleUpdater assetBundleUpdater, IPoolManager poolManager, IJsonManager jsonManager)
-        {
-            this.assetBundleUpdater = assetBundleUpdater;
-            this.poolManager = poolManager;
-            this.jsonManager = jsonManager;
-        }
+        [Inject] protected readonly IPoolManager poolManager;
+        // Json管理器接口
+        [Inject] protected readonly IJsonManager jsonManager;
+        // 更新服务
+        [Inject] protected readonly UpdateService updateService;
 
         /// <summary>
         /// 进入状态时的回调
@@ -63,7 +53,7 @@ namespace Core.AssetBundles.Update.State
         protected void AnalyzeCompareFileInfo(string listInfo, EFileAnalyzeType analyzeType)
         {
             // 反序列化JSON到包集合
-            var collection = DIContainer.GetInstance<IJsonManager>().FromJson<ABPackageCollection>(listInfo);
+            var collection = jsonManager.FromJson<ABPackageCollection>(listInfo);
             
             // 根据解析类型，将包信息加入本地/远程集合
             if (analyzeType == EFileAnalyzeType.Local)

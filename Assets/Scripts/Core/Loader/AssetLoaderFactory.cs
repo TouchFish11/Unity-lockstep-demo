@@ -1,8 +1,4 @@
-using Core.DI;
 using Core.HotUpdate;
-using Core.Loader.Audio;
-using Core.Loader.Object;
-using Core.Loader.Sprite;
 using Core.Reflection;
 
 namespace Core.Loader
@@ -13,24 +9,31 @@ namespace Core.Loader
     /// </summary>
     public class AssetLoaderFactory : Factory<IAssetLoader>
     {
+        private readonly IHotUpdateManager _hotUpdateManager;
+        
+        private AssetLoaderFactory(IHotUpdateManager hotUpdateManager)
+        {
+            _hotUpdateManager = hotUpdateManager;
+        }
+        
         public override void InitFactory()
         {
-            FactoryUtility.ScanAllType(typeToInterfaceMap, DIContainer.GetInstance<IHotUpdateManager>().GetCoreModule());
+            FactoryUtility.ScanAllType(typeToInterfaceMap, _hotUpdateManager.GetCoreModule());
             
             // 注册加载器到依赖容器中
             foreach (var assetLoader in typeToInterfaceMap.Values)
             {
                 switch (assetLoader)
                 {
-                    case ISpriteLoader spriteLoader:
-                        DIContainer.InjectInstance(spriteLoader);
-                        break;
-                    case IAudioLoader audioLoader:
-                        DIContainer.InjectInstance(audioLoader);
-                        break;
-                    case IPrefabLoader prefabLoader:
-                        DIContainer.InjectInstance(prefabLoader);
-                        break;
+                    // case ISpriteLoader spriteLoader:
+                    //     DIContainer.InjectInstance(spriteLoader);
+                    //     break;
+                    // case IAudioLoader audioLoader:
+                    //     DIContainer.InjectInstance(audioLoader);
+                    //     break;
+                    // case IPrefabLoader prefabLoader:
+                    //     DIContainer.InjectInstance(prefabLoader);
+                    //     break;
                 }
             }
         }

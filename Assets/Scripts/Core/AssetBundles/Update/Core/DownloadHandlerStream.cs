@@ -10,10 +10,10 @@ namespace Core.AssetBundles.Update.Core
     /// </summary>
     public class DownloadHandlerStream : DownloadHandlerScript
     {
+        [Inject] private readonly IAssetBundleUpdater _updater;
         private FileStream _fileStream;
         private const int preAllocatedLength = 64 * 1024;  // 64KB
         private static readonly byte[] preAllocatedBuffer = new byte[preAllocatedLength];
-        private readonly IAssetBundleUpdater _updater;
         
         /// <summary>
         /// DownloadHandlerStream构造函数
@@ -23,7 +23,6 @@ namespace Core.AssetBundles.Update.Core
         /// <param name="downloadedBytes">已下载字节数，当isAppend为false，忽略此参数</param>
         public DownloadHandlerStream(string savePath, bool isAppend, long downloadedBytes = 0) : base(preAllocatedBuffer)
         {
-            _updater = DIContainer.GetInstance<IAssetBundleUpdater>();
             if (isAppend)
             {
                 _fileStream = new FileStream(savePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite, preAllocatedLength, FileOptions.SequentialScan | FileOptions.WriteThrough);

@@ -37,9 +37,9 @@ namespace Game
                 // 加载指定程序集
                 await hotUpdateManager.PreLoadAssembliesAsync(DefaultAbNames[3]);
                 // 实例化热更入口对象
-                var assetBundle = await DIContainer.GetInstance<IAssetBundleManager>().LoadBundleAsync(DefaultAbNames[0]);
-                var entry = assetBundle.LoadAsset<GameObject>("HotUpdateEntry");
-                Instantiate(entry);
+                var handle = await GameAsset.LoadAssetAsync<GameObject>("HotUpdateEntry");
+                Instantiate(handle.Asset);
+                GameAsset.Release(handle);
             }
             catch (Exception e)
             {
@@ -53,8 +53,8 @@ namespace Game
         /// <returns></returns>
         private static Task InitDI()
         {
-            // 注册框架单例
-            DIContainer.RegisterSingletons();
+            // // 注册框架单例
+            // DIContainer.RegisterSingletons();
             // 注入依赖
             DIContainer.InjectDependencies();
             // 初始化框架

@@ -5,10 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
-using Core.Collection;
 using Core.DI;
 using Core.Singleton;
-using Core.Tasks.Extensions;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -46,10 +44,8 @@ namespace Core.HotUpdate
         public async Task LoadAssembliesAsync(string abName)
         {
             // 加载热更新AB包资源
-            var assetBundle = await _assetBundleManager.LoadBundleAsync(abName);
-            var dllTexts = ListUtility.GetUniList<TextAsset>();
-            await assetBundle.LoadAllAssetsAsync<TextAsset>().ToTask(dllTexts.List);
-            foreach (var dllText in dllTexts.List)
+            var batchHandle = await GameAsset.LoadAssetsAsync<TextAsset>();
+            foreach (var dllText in batchHandle.Assets)
             {
                 if (_assemblyNames.Contains(dllText.name[..dllText.name.LastIndexOf('.')]))
                 {
@@ -68,8 +64,8 @@ namespace Core.HotUpdate
                     Logger.Log($"{nameof(HotUpdateMockManager)}.{nameof(PreLoadAssembliesAsync)}:已缓存编辑器加载热更程序集{dllText.name}");
                 }
             }
-            
-            ListUtility.CollectUniList(dllTexts);
+
+            GameAsset.Release(batchHandle);
             _assetBundleManager.UnloadBundle(abName);
         }
 
@@ -90,7 +86,6 @@ namespace Core.HotUpdate
         
         public Assembly[] GetAssemblies()
         {
-            ListUtility.GetUniList<Assembly>();
             var assemblies = new List<Assembly>
             {
                 GetCoreModule(),
@@ -112,12 +107,12 @@ namespace Core.HotUpdate
         
         public Assembly[] GetHotAssemblies()
         {
-            var assemblies = ListUtility.GetUniList<Assembly>();
+            var assemblies = new List<Assembly>();
             foreach (var assemblyName in _assemblyNames)
             {
                 assemblies.Add(Assembly.Load(assemblyName));
             }
-            return assemblies.List.ToArray();
+            return assemblies.ToArray();
         }
         
         public int GetHotAssemblies(List<Assembly> assemblies)

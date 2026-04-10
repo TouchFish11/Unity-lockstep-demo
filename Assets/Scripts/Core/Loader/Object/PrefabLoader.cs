@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.Pool;
-using Core.Tasks.Extensions;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -125,15 +124,15 @@ namespace Core.Loader.Object
             else
             {
                 // AB包异步加载
-                var assetBundle = await _assetBundleManager.LoadBundleAsync(abName);
-                var objAsset = await assetBundle.LoadAssetAsync<GameObject>(assetName).ToTask<GameObject>();
+                var handle = await GameAsset.LoadAssetAsync<GameObject>(assetName);
                 // 缓存加载的资源
-                if (!_assetNameToData.TryAdd(assetName, _poolManager.GetData<PrefabData>().Init(objAsset, 1)))
+                if (!_assetNameToData.TryAdd(assetName, _poolManager.GetData<PrefabData>().Init(handle.Asset, 1)))
                 {
                     _assetNameToData[assetName].refCount += 1;
                 }
                 // 实例化预设体
-                instanceObj = UnityEngine.Object.Instantiate(objAsset);
+                instanceObj = await GameAsset.InstanceAsync(handle.Asset);
+                GameAsset.Release(handle);
             }
             // 避免实例化出的对象的名字后带有(Clone)
             instanceObj.name = assetName;

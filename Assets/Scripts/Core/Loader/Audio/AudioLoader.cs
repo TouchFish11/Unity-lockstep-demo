@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
-using Core.Tasks.Extensions;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -23,20 +22,16 @@ namespace Core.Loader.Audio
                 return data.AudioClip;
             }
             
-            // 加载音频包
-            var assetBundle = await DIContainer.GetInstance<IAssetBundleManager>().LoadBundleAsync("music");
-            // 加载音频资源
-            var audioClip = await assetBundle.LoadAssetAsync<AudioClip>(assetName).ToTask<AudioClip>();
-
-            if (!audioClip)
+            var handle = await GameAsset.LoadAssetAsync<AudioClip>(assetName);
+            if (!handle.Asset)
             {
                 Logger.LogWarning($"{nameof(AudioLoader)}.{nameof(LoadAudioClipAsync)}，音频：{assetName}，加载失败，返回null");
                 return null;
             }
             
             // 缓存音频数据
-            _audioDatas.Add(assetName, new AudioData(audioClip));
-            return audioClip;
+            _audioDatas.Add(assetName, new AudioData(handle.Asset));
+            return handle.Asset;
         }
 
         public void UnloadClip(string abName, string assetName)

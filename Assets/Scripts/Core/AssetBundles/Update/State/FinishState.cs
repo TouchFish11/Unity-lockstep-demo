@@ -2,8 +2,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Core.AssetBundles.Update.Core;
 using Core.Log;
-using Core.Pool;
-using Core.Serialize.Json;
 using Core.Utility;
 
 namespace Core.AssetBundles.Update.State
@@ -14,10 +12,6 @@ namespace Core.AssetBundles.Update.State
     /// </summary>
     public class FinishState : UpdateState
     {
-        public FinishState(IAssetBundleUpdater assetBundleUpdater, IPoolManager poolManager, IJsonManager jsonManager) : base(assetBundleUpdater, poolManager, jsonManager)
-        {
-        }
-
         /// <summary>
         /// 执行更新完成收尾逻辑
         /// </summary>

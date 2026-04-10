@@ -18,6 +18,8 @@ namespace Core.Music
     public class MusicManager : IMusicManager, IInitializable
     {
         [Inject] private IMonoAdapter _monoAdapter;
+        [Inject] private IPoolManager _poolManager;
+        
         public int InitPriority => 0;
         // 音效播放器列表
         private readonly Dictionary<int, AudioSource> _sounds = new();
@@ -67,7 +69,7 @@ namespace Core.Music
                 // 停止播放、清空音频片段、回收对象到池
                 audioSource.Stop();
                 audioSource.clip = null;
-                DIContainer.GetInstance<IPoolManager>().PushObj(audioSource.gameObject);
+                _poolManager.PushObj(audioSource.gameObject);
                 _soundIds.Add(id);
             }
             
@@ -179,7 +181,7 @@ namespace Core.Music
             // 从资源包异步加载音效资源
             var audioClip = await DIContainer.GetInstance<IAudioLoader>().LoadAudioClipAsync(soundName);
             // 从对象池获取音效播放器
-            var sound = DIContainer.GetInstance<IPoolManager>().GetObj<AudioSource>($"Sound_{soundName}");
+            var sound = _poolManager.GetObj<AudioSource>($"Sound_{soundName}");
             // 配置音效播放器参数
             sound.clip = audioClip;
             sound.loop = isLoop;
@@ -301,7 +303,7 @@ namespace Core.Music
                 // 清空音频片段引用
                 source.clip = null;
                 // 将音效对象回收至对象池
-                DIContainer.GetInstance<IPoolManager>().PushObj(source.gameObject);
+                _poolManager.PushObj(source.gameObject);
             }
             
             // 清空列表

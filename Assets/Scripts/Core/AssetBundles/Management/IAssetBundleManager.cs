@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Systems.Memorys;
-using UnityEngine;
 
 namespace Core.AssetBundles.Management
 {
@@ -31,7 +30,7 @@ namespace Core.AssetBundles.Management
         /// <param name="abName"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        Task<AssetBundle> LoadBundleAsync(string abName, CancellationToken token = default);
+        Task<BundleWrapper> LoadBundleAsync(string abName, CancellationToken token = default);
 
         /// <summary>
         /// 卸载所有已加载的AssetBundle
@@ -51,5 +50,7 @@ namespace Core.AssetBundles.Management
         /// 强制卸载未使用的AB包
         /// </summary>
         Task ForceUnloadUnuseBundle();
+
+        AssetCatalog Catalog { get; }
     }
 }
