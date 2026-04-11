@@ -42,13 +42,13 @@ namespace Editor.AssetBundle.Core
                 // 首次构建，全量
                 foreach (var abInfo in latest.assetBundleInfos)
                     result.BundlesToRebuild.Add(abInfo.assetBundleName, new List<AssetBundlesCollections.AssetInfo>(abInfo.assetInfos));
-                Log("Check First comparison Difference, will full build\n");
+                Log("Check First comparison Difference, will full build");
                 Log("--- End Handle Difference---\n");
                 return result;
             }
 
             // 1. 查找待移除的包（在 release 中存在，但 latest 中不存在）
-            for (int i = release.assetBundleInfos.Count - 1; i >= 0; i--)
+            for (var i = release.assetBundleInfos.Count - 1; i >= 0; i--)
             {
                 var abInfo = release.assetBundleInfos[i];
                 if (!latest.assetBundleInfos.Exists(info => info.assetBundleName == abInfo.assetBundleName))
@@ -69,10 +69,12 @@ namespace Editor.AssetBundle.Core
                     var assetInfo = abInfo.assetInfos[j];
                     if (!latestAbInfo.assetInfos.Exists(a => a.name == assetInfo.name))
                     {
+                        // 记录当前包移除的资源信息，打印日志
                         if (!log_Unused_Assets.ContainsKey(abInfo.assetBundleName))
                             log_Unused_Assets[abInfo.assetBundleName] = new List<AssetBundlesCollections.AssetInfo>();
                         log_Unused_Assets[abInfo.assetBundleName].Add(assetInfo);
 
+                        // 真正把改资源信息记录到要移除的集合中，没有这个包说明检查到这个包的资源首次被移除，添加Key，否则直接添加到value的list中
                         if (!result.AssetsToRemovePerBundle.ContainsKey(abInfo.assetBundleName))
                             result.AssetsToRemovePerBundle[abInfo.assetBundleName] = new List<AssetBundlesCollections.AssetInfo>();
                         result.AssetsToRemovePerBundle[abInfo.assetBundleName].Add(assetInfo);
@@ -81,6 +83,7 @@ namespace Editor.AssetBundle.Core
                         if (!result.BundlesToRebuild.ContainsKey(abInfo.assetBundleName))
                         {
                             var rebuildList = new List<AssetBundlesCollections.AssetInfo>();
+                            // 这个的所有资源都要重新打包（排除待移除的资源）
                             foreach (var a in abInfo.assetInfos)
                                 if (a.name != assetInfo.name)
                                     rebuildList.Add(new AssetBundlesCollections.AssetInfo(a.assetPath, a.size, a.name, a.hash));
@@ -88,9 +91,9 @@ namespace Editor.AssetBundle.Core
                         }
                         else
                         {
-                            // 如果已经标记，只需确保这个被移除的资源不在重打包列表中
+                            // 如果已经标记，只需确保这个被移除的资源不在重打包列表中，直接移除即可
                             var rebuildList = result.BundlesToRebuild[abInfo.assetBundleName];
-                            rebuildList.RemoveAll(a => a.name == assetInfo.name);
+                            rebuildList.RemoveAll(a => a.name == assetInfo.name);   // 问题：同名资源怎么办？？？
                         }
                     }
                 }
@@ -126,9 +129,9 @@ namespace Editor.AssetBundle.Core
                     }
                     else
                     {
-                        bool same = releaseAsset.hash == latestAsset.hash &&
-                                    releaseAsset.size == latestAsset.size &&
-                                    releaseAsset.assetPath == latestAsset.assetPath;
+                        var same = releaseAsset.hash == latestAsset.hash &&
+                                   releaseAsset.size == latestAsset.size &&
+                                   releaseAsset.assetPath == latestAsset.assetPath;
                         if (same) continue;
 
                         // 仅路径变化但内容不变：更新路径，不重打包（但你的后续逻辑可能需要更新清单，这里仍放入 Changed 日志）
@@ -169,7 +172,7 @@ namespace Editor.AssetBundle.Core
         {
             if (!result.BundlesToRebuild.ContainsKey(bundleName))
             {
-                var list = new List<AssetBundlesCollections.AssetInfo> { new AssetBundlesCollections.AssetInfo(latestAsset.assetPath, latestAsset.size, latestAsset.name, latestAsset.hash) };
+                var list = new List<AssetBundlesCollections.AssetInfo> { new(latestAsset.assetPath, latestAsset.size, latestAsset.name, latestAsset.hash) };
                 // 添加该包原有且未被移除的资源
                 foreach (var oldAsset in releaseAbInfo.assetInfos)
                 {
@@ -183,6 +186,7 @@ namespace Editor.AssetBundle.Core
             else
             {
                 var list = result.BundlesToRebuild[bundleName];
+                // 移除旧资源，添加新资源
                 var existing = list.Find(a => a.name == latestAsset.name);
                 if (existing != null) list.Remove(existing);
                 list.Add(new AssetBundlesCollections.AssetInfo(latestAsset.assetPath, latestAsset.size, latestAsset.name, latestAsset.hash));
@@ -198,7 +202,7 @@ namespace Editor.AssetBundle.Core
         {
             if (result.BundlesToRebuild.Count == 0 && result.BundlesToRemove.Count == 0 && result.AssetsToRemovePerBundle.Count == 0)
             {
-                Log("No Differences");
+                Log("No Differences\n");
                 return;
             }
 
@@ -221,9 +225,11 @@ namespace Editor.AssetBundle.Core
 
         public class DifferenceResult
         {
-            public Dictionary<string, List<AssetBundlesCollections.AssetInfo>> BundlesToRebuild = new();
-            public List<string> BundlesToRemove = new();
-            public Dictionary<string, List<AssetBundlesCollections.AssetInfo>> AssetsToRemovePerBundle = new();
+            public readonly Dictionary<string, List<AssetBundlesCollections.AssetInfo>> BundlesToRebuild = new();
+            public readonly List<string> BundlesToRemove = new();
+            public readonly Dictionary<string, List<AssetBundlesCollections.AssetInfo>> AssetsToRemovePerBundle = new();
+            // 新增：需要强制上传的包名（不含 .assetBundle 后缀）
+            public HashSet<string> ForceUploadBundles = new();
         }
     }
 }

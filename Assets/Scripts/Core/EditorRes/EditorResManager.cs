@@ -84,7 +84,6 @@ namespace Core.EditorRes
             Logger.LogError($"不存在该文件路径:{targetInfo.FullName[targetInfo.FullName.IndexOf("Assets", StringComparison.Ordinal)..]}");
             return null;
 #else
-            LogManager.LogError("发布环境不允许使用编辑器API");
             return null;
 #endif
         }

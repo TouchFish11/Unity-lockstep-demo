@@ -1,0 +1,72 @@
+{
+  "assetMap": {
+    "idle_animation_config": {
+      "key": "idle_animation_config",
+      "bundleName": "so.assetbundle",
+      "assetName": "assets/editor/artres/so/animationconfig/bot/idle_animation_config.asset"
+    },
+    "null_animation_config": {
+      "key": "null_animation_config",
+      "bundleName": "so.assetbundle",
+      "assetName": "assets/editor/artres/so/animationconfig/bot/null_animation_config.asset"
+    },
+    "run_animation_config": {
+      "key": "run_animation_config",
+      "bundleName": "so.assetbundle",
+      "assetName": "assets/editor/artres/so/animationconfig/bot/run_animation_config.asset"
+    },
+    "shoot_animation_config": {
+      "key": "shoot_animation_config",
+      "bundleName": "so.assetbundle",
+      "assetName": "assets/editor/artres/so/animationconfig/bot/shoot_animation_config.asset"
+    },
+    "attack_animation_config": {
+      "key": "attack_animation_config",
+      "bundleName": "so.assetbundle",
+      "assetName": "assets/editor/artres/so/attack_animation_config.asset"
+    },
+    "dash_animation_config": {
+      "key": "dash_animation_config",
+      "bundleName": "so.assetbundle",
+      "assetName": "assets/editor/artres/so/dash_animation_config.asset"
+    },
+    "jump_air_animation_config": {
+      "key": "jump_air_animation_config",
+      "bundleName": "so.assetbundle",
+      "assetName": "assets/editor/artres/so/jump/jump_air_animation_config.asset"
+    },
+    "jump_end_animation_config": {
+      "key": "jump_end_animation_config",
+      "bundleName": "so.assetbundle",
+      "assetName": "assets/editor/artres/so/jump/jump_end_animation_config.asset"
+    },
+    "jump_start_animation_config": {
+      "key": "jump_start_animation_config",
+      "bundleName": "so.assetbundle",
+      "assetName": "assets/editor/artres/so/jump/jump_start_animation_config.asset"
+    },
+    "test_test": {
+      "key": "test_test",
+      "bundleName": "so.assetbundle",
+      "assetName": "assets/editor/artres/so/test_test.asset"
+    }
+  },
+  "abPackageCollection": {
+    "keyToValueMap": {
+      "scenes.assetbundle": {
+        "name": "scenes.assetbundle",
+        "size": 11930845,
+        "hash": "5b3d2e2bf842b94efd2d86bd17484bdd067173ff5f483a0696f3232405ea4af7",
+        "dependencies": [
+          "so"
+        ]
+      },
+      "so.assetbundle": {
+        "name": "so.assetbundle",
+        "size": 2750,
+        "hash": "f079277fce0f967e9a148f82c0e119856afa20907d70dab72ebe788dea965f5f",
+        "dependencies": []
+      }
+    }
+  }
+}

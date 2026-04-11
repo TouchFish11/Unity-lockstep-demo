@@ -1,23 +1,14 @@
 using System.IO;
-using System.Security.Cryptography;
 using Core.Utility;
 using UnityEditor;
 
 namespace Editor.AssetBundle.Core
 {
+    /// <summary>
+    /// AB包工具类
+    /// </summary>
     public static class AssetBundleUtility
     {
-        /// <summary>
-        /// 计算文件的 SHA256 哈希值
-        /// </summary>
-        public static string GenerateFileSHA256Hash(string filePath)
-        {
-            using var sha256 = SHA256.Create();
-            using var stream = File.OpenRead(filePath);
-            var hash = sha256.ComputeHash(stream);
-            return System.BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
-        }
-
         /// <summary>
         /// 获取当前平台对应的主包名（如 StandaloneWindows64.assetBundle）
         /// </summary>

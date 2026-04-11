@@ -19,10 +19,10 @@ MonoBehaviour:
       size: 12460
       name: Bot.controller
       hash: cb243ea874261dc3b0a24f5aee09953d076dcdcd7189cb69f3428477b95c0927
-    - assetPath: Assets\Editor\ArtRes\Animation\Role\RoleController.controller
-      size: 6868
-      name: RoleController.controller
-      hash: 9b93239940741d1ad6dd25d50bf66195e9f877c3855110cf29ea884af3cf6a8a
+    - assetPath: Assets\Editor\ArtRes\Animation\Role\Role_Controller.controller
+      size: 6869
+      name: Role_Controller.controller
+      hash: 9f5a747a5f10e8b483097fbb3ad7f4ebcbf6a2df2c060c797b35509b00a8c77f
   - assetBundleName: fonts
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Fonts\MSYH.TTC
@@ -31,10 +31,10 @@ MonoBehaviour:
       hash: d79c55e68b1131eea0cc1c47be4f572d964f28c682e143db2ad09c1e4cb07a3f
   - assetBundleName: mask
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\Mask\Bot\BotMask.mask
-      size: 351
-      name: BotMask.mask
-      hash: 0311ad4f78f05ff12106a4189a7febaad582bb83c4b67aa1df766ef66caa2ddc
+    - assetPath: Assets\Editor\ArtRes\Mask\Bot\Bot_Mask.mask
+      size: 352
+      name: Bot_Mask.mask
+      hash: d356e18a973e0a6026f23b7e0a6d37f7834ef0bdc39c475dc534862eaa284fbe
   - assetBundleName: material
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Material\Gray.mat
@@ -48,47 +48,55 @@ MonoBehaviour:
       name: Game.unity
       hash: 7c1a4497cf5b31788219ca3a5e2a8a97dc123409ac2e46d4b0915b5d4f115b4e
     - assetPath: Assets\Editor\ArtRes\Scenes\Main.unity
-      size: 10635
+      size: 13745
       name: Main.unity
-      hash: 35bd25f5140a490830c5b66305f44a06b4a32c40021c58e3e734d4165b8d8a63
+      hash: 8eee0432e96aaa894b810adc9c1bf40bb90280055bf61f1595cb69916dae7b07
+    - assetPath: Assets\Editor\ArtRes\Scenes\Test.unity
+      size: 12115
+      name: Test.unity
+      hash: f680683270cf8aae9f5cd94dc59c664e20bd0b930f0e5ecb506b8980d8a69717
   - assetBundleName: so
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\SO\Attack_AnimationConfig.asset
-      size: 720
-      name: Attack_AnimationConfig.asset
-      hash: fd29f9ac75ab26cd46e9abe2f2743c532900ceb79b98d371ff1c9ec4ba178279
-    - assetPath: Assets\Editor\ArtRes\SO\Dash_AnimationConfig.asset
-      size: 712
-      name: Dash_AnimationConfig.asset
-      hash: 877f561fc9ea828e9f3ffbab4313332e55b24832a0b2a1aff49908697bab1eec
-    - assetPath: Assets\Editor\ArtRes\SO\AnimationConfig\Bot\Idle_AnimationConfig.asset
-      size: 634
-      name: Idle_AnimationConfig.asset
-      hash: a7f78769daacb0ade0f819e45827b8f7d387abf85a5f20c89927412adbfb2649
-    - assetPath: Assets\Editor\ArtRes\SO\AnimationConfig\Bot\Null_AnimationConfig.asset
-      size: 572
-      name: Null_AnimationConfig.asset
-      hash: c1ac26e91eb33904db8445086fe629ba498757a3014b8109b0853e493697fac5
-    - assetPath: Assets\Editor\ArtRes\SO\AnimationConfig\Bot\Run_AnimationConfig.asset
-      size: 633
-      name: Run_AnimationConfig.asset
-      hash: 2141801cb7b54a6b3c624ea02a36f376b05dc83d47970cc4f12efda385740270
-    - assetPath: Assets\Editor\ArtRes\SO\AnimationConfig\Bot\Shoot_AnimationConfig.asset
+    - assetPath: Assets\Editor\ArtRes\SO\Attack_Animation_Config.asset
+      size: 721
+      name: Attack_Animation_Config.asset
+      hash: e1191c01e26716198d0b669bbc67b4a29546157231dd76c90cebdc1cbe13677a
+    - assetPath: Assets\Editor\ArtRes\SO\Dash_Animation_Config.asset
+      size: 713
+      name: Dash_Animation_Config.asset
+      hash: 33b29b0805d76576b9838a6f6aaf5ca07ff6b9fae2470bf19f4ac2aaf820b9bb
+    - assetPath: Assets\Editor\ArtRes\SO\Test_Test.asset
+      size: 548
+      name: Test_Test.asset
+      hash: cd7593755ca40ae00cb09157c61da2e63defada4dfb920bf2f527c22ac359fa1
+    - assetPath: Assets\Editor\ArtRes\SO\AnimationConfig\Bot\Idle_Animation_Config.asset
+      size: 635
+      name: Idle_Animation_Config.asset
+      hash: d5e6fa6240f67c2213565b2cbf6998de9c57cf0ddde7e0106d6b1a475270670c
+    - assetPath: Assets\Editor\ArtRes\SO\AnimationConfig\Bot\Null_Animation_Config.asset
       size: 573
-      name: Shoot_AnimationConfig.asset
-      hash: 1dd3da5df30bf4575ddd2178b7e614f999deb7501cf90744262ee7ab31ac4770
-    - assetPath: Assets\Editor\ArtRes\SO\Jump\JumpAir_AnimationConfig.asset
-      size: 694
-      name: JumpAir_AnimationConfig.asset
-      hash: 92802d95094467bc29c5d855b2ab096bc2c5d304e924ee9df28c2a86a547307f
-    - assetPath: Assets\Editor\ArtRes\SO\Jump\JumpEnd_AnimationConfig.asset
-      size: 640
-      name: JumpEnd_AnimationConfig.asset
-      hash: 627bd6e0a78376e273dbb58b1ee21d92e8f586a993be03feda0061577c7ca821
-    - assetPath: Assets\Editor\ArtRes\SO\Jump\JumpStart_AnimationConfig.asset
-      size: 702
-      name: JumpStart_AnimationConfig.asset
-      hash: 910143f6148ff46126c30020f738edbad78e524c48efbf94662548950eaf2e0d
+      name: Null_Animation_Config.asset
+      hash: 83ff746e65fe238b258bea296dbe1ee95a31ea567bf5f6ea0ab4a521a5d2f5c9
+    - assetPath: Assets\Editor\ArtRes\SO\AnimationConfig\Bot\Run_Animation_Config.asset
+      size: 634
+      name: Run_Animation_Config.asset
+      hash: 6be59e2eec95ad8105e275ab9fca9974239dd1f3427acef6060594d6ca7f48bf
+    - assetPath: Assets\Editor\ArtRes\SO\AnimationConfig\Bot\Shoot_Animation_Config.asset
+      size: 574
+      name: Shoot_Animation_Config.asset
+      hash: 4e39b87b4eec1665b5a8a72d8591712eb0b3a4b016935982cda6420c82a07029
+    - assetPath: Assets\Editor\ArtRes\SO\Jump\Jump_Air_Animation_Config.asset
+      size: 696
+      name: Jump_Air_Animation_Config.asset
+      hash: f51d27d239d4ae916ce81b5fe3f951b47694092a667817a8ce0690963bdb97a0
+    - assetPath: Assets\Editor\ArtRes\SO\Jump\Jump_End_Animation_Config.asset
+      size: 642
+      name: Jump_End_Animation_Config.asset
+      hash: 3f21380ff9b1e51bb5b951ed3beb9a8ae563367fb632466b856bcf55f95af4af
+    - assetPath: Assets\Editor\ArtRes\SO\Jump\Jump_Start_Animation_Config.asset
+      size: 704
+      name: Jump_Start_Animation_Config.asset
+      hash: d283cec131f3a5f7fa3dc823bbcb35affb75749386a05686ceef81d68b802d0c
   - assetBundleName: tmpasset
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH_SDF.asset
@@ -101,23 +109,23 @@ MonoBehaviour:
       size: 10280
       name: Canvas.prefab
       hash: 7555a6f3aa390b84b90d742613dda964016386976eb0edb9a4d0f9af95974510
-    - assetPath: Assets\Editor\ArtRes\UI\UICamera.prefab
-      size: 2128
-      name: UICamera.prefab
-      hash: 391efe0643f44a1427f1d7d5f94aebc94ca63c354b697443e6d9dd90ae4890ac
-    - assetPath: Assets\Editor\ArtRes\UI\Battle\BattlePanel.prefab
-      size: 116838
-      name: BattlePanel.prefab
-      hash: adae1ec8ecc3f1935249471a85da7f74bda2db89a8896e0b778d5fddd16ae34b
-    - assetPath: Assets\Editor\ArtRes\UI\Main\MainPanel.prefab
-      size: 72442
-      name: MainPanel.prefab
-      hash: cb5bc7525e7464e5d08f2ca99b82df9c8234bbeaa70f58c017f9194c0e6f6d6e
-    - assetPath: Assets\Editor\ArtRes\UI\Main\Chat\ChatUI.prefab
-      size: 7661
-      name: ChatUI.prefab
-      hash: 9b086e4d81ea1f2ce8c0dbc0cfa89b6dc92bd7aea87f7de3af175f0bbff2273d
-    - assetPath: Assets\Editor\ArtRes\UI\Main\Chat\FriendUI.prefab
-      size: 9041
-      name: FriendUI.prefab
-      hash: ba151585a40feffa03d29b053d79955bf171376a07979f7f1ca3ffb76d343d32
+    - assetPath: Assets\Editor\ArtRes\UI\UI_Camera.prefab
+      size: 2129
+      name: UI_Camera.prefab
+      hash: d0c6c653495657af329837b5e4db2dbb0eed03df6695e19ae116b78a7746d9cb
+    - assetPath: Assets\Editor\ArtRes\UI\Battle\Battle_Panel.prefab
+      size: 116839
+      name: Battle_Panel.prefab
+      hash: 71a5fa219d39bed6185e714317014be094045b49ba510037e147d7e1fa9a3083
+    - assetPath: Assets\Editor\ArtRes\UI\Main\Main_Panel.prefab
+      size: 72443
+      name: Main_Panel.prefab
+      hash: f81326d121cbb0cae90b0c4ffc4e1bc45efdf11f5ef3c9d55cf468785fb1ad64
+    - assetPath: Assets\Editor\ArtRes\UI\Main\Chat\Chat_UI.prefab
+      size: 7662
+      name: Chat_UI.prefab
+      hash: 8029d6de68b9e65fd096bc1651a113d32c9d0e0da849f412297c4aa491366186
+    - assetPath: Assets\Editor\ArtRes\UI\Main\Chat\Friend_UI.prefab
+      size: 9042
+      name: Friend_UI.prefab
+      hash: 3248bdc42d6fc8f19d4a077eb34150f39f3bb1e4532cbd711203e7aa4ec932eb

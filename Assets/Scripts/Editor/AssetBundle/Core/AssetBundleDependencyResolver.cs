@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Core.AssetBundles.Management;
 using Core.AssetBundles.Update.Collection;
 using Core.Serialize.Json;
 using Core.Utility;
@@ -79,6 +80,7 @@ namespace Editor.AssetBundle.Core
         /// <summary>
         /// 生成 AB 包清单文件（JSON格式）
         /// </summary>
+        [Obsolete("仅保留，不在使用",true)]
         public void CreateListFile(string outputPath, string listFilePath, string mainBundlePath, BuildTarget target, JsonManager jsonManager)
         {
             AssetBundleUtility.EnsureDirectoryExists(outputPath);
@@ -116,11 +118,13 @@ namespace Editor.AssetBundle.Core
                     string bundleName = Path.GetFileNameWithoutExtension(fileInfo.Name);
                     var deps = manifest.GetAllDependencies(bundleName);
                     var pkgInfo = new ABPackageInfo(fileInfo.Name, fileInfo.Length, 
-                        AssetBundleUtility.GenerateFileSHA256Hash(fileInfo.FullName), deps);
+                        HashUtility.GenerateFileSHA256Hash(fileInfo.FullName), deps);
                     collection.TryAdd(fileInfo.Name, pkgInfo);
                 }
 
                 EditorUtility.ClearProgressBar();
+
+                var assetCatalog = new AssetCatalog();
                 jsonManager.SaveToJson(collection, listFilePath);
                 AssetDatabase.Refresh();
                 Log($"AssetBundle List File Created : {listFilePath}");
@@ -151,9 +155,9 @@ namespace Editor.AssetBundle.Core
                 mainBundle = UnityEngine.AssetBundle.LoadFromFile(manifestPath);
                 if (!mainBundle) return result;
 
-                var manifest = mainBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+                var manifest = mainBundle.LoadAsset<AssetBundleManifest>(nameof(AssetBundleManifest));
                 if (!manifest) return result;
-
+                
                 var allBundles = manifest.GetAllAssetBundles();
                 foreach (var bundle in allBundles)
                 {
@@ -177,9 +181,10 @@ namespace Editor.AssetBundle.Core
         /// 扩展差异结果：将因依赖变化而受影响的上层包加入重打包列表
         /// </summary>
         public void ExpandWithDependencies(Dictionary<string, List<AssetBundlesCollections.AssetInfo>> bundlesToRebuild,
-                                           List<string> bundlesToRemove,
-                                           AssetBundlesCollections releaseCollection,
-                                           string manifestPath)
+            List<string> bundlesToRemove,
+            AssetBundlesCollections releaseCollection,
+            string manifestPath,
+            HashSet<string> forceUploadBundles) // 新增参数
         {
             if (!File.Exists(manifestPath)) return;
 
@@ -208,7 +213,8 @@ namespace Editor.AssetBundle.Core
                 if (releaseAbInfo != null && !bundlesToRebuild.ContainsKey(bundleName))
                 {
                     bundlesToRebuild.Add(bundleName, new List<AssetBundlesCollections.AssetInfo>(releaseAbInfo.assetInfos));
-                    Log($"由于依赖变化，额外标记重打包：{bundleName}");
+                    forceUploadBundles.Add(bundleName); // 标记为强制上传
+                    Log($"---由于依赖变化，额外标记重打包并强制上传：{bundleName}---");
                 }
             }
         }

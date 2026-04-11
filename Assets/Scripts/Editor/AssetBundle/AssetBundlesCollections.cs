@@ -20,10 +20,10 @@ namespace Editor.AssetBundle
         [Serializable] // 标记可序列化，支持在Inspector面板显示和序列化存储
         public sealed class AssetBundleInfo
         {
-            // AB包的名称（唯一标识）
+            // AB包的名称，不带后缀（唯一标识）
             public string assetBundleName;
             // 该AB包下包含的所有资源信息列表
-            public List<AssetInfo> assetInfos = new List<AssetInfo>();
+            public List<AssetInfo> assetInfos = new();
 
             /// <summary>
             /// 构造函数：初始化AB包名称

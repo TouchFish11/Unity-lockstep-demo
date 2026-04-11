@@ -109,6 +109,7 @@ namespace Editor.AssetBundle.Core
                 return;
             }
 
+            // 待移除包的标签将在后续循环中自动清空
             if (waitRemoveAbNames.Count > 0)
                 Log($"Exist Will Remove AssetBundle Labels：[{string.Join('、', waitRemoveAbNames)}].\n");
 
@@ -147,6 +148,7 @@ namespace Editor.AssetBundle.Core
             foreach (var list in tempDic.Values) total2 += list.Count;
             var index2 = 0;
 
+            // 先处理变化/待移除的包的资源
             foreach (var abInfo in releaseCollection.assetBundleInfos)
             {
                 if (abNameToDifferenceInfos.ContainsKey(abInfo.assetBundleName))
@@ -155,8 +157,10 @@ namespace Editor.AssetBundle.Core
                     {
                         Progress($"handing File: {assetInfo.name}", (float)index2++ / (total2 - 1));
                         var importer = AssetImporter.GetAtPath(assetInfo.assetPath);
-                        if (importer) importer.assetBundleName = abInfo.assetBundleName.ToLower();
-                        else Log($"Setting Label error: {assetInfo.assetPath}");
+                        if (importer) 
+                            importer.assetBundleName = abInfo.assetBundleName.ToLower();
+                        else 
+                            Log($"Setting Label error: {assetInfo.assetPath}");
                     }
                 }
                 else
@@ -170,7 +174,7 @@ namespace Editor.AssetBundle.Core
                 }
             }
 
-            // 新增包
+            // 再处理新增包的资源
             foreach (var abName in abNameToDifferenceInfos.Keys)
             {
                 if (!releaseCollection.assetBundleInfos.Exists(info => info.assetBundleName == abName))

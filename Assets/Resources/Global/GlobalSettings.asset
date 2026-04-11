@@ -17,7 +17,7 @@ MonoBehaviour:
   writeLogMaxIntervalTime: 30
   isOpenLayout: 1
   uploadServerIp: http://ip:port/...
-  resServerIp: http://ip:port/...
+  resServerIp: http://192.168.0.6:8080/Test/
   reDownloadCompareFileMaxNum: 5
   reDownloadAbMaxNum: 5
   maxConcurrencyNum: 8

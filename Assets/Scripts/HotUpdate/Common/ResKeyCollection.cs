@@ -12,8 +12,10 @@ namespace HotUpdate.Common
 		public static string Gray => "Gray";
 		public static string Game => "Game";
 		public static string Main => "Main";
+		public static string Test => "Test";
 		public static string Attack_AnimationConfig => "Attack_AnimationConfig";
 		public static string Dash_AnimationConfig => "Dash_AnimationConfig";
+		public static string Testttttt => "Testttttt";
 		public static string Idle_AnimationConfig => "Idle_AnimationConfig";
 		public static string Null_AnimationConfig => "Null_AnimationConfig";
 		public static string Run_AnimationConfig => "Run_AnimationConfig";

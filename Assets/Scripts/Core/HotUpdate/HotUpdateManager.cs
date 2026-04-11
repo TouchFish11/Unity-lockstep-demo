@@ -24,7 +24,7 @@ namespace Core.HotUpdate
         // 缓存热更程序集名称
         private readonly ConcurrentBag<string> _assemblyNames = new();
         // 热更新程序集设置
-        private HotUpdateAssemblySettings _hotupdateassemblySettings;
+        private HotUpdateAssemblySettings _hotUpdateAssemblySettings;
         [Inject] private IAssetBundleManager _assetBundleManager;
         [Inject] private IJsonManager _jsonManager;
         
@@ -53,10 +53,10 @@ namespace Core.HotUpdate
             var textAsset = batchHandle.Assets.Find(text => text.name.Contains(nameof(HotUpdateAssemblySettings)));
             if (textAsset)
             {
-                _hotupdateassemblySettings = _jsonManager.FromJson<HotUpdateAssemblySettings>(textAsset.text);
-                if (_hotupdateassemblySettings != null)
+                _hotUpdateAssemblySettings = _jsonManager.FromJson<HotUpdateAssemblySettings>(textAsset.text);
+                if (_hotUpdateAssemblySettings != null)
                 {
-                    Logger.Log($"{nameof(HotUpdateManager)}.{nameof(PreLoadAssembliesAsync)}:内容长度{_hotupdateassemblySettings.preloadHotUpdateAssemblies.Length}");
+                    Logger.Log($"{nameof(HotUpdateManager)}.{nameof(PreLoadAssembliesAsync)}:内容长度{_hotUpdateAssemblySettings.preloadHotUpdateAssemblies.Length}");
                 }
                 else
                 {
@@ -71,7 +71,7 @@ namespace Core.HotUpdate
             }
             
             // 顺序加载程序集资源
-            foreach (var nameWithExtension in _hotupdateassemblySettings.preloadHotUpdateAssemblies)
+            foreach (var nameWithExtension in _hotUpdateAssemblySettings.preloadHotUpdateAssemblies)
             {
                 foreach (var dllText in batchHandle.Assets)
                 {

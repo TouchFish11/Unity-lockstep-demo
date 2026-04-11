@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Core.AssetBundles.Management;
 using Core.AssetBundles.Update.Collection;
+using Core.DI;
 using Core.Serialize.Json;
 using Core.Utility;
 using UnityEditor;
+using UnityEngine;
 
 namespace Editor.AssetBundle.Core
 {
@@ -16,7 +19,9 @@ namespace Editor.AssetBundle.Core
     {
         private readonly Action<string> logAction;
         private readonly Action<string, float> progressAction;
-
+        private readonly IJsonManager jsonManager = DIContainer.Create<JsonManager>();
+        public const string AssetCatalogName = "AssetCatalog.json";
+        
         public AssetBundleBuilder(Action<string> logAction = null, Action<string, float> progressAction = null)
         {
             this.logAction = logAction;
@@ -80,109 +85,98 @@ namespace Editor.AssetBundle.Core
             Log($"Rename Extension To：{FileUtility.AbSuffix}");
             AssetDatabase.Refresh();
             Log("--- Build End ---\n");
+
+            var catalog = GenerateAssetCatalog(outputPath, target);
+            if (catalog == null)
+                return false;
+            
+            var scriptPath = Path.Combine(Application.dataPath, "Scripts", "HotUpdate", "Data", "Generated", "AssetKeys.cs");
+            AssetKeyGenerator.Generate(catalog, scriptPath);
             return true;
         }
 
         /// <summary>
-        /// 拷贝构建好的 AB 包到 ServerData 目录，并合并更新清单文件
+        /// 拷贝构建好的 AB 包到 ServerData 目录，并合并更新目录文件
         /// </summary>
-        public void CopyToServerData(string outputPath, string serverDataPath, 
-                                     AssetBundlesCollections releaseCollection,
-                                     JsonManager jsonManager, BuildTarget target)
-        {
+        public void CopyToServerData(string outputPath, string serverDataPath, AssetBundlesCollections releaseCollection, BuildTarget target)
+        { 
             if (!Directory.Exists(outputPath))
             {
-                Log($"Output path does not exist：{outputPath}，Please create path");
+                Log($"Output path does not exist：{outputPath}");
                 return;
             }
 
             AssetBundleUtility.EnsureDirectoryExists(serverDataPath);
             Log("--- Start Copy To ServerData ---");
 
-            var serverFiles = Directory.GetFiles(serverDataPath);
-            string listFilePath = Path.Combine(serverDataPath, FileUtility.ListFileDefaultName);
-            string outputListFilePath = Path.Combine(outputPath, FileUtility.ListFileDefaultName);
+            var srcCatalogPath = Path.Combine(outputPath, AssetCatalogName);
+            var dstCatalogPath = Path.Combine(serverDataPath, AssetCatalogName);
 
-            // 首次全量拷贝
-            if (serverFiles.Length == 0)
+            if (!File.Exists(srcCatalogPath))
             {
-                var outputFiles = Directory.GetFiles(outputPath);
-                foreach (var file in outputFiles)
+                Log($"The source directory is missing {AssetCatalogName}. Please build it first.");
+                return;
+            }
+
+            // 读取本次生成的资源目录
+            var newCatalogJson = File.ReadAllText(srcCatalogPath);
+            var newCatalog = jsonManager.FromJson<AssetCatalog>(newCatalogJson);
+
+            AssetCatalog serverCatalog = null;
+            if (File.Exists(dstCatalogPath))
+            {
+                serverCatalog = jsonManager.FromJson<AssetCatalog>(File.ReadAllText(dstCatalogPath));
+            }
+
+            // 拷贝所有 .assetBundle 文件（只拷贝变化的）
+            foreach (var (abFileName, newAbInfo) in newCatalog.ABPackageCollection)
+            {
+                var srcFilePath = Path.Combine(outputPath, abFileName);
+                var dstFilePath = Path.Combine(serverDataPath, abFileName);
+
+                var needCopy = true;
+                if (serverCatalog != null && serverCatalog.ABPackageCollection.TryGetValue(abFileName, out var oldInfo))
+                {
+                    if (oldInfo.Hash == newAbInfo.Hash)
+                    {
+                        needCopy = false;
+                        Log($"跳过未变化：{abFileName}");
+                    }
+                }
+
+                if (needCopy)
+                {
+                    File.Copy(srcFilePath, dstFilePath, true);
+                    Log($"已拷贝：{abFileName}");
+                }
+            }
+
+            // 处理移除：releaseCollection 中不存在的包，从服务器目录删除
+            if (releaseCollection)
+            {
+                var toDeletes = new List<string>();
+                foreach (var file in Directory.GetFiles(serverDataPath, $"*{FileUtility.AbSuffix}"))
                 {
                     var fileName = Path.GetFileName(file);
-                    if (fileName.EndsWith(".meta") || fileName.EndsWith(".manifest") || fileName == AssetBundleUtility.GetPlatformBundleName(target))
-                        continue;
-                    File.Copy(file, Path.Combine(serverDataPath, fileName), true);
-                }
-                Log("Full Copy To ServerData");
-            }
-            else
-            {
-                // 增量拷贝
-                var serverCollection = jsonManager.FromJson<ABPackageCollection>(File.ReadAllText(listFilePath));
-                ABPackageCollection outputCollection = null;
-                try
-                {
-                    outputCollection = jsonManager.FromJson<ABPackageCollection>(File.ReadAllText(outputListFilePath));
-                }
-                catch { /* 可能不存在 */ }
-
-                // 更新或新增
-                if (outputCollection != null)
-                {
-                    foreach (var outInfo in outputCollection.Values)
+                    var bundleName = Path.GetFileNameWithoutExtension(fileName);
+                    if (!releaseCollection.assetBundleInfos.Exists(ab => ab.assetBundleName == bundleName))
                     {
-                        if (serverCollection.TryGetValue(outInfo.Name, out var serverInfo))
-                        {
-                            serverInfo.Size = outInfo.Size;
-                            serverInfo.Hash = outInfo.Hash;
-                            // 合并依赖
-                            var deps = serverInfo.Dependencies.ToList();
-                            foreach (var dep in outInfo.Dependencies)
-                                if (!deps.Contains(dep)) deps.Add(dep);
-                            serverInfo.Dependencies = deps.ToArray();
-                            Log($"Update Info：{outInfo.Name}");
-                        }
-                        else
-                        {
-                            serverCollection.TryAdd(outInfo.Name, outInfo);
-                            Log($"Add NewInfo：{outInfo.Name}");
-                        }
-                        File.Copy(Path.Combine(outputPath, outInfo.Name), Path.Combine(serverDataPath, outInfo.Name), true);
+                        toDeletes.Add(file);
                     }
                 }
-
-                // 移除不再需要的包（以 releaseCollection 为准）
-                var toRemove = new List<string>();
-                foreach (var info in serverCollection.Values)
+                foreach (var file in toDeletes)
                 {
-                    string bundleName = Path.GetFileNameWithoutExtension(info.Name);
-                    if (releaseCollection != null && !releaseCollection.assetBundleInfos.Exists(ab => ab.assetBundleName == bundleName))
-                        toRemove.Add(info.Name);
+                    File.Delete(file);
+                    Log($"已删除：{Path.GetFileName(file)}");
                 }
-                foreach (var name in toRemove)
-                {
-                    string bundleName = Path.GetFileNameWithoutExtension(name);
-                    foreach (var info in serverCollection.Values)
-                    {
-                        var deps = info.Dependencies.ToList();
-                        if (deps.Contains(bundleName))
-                        {
-                            deps.Remove(bundleName);
-                            info.Dependencies = deps.ToArray();
-                        }
-                    }
-                    serverCollection.Remove(name);
-                    File.Delete(Path.Combine(serverDataPath, name));
-                    Log($"Remove Info：{name}");
-                }
-
-                jsonManager.SaveToJson(serverCollection, listFilePath);
-                AssetDatabase.Refresh();
             }
 
-            Log("--- End Copy To ServerData ---\n");
+            // 最后拷贝 AssetCatalog.json 覆盖  TODO:不能直接覆盖，因为还有资源映射的差异还没有处理，这里只处理了AB包的差异
+            File.Copy(srcCatalogPath, dstCatalogPath, true);
+            Log($"{AssetCatalogName} 已更新。");
+
             AssetDatabase.Refresh();
+            Log("--- End Copy To ServerData ---\n");
         }
 
         /// <summary>
@@ -198,7 +192,9 @@ namespace Editor.AssetBundle.Core
             AssetBundleUtility.ClearDirectory(streamingAssetsPath);
             AssetDatabase.Refresh();
 
-            int total = selectedAssets.Length / 2;
+            // 在 Unity 编辑器中，当你选择一个 .assetBundle 文件时，
+            // Unity 的 Selection 系统会自动把同名的 .manifest 文件也视为选中状态（虽然界面上可能只高亮了一个文件）
+            int total = selectedAssets.Count(asset => AssetDatabase.GetAssetPath(asset).Contains(FileUtility.AbSuffix));
             for (int i = 0; i < selectedAssets.Length; i++)
             {
                 Progress($"Processing：{selectedAssets[i].name}", (float)i / total);
@@ -233,6 +229,104 @@ namespace Editor.AssetBundle.Core
             {
                 Log($"Output directory does not exist: {outputPath}");
             }
+        }
+        
+        /// <summary>
+        /// 生成资源目录文件（包含包信息和资源映射）
+        /// </summary>
+        private AssetCatalog GenerateAssetCatalog(string outputPath, BuildTarget target)
+        {
+            var platformBundleName = AssetBundleUtility.GetPlatformBundleName(target);
+            var catalogPath = Path.Combine(outputPath, platformBundleName);
+            if (!File.Exists(catalogPath))
+            {
+                Log($"主 Manifest 文件不存在：{catalogPath}，无法生成资源目录。");
+                return null;
+            }
+
+            var catalog = new AssetCatalog();
+            UnityEngine.AssetBundle mainBundle = null;
+            try
+            {
+                mainBundle = UnityEngine.AssetBundle.LoadFromFile(catalogPath);
+                if (!mainBundle)
+                {
+                    Log("无法加载主 AssetBundleManifest");
+                    return null;
+                }
+                var manifest = mainBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+                if (!manifest)
+                {
+                    Log("无法获取 AssetBundleManifest 对象");
+                    return null;
+                }
+
+                var allBundleNames = manifest.GetAllAssetBundles();
+                var dirInfo = new DirectoryInfo(outputPath);
+                var index = 0;
+                foreach (var bundleName in allBundleNames)
+                {
+                    Progress($"Generating combined manifest: {bundleName}", (float)index++ / allBundleNames.Length);
+
+                    // 对应的物理文件（已重命名为 .assetBundle）
+                    var fileName = $"{bundleName}{FileUtility.AbSuffix}";
+                    var filePath = Path.Combine(outputPath, fileName);
+                    if (!File.Exists(filePath))
+                    {
+                        Log($"警告：AB包文件不存在 {filePath}");
+                        continue;
+                    }
+
+                    // 添加包信息
+                    var deps = manifest.GetAllDependencies(bundleName);
+                    var fileInfo = new FileInfo(filePath);
+                    var hash = HashUtility.GenerateFileSHA256Hash(filePath);
+                    var pkgInfo = new ABPackageInfo(fileName, fileInfo.Length, hash, deps);
+                    catalog.ABPackageCollection.TryAdd(fileName, pkgInfo);
+
+                    // 加载该包的 manifest 以获取内部资源列表
+                    var bundleManifestPath = Path.Combine(outputPath, fileName);
+                    var assetBundle = UnityEngine.AssetBundle.LoadFromFile(bundleManifestPath);
+                    if (assetBundle)
+                    {
+                        var assetPaths = assetBundle.GetAllAssetNames();
+                        foreach (var assetPath in assetPaths)
+                        {
+                            // 决定 key：使用文件名（不含扩展名），若担心重名可改用完整路径
+                            var key = Path.GetFileNameWithoutExtension(assetPath);
+                            // 如果 key 已存在，使用完整路径作为备用
+                            if (catalog.ContainsKey(key))
+                            {
+                                var path = assetPath.ToLowerInvariant();
+                                Log($"资源名称重复：{key}，已使用路径替代：{path}，请调整命名");
+                                key = path;
+                            }
+                            var entry = new AssetMapEntry(key, fileName, assetPath);
+                            catalog.AddEntry(key, entry);
+                        }
+                        assetBundle.Unload(false);
+                    }
+                }
+
+                // 保存 JSON
+                var json = jsonManager.ToJson(catalog);
+                var savePath = Path.Combine(outputPath, AssetCatalogName);
+                File.WriteAllText(savePath, json);
+                Log($"资源目录已生成：{savePath}\n");
+                AssetDatabase.Refresh();
+                return catalog;
+            }
+            catch (Exception e)
+            {
+                Log($"生成合并清单失败：{e.Message}\n{e.StackTrace}");
+            }
+            finally
+            {
+                if (mainBundle) mainBundle.Unload(false);
+                UnityEngine.AssetBundle.UnloadAllAssetBundles(true);
+                EditorUtility.ClearProgressBar();
+            }
+            return null;
         }
     }
 }

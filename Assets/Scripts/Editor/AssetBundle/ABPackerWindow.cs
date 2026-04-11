@@ -47,7 +47,7 @@ namespace Editor.AssetBundle
         private const string hotUpdateAssemblyTargetPath = @"D:\UnityProject\TurnDemo\Assets\Editor\ArtRes\HotUpdate\";
         private const string hybridCLRAssemblySourcesPath = @"D:\UnityProject\TurnDemo\HybridCLRData\HotUpdateDlls\StandaloneWindows64\";
         private const string AssetsInputPath = "Assets/Editor/ArtRes/";
-        private readonly string[] filterDirectorys = { "Texture" };
+        private readonly string[] filterDirectories = { "Texture" };
         private readonly string[] filterSuffixes = { ".meta" };
         private const string abSettingsSavePath = "Assets/Editor/AssetBundleSettings/";
         private const string assetCollectionName_Temp = "AssetBundlesCollections_Temp.asset";
@@ -60,6 +60,7 @@ namespace Editor.AssetBundle
         private Dictionary<string, List<AssetBundlesCollections.AssetInfo>> abNameToDifferenceInfos = new();
         private List<string> waitRemoveAbNames = new();
         private Dictionary<string, List<AssetBundlesCollections.AssetInfo>> waitRemoveAssetInfos = new();
+        private readonly HashSet<string> forceUploadBundles = new HashSet<string>();
 
         // --- 序列化字段 ---
         private SerializedObject serializedObject;
@@ -96,7 +97,7 @@ namespace Editor.AssetBundle
             minSize = new Vector2(1389, 725);
 
             // 初始化各模块
-            collector = new AssetBundleCollector(AssetsInputPath, filterSuffixes, filterDirectorys, AppendToLog, DisplayProgress);
+            collector = new AssetBundleCollector(AssetsInputPath, filterSuffixes, filterDirectories, AppendToLog, DisplayProgress);
             differ = new AssetBundleDiffer(AppendToLog, DisplayProgress);
             dependencyResolver = new AssetBundleDependencyResolver(AppendToLog, DisplayProgress);
             builder = new AssetBundleBuilder(AppendToLog, DisplayProgress);
@@ -123,7 +124,7 @@ namespace Editor.AssetBundle
         #region Left Area Drawing
         private void DrawLeftArea()
         {
-            DrawReskeyView();
+            DrawResKeyView();
             DrawHotUpdateView();
             DrawAssetsCollectView();
             DrawContrastDifference();
@@ -132,12 +133,12 @@ namespace Editor.AssetBundle
             DrawTargetSelectView();
             DrawOutputPathView();
             DrawBuildSettingsView();
-            DrawDependenceyAnalysisView();
+            DrawDependenceAnalysisView();
             DrawCopySettingsView();
             DrawServerSettingsView();
         }
 
-        private void DrawReskeyView()
+        private void DrawResKeyView()
         {
             EditorGUILayout.Space();
             GUILayout.Label("Asset Key Generate", EditorStyles.boldLabel);
@@ -187,7 +188,7 @@ namespace Editor.AssetBundle
             if (GUILayout.Button("Load Collection", GUILayout.Width(120)))
             {
                 assetsCollection_Temp = AssetDatabase.LoadAssetAtPath<AssetBundlesCollections>($"{abSettingsSavePath}{assetCollectionName_Temp}");
-                if (!assetsCollection_Temp) AppendToLog($"'{assetCollectionName_Temp}' file do not exist, please 'Collect'");
+                if (!assetsCollection_Temp) AppendToLog($"'{assetCollectionName_Temp}' file do not exist, please 'Collect'\n");
             }
             if (GUILayout.Button("Collect", GUILayout.Width(120)))
             {
@@ -195,7 +196,7 @@ namespace Editor.AssetBundle
             }
             GUILayout.EndHorizontal();
         }
-
+        
         private void DrawContrastDifference()
         {
             EditorGUILayout.Space();
@@ -205,6 +206,7 @@ namespace Editor.AssetBundle
                 abNameToDifferenceInfos.Clear();
                 waitRemoveAbNames.Clear();
                 waitRemoveAssetInfos.Clear();
+                forceUploadBundles.Clear();
 
                 assetsCollection_Release = AssetDatabase.LoadAssetAtPath<AssetBundlesCollections>($"{abSettingsSavePath}{assetCollectionName_Release}");
                 var result = differ.Compare(assetsCollection_Temp, assetsCollection_Release);
@@ -214,10 +216,10 @@ namespace Editor.AssetBundle
                 waitRemoveAssetInfos = result.AssetsToRemovePerBundle;
 
                 // 扩展依赖
-                string lastManifest = Path.Combine(outputPath, AssetBundleUtility.GetPlatformBundleName(targetPlatform));
+                var lastManifest = Path.Combine(outputPath, AssetBundleUtility.GetPlatformBundleName(targetPlatform));
                 if (File.Exists(lastManifest))
                 {
-                    dependencyResolver.ExpandWithDependencies(abNameToDifferenceInfos, waitRemoveAbNames, assetsCollection_Release, lastManifest);
+                    dependencyResolver.ExpandWithDependencies(abNameToDifferenceInfos, waitRemoveAbNames, assetsCollection_Release, lastManifest, forceUploadBundles);
                 }
             }
         }
@@ -233,13 +235,13 @@ namespace Editor.AssetBundle
                 collector.ClearAllLabels();
             GUILayout.EndHorizontal();
         }
-
+        
         private void DrawSaveCollectionView()
         {
             EditorGUILayout.Space();
             GUILayout.Label("Update Collection", EditorStyles.boldLabel);
             GUILayout.BeginHorizontal();
-            assetsCollection_Release = EditorGUILayout.ObjectField("Asset Collection(Realse)", assetsCollection_Release, typeof(AssetBundlesCollections), false) as AssetBundlesCollections;
+            assetsCollection_Release = EditorGUILayout.ObjectField("Asset Collection(Release)", assetsCollection_Release, typeof(AssetBundlesCollections), false) as AssetBundlesCollections;
             if (GUILayout.Button("Override Collection", GUILayout.Width(150)))
             {
                 if (EditorUtility.DisplayDialog("Override Collection", "你确定要覆盖当前的资源集合吗？", "确定"))
@@ -252,10 +254,14 @@ namespace Editor.AssetBundle
                         AssetDatabase.Refresh();
                         AppendToLog("Override Success!");
 
-                        var abNames = assetsCollection_Release.assetBundleInfos.ConvertAll(ab => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ab.assetBundleName));
-                        new AbKeyCollectionClassGenerator(abNames).GenerateScript();
-                        AssetDatabase.Refresh();
-                        AppendToLog("Generated Script：AbKeyCollection\n");
+                        // ========== 已移除 AbKeyCollection 脚本生成 ==========
+                        // 因为现在采用基于资源名的加载方式，不再需要 AB 包常量类
+                        // ===================================================
+                        
+                        // var abNames = assetsCollection_Release.assetBundleInfos.ConvertAll(ab => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ab.assetBundleName));
+                        // new AbKeyCollectionClassGenerator(abNames).GenerateScript();
+                        // AssetDatabase.Refresh();
+                        // AppendToLog("Generated Script：AbKeyCollection\n");
                     }
                     else AppendToLog("Failed to handle the differences");
                 }
@@ -301,7 +307,7 @@ namespace Editor.AssetBundle
             GUILayout.EndHorizontal();
         }
 
-        private void DrawDependenceyAnalysisView()
+        private void DrawDependenceAnalysisView()
         {
             EditorGUILayout.Space();
             GUILayout.Label("Dependency Analysis", EditorStyles.boldLabel);
@@ -309,15 +315,15 @@ namespace Editor.AssetBundle
             mainBundlePath = EditorGUILayout.TextField("Main AB Path", mainBundlePath);
             if (GUILayout.Button("Load Main", GUILayout.Width(120)))
             {
-                string path = EditorUtility.OpenFilePanel("Select MainBunlde", "", "assetBundle");
+                string path = EditorUtility.OpenFilePanel("Select MainBundle", "", "assetBundle");
                 if (!string.IsNullOrEmpty(path)) mainBundlePath = path;
             }
             GUILayout.EndHorizontal();
-            if (GUILayout.Button("Analyze Dependencies And Create Temp ABListFile"))
+            if (GUILayout.Button("Analyze Dependencies"))
             {
                 dependencyResolver.AnalyzeDependencies(mainBundlePath, targetPlatform);
-                string listPath = Path.Combine(outputPath, FileUtility.ListFileDefaultName);
-                dependencyResolver.CreateListFile(outputPath, listPath, mainBundlePath, targetPlatform, jsonManager);
+                //string listPath = Path.Combine(outputPath, FileUtility.ListFileDefaultName);
+                //dependencyResolver.CreateListFile(outputPath, listPath, mainBundlePath, targetPlatform, jsonManager);
             }
         }
 
@@ -330,7 +336,7 @@ namespace Editor.AssetBundle
             EditorGUILayout.TextField("ServerData Path", serverDataPath);
             EditorGUI.EndDisabledGroup();
             if (GUILayout.Button("Update AssetBundle And ListFile In ServerData", GUILayout.Width(300)))
-                builder.CopyToServerData(outputPath, serverDataPath, assetsCollection_Release, jsonManager, targetPlatform);
+                builder.CopyToServerData(outputPath, serverDataPath, assetsCollection_Release, targetPlatform);
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             EditorGUI.BeginDisabledGroup(true);
@@ -373,10 +379,11 @@ namespace Editor.AssetBundle
                 maxBytesCapacity = uint.Parse(GUILayout.TextField(maxBytesCapacity.ToString()), NumberStyles.Number);
             }
             EditorGUILayout.Space();
-            if (GUILayout.Button("Upload AssetBundleDatas"))
+            if (GUILayout.Button("Upload AssetBundleData"))
             {
-                AppendToLog("--- Starting Upload Data ---");
-                uploader.Upload(serverDataPath, serverIP, uploadUseUser, userName, password, uploadBytesIsAutoSetting, maxBytesCapacity);
+                uploader.UploadIncrementalAsync(serverDataPath, serverIP,
+                    uploadUseUser, userName, password, uploadBytesIsAutoSetting, 
+                    maxBytesCapacity, AssetBundleBuilder.AssetCatalogName, forceUploadBundles);
             }
         }
         #endregion
