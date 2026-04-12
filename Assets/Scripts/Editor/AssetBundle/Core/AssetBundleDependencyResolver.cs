@@ -188,20 +188,27 @@ namespace Editor.AssetBundle.Core
         {
             if (!File.Exists(manifestPath)) return;
 
+            // 存储所有变化的包，重建的包和移除的包都算变化的包
             var changedBundles = new HashSet<string>(bundlesToRebuild.Keys);
             foreach (var name in bundlesToRemove) changedBundles.Add(name);
 
+            // 受影响的包集合
             var affected = new HashSet<string>();
+            // 转换为队列，执行BFS
             var queue = new Queue<string>(changedBundles);
             while (queue.Count > 0)
             {
                 var current = queue.Dequeue();
+                // 获取当前包的所有反向依赖
                 var reverseDeps = GetReverseDependencies(manifestPath, current);
+                // 遍历所有反向依赖
                 foreach (var dep in reverseDeps)
                 {
+                    // 若不是变化的包，且没有缓存过，则首次缓存
                     if (!changedBundles.Contains(dep) && !affected.Contains(dep))
                     {
                         affected.Add(dep);
+                        // 放入队列，找到这个依赖的反向依赖（依赖反向传播）
                         queue.Enqueue(dep);
                     }
                 }

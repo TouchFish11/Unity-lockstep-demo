@@ -14,7 +14,7 @@ namespace Net
             // 注册框架单例
             //DIContainer.RegisterSingletons();
             // 注入依赖
-            DIContainer.InjectDependencies();
+            //DIContainer.InjectDependencies();
             // 初始化框架
             await DIContainer.InitAsync();
             

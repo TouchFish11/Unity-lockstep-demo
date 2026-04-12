@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Core.AssetBundles.Management;
 using Core.AssetBundles.Update.Collection;
 using Core.AssetBundles.Update.Core;
 using Core.DI;
@@ -48,12 +49,13 @@ namespace Core.AssetBundles.Update.State
         /// 解析AssetBundle对比文件（本地/远程清单）
         /// 将JSON格式的清单内容反序列化为包集合，并加入对应上下文集合
         /// </summary>
-        /// <param name="listInfo">清单文件的JSON内容</param>
+        /// <param name="catalogJson">目录Json</param>
         /// <param name="analyzeType">解析类型（本地/远程）</param>
-        protected void AnalyzeCompareFileInfo(string listInfo, EFileAnalyzeType analyzeType)
+        protected void AnalyzeCatalog(string catalogJson, EFileAnalyzeType analyzeType)
         {
             // 反序列化JSON到包集合
-            var collection = jsonManager.FromJson<ABPackageCollection>(listInfo);
+            var catalog = jsonManager.FromJson<AssetCatalog>(catalogJson);
+            var collection = catalog.ABPackageCollection;
             
             // 根据解析类型，将包信息加入本地/远程集合
             if (analyzeType == EFileAnalyzeType.Local)

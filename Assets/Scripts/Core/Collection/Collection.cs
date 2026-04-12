@@ -30,7 +30,11 @@ namespace Core.Collection
         /// <param name="key">要查找的键</param>
         /// <exception cref="KeyNotFoundException">当指定的键不存在时抛出</exception>
         /// <returns>键对应的值</returns>
-        public TValue this[TKey key] => keyToValueMap[key];
+        public TValue this[TKey key]
+        {
+            get => keyToValueMap[key];
+            set => keyToValueMap[key] = value;
+        }
 
         /// <summary>
         /// 获取集合中键值对的数量

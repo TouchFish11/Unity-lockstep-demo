@@ -10,5 +10,4 @@ public static class AssetKeys
     public const string Jump_Air_Animation_Config = "jump_air_animation_config";
     public const string Jump_End_Animation_Config = "jump_end_animation_config";
     public const string Jump_Start_Animation_Config = "jump_start_animation_config";
-    public const string Test_Test = "test_test";
 }

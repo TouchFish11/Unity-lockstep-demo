@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2814780039
+CRC: 3977034805
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 42cdc6b67ecbbe6135c03507565ff367
+    Hash: 0691e602e16ba71e39b253f53c6ad8ab
   TypeTreeHash:
     serializedVersion: 2
     Hash: 55d6a32b4b04fdbc64599427a0f231d1
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 42cdc6b67ecbbe6135c03507565ff367
+    Hash: 0691e602e16ba71e39b253f53c6ad8ab
 HashAppended: 0
 ClassTypes:
 - Class: 114
@@ -26,7 +26,6 @@ Assets:
 - Assets/Editor/ArtRes/SO/Attack_Animation_Config.asset
 - Assets/Editor/ArtRes/SO/Jump/Jump_Start_Animation_Config.asset
 - Assets/Editor/ArtRes/SO/Dash_Animation_Config.asset
-- Assets/Editor/ArtRes/SO/Test_Test.asset
 - Assets/Editor/ArtRes/SO/Jump/Jump_End_Animation_Config.asset
 - Assets/Editor/ArtRes/SO/AnimationConfig/Bot/Idle_Animation_Config.asset
 - Assets/Editor/ArtRes/SO/Jump/Jump_Air_Animation_Config.asset

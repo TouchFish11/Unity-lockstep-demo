@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.AssetBundles.Update.Collection;
 using Core.DI;
 using Core.Serialize.Json;
 using Core.Singleton;
@@ -24,10 +23,11 @@ namespace Core.AssetBundles.Management
         public int InitPriority => 1;
         // 缓存包包装器
         private readonly Dictionary<string, BundleWrapper> _nameToWrapperMap = new();
-        // 清单文件集合
-        private ABPackageCollection _abPackageCollection;
-        // 资源目录
-        private AssetCatalog _assetCatalog;
+        
+        /// <summary>
+        /// 资源目录
+        /// </summary>
+        public AssetCatalog Catalog { get; private set; }
         
         private AssetBundleManager()
         {
@@ -40,8 +40,6 @@ namespace Core.AssetBundles.Management
             _memoryMonitor.Register(this);
             return Task.CompletedTask;
         }
-        
-        public AssetCatalog Catalog => _assetCatalog;
 
         /// <summary>
         /// 初始化指定包
@@ -53,8 +51,8 @@ namespace Core.AssetBundles.Management
             foreach (var abName in abNames)
             {
                 // 读取本地清单文件
-                _abPackageCollection = await _jsonManager.FromJsonAsync<ABPackageCollection>(PathUtility.GetAbLoadPath(FileUtility.ListFileDefaultName));
-                if(_abPackageCollection.TryGetValue(abName, out var defaultPackage))
+                Catalog = await _jsonManager.FromJsonAsync<AssetCatalog>(PathUtility.GetAbLoadPath(FileUtility.CatalogDefaultName));
+                if(Catalog.ABPackageCollection.TryGetValue(abName, out var defaultPackage))
                 {
                     _nameToWrapperMap.TryAdd(abName, new BundleWrapper(abName, PathUtility.GetAbLoadPath(defaultPackage.Name), this));
                 }   
@@ -67,9 +65,9 @@ namespace Core.AssetBundles.Management
             await UnloadAllBundles(false);
             
             // 读取本地清单文件
-            _abPackageCollection = await _jsonManager.FromJsonAsync<ABPackageCollection>(PathUtility.GetAbLoadPath(FileUtility.ListFileDefaultName));
+            Catalog = await _jsonManager.FromJsonAsync<AssetCatalog>(PathUtility.GetAbLoadPath(FileUtility.CatalogDefaultName));
             // 构建全部AB包信息
-            foreach (var abPackageInfo in _abPackageCollection.Values)
+            foreach (var abPackageInfo in Catalog.ABPackageCollection.Values)
             {
                 var abName = abPackageInfo.Name.Substring(0, abPackageInfo.Name.LastIndexOf('.'));
                 // 初始化包装器
@@ -105,7 +103,7 @@ namespace Core.AssetBundles.Management
         private async Task LoadDependenciesAndTargetAsync(string abName, CancellationToken token)
         {
             // 获取该AB包的所有依赖
-            var dependencies = _abPackageCollection.GetAllDependencies(abName);
+            var dependencies = Catalog.ABPackageCollection.GetAllDependencies(abName);
             // 加载所有依赖包
             foreach (var dependency in dependencies)
             {
@@ -176,7 +174,7 @@ namespace Core.AssetBundles.Management
             // 清空缓存
             _nameToWrapperMap.Clear();
             // 置空清单集合
-            _abPackageCollection = null;
+            Catalog = null;
             // 卸载所有AB包
             AssetBundle.UnloadAllAssetBundles(unloadAllObjects);
             GC.Collect();

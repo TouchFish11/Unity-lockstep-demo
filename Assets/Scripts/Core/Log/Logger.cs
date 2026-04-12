@@ -21,8 +21,8 @@ namespace Core.Log
     /// </summary>
     public class Logger : ILogger, IApplicationExitNotify, IInitializable
     {
-        [Inject] private static ILogger _logger;
-        [Inject] private IUWRManager _uWRManager;
+        private static readonly ILogger _logger = DIContainer.Create<Logger>();
+        private readonly IUWRManager _uWRManager;
         
         public int InitPriority => -1;
         public int QuitPriority => 1;
@@ -41,7 +41,10 @@ namespace Core.Log
         // 写入日志最大间隔时间
         private static ushort WriteLogMaxIntervalTime;
 
-        private Logger(){}
+        private Logger(IUWRManager uWRManager)
+        {
+            _uWRManager = uWRManager;
+        }
 
         public Task InitAsync()
         {

@@ -65,10 +65,6 @@ MonoBehaviour:
       size: 713
       name: Dash_Animation_Config.asset
       hash: 33b29b0805d76576b9838a6f6aaf5ca07ff6b9fae2470bf19f4ac2aaf820b9bb
-    - assetPath: Assets\Editor\ArtRes\SO\Test_Test.asset
-      size: 548
-      name: Test_Test.asset
-      hash: cd7593755ca40ae00cb09157c61da2e63defada4dfb920bf2f527c22ac359fa1
     - assetPath: Assets\Editor\ArtRes\SO\AnimationConfig\Bot\Idle_Animation_Config.asset
       size: 635
       name: Idle_Animation_Config.asset

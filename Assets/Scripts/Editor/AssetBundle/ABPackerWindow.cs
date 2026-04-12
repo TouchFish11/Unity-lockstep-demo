@@ -216,6 +216,7 @@ namespace Editor.AssetBundle
                 waitRemoveAssetInfos = result.AssetsToRemovePerBundle;
 
                 // 扩展依赖
+                // 获取上一次打包到输出路径的依赖文件
                 var lastManifest = Path.Combine(outputPath, AssetBundleUtility.GetPlatformBundleName(targetPlatform));
                 if (File.Exists(lastManifest))
                 {

@@ -17,11 +17,11 @@ namespace Core.Net
     public class UWRManager : IUWRManager
     {
         // Mono适配器
-        [Inject] private IMonoAdapter _monoAdapter;
+        private readonly IMonoAdapter _monoAdapter;
 
-        private UWRManager()
+        private UWRManager(IMonoAdapter monoAdapter)
         {
-            
+            _monoAdapter = monoAdapter;
         }
 
         /// <summary>

@@ -23,6 +23,11 @@ namespace Core.AssetBundles.Update.Collection
             return base.TryGetValue(abKey, out var abPackageInfo) ? abPackageInfo.Dependencies : Array.Empty<string>();
         }
 
+        public void Add(string abName, ABPackageInfo abPackageInfo)
+        {
+            keyToValueMap.Add(abName, abPackageInfo);
+        }
+
         /// <summary>
         /// 计算需要下载的AB包总字节数
         /// 对比远程最新AB包集合与本地缓存的AB包信息，得出待下载的总数据量

@@ -170,10 +170,72 @@ namespace Editor.AssetBundle.Core
                     Log($"已删除：{Path.GetFileName(file)}");
                 }
             }
+            
+            // 合并资源文件
+            var finalCatalog = serverCatalog ?? new AssetCatalog();
 
-            // 最后拷贝 AssetCatalog.json 覆盖  TODO:不能直接覆盖，因为还有资源映射的差异还没有处理，这里只处理了AB包的差异
-            File.Copy(srcCatalogPath, dstCatalogPath, true);
-            Log($"{AssetCatalogName} 已更新。");
+            // 更新 Bundles 信息（以新构建的为准），这里处理的是新增/变化的包信息
+            foreach (var kv in newCatalog.ABPackageCollection)
+            {
+                if (!finalCatalog.ABPackageCollection.ContainsKey(kv.Key))
+                {
+                    finalCatalog.ABPackageCollection.Add(kv.Key, kv.Value);
+                }
+                else
+                {
+                    finalCatalog.ABPackageCollection[kv.Key] = kv.Value;
+                }
+            }
+
+            // 移除服务器上已不存在的包信息，这里处理不存在的包信息
+            if (releaseCollection)
+            {
+                var bundlesToRemove = finalCatalog.ABPackageCollection.Keys
+                    .Where(fileName => !releaseCollection.assetBundleInfos.Exists(ab =>
+                        $"{ab.assetBundleName}{FileUtility.AbSuffix}" == fileName))
+                    .ToList();
+                foreach (var fileName in bundlesToRemove)
+                {
+                    finalCatalog.ABPackageCollection.Remove(fileName);
+                }
+            }
+
+            /*
+             不需要再手动遍历所有包去清理依赖项（即：其它包依赖已经移除的包，不需要手动处理，之前的逻辑已经隐式处理过了）
+             如果某个包既没有变化，也不是移除包的上层依赖，它根本没有被重打包，那么它的依赖列表在旧清单中是什么样，在新清单中还是什么样。
+             如果被移除的包恰好在它的旧依赖列表里，这种在逻辑上不可能发生：
+             如果包 A 依赖了被移除的包 B，那么 A 一定会被反向依赖逻辑捕获并重打包。
+             如果 A 没有被重打包，说明它不依赖 B，自然旧清单里也不会有 B 的依赖记录。
+            */
+            
+            // 更新 Assets 映射（合并策略）
+            // 先移除那些属于已删除包的资源条目
+            var assetsToRemove = finalCatalog.Assets
+                .Where(entry => !finalCatalog.ABPackageCollection.ContainsKey(entry.bundleName))
+                .Select(entry => entry.key)
+                .ToList();
+            foreach (var key in assetsToRemove)
+            {
+                finalCatalog.RemoveEntry(key);
+            }
+
+            // 将新构建产生的资源映射添加/更新进去
+            foreach (var entry in newCatalog.Assets)
+            {
+                if(finalCatalog.ContainsKey(entry.key))
+                {
+                    finalCatalog[entry.key] = entry;
+                }
+                else
+                {
+                    finalCatalog.AddEntry(entry.key, entry);
+                }
+            }
+
+            // 保存合并后的清单到服务器目录
+            var finalJson = jsonManager.ToJson(finalCatalog);
+            File.WriteAllText(dstCatalogPath, finalJson);
+            Log($"{AssetCatalogName} 已合并更新。");
 
             AssetDatabase.Refresh();
             Log("--- End Copy To ServerData ---\n");

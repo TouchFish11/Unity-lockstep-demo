@@ -44,11 +44,6 @@
       "key": "jump_start_animation_config",
       "bundleName": "so.assetbundle",
       "assetName": "assets/editor/artres/so/jump/jump_start_animation_config.asset"
-    },
-    "test_test": {
-      "key": "test_test",
-      "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/test_test.asset"
     }
   },
   "abPackageCollection": {
@@ -63,8 +58,8 @@
       },
       "so.assetbundle": {
         "name": "so.assetbundle",
-        "size": 2750,
-        "hash": "f079277fce0f967e9a148f82c0e119856afa20907d70dab72ebe788dea965f5f",
+        "size": 2683,
+        "hash": "a3088d51cfba08d3973be5081caebf4cfc1e92b127c75869d3895077fb0a303c",
         "dependencies": []
       }
     }

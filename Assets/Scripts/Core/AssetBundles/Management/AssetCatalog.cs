@@ -26,6 +26,17 @@ namespace Core.AssetBundles.Management
         /// 资源的所有Key
         /// </summary>
         public Dictionary<string, AssetMapEntry>.KeyCollection AssetKeys => assetMap.Keys;
+        
+        /// <summary>
+        /// 所有资源的Values
+        /// </summary>
+        public Dictionary<string, AssetMapEntry>.ValueCollection Assets => assetMap.Values;
+
+        public AssetMapEntry this[string key]
+        {
+            get => assetMap[key];
+            set => assetMap[key] = value;
+        }
 
         public bool ContainsKey(string key)
         {
@@ -35,6 +46,11 @@ namespace Core.AssetBundles.Management
         public void AddEntry(string key, AssetMapEntry entry)
         {
             assetMap.Add(key, entry);
+        }
+
+        public bool RemoveEntry(string key)
+        {
+            return assetMap.Remove(key);
         }
         
         /// <summary>

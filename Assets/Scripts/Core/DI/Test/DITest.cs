@@ -1,5 +1,6 @@
 using Core.AssetBundles.Management;
 using Core.AssetBundles.Update.Core;
+using Core.DI.Test.Services;
 using Core.EditorRes;
 using Core.GlobalEvent;
 using Core.HotUpdate;
@@ -27,19 +28,23 @@ namespace Core.DI.Test
         // Start is called before the first frame update
         private void Start()
         {
-            RegisterSingleton();
+            // 绑定框架
+            BindSingletons();
+            //Log.Logger.Log($"初始化依赖成功");
             
-            DIContainer.InjectDependencies();
-        
-            // DIContainer.GetInstance<ServiceA>().DoSomething();
-            // DIContainer.GetInstance<ServiceB>().DoSomething();
-            // DIContainer.GetInstance<FactoryC>().DoSomething();
+            // 绑定业务类型
+            // 创建业务层的管理器单例
+            var bagManager = DIContainer.Create<BagManager>(true);
+            bagManager.Test();
+
+            var serviceA = DIContainer.Create<ServiceA>();
+
+
         }
         
-        private static void RegisterSingleton()
+        private static void BindSingletons()
         {
-            DIContainer.BindSingleton<IMonoAdapter, MonoAdapter>(true);
-            DIContainer.BindSingleton<ILogger, Logger>();
+            DIContainer.BindSingleton<IMonoAdapter, MonoAdapter>();
             DIContainer.BindSingleton<IMemoryMonitor, MemoryMonitor>();
             DIContainer.BindSingleton<IUWRManager, UWRManager>();
             DIContainer.BindSingleton<IPoolManager, PoolManager>();

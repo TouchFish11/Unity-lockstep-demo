@@ -85,7 +85,7 @@ namespace Core.Reflection
                 {
                     if (typeof(TIValue).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
                     {
-                        dic.Add(type, DIContainer.Create(type) as TIValue);
+                        dic.Add(type, DIContainer.Create(null, type) as TIValue);
                     }
                 }
             }
@@ -109,7 +109,7 @@ namespace Core.Reflection
                     }
                     
                     // 通过DI创建类型
-                    var factory = DIContainer.Create(type) as TValue;
+                    var factory = DIContainer.Create(null, type) as TValue;
                     factory?.InitFactory();
                     if (!dic.TryAdd(type, factory))
                     {

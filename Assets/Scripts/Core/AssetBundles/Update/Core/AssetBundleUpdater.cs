@@ -17,7 +17,6 @@ namespace Core.AssetBundles.Update.Core
     {
         // 对象池管理器接口
         [Inject] private IPoolManager _poolManager;
-        [Inject] private UpdateService _updateService;
         
         public int InitPriority => 1;
         public int QuitPriority => 0;
@@ -29,13 +28,18 @@ namespace Core.AssetBundles.Update.Core
         private IUpdateState _currentUpdateState;
         // 当前更新状态索引
         private int _stateIndex;
+        // 更新服务
+        private readonly UpdateService _updateService;
         
         /// <summary>
         /// 更新阶段
         /// </summary>
-        public EUpdatePhase UpdatePhase => _currentUpdateState.UpdatePhase;
-        
-        private AssetBundleUpdater(){}
+        public EUpdatePhase UpdatePhase => _currentUpdateState?.UpdatePhase ?? EUpdatePhase.None;
+
+        private AssetBundleUpdater(UpdateService updateService)
+        {
+            _updateService = updateService;
+        }
         
         public Task InitAsync()
         {

@@ -37,8 +37,8 @@ namespace Core.AssetBundles.Update.State
                     assetBundleUpdater.GetContext().UpdateCheckProgress(cureent, total));
 
                 // 替换正式清单文件
-                var tempListPath = PathUtility.GetAbLoadPath(FileUtility.TempListFileDefaultName);
-                var formalListPath = PathUtility.GetAbLoadPath(FileUtility.ListFileDefaultName);
+                var tempListPath = PathUtility.GetAbLoadPath(FileUtility.TempCatalogDefaultName);
+                var formalListPath = PathUtility.GetAbLoadPath(FileUtility.CatalogDefaultName);
                 File.Copy(tempListPath, formalListPath, true);
 
                 // 删除临时清单文件

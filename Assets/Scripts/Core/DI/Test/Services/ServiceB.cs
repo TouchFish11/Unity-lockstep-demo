@@ -4,12 +4,16 @@ namespace Core.DI.Test.Services
 {
     public class ServiceB
     {
-        [Inject]  private FactoryC FactoryC;
-        [Inject]  private ServiceA ServiceA;
+        private ServiceA ServiceA;
+        
+        public ServiceB(ServiceA ServiceA)
+        {
+            this.ServiceA = ServiceA;
+        }
         
         public void DoSomething()
         {
-            Debug.Log($"Service B:{FactoryC},{ServiceA}");
+            //Debug.Log($"Service B:{FactoryC},{ServiceA}");
         }
     }
 }

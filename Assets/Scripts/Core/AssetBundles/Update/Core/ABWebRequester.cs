@@ -72,7 +72,13 @@ namespace Core.AssetBundles.Update.Core
                 // 设置连接超时时间
                 _request.timeout = GlobalSettings.Instance.connectTimeout;
                 // 设置自定义流下载处理器
-                _request.downloadHandler = DIContainer.Create<DownloadHandlerStream>(constructorArgs: new object[] { savePath, IsAppend, DownloadedBytes });
+                _request.downloadHandler = DIContainer.Create<DownloadHandlerStream>(constructorArgs: 
+                    new ParameterArg[]
+                    {
+                        new() {ArgName = "savePath", ArgValue = savePath},
+                        new() {ArgName = "isAppend", ArgValue = IsAppend},
+                        new() {ArgName = "downloadedBytes", ArgValue = DownloadedBytes}
+                    });
                 // 设置请求头：Range指定从已下载字节数的位置开始下载
                 _request?.SetRequestHeader("Range", $"bytes={DownloadedBytes}-");
  

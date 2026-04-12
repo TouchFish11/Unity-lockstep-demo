@@ -56,7 +56,7 @@ namespace Game
             // // 注册框架单例
             // DIContainer.RegisterSingletons();
             // 注入依赖
-            DIContainer.InjectDependencies();
+            //DIContainer.GenerateBindInstance();
             // 初始化框架
             return DIContainer.InitAsync();
         }

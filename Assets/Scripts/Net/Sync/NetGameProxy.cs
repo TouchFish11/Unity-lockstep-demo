@@ -25,7 +25,7 @@ namespace Net.Sync
         
         public INetGameProxy Init(NetConfig netConfig)
         {
-            _netManager = DIContainer.Create<NetManager>(constructorArgs: netConfig);
+            _netManager = DIContainer.Create<NetManager>(constructorArgs: new ParameterArg { ArgName = "config", ArgValue = netConfig});
             _netManager.OnConnected += OnGameConnectedInternal;
             _netManager.OnMessageReceived += OnMessageReceive;
             _router = DIContainer.Create<MessageRouter>();
