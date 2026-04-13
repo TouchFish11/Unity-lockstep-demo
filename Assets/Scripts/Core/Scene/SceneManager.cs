@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
-using Core.DI;
 using Core.Mono;
-using Core.Singleton;
 using Core.Utility;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -17,23 +15,17 @@ namespace Core.Scene
     /// <summary>
     /// 场景管理类，负责场景的异步加载，继承单例基类并实现ISceneManager接口
     /// </summary>
-    public class SceneManager : ISceneManager, IInitializable
+    public class SceneManager : ISceneManager
     {
-        public int InitPriority => 2;
-
+        private readonly IMonoAdapter _monoAdapter;
+        private IAssetBundleManager _assetBundleManager;
         // 场景路径缓存
         private List<string> _scenePaths;
-        [Inject] private IMonoAdapter _monoAdapter;
-        [Inject] private IAssetBundleManager _assetBundleManager;
         
-        private SceneManager()
+        private SceneManager(IMonoAdapter monoAdapter, IAssetBundleManager assetBundleManager)
         {
-
-        }
-
-        public Task InitAsync()
-        {
-            return Task.CompletedTask;
+            _monoAdapter = monoAdapter;
+            _assetBundleManager = assetBundleManager;
         }
 
         /// <summary>

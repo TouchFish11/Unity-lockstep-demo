@@ -1,15 +1,14 @@
 using System;
-using System.Threading.Tasks;
-using Core.Singleton;
 using UnityEngine;
 using UnityEngine.Video;
 
 namespace Core.Video
 {
-    public class VideoManager : IVideoManager, IInitializable
+    /// <summary>
+    /// 视频播放管理器
+    /// </summary>
+    public class VideoPlayManager : IVideoManager
     {
-        public int InitPriority => 0;
-
         private VideoPlayer videoPlayer;
 
         public event Action OnPrePlay;
@@ -19,27 +18,17 @@ namespace Core.Video
         /// </summary>
         public event Action OnPostPlay;
 
-        private VideoManager()
+        private VideoPlayManager()
         {
 
         }
-
-        public Task InitAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// ������Ƶ
-        /// </summary>
-        /// <param name="videoClip"></param>
-        /// <param name="renderTexture"></param>
+        
         public void PlayVideo(VideoClip videoClip, RenderTexture renderTexture)
         {
-            // ��ʼ����Ƶ������
-            if (videoPlayer == null)
+
+            if (!videoPlayer)
             {
-                GameObject videoObj = new GameObject("VideoPlayer");
+                var videoObj = new GameObject("VideoPlayer");
                 videoPlayer = videoObj.AddComponent<VideoPlayer>();
 
                 videoPlayer.playOnAwake = false;
@@ -49,19 +38,13 @@ namespace Core.Video
             videoPlayer.targetTexture = renderTexture;
             videoPlayer.clip = videoClip;
             videoPlayer.prepareCompleted += PrepareCompleted;
-
-            // ׼��
+            
             videoPlayer.Prepare();
         }
-
-        /// <summary>
-        /// ׼�����
-        /// </summary>
-        /// <param name="source"></param>
+        
         private void PrepareCompleted(VideoPlayer source)
         {
             OnPrePlay?.Invoke();
-            // ����
             source.Play();
         }
     }

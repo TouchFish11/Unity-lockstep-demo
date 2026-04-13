@@ -1,74 +1,48 @@
 using System;
+using Core.Global;
 
 namespace Core.AssetBundles.Management
 {
     /// <summary>
-    /// 资源句柄基类
+    /// 资源句柄
     /// </summary>
-    public abstract class AssetHandle
+    public struct AssetHandle : IEquatable<AssetHandle>
     {
-        /// <summary>
-        /// 资源释放回调
-        /// </summary>
-        internal Action release;
-        
-        /// <summary>
-        /// 资源引用计数
-        /// </summary>
-        protected uint ReferenceCount { get; set; }
+        internal int HandleId { get; set; }
+
+        internal int Version { get; set; }
 
         /// <summary>
         /// 转换为泛型句柄
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T ConvertTo<T>()  where T : class
+        public AssetHandle<T> ConvertTo<T>() where T : class
         {
-            return this as T;
-        }
-        
-        /// <summary>
-        /// 添加引用计数，当资源被多处使用时
-        /// </summary>
-        internal void Retain()
-        {
-            ++ReferenceCount;
+            return new AssetHandle<T>(this);
         }
 
-        /// <summary>
-        /// 释放资源
-        /// </summary>
-        internal abstract void Release();
+        public static bool operator ==(AssetHandle handle1, AssetHandle handle2) => handle1.HandleId == handle2.HandleId && handle1.Version == handle2.Version;
+        public static bool operator !=(AssetHandle handle1, AssetHandle handle2) => !(handle1 == handle2);
+        public override bool Equals(object obj) => obj is AssetHandle handle && Equals(handle);
+        public bool Equals(AssetHandle other) => this == other;
+        public override int GetHashCode() => HashCode.Combine(HandleId, Version);
     }
     
     /// <summary>
-    /// 资源句柄
+    /// 泛型资源句柄
     /// </summary>
-    public class AssetHandle<T> : AssetHandle where T : UnityEngine.Object
+    public readonly struct AssetHandle<T> where T : class
     {
-        /// <summary>
-        /// 资源
-        /// </summary>
-        public T Asset { get; internal set; }
+        private readonly AssetHandle _innerHandle;
 
-        /// <summary>
-        /// 释放资源
-        /// </summary>
-        internal override void Release()
+        public AssetHandle(AssetHandle inner)
         {
-            if (ReferenceCount > 0)
-            {
-                --ReferenceCount;
-            }
-
-            if (ReferenceCount != 0)
-            {
-                return;
-            }
-            
-            release?.Invoke();
-            release = null;
-            Asset = null;
+            _innerHandle = inner;
         }
+        
+        public T Asset => GameAsset.GetAsset<T>(_innerHandle.HandleId, _innerHandle.Version);
+
+        public static implicit operator AssetHandle(AssetHandle<T> handle) => handle._innerHandle;
     }
 }

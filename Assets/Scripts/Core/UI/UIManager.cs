@@ -14,9 +14,8 @@ namespace Core.UI
     /// <summary>
     /// UI管理器
     /// </summary>
-    public class UIManager : IUIManager, IInitializable
+    public class UIManager : IUIManager
     {
-        public  int InitPriority => 2;
         // 存储打开的界面
         private readonly List<IPanelInfo> _panels = new();
         // 上层

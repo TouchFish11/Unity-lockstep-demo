@@ -6,12 +6,10 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Core.DI;
 using Core.Global;
 using Core.Mono;
 using Core.Net;
-using Core.Singleton;
 using Core.Utility;
 
 namespace Core.Log
@@ -19,12 +17,11 @@ namespace Core.Log
     /// <summary>
     /// 日志管理器
     /// </summary>
-    public class Logger : ILogger, IApplicationExitNotify, IInitializable
+    public class Logger : ILogger, IApplicationExitNotify
     {
         private static readonly ILogger _logger = DIContainer.Create<Logger>();
         private readonly IUWRManager _uWRManager;
         
-        public int InitPriority => -1;
         public int QuitPriority => 1;
         // 日志队列
         private readonly ConcurrentQueue<string> _logs = new();
@@ -41,18 +38,14 @@ namespace Core.Log
         // 写入日志最大间隔时间
         private static ushort WriteLogMaxIntervalTime;
 
-        private Logger(IUWRManager uWRManager)
+        private Logger(IUWRManager uWRManager, IMonoAdapter monoAdapter)
         {
             _uWRManager = uWRManager;
-        }
-
-        public Task InitAsync()
-        {
+            monoAdapter.AddApplicationExitNotify(this);
             LogSavePath = PathUtility.GetLogLocalSavePath(FileUtility.LocalLogFileName);
             WriteLogMaxIntervalTime = GlobalSettings.Instance.writeLogMaxIntervalTime;
             InitLogFile();
             StartLogWrite();
-            return Task.CompletedTask;
         }
         
         /// <summary>

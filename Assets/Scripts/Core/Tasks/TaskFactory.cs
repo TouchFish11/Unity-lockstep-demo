@@ -27,11 +27,11 @@ namespace Core.Tasks
         /// <summary>
         /// 创建泛型AssetBundle资源请求任务
         /// </summary>
-        /// <typeparam name="T">资源类型（继承自UnityEngine.Object）</typeparam>
+        /// <typeparam name="T">资源类型</typeparam>
         /// <param name="req">AB资源请求</param>
         /// <param name="token">取消令牌</param>
         /// <returns>泛型AB资源请求任务实例</returns>
-        public static AssetBundleRequestTask<T> Create<T>(AssetBundleRequest req, CancellationToken token = default) where T : Object
+        public static AssetBundleRequestTask<T> Create<T>(AssetBundleRequest req, CancellationToken token = default) where T : class
         {
             var assetBundleRequestTask = DIContainer.Create<AssetBundleRequestTask<T>>();
             assetBundleRequestTask.Init(req, token);
@@ -41,12 +41,12 @@ namespace Core.Tasks
         /// <summary>
         /// 创建泛型AssetBundle资源请求任务
         /// </summary>
-        /// <typeparam name="T">资源类型（继承自UnityEngine.Object）</typeparam>
+        /// <typeparam name="T">资源类型</typeparam>
         /// <param name="req">AB资源请求</param>
         /// <param name="assets">类型所有资源</param>
         /// <param name="token">取消令牌</param>
         /// <returns>泛型AB资源请求任务实例</returns>
-        public static AssetBundleRequestsTask<T> Create<T>(AssetBundleRequest req, IList<T> assets, CancellationToken token = default) where T : Object
+        public static AssetBundleRequestsTask<T> Create<T>(AssetBundleRequest req, IList<T> assets, CancellationToken token = default) where T : class
         {
             var assetBundleRequestsTask = DIContainer.Create<AssetBundleRequestsTask<T>>();
             assetBundleRequestsTask.Init(req, assets, token);

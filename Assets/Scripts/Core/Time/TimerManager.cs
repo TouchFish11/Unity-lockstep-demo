@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Core.DI;
 using Core.Mono;
 using Core.Pool;
-using Core.Singleton;
+using Core.Utility;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,11 +13,10 @@ namespace Core.Time
     /// 负责统一管理所有基于游戏时间/真实时间的定时器，提供创建、重置、暂停、继续、移除定时器等功能
     /// 支持时间缩放（TimeScale）控制，定时器对象使用对象池复用
     /// </summary>
-    public class TimerManager : ITimerManager, IInitializable
+    public class TimerManager : ITimerManager
     {
-        [Inject] private IMonoAdapter _monoAdapter;
-        [Inject] private IPoolManager _poolManager;
-        public int InitPriority => 0;
+        private readonly IMonoAdapter _monoAdapter;
+        private readonly IPoolManager _poolManager;
         // 存储受游戏时间影响的定时器字典（Key：定时器唯一ID，Value：定时器对象）
         private readonly Dictionary<int, Timer> _timerDic = new();
         // 存储不受游戏时间影响的定时器字典（Key：定时器唯一ID，Value：定时器对象）
@@ -31,9 +28,9 @@ namespace Core.Time
         // 定时器全局唯一ID生成器（自增）
         private static int _TimerKey;
         // 受游戏时间影响的定时器驱动协程
-        private Coroutine _coroutine;
+        private readonly Coroutine _coroutine;
         // 不受游戏时间影响的定时器驱动协程
-        private Coroutine _realCoroutine;
+        private readonly Coroutine _realCoroutine;
         // 定时器轮询间隔（单位：秒），每0.1秒检查一次定时器状态
         private const float IntervalTime = 0.1f;
         // 受游戏时间影响的协程等待对象（复用避免重复创建）
@@ -43,20 +40,17 @@ namespace Core.Time
         // 当前全局时间流速（控制TimeScale）
         private E_TimeRate _timeRate;
         
-        private TimerManager()
-        {
-
-        }
-
-        public Task InitAsync()
+        private TimerManager(IMonoAdapter monoAdapter, IPoolManager poolManager)
         {
             // 初始化时间流速为正常速度
             _timeRate = E_TimeRate.Normal;
             // 启动受游戏时间影响的定时器轮询协程
-            _coroutine = _monoAdapter.StartCoroutine(StartTiming(false, _timerDic));
+            _coroutine = monoAdapter.StartCoroutine(StartTiming(false, _timerDic));
             // 启动不受游戏时间影响的定时器轮询协程
-            _realCoroutine = _monoAdapter.StartCoroutine(StartTiming(true, _realTimerDic));
-            return Task.CompletedTask;
+            _realCoroutine = monoAdapter.StartCoroutine(StartTiming(true, _realTimerDic));
+            
+            _monoAdapter = monoAdapter;
+            _poolManager = poolManager;
         }
 
         public void Close()
@@ -215,17 +209,17 @@ namespace Core.Time
             if (timeRate != E_TimeRate.Recovery && timeRate != E_TimeRate.Zero)
             {
                 _timeRate = timeRate;
-                UnityEngine.Time.timeScale = (int)_timeRate;
+                TimeUtil.Timescale = (int)_timeRate;
             }
             // 恢复时间流速时，直接设置TimeScale为恢复值
             else if(timeRate == E_TimeRate.Recovery)
             {
-                UnityEngine.Time.timeScale = (int)_timeRate;
+                TimeUtil.Timescale = (int)_timeRate;
             }
             // 零速时，直接设置TimeScale为0
             else
             {
-                UnityEngine.Time.timeScale = (int)timeRate;
+                TimeUtil.Timescale = (int)timeRate;
             }
         }
     }

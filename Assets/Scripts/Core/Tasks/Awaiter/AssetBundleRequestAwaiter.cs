@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.CompilerServices;
-using Object = UnityEngine.Object;
 
 namespace Core.Tasks.Awaiter
 {
@@ -8,8 +7,8 @@ namespace Core.Tasks.Awaiter
     /// 针对AssetBundle资源请求的异步等待器（Awaiter）实现
     /// 用于支持Unity AssetBundle请求的await异步语法
     /// </summary>
-    /// <typeparam name="T">要加载的资源类型，必须继承自UnityEngine.Object</typeparam>
-    public readonly struct AssetBundleRequestAwaiter<T> : ICriticalNotifyCompletion where T : Object
+    /// <typeparam name="T">要加载的资源类型</typeparam>
+    public readonly struct AssetBundleRequestAwaiter<T> : ICriticalNotifyCompletion where T : class
     {
         // 持有对应的AssetBundle请求任务实例
         private readonly AssetBundleRequestTask<T> _task;

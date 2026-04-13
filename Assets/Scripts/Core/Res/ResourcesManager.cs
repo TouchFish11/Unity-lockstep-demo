@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Core.DI;
 using Core.Mono;
-using Core.Singleton;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,23 +9,16 @@ namespace Core.Res
     /// <summary>
     /// Resources
     /// </summary>
-    public class ResourcesManager : IResourcesManager, IInitializable
+    public class ResourcesManager : IResourcesManager
     {
-        [Inject] private IMonoAdapter _monoAdapter;
+        private readonly IMonoAdapter _monoAdapter;
         
-        public int InitPriority => 0;
-
-        // 
+        // 资源名称到资源信息的映射
         private readonly Dictionary<string, BaseResourcesInfo> _nameToResInfoMap = new();
 
-        private ResourcesManager()
+        private ResourcesManager(IMonoAdapter monoAdapter)
         {
-
-        }
-
-        public Task InitAsync()
-        {
-            return Task.CompletedTask;
+            _monoAdapter = monoAdapter;
         }
         
         public T Load<T>(string resPath) where T : Object

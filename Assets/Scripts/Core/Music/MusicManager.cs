@@ -4,7 +4,6 @@ using Core.DI;
 using Core.Loader.Audio;
 using Core.Mono;
 using Core.Pool;
-using Core.Singleton;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -15,12 +14,10 @@ namespace Core.Music
     /// 负责背景音乐和音效的加载、播放、暂停、停止、音量调节等核心逻辑
     /// 音效采用对象池管理，减少频繁创建销毁对象的性能开销
     /// </summary>
-    public class MusicManager : IMusicManager, IInitializable
+    public class MusicManager : IMusicManager
     {
-        [Inject] private IMonoAdapter _monoAdapter;
-        [Inject] private IPoolManager _poolManager;
+        private readonly IPoolManager _poolManager;
         
-        public int InitPriority => 0;
         // 音效播放器列表
         private readonly Dictionary<int, AudioSource> _sounds = new();
         // 待移除的音频源Id
@@ -37,12 +34,10 @@ namespace Core.Music
         /// 私有构造函数（单例模式）
         /// 注册帧更新监听，用于检测音效播放状态并回收无效音效对象
         /// </summary>
-        private MusicManager(){}
-
-        public Task InitAsync()
+        private MusicManager(IMonoAdapter monoAdapter, IPoolManager poolManager)
         {
-            _monoAdapter.AddUpdateListener(OnUpdate);
-            return Task.CompletedTask;
+            monoAdapter.AddUpdateListener(OnUpdate);
+            _poolManager = poolManager;
         }
 
         /// <summary>

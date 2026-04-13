@@ -6,9 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
-using Core.DI;
 using Core.Serialize.Json;
-using Core.Singleton;
 using HybridCLR;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -18,23 +16,22 @@ namespace Core.HotUpdate
     /// <summary>
     /// 热更新管理器
     /// </summary>
-    public class HotUpdateManager : IHotUpdateManager, IInitializable
+    public class HotUpdateManager : IHotUpdateManager
     {
-        public int InitPriority => 2;
         // 缓存热更程序集名称
         private readonly ConcurrentBag<string> _assemblyNames = new();
         // 热更新程序集设置
         private HotUpdateAssemblySettings _hotUpdateAssemblySettings;
-        [Inject] private IAssetBundleManager _assetBundleManager;
-        [Inject] private IJsonManager _jsonManager;
         
-        private HotUpdateManager(){}
+        private readonly IAssetBundleManager _assetBundleManager;
+        private readonly IJsonManager _jsonManager;
 
-        public Task InitAsync()
+        private HotUpdateManager(IAssetBundleManager assetBundleManager,  IJsonManager jsonManager)
         {
-            return Task.CompletedTask;
+            _assetBundleManager = assetBundleManager;
+            _jsonManager = jsonManager;
         }
-
+        
         public void LoadMetadataForAOTAssemblies(IReadOnlyList<string> aotDlls)
         {
             foreach (var aotDllName in aotDlls)
@@ -48,9 +45,10 @@ namespace Core.HotUpdate
         public async Task PreLoadAssembliesAsync(string abName)
         {
             // 加载热更新AB包资源
-            var batchHandle = await GameAsset.LoadAssetsAsync<TextAsset>();
+            var handle = await GameAsset.LoadAssetsAsync<TextAsset>();
             
-            var textAsset = batchHandle.Assets.Find(text => text.name.Contains(nameof(HotUpdateAssemblySettings)));
+            var list = new List<TextAsset>(handle.Asset);
+            var textAsset = list.Find(text => text.name.Contains(nameof(HotUpdateAssemblySettings)));
             if (textAsset)
             {
                 _hotUpdateAssemblySettings = _jsonManager.FromJson<HotUpdateAssemblySettings>(textAsset.text);
@@ -73,7 +71,7 @@ namespace Core.HotUpdate
             // 顺序加载程序集资源
             foreach (var nameWithExtension in _hotUpdateAssemblySettings.preloadHotUpdateAssemblies)
             {
-                foreach (var dllText in batchHandle.Assets)
+                foreach (var dllText in handle.Asset)
                 {
                     if (nameWithExtension != dllText.name) continue;
                     // 多线程加载程序集
@@ -82,7 +80,7 @@ namespace Core.HotUpdate
                 }
             }
 
-            GameAsset.Release(batchHandle);
+            GameAsset.Release(handle);
         }
 
         public async Task LoadAssembliesAsync(string abName)
@@ -90,9 +88,9 @@ namespace Core.HotUpdate
             try
             {
                 // 加载热更新AB包资源
-                var batchHandle = await GameAsset.LoadAssetsAsync<TextAsset>();
+                var handle = await GameAsset.LoadAssetsAsync<TextAsset>();
             
-                foreach (var dllText in batchHandle.Assets)
+                foreach (var dllText in handle.Asset)
                 {
                     if (dllText.name == nameof(HotUpdateAssemblySettings)) continue;
                     if (_assemblyNames.Contains(dllText.name[..dllText.name.LastIndexOf('.')])) continue;

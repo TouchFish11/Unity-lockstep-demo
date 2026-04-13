@@ -3,10 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using Core.Extensions;
-using Core.Mono;
-using Core.Singleton;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -20,16 +16,18 @@ namespace Core.DI
         // 绑定标志
         private const BindingFlags _bindingFlags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
         // 接口类型映射
-        private static readonly Dictionary<Type, object> _interfaceMap = new();
+        private static readonly ConcurrentDictionary<Type, object> _interfaceMap = new();
         // 实例类型映射
-        private static readonly Dictionary<Type, object> _instanceMap = new();
+        private static readonly ConcurrentDictionary<Type, object> _instanceMap = new();
         // 存储接口类型与其默认实现类型的映射（由 BindSingleton 填充）
-        private static readonly Dictionary<Type, Type> _interfaceToImpl = new();
-        // 记录类型是否为单例（默认为瞬态）
-        private static readonly Dictionary<Type, bool> _lifetimes = new();
-
-        private static readonly Stack<Type> _resolveStack = new();
-
+        private static readonly ConcurrentDictionary<Type, Type> _interfaceToImpl = new();
+        // 记录类型是否为单例（默认为瞬态）,key为实例类型
+        private static readonly ConcurrentDictionary<Type, bool> _lifetimes = new();
+        // 解析栈，处理循环依赖
+        private static readonly ConcurrentStack<Type> _resolveStack = new();
+        // 类型构造缓存，缓存能创建该类型的所有构造函数
+        private static readonly ConcurrentDictionary<Type, List<ConstructorInfo>> _constructorCache = new();
+        
         /// <summary>
         /// 绑定类型单例，这个类型只能作为单例使用
         /// </summary>
@@ -40,7 +38,6 @@ namespace Core.DI
             BindType<TInterface, TInstance>();
             _lifetimes.TryAdd(typeof(TInstance), true);
             
-            // 原有的实例创建逻辑...
             // 注意：此处建议延迟创建实例，改为在首次使用时再创建，避免初始化顺序问题
         }
 
@@ -49,9 +46,12 @@ namespace Core.DI
         /// 若需将绑定的类型作为单例，而使用BindSingleton方法
         /// </summary>
         /// <typeparam name="TInterface">接口类型</typeparam>
-        /// <typeparam name="TInstance">实例类型</typeparam>
+        /// <typeparam name="TInstance">实现类型</typeparam>
         public static void BindType<TInterface, TInstance>() where TInterface : class where TInstance : class, TInterface
         {
+            if (!typeof(TInterface).IsAssignableFrom(typeof(TInstance)))
+                throw new Exception($"{nameof(DIContainer)}.{nameof(BindType)}: {typeof(TInterface).Name} is not assignable from {typeof(TInstance).Name}");
+            
             // 记录接口与实现类型的映射
             _interfaceToImpl.TryAdd(typeof(TInterface), typeof(TInstance));
         }
@@ -62,7 +62,7 @@ namespace Core.DI
         /// <param name="type">实例/接口类型</param>
         /// <returns>返回自动创建的实例，若参数为null，则返回null</returns>
         /// <exception cref="Exception">若参数为接口类型，但未在_interfaceToImpl中找到映射则抛出异常</exception>
-        public static object Resolve(Type type)
+        private static object Resolve(Type type)
         {
             if (type == null) return null;
             
@@ -105,12 +105,13 @@ namespace Core.DI
             }
             finally
             {
-                _resolveStack.Pop();
+                _resolveStack.TryPop(out _);
             }
         }
         
         /// <summary>
         /// 通过反射创建实例。先尝试构造函数注入（选择参数都能解析的构造函数），再对标记了[Inject]的字段/属性进行补充注入
+        /// 若类型已经通过BindSingleton绑定，则忽略参数isSingleton
         /// </summary>
         /// <param name="isSingleton">是否是单例，true创建为单例，false则是瞬态对象</param>
         /// <param name="constructorArgs">构造参数</param>
@@ -129,9 +130,21 @@ namespace Core.DI
             InjectIntoInstance(newInstance);
             
             Debug.Log($"创建类型：{typeof(T)}");
+
+            // 先检查是否是绑定单例的具体类型，是的话就忽略isSingleton参数
+            var isBindSingleton = _lifetimes.TryGetValue(typeof(T), out var lifetime) && lifetime;
+            if (isBindSingleton)
+            {
+                _instanceMap.TryAdd(typeof(T), newInstance);
+                return newInstance as T;
+            }
             
+            // 没有绑定过，就以参数为准
             // 不是单例直接返回
-            if (!isSingleton) return (T)newInstance;
+            if (!isSingleton)
+            {
+                return (T)newInstance;
+            }
             return _instanceMap.TryAdd(typeof(T), newInstance) ? (T)newInstance : throw new ArgumentException($"{typeof(T)} already exists.");
         }
 
@@ -149,18 +162,22 @@ namespace Core.DI
             if (instanceType == null)
                 return null;
             
+            var instance = _instanceMap.GetValueOrDefault(instanceType) ?? 
+                           (interfaceType != null ? _interfaceMap.GetValueOrDefault(interfaceType) : null);
+            if (instance != null)
+                return instance;
+            
             // 通过构造函数创建实例
-            var instance = CreateInstanceWithConstructorInjection(instanceType, constructorArgs);
+            var newInstance = CreateInstanceWithConstructorInjection(instanceType, constructorArgs);
             // 注入字段/属性
-            InjectIntoInstance(instance);
+            InjectIntoInstance(newInstance);
             
             Debug.Log($"创建类型：{instanceType}");
             
             // 不是单例直接返回
-            if (!isSingleton) return instance;
-            return _instanceMap.TryAdd(instanceType, instance) && (interfaceType == null || _interfaceMap.TryAdd(interfaceType, instance)) 
-                ? instance
-                : throw new ArgumentException($"{interfaceType}-{instanceType} already exists.");
+            if (!isSingleton) return newInstance;
+            return _instanceMap.TryAdd(instanceType, newInstance) && (interfaceType == null || _interfaceMap.TryAdd(interfaceType, newInstance)) 
+                ? newInstance : throw new ArgumentException($"{interfaceType}-{instanceType} already exists.");
         }
 
         /// <summary>
@@ -173,11 +190,17 @@ namespace Core.DI
         /// <exception cref="ArgumentException">重复创建单例类型抛出异常</exception>
         private static object CreateMono(Type interfaceType, Type instanceType, bool isSingleton)
         {
+            var instance = _instanceMap.GetValueOrDefault(instanceType) ?? 
+                           (interfaceType != null ? _interfaceMap.GetValueOrDefault(interfaceType) : null);
+            if (instance != null)
+                return instance;
+            
             var go = new GameObject(instanceType.Name);
             if (isSingleton) 
                 Object.DontDestroyOnLoad(go);
             var component = go.AddComponent(instanceType);
             InjectIntoInstance(component); // 添加注入
+            Debug.Log($"创建类型：{instanceType}");
             if (isSingleton)
             {
                 _instanceMap.TryAdd(instanceType, component);
@@ -185,17 +208,21 @@ namespace Core.DI
             }
             return component;
         }
-
+        
         /// <summary>
         /// 传入GameObject对象为其挂载泛型类型脚本，并初始化其中被Inject修饰的字段/属性
         /// </summary>
         /// <param name="obj">GameObject对象</param>
         /// <typeparam name="T">可挂载的组件类型</typeparam>
-        /// <returns>若参数为null，则返回null；否则返回T类型；若类型不能添加呢？？？</returns>
+        /// <returns>若参数为null，则返回null；否则返回T类型；</returns>
+        /// <exception cref="ArgumentException">若 T 不是 Component 子类，则抛出异常</exception>
         public static T CreateInstance<T>(GameObject obj) where T : class
         {
             if (!obj)
                 return null;
+            
+            if (!typeof(Component).IsAssignableFrom(typeof(T)))
+                throw new ArgumentException($"{typeof(T)} is not a Component type");
             
             var component = obj.AddComponent(typeof(T)) as T;
             // 注入字段/属性
@@ -204,78 +231,103 @@ namespace Core.DI
         }
 
         /// <summary>
-        /// 通过构造函数创建实例
+        /// 通过构造函数创建实例并注入参数依赖
         /// </summary>
         /// <param name="type">必须是实例类型</param>
         /// <param name="explicitArgs">构造函数参数</param>
         /// <returns></returns>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="Exception">若是接口类型，则抛出异常</exception>
         private static object CreateInstanceWithConstructorInjection(Type type, ParameterArg[] explicitArgs)
         {
             if (type.IsInterface)
-                throw new ArgumentException($"Type is not an interface，{type}");
+                throw new ArgumentException($"{nameof(DIContainer)}:Type is an interface, not allowed，{type}");
+
+            Dictionary<string, object> _argMap = null;
+            if (explicitArgs != null && explicitArgs.Length > 0)
+            {
+                // 临时字典，参数名称到值的映射，解决多线程同时创建实例问题（线程安全字典）
+                 _argMap = new Dictionary<string, object>();
+                // 将显式参数转换为按参数名称索引类型的字典
+                foreach (var kv in explicitArgs)
+                    _argMap.TryAdd(kv.ArgName, kv.ArgValue);
+            }
             
-            // 临时字典，参数名称到值的映射，解决多线程同时创建实例问题（线程安全字典）
-             ConcurrentDictionary<string, object> _argMap = new();
-            // 将显式参数转换为按参数名称索引类型的字典
-            foreach (var kv in explicitArgs)
+            if (_constructorCache.TryGetValue(type, out var constructorInfos))
             {
-                _argMap.TryAdd(kv.ArgName, kv.ArgValue);
-            }
-
-            // 获取所有的构造函数
-            var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            // 按参数数量降序排序（优先匹配参数最多的构造函数）
-            Array.Sort(constructors, (a, b) => b.GetParameters().Length.CompareTo(a.GetParameters().Length));
-            // 遍历所有构造函数
-            foreach (var ctor in constructors)
-            {
-                // 获取当前构造所有参数
-                var parameters = ctor.GetParameters();
-                var args = new object[parameters.Length];
-                var allResolved = true;
-
-                for (var i = 0; i < parameters.Length; i++)
+                foreach (var constructorInfo in constructorInfos)
                 {
-                    var paramType = parameters[i].ParameterType;
-                    var paramName = parameters[i].Name;
-                    // 优先使用显式参数中名称匹配的值
-                    if (_argMap.TryGetValue(paramName, out var value))
-                    {
-                        args[i] = value;
-                        continue;
-                    }
-
-                    // 尝试从容器中获取依赖
-                    value = Resolve(paramType);
-                    if (value != null)
-                    {
-                        args[i] = value;
-                        continue;
-                    }
-
-                    // 如果是可选参数，使用默认值
-                    if (parameters[i].IsOptional)
-                    {
-                        args[i] = parameters[i].DefaultValue;
-                        continue;
-                    }
-
-                    // 无法解析，这个构造函数不可用，用下一个构造函数再次尝试
-                    allResolved = false;
-                    break;
-                }
-
-                // 找到可用构造，创建实例
-                if (allResolved)
-                {
-                    return ctor.Invoke(args);
+                    var (available, instance) = MatchCtorArg(constructorInfo, _argMap);
+                    if (available)
+                        return instance;
                 }
             }
+            // 首次创建该类型
+            else
+            {
+                // 获取所有的构造函数
+                var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                // 按参数数量降序排序（优先匹配参数最多的构造函数）
+                Array.Sort(constructors, (a, b) => b.GetParameters().Length.CompareTo(a.GetParameters().Length));
+                // 缓存所有构造
+                _constructorCache.TryAdd(type, new List<ConstructorInfo>(constructors));
+                foreach (var constructorInfo in constructors)
+                {
+                    var (available, instance) = MatchCtorArg(constructorInfo, _argMap);
+                    if (available)
+                    {
+                        return instance;
+                    }
+                } 
+            }
+            
+            // 如果没有合适的构造函数，抛出异常，可能会因为无法解析的参数名，而抛出异常
+            throw new Exception($"Cannot create instance of {type.Name}: no suitable constructor found");
+        }
 
-            // 如果没有合适的构造函数，尝试无参构造
-            var defaultCtor = type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
-            return defaultCtor != null ? defaultCtor.Invoke(null) : throw new Exception($"Cannot create instance of {type.Name}: no suitable constructor found");
+        /// <summary>
+        /// 匹配构造参数
+        /// </summary>
+        /// <param name="ctor">构造信息</param>
+        /// <param name="argMap">参数映射，可为null</param>
+        /// <returns>(是否可用，实例)</returns>
+        private static (bool available, object instance) MatchCtorArg(ConstructorInfo ctor, Dictionary<string, object> argMap)
+        {
+            // 获取当前构造所有参数
+            var parameters = ctor.GetParameters();
+            var args = new object[parameters.Length];
+
+            for (var i = 0; i < parameters.Length; i++)
+            {
+                var paramType = parameters[i].ParameterType;
+                var paramName = parameters[i].Name;
+                // 优先使用显式参数中名称匹配的值
+                if (argMap != null && argMap.TryGetValue(paramName, out var value))
+                {
+                    args[i] = value;
+                    continue;
+                }
+
+                // 尝试从容器中获取依赖
+                value = Resolve(paramType);
+                if (value != null)
+                {
+                    args[i] = value;
+                    continue;
+                }
+
+                // 如果是可选参数，使用默认值
+                if (parameters[i].IsOptional)
+                {
+                    args[i] = parameters[i].DefaultValue;
+                    continue;
+                }
+
+                // 无法解析，这个构造函数不可用，用下一个构造函数再次尝试
+                return (false, null);
+            }
+
+            // 找到可用构造，创建实例
+            return (true, ctor.Invoke(args));
         }
         
         /// <summary>
@@ -329,34 +381,48 @@ namespace Core.DI
             }
         }
 
-        public static Task InitAsync()
-        {
-            List<IApplicationExitNotify> notifies = new(_interfaceMap.Values.ToArray(obj => obj as IApplicationExitNotify));
-            SingletonInitializer.InitQuit(GetInstance<IMonoAdapter>(), notifies);
-            // 初始化单例
-            List<IInitializable> initializers = new(_interfaceMap.Values.ToArray(obj => obj as IInitializable));
-            return SingletonInitializer.InitAsync(initializers);
-        }
-
         /// <summary>
         /// 获取实例
         /// </summary>
-        /// <typeparam name="T">传入实例实现的接口类型</typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">接口类型/实例类型</typeparam>
+        /// <returns>未找到返回null</returns>
         public static T GetInstance<T>() where T : class
         {
-            if (_interfaceMap.ContainsKey(typeof(T))) return _interfaceMap[typeof(T)] as T;
+            var type = typeof(T);
+            if (_interfaceMap.TryGetValue(type, out var obj) && obj is T t1)
+                return t1;
+            if (_instanceMap.TryGetValue(type, out obj) && obj is T t2)
+                return t2;
             return null;
         }
-        
+
         /// <summary>
-        /// 移除依赖缓存，传入具体类型
+        /// 解绑接口对该类型的映射，且从缓存中移除实例，移除后需重新BindSingleton或BindType
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="implementationType">具体类型，为空则直接return，</param>
+        /// <param name="interfaceType">若实现类型存在接口，则传入对应接口，否则为null</param>
         /// <returns></returns>
-        public static bool RemoveDependency<T>()
+        public static void Unbind(Type implementationType, Type interfaceType = null)
         {
-            return _interfaceMap.Remove(typeof(T));
+            if(implementationType == null) return;
+
+            if (interfaceType == null)
+            {
+                var interfaces = implementationType.GetInterfaces();
+                foreach (var face in interfaces)
+                {
+                    _interfaceToImpl.Remove(face, out _);
+                    _interfaceMap.Remove(face, out _);
+                }
+            }
+            else
+            {
+                _interfaceToImpl.Remove(interfaceType, out _);
+                _interfaceMap.Remove(interfaceType, out _);
+            }
+            
+            _lifetimes.Remove(implementationType, out _);
+            _instanceMap.Remove(implementationType, out _);
         }
 
         /// <summary>
@@ -365,6 +431,11 @@ namespace Core.DI
         public static void Clear()
         {
             _interfaceMap.Clear();
+            _instanceMap.Clear();
+            _interfaceToImpl.Clear();
+            _lifetimes.Clear();
+            _resolveStack.Clear();
+            _constructorCache.Clear();
         }
     }
 }

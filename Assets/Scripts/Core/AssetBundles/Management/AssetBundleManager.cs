@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.DI;
 using Core.Serialize.Json;
-using Core.Singleton;
 using Core.Systems.Memorys;
 using Core.Utility;
 using UnityEngine;
@@ -15,12 +13,9 @@ namespace Core.AssetBundles.Management
     /// <summary>
     /// AB包管理器
     /// </summary>
-    public class AssetBundleManager : IAssetBundleManager, IInitializable
+    public class AssetBundleManager : IAssetBundleManager
     {
-        [Inject] private IMemoryMonitor _memoryMonitor;
-        [Inject] private IJsonManager _jsonManager;
-        
-        public int InitPriority => 1;
+        private readonly IJsonManager _jsonManager;
         // 缓存包包装器
         private readonly Dictionary<string, BundleWrapper> _nameToWrapperMap = new();
         
@@ -29,16 +24,11 @@ namespace Core.AssetBundles.Management
         /// </summary>
         public AssetCatalog Catalog { get; private set; }
         
-        private AssetBundleManager()
-        {
-            
-        }
-        
-        public Task InitAsync()
+        private AssetBundleManager(IMemoryMonitor memoryMonitor, IJsonManager jsonManager)
         {
             // 注册事件
-            _memoryMonitor.Register(this);
-            return Task.CompletedTask;
+            memoryMonitor.Register(this);
+            _jsonManager = jsonManager;
         }
 
         /// <summary>

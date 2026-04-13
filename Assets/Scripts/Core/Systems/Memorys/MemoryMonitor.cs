@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Core.DI;
 using Core.Mono;
-using Core.Singleton;
 using Core.Utility;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -13,10 +10,8 @@ namespace Core.Systems.Memorys
     /// <summary>
     /// 内存监视器
     /// </summary>
-    public class MemoryMonitor : IMemoryMonitor, IInitializable
+    public class MemoryMonitor : IMemoryMonitor
     {
-        [Inject] private IMonoAdapter _monoAdapter;
-        public int InitPriority => 0;
         // 监听者列表
         private readonly List<IMemoryListener> _listeners = new();
         // 当前内存占用级别
@@ -35,16 +30,10 @@ namespace Core.Systems.Memorys
         private long currentSystemMemory;
         private float currentRatio;
 
-        private MemoryMonitor()
+        private MemoryMonitor(IMonoAdapter monoAdapter)
         {
-            
-        }
-        
-        public Task InitAsync()
-        {
-            _monoAdapter.AddUpdateListener(OnUpdate);
+            monoAdapter.AddUpdateListener(OnUpdate);
             Application.lowMemory += OnLowMemory;
-            return Task.CompletedTask;
         }
 
         public void Register(IMemoryListener listener)

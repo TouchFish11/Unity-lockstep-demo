@@ -15,18 +15,15 @@ namespace Core.HotUpdate
     /// <summary>
     /// 模拟热更新管理器
     /// </summary>
-    public class HotUpdateMockManager : IHotUpdateManager, IInitializable
+    public class HotUpdateMockManager : IHotUpdateManager
     {
-        public int InitPriority => 2;
         // 缓存热更程序集名称
         private readonly ConcurrentBag<string> _assemblyNames = new();
-        [Inject] private IAssetBundleManager _assetBundleManager;
-        
-        private HotUpdateMockManager(){}
+        private readonly IAssetBundleManager _assetBundleManager;
 
-        public Task InitAsync()
+        private HotUpdateMockManager(IAssetBundleManager assetBundleManager)
         {
-            return Task.CompletedTask;
+            _assetBundleManager = assetBundleManager;
         }
 
         /// <summary>
@@ -44,8 +41,8 @@ namespace Core.HotUpdate
         public async Task LoadAssembliesAsync(string abName)
         {
             // 加载热更新AB包资源
-            var batchHandle = await GameAsset.LoadAssetsAsync<TextAsset>();
-            foreach (var dllText in batchHandle.Assets)
+            var handle = await GameAsset.LoadAssetsAsync<TextAsset>();
+            foreach (var dllText in handle.Asset)
             {
                 if (_assemblyNames.Contains(dllText.name[..dllText.name.LastIndexOf('.')]))
                 {
@@ -65,7 +62,7 @@ namespace Core.HotUpdate
                 }
             }
 
-            GameAsset.Release(batchHandle);
+            GameAsset.Release(handle);
             _assetBundleManager.UnloadBundle(abName);
         }
 

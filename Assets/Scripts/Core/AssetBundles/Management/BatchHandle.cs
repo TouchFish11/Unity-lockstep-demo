@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Core.AssetBundles.Management
@@ -6,7 +7,8 @@ namespace Core.AssetBundles.Management
     /// 复合句柄
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BatchHandle<T> : AssetHandle where T : UnityEngine.Object
+    [Obsolete]
+    public class BatchHandle<T> where T : UnityEngine.Object
     {
         private readonly List<AssetHandle<T>> _handles;
 
@@ -21,11 +23,11 @@ namespace Core.AssetBundles.Management
             }
         }
         
-        internal override void Release()
+        internal void Release()
         {
             foreach (var handle in _handles)
             {
-                handle.Release();
+                //handle.Release();
             }
             
             Assets.Clear();

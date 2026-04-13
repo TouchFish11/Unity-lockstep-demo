@@ -1,10 +1,9 @@
 using System;
 using System.Runtime.CompilerServices;
-using Object = UnityEngine.Object;
 
 namespace Core.Tasks.Awaiter
 {
-    public readonly struct AssetBundleRequestsAwaiter<T> : ICriticalNotifyCompletion where T : Object
+    public readonly struct AssetBundleRequestsAwaiter<T> : ICriticalNotifyCompletion where T : class
     {
         // 持有对应的AssetBundle请求任务实例
         private readonly AssetBundleRequestsTask<T> _task;

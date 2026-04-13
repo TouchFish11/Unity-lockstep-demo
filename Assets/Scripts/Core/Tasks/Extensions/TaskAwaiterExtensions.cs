@@ -29,7 +29,7 @@ namespace Core.Tasks.Extensions
         /// <param name="req">AssetBundle资源请求实例</param>
         /// <param name="token">取消令牌，可选参数，用于取消异步操作</param>
         /// <returns>封装后的泛型AssetBundleRequestTask任务实例</returns>
-        public static AssetBundleRequestTask<T> ToTask<T>(this AssetBundleRequest req, CancellationToken token = default) where  T : Object
+        public static AssetBundleRequestTask<T> ToTask<T>(this AssetBundleRequest req, CancellationToken token = default) where  T : class
         {
             return TaskFactory.Create<T>(req, token);
         }
@@ -42,7 +42,7 @@ namespace Core.Tasks.Extensions
         /// <param name="assets">类型所有资源</param>
         /// <param name="token">取消令牌，可选参数，用于取消异步操作</param>
         /// <returns>封装后的泛型AssetBundleRequestTask任务实例</returns>
-        public static AssetBundleRequestsTask<T> ToTask<T>(this AssetBundleRequest req, IList<T> assets, CancellationToken token = default) where  T : Object
+        public static AssetBundleRequestsTask<T> ToTask<T>(this AssetBundleRequest req, IList<T> assets, CancellationToken token = default) where  T : class
         {
             return TaskFactory.Create(req, assets, token);
         }

@@ -15,10 +15,8 @@ namespace Core.EditorRes
     /// <summary>
     /// 编辑器资源管理器
     /// </summary>
-    public class EditorResManager : IEditorResManager, IInitializable
+    public class EditorResManager : IEditorResManager
     {
-        public int InitPriority => 0;
-
         /// <summary>
         /// 编辑器资源根目录
         /// </summary>
@@ -28,11 +26,6 @@ namespace Core.EditorRes
         private List<FileInfo> _fileInfoList = new();
 
         private EditorResManager(){}
-
-        public Task InitAsync()
-        {
-            return Task.CompletedTask;
-        }
 
         public T LoadEditorAsset<T>(string assetName, string suffixName = "") where T : Object
         {

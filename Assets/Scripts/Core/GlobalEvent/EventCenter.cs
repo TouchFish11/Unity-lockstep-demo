@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Core.DI;
 using Core.Mono;
-using Core.Singleton;
 
 namespace Core.GlobalEvent
 {
@@ -12,10 +9,8 @@ namespace Core.GlobalEvent
     /// 职责：统一管理事件的订阅、取消订阅、触发、延迟触发，支持按类型过滤事件
     /// 特性：单例模式、每帧限制延迟事件触发数量，避免单帧事件过多导致性能问题
     /// </summary>
-    public class EventCenter : IEventCenter, IInitializable
+    public class EventCenter : IEventCenter
     {
-        [Inject] private IMonoAdapter _monoAdapter;
-        public int InitPriority => 0;
         // 存储事件类型与对应事件信息列表的映射表
         // Key：事件类型（TEvent），Value：该类型下所有订阅的事件信息
         private readonly Dictionary<Type, List<BaseEventInfo>> _typeToEventInfoMap = new();
@@ -34,12 +29,9 @@ namespace Core.GlobalEvent
         /// 私有构造函数（单例模式）
         /// 初始化：注册Update监听，用于每帧处理延迟事件队列
         /// </summary>
-        private EventCenter(){}
-
-        public Task InitAsync()
+        private EventCenter(IMonoAdapter monoAdapter)
         {
-            _monoAdapter.AddUpdateListener(OnUpdate);
-            return Task.CompletedTask;
+            monoAdapter.AddUpdateListener(OnUpdate);
         }
 
         /// <summary>

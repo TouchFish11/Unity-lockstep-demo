@@ -12,24 +12,17 @@ namespace Core.Reflection
     /// 工厂管理器
     /// 管理器所有实现IFactory的工厂
     /// </summary>
-    public class FactoryManager : IFactoryManager, IInitializable
+    public class FactoryManager : IFactoryManager
     {
-        [Inject] private IHotUpdateManager _hotUpdateManager;
-        
-        public int InitPriority => 1;
+        private readonly IHotUpdateManager _hotUpdateManager;
         // 工厂实例类型Type到工厂接口的映射
         private readonly Dictionary<Type, IFactory> typeToFactoryMap = new();
 
-        private FactoryManager()
+        private FactoryManager(IHotUpdateManager hotUpdateManager)
         {
-
-        }
-
-        public Task InitAsync()
-        {
-            var coreAssembly = _hotUpdateManager.GetCoreModule();
+            var coreAssembly = hotUpdateManager.GetCoreModule();
             FactoryUtility.ScanAllFactory(typeToFactoryMap, coreAssembly);
-            return Task.CompletedTask;
+            _hotUpdateManager = hotUpdateManager;
         }
 
         public void InitHotFactorys()

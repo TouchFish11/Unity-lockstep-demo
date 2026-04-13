@@ -9,19 +9,13 @@ namespace Core.PreLoad
     /// <summary>
     /// 预加载管理器
     /// </summary>
-    public class PreLoadManager : IPreLoadManager, IInitializable
+    public class PreLoadManager : IPreLoadManager
     {
-        [Inject] private IAssetBundleManager _assetBundleManager;
-        public int InitPriority => 0;
-
-        private PreLoadManager()
-        {
+        private IAssetBundleManager _assetBundleManager;
         
-        }
-
-        public Task InitAsync()
+        private PreLoadManager(IAssetBundleManager assetBundleManager)
         {
-            return Task.CompletedTask;
+            _assetBundleManager = assetBundleManager;
         }
 
         /// <summary>

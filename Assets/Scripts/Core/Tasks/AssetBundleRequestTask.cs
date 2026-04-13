@@ -3,7 +3,6 @@ using System.Threading;
 using Core.Pool;
 using Core.Tasks.Awaiter;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Core.Tasks
 {
@@ -11,8 +10,8 @@ namespace Core.Tasks
     /// AssetBundle资源请求任务封装类
     /// 支持异步等待、取消操作，泛型约束为Unity引擎对象
     /// </summary>
-    /// <typeparam name="T">要加载的资源类型，继承自UnityEngine.Object</typeparam>
-    public class AssetBundleRequestTask<T> : IPoolData where T : Object
+    /// <typeparam name="T">要加载的资源类型</typeparam>
+    public class AssetBundleRequestTask<T> : IPoolData where T : class
     {
         // AssetBundle原生请求对象
         private AssetBundleRequest _abr;
@@ -67,15 +66,7 @@ namespace Core.Tasks
                         {
                             return;
                         }
-                        
-                        // 尝试获取已加载的资源并执行卸载逻辑（如果资源已加载完成）
-                        var ab = task._abr.asset;
-                        if (ab != null)
-                        {
-                            // TODO：通知管理器卸载该资源
-                            //DIContainer.GetInstance<IAssetBundleManager>().UnloadBundleAsync()
-                        }
-                    
+
                         // 标记取消异常，供后续抛出
                         _exception = new OperationCanceledException(token);
                         // 标记任务完成

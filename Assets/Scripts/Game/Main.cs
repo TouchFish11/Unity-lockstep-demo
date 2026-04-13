@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.HotUpdate;
-using Core.Log;
-using Core.Service;
 using Core.Singleton;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -28,7 +26,7 @@ namespace Game
             {
                 // 初始化游戏设置
                 InitSettings();
-                await InitDI();
+                InitDI();
                 // 初始化指定AB包
                 await DIContainer.GetInstance<IAssetBundleManager>().InitSpecifyAsync(DefaultAbNames);
                 var hotUpdateManager = DIContainer.GetInstance<IHotUpdateManager>();
@@ -51,14 +49,10 @@ namespace Game
         /// 依赖注入
         /// </summary>
         /// <returns></returns>
-        private static Task InitDI()
+        private static void InitDI()
         {
             // // 注册框架单例
-            // DIContainer.RegisterSingletons();
-            // 注入依赖
-            //DIContainer.GenerateBindInstance();
-            // 初始化框架
-            return DIContainer.InitAsync();
+            //DIContainer.RegisterSingletons();
         }
         
         /// <summary>

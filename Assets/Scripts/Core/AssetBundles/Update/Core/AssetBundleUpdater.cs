@@ -1,11 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
-using Core.DI;
 using Core.Log;
 using Core.Mono;
 using Core.Pool;
-using Core.Singleton;
 using Core.Utility;
 
 namespace Core.AssetBundles.Update.Core
@@ -13,12 +10,11 @@ namespace Core.AssetBundles.Update.Core
     /// <summary>
     /// AssetBundle更新管理器
     /// </summary>
-    public class AssetBundleUpdater : IAssetBundleUpdater, IApplicationExitNotify, IInitializable
+    public class AssetBundleUpdater : IAssetBundleUpdater, IApplicationExitNotify
     {
         // 对象池管理器接口
-        [Inject] private IPoolManager _poolManager;
+        private readonly IPoolManager _poolManager;
         
-        public int InitPriority => 1;
         public int QuitPriority => 0;
         // 更新上下文
         private ABUpdateContext _updateContext;
@@ -36,14 +32,11 @@ namespace Core.AssetBundles.Update.Core
         /// </summary>
         public EUpdatePhase UpdatePhase => _currentUpdateState?.UpdatePhase ?? EUpdatePhase.None;
 
-        private AssetBundleUpdater(UpdateService updateService)
+        private AssetBundleUpdater(IMonoAdapter monoAdapter, IPoolManager poolManager, UpdateService updateService)
         {
+            monoAdapter.AddApplicationExitNotify(this);
             _updateService = updateService;
-        }
-        
-        public Task InitAsync()
-        {
-            return Task.CompletedTask;
+            _poolManager = poolManager;
         }
 
         /// <summary>

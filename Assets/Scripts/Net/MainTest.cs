@@ -8,15 +8,13 @@ namespace Net
 {
     public class MainTest : MonoBehaviour
     {
-        private async void Start()
+        private void Start()
         {
             Application.runInBackground = true;
             // 注册框架单例
             //DIContainer.RegisterSingletons();
             // 注入依赖
             //DIContainer.InjectDependencies();
-            // 初始化框架
-            await DIContainer.InitAsync();
             
             DIContainer.BindSingleton<INetGameProxy, NetGameProxy>();
             
