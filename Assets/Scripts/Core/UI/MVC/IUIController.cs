@@ -7,10 +7,11 @@ namespace Core.UI.MVC
         /// <summary>
         /// 初始化
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="view"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        Task Init(IuiView view, IuiModel model);
+        Task Init(int id, IuiView view, IuiModel model);
         
         /// <summary>
         /// 显示

@@ -1,9 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.DI;
-using Core.Loader.Audio;
+using Core.AssetBundles.Management;
 using Core.Mono;
 using Core.Pool;
+using Core.Utility;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -17,9 +18,11 @@ namespace Core.Music
     public class MusicManager : IMusicManager
     {
         private readonly IPoolManager _poolManager;
-        
-        // 音效播放器列表
+        private readonly IMonoAdapter _monoAdapter;
+        // 音频ID对应具体的音频源，缓存存活的音频源
         private readonly Dictionary<int, AudioSource> _sounds = new();
+        // 资源键到句柄的映射缓存
+        private readonly Dictionary<string, AssetHandle<AudioClip>> _audioHandles = new();
         // 待移除的音频源Id
         private readonly List<int> _soundIds = new();
         // 背景音乐播放器
@@ -27,8 +30,7 @@ namespace Core.Music
         // 音效总开关标记（控制所有音效是否可播放）
         private bool isOpenSounds;
         // 音频源id
-        private int audioId;
-        private int priority;
+        private static int audioId;
 
         /// <summary>
         /// 私有构造函数（单例模式）
@@ -37,6 +39,7 @@ namespace Core.Music
         private MusicManager(IMonoAdapter monoAdapter, IPoolManager poolManager)
         {
             monoAdapter.AddUpdateListener(OnUpdate);
+            _monoAdapter = monoAdapter;
             _poolManager = poolManager;
         }
 
@@ -61,8 +64,12 @@ namespace Core.Music
                 
                 // 检测到未播放的音效
                 var audioSource = _sounds[id];
-                // 停止播放、清空音频片段、回收对象到池
+                // 停止播放、清空音频片段、回收对象到池、释放/移除句柄
                 audioSource.Stop();
+                var key = audioSource.clip.name;
+                var handle = _audioHandles[key];
+                GameAsset.Release(handle);
+                _audioHandles.Remove(key);
                 audioSource.clip = null;
                 _poolManager.PushObj(audioSource.gameObject);
                 _soundIds.Add(id);
@@ -78,15 +85,15 @@ namespace Core.Music
         /// <summary>
         /// 创建新背景音乐
         /// </summary>
-        /// <param name="abName"></param>
         /// <param name="musicName">背景音乐名称（对应资源包内的音频文件名）</param>
         /// <param name="Volume">音量值（0~1）</param>
         /// <param name="open">是否开启播放（true=播放，false=静音）</param>
+        /// <param name="delay">延迟播放时间，默认为0，不延迟</param>
         /// <param name="isLoop">是否循环播放（默认=true）</param>
-        public async Task CreateBackgroundMusic(string abName, string musicName, float Volume, bool open, bool isLoop = true)
+        public async Task CreateBackgroundMusic(string musicName, float Volume, bool open, float delay = 0, bool isLoop = true)
         {
             // 初始化背景音乐播放器对象（首次播放时创建）
-            if (_backgroundMusic == null)
+            if (!_backgroundMusic)
             {
                 var bkMusicObj = new GameObject($"BackgroundMusic/{musicName}");
                 _backgroundMusic = bkMusicObj.AddComponent<AudioSource>();
@@ -94,31 +101,72 @@ namespace Core.Music
                 Object.DontDestroyOnLoad(bkMusicObj);
             }
 
+            // 若重复播放相同的背景音乐，则重新开始播放该音乐
+            if (_backgroundMusic.clip && _backgroundMusic.clip.name == musicName)
+            {
+                _backgroundMusic.Play();
+                return;
+            }
+            
             // 释放上次播放的音乐文件资源
-            DIContainer.GetInstance<IAudioLoader>().UnloadClip(abName, _backgroundMusic.clip.name);
+            GameAsset.Release(_audioHandles[_backgroundMusic.clip.name]);
+            
             // 从资源包异步加载背景音乐资源
-            var audioClip = await DIContainer.GetInstance<IAudioLoader>().LoadAudioClipAsync(musicName);
+            var handle = await GameAsset.LoadAssetAsync<AudioClip>(musicName);
+            // 缓存资源句柄
+            _audioHandles.Add(musicName, handle);
             // 配置背景音乐播放器参数
-            _backgroundMusic.clip = audioClip;
+            _backgroundMusic.clip = handle.Asset;
             _backgroundMusic.loop = isLoop;
             _backgroundMusic.volume = Volume;
             _backgroundMusic.mute = !open;
-            // 开始播放
-            _backgroundMusic.Play();
+
+            // 延迟开始播放
+            if (delay != 0)
+            {
+                _backgroundMusic.PlayDelayed(delay);
+            }
+            // 立即播放
+            else
+            {
+                _backgroundMusic.Play();
+            }
         }
 
         /// <summary>
-        /// 暂停当前背景音乐
+        /// 暂停当前背景音乐，若开启变化，则内部通过开启一个协程来处理逻辑
         /// </summary>
-        public void PauseBackgroundMusic()
+        /// <param name="fade">是否逐渐停止</param>
+        /// <param name="fadeRate">若是逐渐停止，则指定变化速率，最终速度为Time.deltaTime * fadeRate的乘积；若为负数，则取绝对值</param>
+        public void PauseBackgroundMusic(bool fade = false, float fadeRate = 0)
         {
-            if (_backgroundMusic == null)
+            if (!_backgroundMusic)
             {
-                Logger.LogError("背景音乐播放器为Null，无法执行暂停操作");
+                Logger.LogError($"{nameof(MusicManager)}:The background music player is Null and cannot perform the pause operation.");
                 return;
             }
 
-            _backgroundMusic.Pause();
+            if(fade)
+                _monoAdapter.StartCoroutine(FadePause_Cor());
+            else
+                _backgroundMusic.Pause();
+            return;
+
+            IEnumerator FadePause_Cor()
+            {
+                // 记录上次的播放剪辑，避免切换后影响当前播放的音乐音量
+                var lastClip = _backgroundMusic.clip;
+                while (_backgroundMusic && _backgroundMusic.clip && _backgroundMusic.volume > 0)
+                {
+                    // 说明暂停时切换了背景音乐，则停止减少音量
+                    if(_backgroundMusic.clip != lastClip)
+                        yield break;
+                    
+                    _backgroundMusic.volume -= TimeUtil.DeltaTime * Mathf.Abs(fadeRate);
+                    yield return null;
+                }
+                _backgroundMusic?.Pause();
+            }
         }
 
         /// <summary>
@@ -126,22 +174,22 @@ namespace Core.Music
         /// </summary>
         public void StopBackgroundMusic()
         {
-            if (_backgroundMusic == null)
+            if (!_backgroundMusic)
             {
-                Logger.LogError("背景音乐播放器为Null，无法执行停止操作");
+                Logger.LogError($"{nameof(MusicManager)}:The background music player is Null and cannot perform the pause operation.");
                 return;
             }
             _backgroundMusic.Stop();
         }
 
         /// <summary>
-        /// 播放当前背景音乐
+        /// 重新播放当前背景音乐
         /// </summary>
         public void PlayBackgroundMusic()
         {
-            if (_backgroundMusic == null)
+            if (!_backgroundMusic)
             {
-                Logger.LogError("背景音乐播放器为Null，无法执行停止操作");
+                Logger.LogError($"{nameof(MusicManager)}:The background music player is Null and cannot perform the pause operation.");
                 return;
             }
             _backgroundMusic.Play();
@@ -153,14 +201,12 @@ namespace Core.Music
         /// <param name="value">音量值（0~1）</param>
         public void ChangeBackgroundMusicVolume(float value)
         {
-            if (_backgroundMusic != null)
+            if (!_backgroundMusic)
             {
-                _backgroundMusic.volume = value;
+                Logger.LogError($"{nameof(MusicManager)}:The background music player is Null and cannot perform the pause operation.");
+                return;
             }
-            else
-            {
-                Logger.LogError("背景音乐播放器为Null，无法修改音量");
-            }
+            _backgroundMusic.volume = value;
         }
 
         /// <summary>
@@ -173,12 +219,19 @@ namespace Core.Music
         /// <returns>创建的音效播放器对象</returns>
         public async Task<int> CreateSoundAsync(string soundName, float Volume, bool open, bool isLoop = false)
         {
-            // 从资源包异步加载音效资源
-            var audioClip = await DIContainer.GetInstance<IAudioLoader>().LoadAudioClipAsync(soundName);
+            if (!_audioHandles.TryGetValue(soundName, out var handle))
+            {
+                // 异步加载音效资源
+                handle = await GameAsset.LoadAssetAsync<AudioClip>(soundName);
+                // 缓存资源句柄
+                _audioHandles.Add(soundName, handle);
+            }
+            
             // 从对象池获取音效播放器
-            var sound = _poolManager.GetObj<AudioSource>($"Sound_{soundName}");
+            var soundObj = _poolManager.Get($"Sound_{soundName}");
+            var sound = soundObj.GetComponent<AudioSource>();
             // 配置音效播放器参数
-            sound.clip = audioClip;
+            sound.clip = handle.Asset;
             sound.loop = isLoop;
             sound.volume = Volume;
             sound.mute = !open;
@@ -201,7 +254,7 @@ namespace Core.Music
             }
             isOpenSounds = true;
         }
-
+        
         /// <summary>
         /// 暂停所有音效
         /// 同时关闭音效总开关
@@ -227,6 +280,18 @@ namespace Core.Music
             }
             isOpenSounds = false;
         }
+        
+        /// <summary>
+        /// 播放指定音效
+        /// </summary>
+        /// <param name="audioId"></param>
+        public void PlaySound(int audioId)
+        {
+            if (_sounds.TryGetValue(audioId, out var sound))
+            {
+                sound.Play();
+            }
+        }
 
         /// <summary>
         /// 暂停指定的循环音效
@@ -242,7 +307,7 @@ namespace Core.Music
                 return false;
             }
             
-            if (sound.clip != null && sound.loop)
+            if (sound.clip && sound.loop)
             {
                 sound.Pause();
             }
@@ -286,15 +351,17 @@ namespace Core.Music
         /// 清空所有音效
         /// 停止播放、清空音频片段、回收对象到池、清空音效列表
         /// </summary>
-        /// <param name="abName"></param>
-        public void ClearSound(string abName)
+        public void ClearSounds()
         {
             foreach (var source in _sounds.Values)
             {
                 // 停止音效播放
                 source.Stop();
                 // 释放上次播放的音乐文件资源
-                DIContainer.GetInstance<IAudioLoader>().UnloadClip(abName, source.clip.name);
+                var key = source.clip.name;
+                var handle = _audioHandles[key];
+                GameAsset.Release(handle);
+                _audioHandles.Remove(key);
                 // 清空音频片段引用
                 source.clip = null;
                 // 将音效对象回收至对象池

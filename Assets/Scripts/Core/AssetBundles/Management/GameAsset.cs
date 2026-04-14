@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Tasks.Extensions;
-using Core.Utility;
-using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Core.AssetBundles.Management
 {
@@ -15,37 +12,11 @@ namespace Core.AssetBundles.Management
     /// </summary>
     public static class GameAsset
     {
-        /// <summary>
-        /// 资源定位
-        /// </summary>
-        private class AssetLocation
-        {
-            /// <summary>
-            /// 资源
-            /// </summary>
-            internal object Asset { get; set; } 
-            
-            /// <summary>
-            /// 当前有效版本号
-            /// </summary>
-            internal int Version { get; set; }
-            
-            /// <summary>
-            /// 资源引用计数
-            /// </summary>
-            internal int RefCount { get; set; }
-            
-            /// <summary>
-            /// 资源释放回调
-            /// </summary>
-            internal Action release;
-            
-            // ... 其他元数据
-        }
-        
         private static IAssetBundleManager _assetBundleManager;
         // Key到句柄的映射
-        private static readonly Dictionary<string, AssetHandle> _nameToAssetCacheMap = new();
+        private static readonly Dictionary<string, AssetHandle> _keyToHandleMap = new();
+        // 句柄到Key的映射
+        private static readonly Dictionary<AssetHandle, string> _handleToKeyMap = new();
         // 句柄ID到资源定位对象的映射
         private static readonly Dictionary<int, AssetLocation> _assetIdToLocationsMap = new();
         // 全局句柄ID
@@ -53,15 +24,19 @@ namespace Core.AssetBundles.Management
         // 句柄id缓存池
         private static readonly Queue<int> _idPool = new();
         
-        public static void Init(IAssetBundleManager assetBundleManager)
+        internal static void Init(IAssetBundleManager assetBundleManager)
         {
             _assetBundleManager = assetBundleManager;
         }
         
         public static async Task<AssetHandle<T>> LoadAssetAsync<T>(string key) where T : class
         {
-            if (_nameToAssetCacheMap.TryGetValue(key, out var handle))
+            if (_keyToHandleMap.TryGetValue(key, out var handle))
             {
+                if (!_assetIdToLocationsMap.TryGetValue(handle.HandleId, out var loc))
+                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error");
+                
+                ++loc.RefCount;
                 return handle.ConvertTo<T>();
             }
             
@@ -79,16 +54,20 @@ namespace Core.AssetBundles.Management
                 location.Asset = asset;
                 ++location.Version;
                 location.RefCount = 1;
-                location.release = () => bundleWrapper.Unload();
+                location.release = () => bundleWrapper.Release();
+                // 同步定位对象的版本
+                newHandle.Version = location.Version;
                 // 缓存句柄
-                _nameToAssetCacheMap.Add(key, newHandle);
+                _keyToHandleMap.Add(key, newHandle);
+                _handleToKeyMap.Add(newHandle, key);
                 return newHandle.ConvertTo<T>();
             }
             
             // 创建定位对象
-            var newLocation = new AssetLocation{Asset = asset, Version = 0, RefCount = 1, release = () => bundleWrapper.Unload()};
+            var newLocation = new AssetLocation{Asset = asset, Version = 0, RefCount = 1, release = () => bundleWrapper.Release()};
             // 缓存句柄
-            _nameToAssetCacheMap.Add(key, newHandle);
+            _keyToHandleMap.Add(key, newHandle);
+            _handleToKeyMap.Add(newHandle, key);
             // 缓存定位对象
             _assetIdToLocationsMap.Add(newHandle.HandleId, newLocation);
             // 转换为泛型句柄
@@ -105,8 +84,13 @@ namespace Core.AssetBundles.Management
         {
             // 先对 keys 排序，确保同一组资源无论传入顺序如何都能命中同一缓存
             var sortedKeys = keys.OrderBy(k => k).ToArray();
-            if (_nameToAssetCacheMap.TryGetValue(KeysToKey(sortedKeys), out var cacheHandle))
+            var combinedKey = KeysToKey(sortedKeys);
+            if (_keyToHandleMap.TryGetValue(combinedKey, out var cacheHandle))
             {
+                if (!_assetIdToLocationsMap.TryGetValue(cacheHandle.HandleId, out var loc))
+                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error");
+                
+                ++loc.RefCount;
                 return cacheHandle.ConvertTo<IList<T>>();
             }
             
@@ -115,13 +99,14 @@ namespace Core.AssetBundles.Management
             foreach (var key in keys)
             {
                 // 没有缓存就加载资源
-                if (!_nameToAssetCacheMap.TryGetValue(key, out var handle))
+                if (!_keyToHandleMap.TryGetValue(key, out var handle))
                 {
                     tasks.Add(LoadAssetAsync<T>(key));
                 }
-                // 获取缓存句柄
+                // 复用缓存句柄
                 else
                 {
+                    ++_assetIdToLocationsMap[handle.HandleId].RefCount;
                     handles.Add(handle);
                 }
             }
@@ -141,8 +126,11 @@ namespace Core.AssetBundles.Management
                 ++location.Version;
                 location.RefCount = 1;
                 location.release = () => { foreach (var handle in handles) Release(handle); };
+                // 同步定位对象的版本
+                newHandle.Version = location.Version;
                 // 缓存句柄
-                _nameToAssetCacheMap.Add(KeysToKey(keys), newHandle);
+                _keyToHandleMap.Add(combinedKey, newHandle);
+                _handleToKeyMap.Add(newHandle, combinedKey);
                 return newHandle.ConvertTo<IList<T>>();
             }
             
@@ -153,33 +141,28 @@ namespace Core.AssetBundles.Management
             };
 
             // 缓存句柄
-            _nameToAssetCacheMap.Add(KeysToKey(keys), newHandle);
+            _keyToHandleMap.Add(combinedKey, newHandle);
+            _handleToKeyMap.Add(newHandle, combinedKey);
             // 缓存定位对象
             _assetIdToLocationsMap.Add(newHandle.HandleId, newLocation);
             return newHandle.ConvertTo<IList<T>>();
         }
 
-        // TODO：逻辑待定
-        public static Task<List<string>> GetAllScenePathsAsync()
+        /// <summary>
+        /// 获取所有的场景路径（key）
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetAllScenePath()
         {
-            try
+            var list = new List<string>();
+            foreach (var entry in _assetBundleManager.Catalog.Assets)
             {
-                return Task.FromResult(new List<string>());
+                if (entry.assetType == EAssetType.Scene)
+                {
+                    list.Add(entry.key);
+                }
             }
-            catch (Exception exception)
-            {
-                return Task.FromException<List<string>>(exception);
-            }
-        }
-
-        // TODO：待完善
-        public static async Task<GameObject> InstanceAsync(GameObject prefabAsset)
-        {
-            var tcs = new TaskCompletionSource<bool>();
-            var operation = Object.InstantiateAsync(prefabAsset);
-            operation.completed += _ => tcs.SetResult(true);
-            await tcs.Task;
-            return operation.Result[0];
+            return list;
         }
 
         /// <summary>
@@ -199,10 +182,13 @@ namespace Core.AssetBundles.Management
             
             // 回收ID
             _idPool.Enqueue(handle.HandleId);
+            // 执行释放回调
             location.release?.Invoke();
             location.release = null;
-            // TODO：移除句柄缓存，可能需要反向缓存，反向查找
-            //_nameToAssetCacheMap.Remove(handle.key?);
+            // 移除句柄缓存，反向查找
+            var key = _handleToKeyMap.GetValueOrDefault(handle);
+            _keyToHandleMap.Remove(key);
+            _handleToKeyMap.Remove(handle);
             // 不用清理location状态，下次复用ID会覆盖
         }
 
@@ -210,10 +196,7 @@ namespace Core.AssetBundles.Management
         {
             if (!IsValidate(handleId, version)) 
                 return null;
-            
-            var location = _assetIdToLocationsMap[handleId];
-            ++location.RefCount;
-            return location.Asset as T;
+            return _assetIdToLocationsMap[handleId].Asset as T;
         }
         
         /// <summary>

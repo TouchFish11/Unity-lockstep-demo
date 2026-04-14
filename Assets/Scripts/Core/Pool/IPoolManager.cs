@@ -8,28 +8,19 @@ namespace Core.Pool
     public interface IPoolManager
     {
         /// <summary>
-        /// 获取来自AB包的缓存对象
-        /// </summary>
-        /// <param name="abName"></param>
-        /// <param name="assetName">资源名称</param>
-        /// <returns></returns>
-        GameObject GetAssetBundleObj(string abName, string assetName);
-        
-        /// <summary>
         /// 获取未继承Mono的对象
         /// </summary>
         /// <typeparam name="T">类名</typeparam>
         /// <param name="nameSpace">可选参数：命名空间</param>
         /// <returns></returns>
         T GetData<T>(string nameSpace = "") where T : class, IPoolData, new();
-        
+
         /// <summary>
-        /// 获取非AB包中的缓存对象
+        /// 获取缓存的对象
         /// </summary>
-        /// <typeparam name="T">组件类型</typeparam>
         /// <param name="assetName">资源名称</param>
         /// <returns></returns>
-        T GetObj<T>(string assetName) where T : Behaviour;
+        GameObject Get(string assetName);
         
         /// <summary>
         /// 缓存未继承Mono的对象

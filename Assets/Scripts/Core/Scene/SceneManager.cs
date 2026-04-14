@@ -26,16 +26,7 @@ namespace Core.Scene
         {
             _monoAdapter = monoAdapter;
             _assetBundleManager = assetBundleManager;
-        }
-
-        /// <summary>
-        /// 初始化场景管理器
-        /// </summary>
-        /// <param name="abName"></param>
-        public async Task InitAsync(string abName)
-        {
-            // 初始化场景包
-            await InitSceneBundle();
+            InitScenePaths();
         }
         
         public async Task LoadSceneAsync(string scenePath, LoadSceneMode mode, [CanBeNull] Action<float> onLoadProgress)
@@ -63,23 +54,23 @@ namespace Core.Scene
             }
         }
 
-        private async Task InitSceneBundle()
+        /// <summary>
+        /// 初始化场景路径
+        /// </summary>
+        private void InitScenePaths()
         {
+            if(_scenePaths != null)
+                return;
+            
             // 缓存所有场景名称
-            if (_scenePaths == null)
+            _scenePaths = new List<string>();
+            // 缓存所有的场景路径
+            var paths = GameAsset.GetAllScenePath();
+            foreach (var scenePath in paths)
             {
-                // 加载场景对应的AssetBundle资源包
-                var paths = await GameAsset.GetAllScenePathsAsync();
-                foreach (var scenePath in paths)
-                {
-                    var sceneNames = scenePath.Split('/');
-                    var sceneName = sceneNames[sceneNames.Length - 1];
-                    _scenePaths.Add(sceneName.Substring(0, sceneName.LastIndexOf('.')));
-                }
-            }
-            else
-            {
-                Logger.LogError($"{nameof(SceneManager)}.{nameof(InitSceneBundle)}；重复初始化");
+                var sceneNames = scenePath.Split('/');
+                var sceneName = sceneNames[sceneNames.Length - 1];
+                _scenePaths.Add(sceneName.Substring(0, sceneName.LastIndexOf('.')));
             }
         }
 

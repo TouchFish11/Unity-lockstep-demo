@@ -13,15 +13,12 @@ namespace Core.AssetBundles.Management
     /// <summary>
     /// AB包管理器
     /// </summary>
-    public class AssetBundleManager : IAssetBundleManager
+    internal class AssetBundleManager : IAssetBundleManager
     {
         private readonly IJsonManager _jsonManager;
         // 缓存包包装器
         private readonly Dictionary<string, BundleWrapper> _nameToWrapperMap = new();
         
-        /// <summary>
-        /// 资源目录
-        /// </summary>
         public AssetCatalog Catalog { get; private set; }
         
         private AssetBundleManager(IMemoryMonitor memoryMonitor, IJsonManager jsonManager)
@@ -106,33 +103,18 @@ namespace Core.AssetBundles.Management
             // 加载目标包
             await _nameToWrapperMap[abName].LoadFromFileAsync(token);
         }
-        
-        public void UnloadBundle(string abName, bool unloadAllLoadedObjects = false)
+
+        public void ReleaseDependencies(string abName)
         {
-            if (_nameToWrapperMap.TryGetValue(abName, out var wrapper))
+            var dependencies = Catalog.ABPackageCollection.GetAllDependencies(abName);
+            foreach (var dependency in dependencies)
             {
-                wrapper.Unload();
-            }
-        }
-        
-        public async Task ForceUnloadUnuseBundle()
-        {
-            foreach (var bundleWrapper in _nameToWrapperMap.Values)
-            {
-                if (!bundleWrapper.IsActive)
+                var wrapper = _nameToWrapperMap[dependency];
+                if (wrapper.IsActive)
                 {
-                    await bundleWrapper.TryUnloadAsync(false);
+                    wrapper.Release();
                 }
             }
-        }
-
-        /// <summary>
-        /// 缓存未使用的包
-        /// </summary>
-        /// <param name="bundleWrapper"></param>
-        public void PushUnUseBundle(BundleWrapper bundleWrapper)
-        {
-            _nameToWrapperMap.Remove(bundleWrapper.BundleName);
         }
 
         /// <summary>
@@ -142,9 +124,6 @@ namespace Core.AssetBundles.Management
         /// <param name="unloadAllObjects"></param>
         public async Task UnloadAllBundles(bool unloadAllObjects)
         {
-            // 先释放未使用的AB包
-            await ForceUnloadUnuseBundle();
-            
             foreach (var bundleWrapper in _nameToWrapperMap.Values)
             {
                 await bundleWrapper.TryUnloadAsync(unloadAllObjects);
@@ -152,12 +131,12 @@ namespace Core.AssetBundles.Management
                 {
                     if (bundleWrapper.RefCount != 0)
                     {
-                        Logger.LogWarning($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}：{bundleWrapper.BundleName}包和已加载资源已卸载，剩余引用计数{bundleWrapper.RefCount}，可能导致引用丢失");
+                        Logger.LogWarning($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}:{bundleWrapper.BundleName}包和已加载资源已卸载，剩余引用计数{bundleWrapper.RefCount}，可能导致引用丢失");
                     }
                 }
                 else
                 {
-                    Logger.Log($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}：{bundleWrapper.BundleName}包已卸载，剩余引用计数{bundleWrapper.RefCount}");
+                    Logger.Log($"{nameof(AssetBundleManager)}.{nameof(UnloadAllBundles)}:{bundleWrapper.BundleName}包已卸载，剩余引用计数{bundleWrapper.RefCount}");
                 }
             }
             

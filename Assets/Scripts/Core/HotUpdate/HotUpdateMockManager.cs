@@ -5,8 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
-using Core.DI;
-using Core.Singleton;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -63,7 +61,6 @@ namespace Core.HotUpdate
             }
 
             GameAsset.Release(handle);
-            _assetBundleManager.UnloadBundle(abName);
         }
 
         public Assembly GetAssembly(string assemblyName)

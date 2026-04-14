@@ -16,12 +16,15 @@ namespace Core.AssetBundles.Management
         [JsonProperty] public string bundleName;     
         // 资源在AB包内的名称
         [JsonProperty] public string assetName;
-
-        public AssetMapEntry(string key, string bundleName, string assetName)
+        // 资源类型
+        [JsonProperty] public EAssetType assetType;
+        
+        public AssetMapEntry(string key, string bundleName, string assetName, EAssetType assetType)
         {
             this.key = key;
             this.bundleName = bundleName;
             this.assetName = assetName;
+            this.assetType = assetType;
         }
     }
 }

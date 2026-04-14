@@ -1,5 +1,4 @@
 using System;
-using Core.Global;
 
 namespace Core.AssetBundles.Management
 {

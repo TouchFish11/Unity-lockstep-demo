@@ -36,7 +36,7 @@ namespace Core.DI.Test
         }
         
         // Start is called before the first frame update
-        private void Start()
+        private async void Start()
         {
             // 绑定框架
             BindSingletons();
@@ -48,6 +48,8 @@ namespace Core.DI.Test
             bagManager.Test();
             
             MainTest();
+
+            ObjectSpawner objectSpawner = DIContainer.Create<ObjectSpawner>(true);
         }
 
         private void MainTest()

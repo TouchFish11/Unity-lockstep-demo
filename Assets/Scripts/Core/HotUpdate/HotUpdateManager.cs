@@ -97,8 +97,8 @@ namespace Core.HotUpdate
                     // 多线程加载程序集
                     await LoadAssemblyAsyncInternal(dllText.bytes);
                 }
-            
-                _assetBundleManager.UnloadBundle(abName);
+                
+                GameAsset.Release(handle);
             }
             catch (Exception e)
             {

@@ -349,6 +349,7 @@ namespace Editor.AssetBundle.Core
                     // 加载该包的 manifest 以获取内部资源列表
                     var bundleManifestPath = Path.Combine(outputPath, fileName);
                     var assetBundle = UnityEngine.AssetBundle.LoadFromFile(bundleManifestPath);
+                    var assetType = assetBundle.isStreamedSceneAssetBundle ? EAssetType.Scene : EAssetType.Object;
                     if (assetBundle)
                     {
                         var assetPaths = assetBundle.GetAllAssetNames();
@@ -363,7 +364,7 @@ namespace Editor.AssetBundle.Core
                                 Log($"资源名称重复：{key}，已使用路径替代：{path}，请调整命名");
                                 key = path;
                             }
-                            var entry = new AssetMapEntry(key, fileName, assetPath);
+                            var entry = new AssetMapEntry(key, fileName, assetPath, assetType);
                             catalog.AddEntry(key, entry);
                         }
                         assetBundle.Unload(false);

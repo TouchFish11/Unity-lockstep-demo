@@ -7,22 +7,18 @@ namespace Core.AssetBundles.Management
     /// <summary>
     /// AB包管理器接口
     /// </summary>
-    public interface IAssetBundleManager : IMemoryListener
+    internal interface IAssetBundleManager : IMemoryListener
     {
+        /// <summary>
+        /// 资源目录
+        /// </summary>
+        AssetCatalog Catalog { get; }
+        
         /// <summary>
         /// 初始化
         /// </summary>
         /// <returns>是否初始化成功</returns>
         Task Init();
-
-        /// <summary>
-        /// 卸载指定AB包
-        /// 减少引用计数
-        /// </summary>
-        /// <param name="abName"></param>
-        /// <param name="unloadAllLoadedObjects"></param>
-        /// <returns></returns>
-        void UnloadBundle(string abName, bool unloadAllLoadedObjects = false);
 
         /// <summary>
         /// 异步加载指定AB包
@@ -45,12 +41,11 @@ namespace Core.AssetBundles.Management
         /// </summary>
         /// <param name="abNames"></param>
         Task InitSpecifyAsync(params string[] abNames);
-
+        
         /// <summary>
-        /// 强制卸载未使用的AB包
+        /// 释放指定包的依赖包，用于减少依赖项的引用计数
         /// </summary>
-        Task ForceUnloadUnuseBundle();
-
-        AssetCatalog Catalog { get; }
+        /// <param name="abName"></param>
+        void ReleaseDependencies(string abName);
     }
 }

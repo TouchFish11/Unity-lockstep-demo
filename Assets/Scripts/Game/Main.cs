@@ -51,8 +51,7 @@ namespace Game
         /// <returns></returns>
         private static void InitDI()
         {
-            // // 注册框架单例
-            //DIContainer.RegisterSingletons();
+
         }
         
         /// <summary>

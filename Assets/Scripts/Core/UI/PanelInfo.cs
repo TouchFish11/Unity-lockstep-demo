@@ -1,28 +1,29 @@
+using Core.AssetBundles.Management;
 using Core.UI.MVC;
 
 namespace Core.UI
 {
     /// <summary>
-    /// �����Ϣ��
+    /// 界面信息
     /// </summary>
-    /// <typeparam name="TView"></typeparam>
-    /// <typeparam name="TModel"></typeparam>
-    /// <typeparam name="TController"></typeparam>
-    public class PanelInfo<TView, TModel, TController> : IPanelInfo<TView, TModel, TController>
-        where TView : IuiView where TModel : IuiModel where TController : IuiController
+    public class PanelInfo<T> : IPanelInfo where T : UIView
     {
-        public TView View { get; }
+        // 界面ID
+        private int _id;
         
-        public TModel Model { get; }
-        
-        public TController Controller { get; }
-        
-        public IuiController UiController => Controller;
-        
-        public IuiView UiView => View;
+        /// <summary>
+        /// 界面缓存对象
+        /// </summary>
+        public PoolObject PoolObject { get; private set; }
 
-        public PanelInfo(TView view, TModel model, TController uIController)
+        public IuiModel Model { get; }
+        public IuiController Controller { get; }
+        public IuiView View { get; }
+        
+        public PanelInfo(int id, PoolObject<T> poolObject, IuiView view, IuiModel model, IuiController uIController)
         {
+            _id = id;
+            PoolObject = poolObject;
             View = view;
             Model = model;
             Controller = uIController;

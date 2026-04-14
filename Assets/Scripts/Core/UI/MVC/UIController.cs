@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events;
-using Core.Loader.Object;
 using Core.Log;
 using Core.Pool;
 
@@ -19,9 +18,8 @@ namespace Core.UI.MVC
         [DI.Inject] protected readonly IUIManager uiManager;
         [DI.Inject] protected readonly IEventCenter eventCenter;
         [DI.Inject] protected readonly IPoolManager poolManager;
-        [DI.Inject] protected readonly IPrefabLoader prefabLoader;
 
-        public async Task Init(IuiView view, IuiModel model)
+        public async Task Init(int id, IuiView view, IuiModel model)
         {
             try
             {

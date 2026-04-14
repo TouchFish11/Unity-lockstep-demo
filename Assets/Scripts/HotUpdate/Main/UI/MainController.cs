@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Core.DI;
-using Core.Loader.Object;
 using Core.UI.MVC;
 using Net.Sync;
 using Net.Sync.Msg;
@@ -10,8 +9,6 @@ namespace HotUpdate.Main.UI
 {
     public class MainController : UIController<MainPanel, MainModel>
     {
-        private readonly IPrefabLoader _prefabLoader = DIContainer.GetInstance<IPrefabLoader>();
-        
         protected override Task OnShow()
         {
             return Task.CompletedTask;

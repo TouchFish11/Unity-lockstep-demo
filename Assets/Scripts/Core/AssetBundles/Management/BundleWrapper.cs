@@ -11,7 +11,7 @@ namespace Core.AssetBundles.Management
     /// <summary>
     /// 包包装器
     /// </summary>
-    public class BundleWrapper
+    internal class BundleWrapper
     {
         /// <summary>
         /// AssetBundle对象
@@ -44,7 +44,7 @@ namespace Core.AssetBundles.Management
         internal bool IsActive { get; set; }
         
         // AB包管理器
-        private readonly AssetBundleManager _assetBundleManager;
+        private readonly IAssetBundleManager _assetBundleManager;
         // AB包加载任务
         private AssetBundleCreateRequestTask _assetBundleCreateRequestTask;
         // AB包卸载任务
@@ -56,7 +56,7 @@ namespace Core.AssetBundles.Management
         /// <param name="abName"></param>
         /// <param name="path"></param>
         /// <param name="assetBundleManager"></param>
-        public BundleWrapper(string abName, string path, AssetBundleManager assetBundleManager)
+        public BundleWrapper(string abName, string path, IAssetBundleManager assetBundleManager)
         {
             BundleName = abName;
             LoadPath = path;
@@ -81,6 +81,7 @@ namespace Core.AssetBundles.Management
             {
                 RefCount += 1;
                 LastUseTime = DateTime.Now;
+                IsActive = true;
                 Logger.Log($"{BundleName}包被引用，引用计数更新为：{RefCount}");
                 return;
             }
@@ -91,14 +92,15 @@ namespace Core.AssetBundles.Management
             RefCount += 1;
             LastUseTime = DateTime.Now;
             _assetBundleCreateRequestTask = null;
+            IsActive = true;
             Logger.Log($"{BundleName}包被引用，引用计数更新为：{RefCount}");
         }
 
         /// <summary>
-        /// 卸载指定AssetBundle
+        /// 释放指定AssetBundle，仅减少引用计数
         /// </summary>
         /// <returns></returns>
-        public void Unload()
+        public void Release()
         {
             if (RefCount > 0)
             {
@@ -108,7 +110,9 @@ namespace Core.AssetBundles.Management
             if (RefCount == 0)
             {
                 IsActive = false;
+                _assetBundleManager.ReleaseDependencies(BundleName);
             }
+            
             Logger.Log($"{BundleName}包，引用计数减少，更新为：{RefCount}");
         }
 
@@ -118,10 +122,10 @@ namespace Core.AssetBundles.Management
         /// <param name="unloadAllLoadedObjects"></param>
         public async Task TryUnloadAsync(bool unloadAllLoadedObjects)
         {
-            // 正在异步卸载，返回
+            // 正在异步卸载，等待卸载
             if (_assetBundleUnloadTask != null)
             {
-                return;
+                await _assetBundleUnloadTask;
             }
 
             // 卸载完成返回

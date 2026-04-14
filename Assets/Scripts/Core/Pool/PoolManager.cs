@@ -23,19 +23,7 @@ namespace Core.Pool
             
         }
 
-        public T GetObj<T>(string assetName) where T : Behaviour
-        {
-            // 存在该对象就取出来使用
-            if (_poolObjDic.ContainsKey(assetName) && _poolObjDic[assetName].UnUsedCount > 0)
-            {
-                return _poolObjDic[assetName].Get().GetComponent<T>();
-            }
-
-            var newObj = new GameObject(assetName);
-            return newObj.AddComponent<T>();
-        }
-        
-        public GameObject GetAssetBundleObj(string abName, string assetName)
+        public GameObject Get(string assetName)
         {
             // 存在该对象就取出来使用
             if (_poolObjDic.ContainsKey(assetName) && _poolObjDic[assetName].UnUsedCount > 0)

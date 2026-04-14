@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.AssetBundles.Management;
 using Core.DI;
-using Core.Loader.Object;
-using Core.Singleton;
 using Core.UI.MVC;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -16,8 +15,10 @@ namespace Core.UI
     /// </summary>
     public class UIManager : IUIManager
     {
+        // 界面唯一ID
+        private static int _panelId;
         // 存储打开的界面
-        private readonly List<IPanelInfo> _panels = new();
+        private readonly Dictionary<int, IPanelInfo> _panels = new();
         // 上层
         private Transform _topLayer;
         // 中层
@@ -26,25 +27,24 @@ namespace Core.UI
         private Transform _botLayer;
         // 系统层
         private Transform _systemLayer;
-        // 预制体加载器对象
-        private IPrefabLoader _prefabLoader;
+        // 对象生成器
+        private readonly ObjectSpawner _objectSpawner;
+        // canvas缓存对象
+        private PoolObject _canvasPoolObject;
+        // ui相机缓存对象
+        private PoolObject _uiCameraPoolObject;
         
-        private UIManager()
+        private UIManager(ObjectSpawner spawner)
         {
-            
+            _objectSpawner = spawner;
         }
 
-        public Task InitAsync()
-        {
-            // 要先初始化工厂才能拿到加载器实例
-            _prefabLoader = DIContainer.GetInstance<IPrefabLoader>();
-            return Task.CompletedTask;
-        }
-
-        public async Task InitUIManagerAsync(string defaultAbName, string canvasName, string uiCameraName)
+        public async Task InitUIManagerAsync(string canvasName, string uiCameraName)
         {
             // 创建画布实例
-            Canvas = await DIContainer.GetInstance<IPrefabLoader>().GetObjectAsync<Canvas>(defaultAbName, canvasName, null);
+            var poolObject = await _objectSpawner.SpawnAsync<Canvas>(canvasName);
+            Canvas = poolObject.Obj;
+            _canvasPoolObject = poolObject;
             Object.DontDestroyOnLoad(Canvas.gameObject);
 
             // 获取对应层级对象位置
@@ -54,7 +54,9 @@ namespace Core.UI
             _systemLayer = Canvas.transform.Find("System");
             
             // 创建UI相机实例
-            UICamera = await DIContainer.GetInstance<IPrefabLoader>().GetObjectAsync<Camera>(defaultAbName, uiCameraName, null);
+            var poolObject2 = await _objectSpawner.SpawnAsync<Camera>(uiCameraName);
+            UICamera = poolObject2.Obj;
+            _uiCameraPoolObject = poolObject2;
             Object.DontDestroyOnLoad(UICamera.gameObject);
             // 设置UI摄像机
             Canvas.worldCamera = UICamera;
@@ -72,106 +74,102 @@ namespace Core.UI
             };
         }
         
-        public async Task<TController> CreateViewAsync<TView, TModel, TController>(string abName, E_UILayer layer, string panelName, Vector2 pos = default, Quaternion quaternion = default)
-            where TView : UIBehaviourBase, IuiView where TModel : IuiModel, new() where TController : class, IuiController, new()
+        public async Task<TController> CreateViewAsync<TView, TModel, TController>(
+            string panelName, E_UILayer layer, Vector2 pos = default, Quaternion quaternion = default)
+            where TView : UIView, IuiView where TModel : class, IuiModel where TController : class, IuiController
         {
             // 初始化控制器
-            var controller = new TController();
-            var model = new TModel();
+            var controller = DIContainer.Create<TController>();
+            var model = DIContainer.Create<TModel>();
             try
             {
                 // 获取面板
-                var view = await DIContainer.GetInstance<IPrefabLoader>().GetObjectAsync<TView>(abName, panelName, GetLayer(layer), pos, quaternion);
-                await controller.Init(view, model);
-                await controller.Show();
+                var viewObj = await _objectSpawner.SpawnAsync<TView>(panelName,GetLayer(layer), pos, quaternion);
+                // 生成该界面的唯一ID
+                var id = GenerateId();
+                await controller.Init(id, viewObj.Obj, model);
                 // 初始化面板信息
-                var newInfo = new PanelInfo<TView, TModel, TController>(view, model, controller);
+                var newInfo = new PanelInfo<TView>(id, viewObj, viewObj.Obj, model, controller);
                 // 存储面板信息
-                _panels.Add(newInfo);
+                _panels.Add(id, newInfo);
                 return controller;
             }
             catch (Exception e)
             {
-                Logger.LogError($"{nameof(UIManager)}.{nameof(CreateViewAsync)}：异步创建界面错误，{e.Message}");
+                Logger.LogError($"{nameof(UIManager)}.{nameof(CreateViewAsync)}:创建界面错误，{e.Message}");
                 return controller;
             }
         }
         
-        public async void DestroyView(string abName, IuiController controller)
+        public async Task DestroyView(int panelId)
         {
-            try
+            if (_panels.TryGetValue(panelId, out var panelInfo))
             {
-                for (var i = _panels.Count - 1; i >= 0; i--)
-                {
-                    var uiController = _panels[i].UiController;
-                    if (uiController != controller)
-                    {
-                        continue;
-                    }
-                
-                    // 调用控制器的销毁
-                    await uiController.Destroy();
-                    DIContainer.GetInstance<IPrefabLoader>().CollectAsset(_panels[i].UiView.ViewObj);
-                    // 释放该UI的资源
-                    DIContainer.GetInstance<IPrefabLoader>().RealseAsset(abName, _panels[i].UiView.ViewObj.name);
-                    // 从缓存中移除
-                    _panels.RemoveAt(i);
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.LogError($"{nameof(UIManager)}.{nameof(GetController)}：{e.Message}，{e.StackTrace}");
+                // 调用控制器的销毁
+                await panelInfo.Controller.Destroy();
+                // 回收界面
+                panelInfo.PoolObject.Collect();
+                // 从缓存中移除
+                _panels.Remove(panelId);
             }
         }
         
-        public async Task SetViewActive(IuiController controller, bool isActive)
+        public async Task SetViewActive(int panelId, bool isActive)
         {
-            if (_panels.ConvertAll(info => info.UiController).Contains(controller))
+            if (_panels.TryGetValue(panelId, out var panelInfo))
             {
                 if (!isActive)
                 {
-                    await controller.Hide();
+                    await panelInfo.Controller.Hide();
                 }
                 else
                 {
-                    await controller.Show();
+                    await panelInfo.Controller.Show();
                 }
             }
         }
 
         public TController GetController<TController>() where TController : IuiController
         {
-            foreach (var basePanelInfo in _panels)
+            foreach (var basePanelInfo in _panels.Values)
             {
-                if (basePanelInfo.UiController is TController controller)
+                if (basePanelInfo.Controller is TController controller)
                 {
                     return controller;
                 }
             }
-            Logger.LogError($"{nameof(UIManager)}.{nameof(GetController)}：控制器{typeof(TController)}未找到");
+            Logger.LogError($"{nameof(UIManager)}.{nameof(GetController)}: Controller({typeof(TController)}) is not found.");
             return default;
         }
         
-        public void Clear(string abName)
+        public Task Clear()
         {
-            // 销毁画布和摄像机
-            DIContainer.GetInstance<IPrefabLoader>().CollectAsset(Canvas.gameObject);
-            DIContainer.GetInstance<IPrefabLoader>().RealseAsset(abName, Canvas.name);
+            // 回收画布和摄像机
+            _canvasPoolObject.Collect();
+            _uiCameraPoolObject.Collect();
             Canvas = null;
-            
-            DIContainer.GetInstance<IPrefabLoader>().CollectAsset(UICamera.gameObject);
-            DIContainer.GetInstance<IPrefabLoader>().RealseAsset(abName, UICamera.name);
             UICamera = null;
             
+            var list = new List<Task>();
             // 销毁所有界面
-            foreach (var panelInfo in _panels)
-            {
-                DestroyView(abName, panelInfo.UiController);
-            }
+            foreach (var id in _panels.Keys)
+                list.Add(DestroyView(id));
+            
+            // 清空缓存
             _panels.Clear();
+            return Task.WhenAll(list);
+        }
+
+        /// <summary>
+        /// 生成界面唯一ID
+        /// </summary>
+        /// <returns></returns>
+        private static int GenerateId()
+        {
+            return ++_panelId;
         }
         
-        public List<IPanelInfo> AllPanels => _panels;
+        public Dictionary<int, IPanelInfo>.ValueCollection Panels => _panels.Values;
 
         public Canvas Canvas { get; private set; }
 
