@@ -23,43 +23,26 @@ namespace Core.HotUpdate
         {
             _assetBundleManager = assetBundleManager;
         }
-
-        /// <summary>
-        /// 加载指定程序集
-        /// </summary>
-        /// <param name="abName"></param>
-        public Task PreLoadAssembliesAsync(string abName)
-        {
-            // Editor环境下，HotUpdate.dll已经被自动加载，不需要加载，直接查找获得HotUpdate程序集，重复加载反而会出问题。
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            // ...
-            return Task.CompletedTask;
-        }
         
-        public async Task LoadAssembliesAsync(string abName)
+        public async Task LoadAssembliesAsync(HotUpdateAssemblySettings settings, List<TextAsset> textAssets)
         {
             // 加载热更新AB包资源
             var handle = await GameAsset.LoadAssetsAsync<TextAsset>();
             foreach (var dllText in handle.Asset)
             {
                 if (_assemblyNames.Contains(dllText.name[..dllText.name.LastIndexOf('.')]))
-                {
                     continue;
-                }
                 
                 // Editor环境下，HotUpdate.dll.bytes已经被自动加载，不需要加载，直接查找获得HotUpdate程序集，重复加载反而会出问题。
                 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
                     if (assembly.GetName().Name != dllText.name[..dllText.name.LastIndexOf('.')])
-                    {
                         continue;
-                    }
                     
                     _assemblyNames.Add(assembly.GetName().Name);
-                    Logger.Log($"{nameof(HotUpdateMockManager)}.{nameof(PreLoadAssembliesAsync)}:已缓存编辑器加载热更程序集{dllText.name}");
+                    Logger.Log($"{nameof(HotUpdateMockManager)}.{nameof(LoadAssembliesAsync)}:Editor found hotfix dll({dllText.name})");
                 }
             }
-
             GameAsset.Release(handle);
         }
 

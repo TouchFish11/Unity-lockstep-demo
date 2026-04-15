@@ -29,6 +29,16 @@ MonoBehaviour:
       size: 19704352
       name: MSYH.TTC
       hash: d79c55e68b1131eea0cc1c47be4f572d964f28c682e143db2ad09c1e4cb07a3f
+  - assetBundleName: hotupdate
+    assetInfos:
+    - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Common.dll.bytes
+      size: 5120
+      name: HotUpdate.Common.dll.bytes
+      hash: 4fd8e4aa5fcf1070fe9719be963e57e9b54c77c852f1852065519b79d21e7a01
+    - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdateAssemblySettings.json
+      size: 160
+      name: HotUpdateAssemblySettings.json
+      hash: 34da239c110316e1b583aea2828b51be0bcdd103c8358181ba2c1826aa0dc056
   - assetBundleName: mask
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Mask\Bot\Bot_Mask.mask
@@ -52,9 +62,9 @@ MonoBehaviour:
       name: Main.unity
       hash: 8eee0432e96aaa894b810adc9c1bf40bb90280055bf61f1595cb69916dae7b07
     - assetPath: Assets\Editor\ArtRes\Scenes\Test.unity
-      size: 12115
+      size: 12531
       name: Test.unity
-      hash: f680683270cf8aae9f5cd94dc59c664e20bd0b930f0e5ecb506b8980d8a69717
+      hash: d6876b23b18a5717bb63465713c23a8771a6750e3a082787842d20e5d7ae043f
   - assetBundleName: so
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\SO\Attack_Animation_Config.asset

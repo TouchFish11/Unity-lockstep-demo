@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
-using Core.AssetBundles.Update.Collection;
 using Core.DI;
 using Core.Serialize.Json;
 using Core.Utility;

@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Text;
+using System.Linq;
+using Core.AssetBundles.Management;
 using Core.DI;
 using Core.Global;
 using Core.HotUpdate;
 using Core.Serialize.Json;
-using Core.Utility;
 using Editor.AssetBundle.Core;
-using Editor.Generation.Detail;
 using UnityEditor;
+using UnityEditor.Compilation;
 using UnityEngine;
 
 namespace Editor.AssetBundle
@@ -44,8 +44,8 @@ namespace Editor.AssetBundle
         private bool uploadBytesIsCustomSetting;
         private uint maxBytesCapacity = 4096;
 
-        private const string hotUpdateAssemblyTargetPath = @"D:\UnityProject\TurnDemo\Assets\Editor\ArtRes\HotUpdate\";
-        private const string hybridCLRAssemblySourcesPath = @"D:\UnityProject\TurnDemo\HybridCLRData\HotUpdateDlls\StandaloneWindows64\";
+        private const string hotUpdateAssemblyTargetPath = @"D:\UnityProject\AnimationSystem\Assets\Editor\ArtRes\HotUpdate\";
+        private const string hybridCLRAssemblySourcesPath = @"D:\UnityProject\AnimationSystem\HybridCLRData\HotUpdateDlls\StandaloneWindows64\";
         private const string AssetsInputPath = "Assets/Editor/ArtRes/";
         private readonly string[] filterDirectories = { "Texture" };
         private readonly string[] filterSuffixes = { ".meta" };
@@ -60,14 +60,14 @@ namespace Editor.AssetBundle
         private Dictionary<string, List<AssetBundlesCollections.AssetInfo>> abNameToDifferenceInfos = new();
         private List<string> waitRemoveAbNames = new();
         private Dictionary<string, List<AssetBundlesCollections.AssetInfo>> waitRemoveAssetInfos = new();
-        private readonly HashSet<string> forceUploadBundles = new HashSet<string>();
+        private readonly HashSet<string> forceUploadBundles = new();
 
         // --- 序列化字段 ---
         private SerializedObject serializedObject;
         private SerializedProperty hotUpdateAssembliesProp;
         [SerializeField] private string[] hotUpdateAssemblies;
-        private SerializedProperty baseHotUpdateAssembliesProp;
-        [SerializeField] private string[] baseHotUpdateAssemblies;
+        //private SerializedProperty baseHotUpdateAssembliesProp;
+        // [SerializeField] private string[] baseHotUpdateAssemblies;
 
         [MenuItem("GameTool/AssetBundle/AssetBundle Packer")]
         public static void ShowWindow()
@@ -79,20 +79,18 @@ namespace Editor.AssetBundle
         {
             serializedObject = new SerializedObject(this);
             hotUpdateAssembliesProp = serializedObject.FindProperty(nameof(hotUpdateAssemblies));
-            baseHotUpdateAssembliesProp = serializedObject.FindProperty(nameof(baseHotUpdateAssemblies));
+            //baseHotUpdateAssembliesProp = serializedObject.FindProperty(nameof(baseHotUpdateAssemblies));
 
             outputPath = Path.Combine(Application.dataPath, "AssetBundles", EditorUserBuildSettings.activeBuildTarget.ToString());
 
             hotUpdateAssemblies = new[]
             {
-                "HotUpdate.Activity", "HotUpdate.Animation","HotUpdate.Battle","HotUpdate.Camera","HotUpdate.Common",
-                "HotUpdate.Config","HotUpdate.Core","HotUpdate.Dialogue","HotUpdate.Entry","HotUpdate.Input","HotUpdate.Interact",
-                "HotUpdate.Main","HotUpdate.Task"
+                "HotUpdate.Common", "HotUpdate.Base","HotUpdate.Game","HotUpdate.UI","HotUpdate.Update",
             };
-            baseHotUpdateAssemblies = new[]
-            {
-                "HotUpdate.Config.dll","HotUpdate.Common.dll","HotUpdate.Core.dll","HotUpdate.Entry.dll"
-            };
+            // baseHotUpdateAssemblies = new[]
+            // {
+            //     "HotUpdate.Common", "HotUpdate.Base","HotUpdate.Game","HotUpdate.UI","HotUpdate.Update",
+            // };
 
             minSize = new Vector2(1389, 725);
 
@@ -144,12 +142,20 @@ namespace Editor.AssetBundle
             GUILayout.Label("Asset Key Generate", EditorStyles.boldLabel);
             GUILayout.BeginHorizontal();
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.TextField("Generate Path", $"{Application.dataPath}/Scripts/HotUpdate/Config/ResKeyCollection.cs");
+            EditorGUILayout.TextField("Generate Path", $"{Application.dataPath}/Scripts/HotUpdate/Common/Generated/AssetKeys.cs");
             EditorGUI.EndDisabledGroup();
-            if (GUILayout.Button("Generate Script Code", GUILayout.Width(200)))
+            if (GUILayout.Button("Generate AssetKeys from ServerData",GUILayout.Width(250)))
             {
-                new ResKeyCollectionClassGenerator().GenerateScript();
-                AppendToLog($"ResKeyCollection Generate At：{Application.dataPath}/Scripts/HotUpdate/Common/ResKeyCollection.cs\n");
+                var serverCatalogPath = Path.Combine(serverDataPath, AssetBundleBuilder.AssetCatalogName);
+                if (File.Exists(serverCatalogPath))
+                {
+                    var catalog = jsonManager.FromJson<AssetCatalog>(File.ReadAllText(serverCatalogPath));
+                    var scriptPath = Path.Combine(Application.dataPath, "Scripts", "HotUpdate", "Common", "Generated", "AssetKeys.cs");
+                    AssetKeyGenerator.Generate(catalog, scriptPath);
+                    AppendToLog($"AssetKeys generated from ServerData.");
+                }
+                else
+                    AppendToLog("ServerData 中没有 AssetCatalog.json，请先执行 CopyToServerData。");
             }
             GUILayout.EndHorizontal();
         }
@@ -163,18 +169,18 @@ namespace Editor.AssetBundle
             EditorGUILayout.PropertyField(hotUpdateAssembliesProp, true);
             if (GUILayout.Button("Copy HotUpdate Assembly"))
                 MoveHotUpdateAssembly();
-            EditorGUILayout.PropertyField(baseHotUpdateAssembliesProp, true);
+            //EditorGUILayout.PropertyField(baseHotUpdateAssembliesProp, true);
             serializedObject.ApplyModifiedProperties();
 
             GUILayout.BeginHorizontal();
             EditorGUI.BeginDisabledGroup(true);
-            string savePath = $"{Path.Combine(Application.dataPath, "Editor", "ArtRes", "HotUpdate", $"{nameof(HotUpdateAssemblySettings)}.json")}";
+            var savePath = $"{Path.Combine(Application.dataPath, "Editor", "ArtRes", "HotUpdate", $"{nameof(HotUpdateAssemblySettings)}.json")}";
             EditorGUILayout.TextField("Generate Path", savePath);
             EditorGUI.EndDisabledGroup();
-            if (GUILayout.Button("Generate HotUpdate BaseFile", GUILayout.Width(200)))
+            if (GUILayout.Button("Generate Hotfix Asm Settings", GUILayout.Width(200)))
             {
-                GenerateHotUpdateBaseFile(savePath);
-                AppendToLog($"HotUpdate BaseFile Generate At：{savePath}\n");
+                GenerateDllDependencyFile(savePath, hotUpdateAssemblies);
+                AppendToLog($"HotUpdateAssemblySettings Generate At：{savePath}\n");
             }
             GUILayout.EndHorizontal();
         }
@@ -458,15 +464,43 @@ namespace Editor.AssetBundle
             AssetDatabase.Refresh();
         }
 
-        private void GenerateHotUpdateBaseFile(string savePath)
+        private void GenerateDllDependencyFile(string savePath, string[] hotUpdateAssemblies)
         {
-            var sb = new StringBuilder();
-            for (int i = 0; i < baseHotUpdateAssemblies.Length; i++)
+            // 获取当前目标平台的所有程序集（如果需要在构建时区分平台）
+            var allAssemblies = CompilationPipeline.GetAssemblies();
+            var allDlls = allAssemblies.ToDictionary(a => a.name);
+
+            var settings = new HotUpdateAssemblySettings();
+            var processed = new HashSet<string>();
+            var queue = new Queue<string>(hotUpdateAssemblies);
+
+            // 需要过滤的引擎程序集前缀（可根据实际调整）
+            var ignorePrefixes = new[]
             {
-                sb.Append(baseHotUpdateAssemblies[i]);
-                if (i != baseHotUpdateAssemblies.Length - 1) sb.Append(',');
+                "Unity", "UnityEngine", "UnityEditor", "System", "mscorlib", "netstandard",
+                "CoreModule", "GameModule"
+            };
+
+            while (queue.Count > 0)
+            {
+                var name = queue.Dequeue();
+                if (!processed.Add(name)) continue;
+                if (!allDlls.TryGetValue(name, out var assembly)) continue;
+
+                // 获取直接引用，并过滤掉引擎程序集
+                var deps = assembly.assemblyReferences
+                    .Select(d => d.name)
+                    .Where(d => !ignorePrefixes.Any(d.StartsWith))
+                    .ToList();
+
+                settings.dllDependencies[name] = deps;
+                AppendToLog($"{name} -> 依赖: {string.Join(',', deps)}");
+                
+                // 因为手动将所有可能用到的程序集都添加为了直接引用，所以这个foreach可以不要，但是这并非通用做法，所以保留自动计算传递依赖
+                foreach (var dep in deps)
+                    queue.Enqueue(dep);
             }
-            var settings = new HotUpdateAssemblySettings { preloadHotUpdateAssemblies = baseHotUpdateAssemblies };
+
             jsonManager.SaveToJson(settings, savePath);
             AssetDatabase.Refresh();
         }

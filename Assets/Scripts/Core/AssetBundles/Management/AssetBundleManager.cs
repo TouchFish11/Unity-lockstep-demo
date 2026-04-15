@@ -27,30 +27,9 @@ namespace Core.AssetBundles.Management
             memoryMonitor.Register(this);
             _jsonManager = jsonManager;
         }
-
-        /// <summary>
-        /// 初始化指定包
-        /// 更新使用
-        /// </summary>
-        /// <param name="abNames"></param>
-        public async Task InitSpecifyAsync(params string[] abNames)
-        {
-            foreach (var abName in abNames)
-            {
-                // 读取本地清单文件
-                Catalog = await _jsonManager.FromJsonAsync<AssetCatalog>(PathUtility.GetAbLoadPath(FileUtility.CatalogDefaultName));
-                if(Catalog.ABPackageCollection.TryGetValue(abName, out var defaultPackage))
-                {
-                    _nameToWrapperMap.TryAdd(abName, new BundleWrapper(abName, PathUtility.GetAbLoadPath(defaultPackage.Name), this));
-                }   
-            }
-        }
         
         public async Task Init()
         {
-            // 先卸载原来的默认包
-            await UnloadAllBundles(false);
-            
             // 读取本地清单文件
             Catalog = await _jsonManager.FromJsonAsync<AssetCatalog>(PathUtility.GetAbLoadPath(FileUtility.CatalogDefaultName));
             // 构建全部AB包信息

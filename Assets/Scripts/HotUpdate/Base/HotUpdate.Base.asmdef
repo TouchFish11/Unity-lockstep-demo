@@ -1,0 +1,18 @@
+{
+    "name": "HotUpdate.Base",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a4a6af4070a88c44295e96802cdc9fef",
+        "GUID:62c6899ee7f45a643977578937697546",
+        "GUID:75903c48d79889747ac58b2598f89ee0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

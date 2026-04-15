@@ -40,7 +40,7 @@ namespace Core.Pool
         /// 清除指定资源缓存
         /// </summary>
         /// <param name="assetName">资源名称</param>
-        /// <returns>销毁的资源数量</returns>
+        /// <returns>销毁的对象数量</returns>
         int ClearCache(string assetName);
         
         /// <summary>

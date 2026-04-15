@@ -34,13 +34,6 @@ namespace Core.AssetBundles.Management
         /// </summary>
         /// <param name="unloadAllObjects"></param>
         Task UnloadAllBundles(bool unloadAllObjects);
-
-        /// <summary>
-        /// 初始化默认包
-        /// 更新使用
-        /// </summary>
-        /// <param name="abNames"></param>
-        Task InitSpecifyAsync(params string[] abNames);
         
         /// <summary>
         /// 释放指定包的依赖包，用于减少依赖项的引用计数

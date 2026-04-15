@@ -46,7 +46,9 @@ namespace Editor.AssetBundle.Core
         {
             // 去掉扩展名，只留文件名（若需要目录，可自行拼接）
             var fileName = Path.GetFileNameWithoutExtension(assetPath);
-    
+
+            fileName = fileName.Replace('.', '_').Replace(' ', '_').Replace('-', '_');
+            
             // 按下划线切分
             var words = fileName.Split('_', StringSplitOptions.RemoveEmptyEntries);
     

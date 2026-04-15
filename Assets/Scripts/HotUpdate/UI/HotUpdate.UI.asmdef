@@ -1,0 +1,20 @@
+{
+    "name": "HotUpdate.UI",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a4a6af4070a88c44295e96802cdc9fef",
+        "GUID:62c6899ee7f45a643977578937697546",
+        "GUID:75903c48d79889747ac58b2598f89ee0",
+        "GUID:f9e15a81cc051be439ee12269cfae38d",
+        "GUID:b58db9c86ccdf844ba63588ef8dcfd7e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

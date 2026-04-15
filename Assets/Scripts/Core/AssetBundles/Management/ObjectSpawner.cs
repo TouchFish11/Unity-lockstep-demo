@@ -71,5 +71,13 @@ namespace Core.AssetBundles.Management
             
             _poolManager.PushObj(obj);
         }
+
+        /// <summary>
+        /// 清理所有句柄缓存，当不在使用该生成器时调用此方法，释放缓存的句柄
+        /// </summary>
+        public void ClearCache()
+        {
+            _assetHandles.Clear();
+        }
     }
 }

@@ -1,65 +1,30 @@
 {
   "assetMap": {
-    "idle_animation_config": {
-      "key": "idle_animation_config",
-      "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/animationconfig/bot/idle_animation_config.asset"
+    "hotupdate.common.dll": {
+      "key": "hotupdate.common.dll",
+      "bundleName": "hotupdate.assetbundle",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.common.dll.bytes",
+      "assetType": "Object"
     },
-    "null_animation_config": {
-      "key": "null_animation_config",
-      "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/animationconfig/bot/null_animation_config.asset"
-    },
-    "run_animation_config": {
-      "key": "run_animation_config",
-      "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/animationconfig/bot/run_animation_config.asset"
-    },
-    "shoot_animation_config": {
-      "key": "shoot_animation_config",
-      "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/animationconfig/bot/shoot_animation_config.asset"
-    },
-    "attack_animation_config": {
-      "key": "attack_animation_config",
-      "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/attack_animation_config.asset"
-    },
-    "dash_animation_config": {
-      "key": "dash_animation_config",
-      "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/dash_animation_config.asset"
-    },
-    "jump_air_animation_config": {
-      "key": "jump_air_animation_config",
-      "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/jump/jump_air_animation_config.asset"
-    },
-    "jump_end_animation_config": {
-      "key": "jump_end_animation_config",
-      "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/jump/jump_end_animation_config.asset"
-    },
-    "jump_start_animation_config": {
-      "key": "jump_start_animation_config",
-      "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/jump/jump_start_animation_config.asset"
+    "hotupdateassemblysettings": {
+      "key": "hotupdateassemblysettings",
+      "bundleName": "hotupdate.assetbundle",
+      "assetName": "assets/editor/artres/hotupdate/hotupdateassemblysettings.json",
+      "assetType": "Object"
     }
   },
   "abPackageCollection": {
     "keyToValueMap": {
+      "hotupdate.assetbundle": {
+        "name": "hotupdate.assetbundle",
+        "size": 3857,
+        "hash": "1c2bc36b60b199134f2cf19f190e302196faadc58bddb2bb5cf71f57e915f5a3",
+        "dependencies": []
+      },
       "scenes.assetbundle": {
         "name": "scenes.assetbundle",
-        "size": 11930845,
-        "hash": "5b3d2e2bf842b94efd2d86bd17484bdd067173ff5f483a0696f3232405ea4af7",
-        "dependencies": [
-          "so"
-        ]
-      },
-      "so.assetbundle": {
-        "name": "so.assetbundle",
-        "size": 2683,
-        "hash": "a3088d51cfba08d3973be5081caebf4cfc1e92b127c75869d3895077fb0a303c",
+        "size": 11932560,
+        "hash": "9cbeda01cc1426c63b23a4a84e44ab484c257171bcadc32b95ce793601962d8b",
         "dependencies": []
       }
     }

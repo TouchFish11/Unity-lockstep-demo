@@ -3,112 +3,146 @@
     "bot": {
       "key": "bot",
       "bundleName": "animation.assetbundle",
-      "assetName": "assets/editor/artres/animation/bot.controller"
+      "assetName": "assets/editor/artres/animation/bot.controller",
+      "assetType": "Object"
     },
     "role_controller": {
       "key": "role_controller",
       "bundleName": "animation.assetbundle",
-      "assetName": "assets/editor/artres/animation/role/role_controller.controller"
+      "assetName": "assets/editor/artres/animation/role/role_controller.controller",
+      "assetType": "Object"
     },
     "msyh": {
       "key": "msyh",
       "bundleName": "fonts.assetbundle",
-      "assetName": "assets/editor/artres/fonts/msyh.ttc"
+      "assetName": "assets/editor/artres/fonts/msyh.ttc",
+      "assetType": "Object"
     },
     "bot_mask": {
       "key": "bot_mask",
       "bundleName": "mask.assetbundle",
-      "assetName": "assets/editor/artres/mask/bot/bot_mask.mask"
+      "assetName": "assets/editor/artres/mask/bot/bot_mask.mask",
+      "assetType": "Object"
     },
     "gray": {
       "key": "gray",
       "bundleName": "material.assetbundle",
-      "assetName": "assets/editor/artres/material/gray.mat"
+      "assetName": "assets/editor/artres/material/gray.mat",
+      "assetType": "Object"
     },
     "idle_animation_config": {
       "key": "idle_animation_config",
       "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/animationconfig/bot/idle_animation_config.asset"
+      "assetName": "assets/editor/artres/so/animationconfig/bot/idle_animation_config.asset",
+      "assetType": "Object"
     },
     "null_animation_config": {
       "key": "null_animation_config",
       "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/animationconfig/bot/null_animation_config.asset"
+      "assetName": "assets/editor/artres/so/animationconfig/bot/null_animation_config.asset",
+      "assetType": "Object"
     },
     "run_animation_config": {
       "key": "run_animation_config",
       "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/animationconfig/bot/run_animation_config.asset"
+      "assetName": "assets/editor/artres/so/animationconfig/bot/run_animation_config.asset",
+      "assetType": "Object"
     },
     "shoot_animation_config": {
       "key": "shoot_animation_config",
       "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/animationconfig/bot/shoot_animation_config.asset"
+      "assetName": "assets/editor/artres/so/animationconfig/bot/shoot_animation_config.asset",
+      "assetType": "Object"
     },
     "attack_animation_config": {
       "key": "attack_animation_config",
       "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/attack_animation_config.asset"
+      "assetName": "assets/editor/artres/so/attack_animation_config.asset",
+      "assetType": "Object"
     },
     "dash_animation_config": {
       "key": "dash_animation_config",
       "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/dash_animation_config.asset"
+      "assetName": "assets/editor/artres/so/dash_animation_config.asset",
+      "assetType": "Object"
     },
     "jump_air_animation_config": {
       "key": "jump_air_animation_config",
       "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/jump/jump_air_animation_config.asset"
+      "assetName": "assets/editor/artres/so/jump/jump_air_animation_config.asset",
+      "assetType": "Object"
     },
     "jump_end_animation_config": {
       "key": "jump_end_animation_config",
       "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/jump/jump_end_animation_config.asset"
+      "assetName": "assets/editor/artres/so/jump/jump_end_animation_config.asset",
+      "assetType": "Object"
     },
     "jump_start_animation_config": {
       "key": "jump_start_animation_config",
       "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/jump/jump_start_animation_config.asset"
+      "assetName": "assets/editor/artres/so/jump/jump_start_animation_config.asset",
+      "assetType": "Object"
     },
     "test_test": {
       "key": "test_test",
       "bundleName": "so.assetbundle",
-      "assetName": "assets/editor/artres/so/test_test.asset"
+      "assetName": "assets/editor/artres/so/test_test.asset",
+      "assetType": "Object"
     },
     "msyh_sdf": {
       "key": "msyh_sdf",
       "bundleName": "tmpasset.assetbundle",
-      "assetName": "assets/editor/artres/tmpasset/msyh_sdf.asset"
+      "assetName": "assets/editor/artres/tmpasset/msyh_sdf.asset",
+      "assetType": "Object"
     },
     "battle_panel": {
       "key": "battle_panel",
       "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/battle/battle_panel.prefab"
+      "assetName": "assets/editor/artres/ui/battle/battle_panel.prefab",
+      "assetType": "Object"
     },
     "canvas": {
       "key": "canvas",
       "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/canvas.prefab"
+      "assetName": "assets/editor/artres/ui/canvas.prefab",
+      "assetType": "Object"
     },
     "chat_ui": {
       "key": "chat_ui",
       "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/main/chat/chat_ui.prefab"
+      "assetName": "assets/editor/artres/ui/main/chat/chat_ui.prefab",
+      "assetType": "Object"
     },
     "friend_ui": {
       "key": "friend_ui",
       "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/main/chat/friend_ui.prefab"
+      "assetName": "assets/editor/artres/ui/main/chat/friend_ui.prefab",
+      "assetType": "Object"
     },
     "main_panel": {
       "key": "main_panel",
       "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/main/main_panel.prefab"
+      "assetName": "assets/editor/artres/ui/main/main_panel.prefab",
+      "assetType": "Object"
     },
     "ui_camera": {
       "key": "ui_camera",
       "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/ui_camera.prefab"
+      "assetName": "assets/editor/artres/ui/ui_camera.prefab",
+      "assetType": "Object"
+    },
+    "hotupdate.common.dll": {
+      "key": "hotupdate.common.dll",
+      "bundleName": "hotupdate.assetbundle",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.common.dll.bytes",
+      "assetType": "Object"
+    },
+    "hotupdateassemblysettings": {
+      "key": "hotupdateassemblysettings",
+      "bundleName": "hotupdate.assetbundle",
+      "assetName": "assets/editor/artres/hotupdate/hotupdateassemblysettings.json",
+      "assetType": "Object"
     }
   },
   "abPackageCollection": {
@@ -141,11 +175,9 @@
       },
       "scenes.assetbundle": {
         "name": "scenes.assetbundle",
-        "size": 11930845,
-        "hash": "5b3d2e2bf842b94efd2d86bd17484bdd067173ff5f483a0696f3232405ea4af7",
-        "dependencies": [
-          "so"
-        ]
+        "size": 11932560,
+        "hash": "9cbeda01cc1426c63b23a4a84e44ab484c257171bcadc32b95ce793601962d8b",
+        "dependencies": []
       },
       "so.assetbundle": {
         "name": "so.assetbundle",
@@ -169,7 +201,14 @@
           "fonts",
           "tmpasset"
         ]
+      },
+      "hotupdate.assetbundle": {
+        "name": "hotupdate.assetbundle",
+        "size": 3857,
+        "hash": "1c2bc36b60b199134f2cf19f190e302196faadc58bddb2bb5cf71f57e915f5a3",
+        "dependencies": []
       }
     }
-  }
+  },
+  "bundleToAssetKeys": {}
 }

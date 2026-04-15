@@ -68,7 +68,7 @@ namespace Core.Pool
         }
 
         /// <summary>
-        /// 清空对象池释放所有资源
+        /// 清空对象池销毁所有对象
         /// </summary>
         public void Clear()
         {

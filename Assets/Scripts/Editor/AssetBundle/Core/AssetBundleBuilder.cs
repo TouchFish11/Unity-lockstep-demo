@@ -21,7 +21,9 @@ namespace Editor.AssetBundle.Core
         private readonly Action<string, float> progressAction;
         private readonly IJsonManager jsonManager = DIContainer.Create<JsonManager>();
         public const string AssetCatalogName = "AssetCatalog.json";
-        
+        public const string BootConfigName = "BootConfig.json";
+        public const string hotfixDllBundleName = "hotupdate";
+
         public AssetBundleBuilder(Action<string> logAction = null, Action<string, float> progressAction = null)
         {
             this.logAction = logAction;
@@ -87,12 +89,7 @@ namespace Editor.AssetBundle.Core
             Log("--- Build End ---\n");
 
             var catalog = GenerateAssetCatalog(outputPath, target);
-            if (catalog == null)
-                return false;
-            
-            var scriptPath = Path.Combine(Application.dataPath, "Scripts", "HotUpdate", "Data", "Generated", "AssetKeys.cs");
-            AssetKeyGenerator.Generate(catalog, scriptPath);
-            return true;
+            return catalog != null;
         }
 
         /// <summary>
@@ -236,9 +233,43 @@ namespace Editor.AssetBundle.Core
             var finalJson = jsonManager.ToJson(finalCatalog);
             File.WriteAllText(dstCatalogPath, finalJson);
             Log($"{AssetCatalogName} 已合并更新。");
+            
+            var scriptPath = Path.Combine(Application.dataPath, "Scripts", "HotUpdate", "Common", "Generated", "AssetKeys.cs");
+            AssetKeyGenerator.Generate(finalCatalog, scriptPath);
+            Log($"资源键常量已生成：{scriptPath}");
+            
+            // 生成 AB 包名常量
+            var bundleKeyScriptPath = Path.Combine(Application.dataPath, "Scripts", "HotUpdate", "Common", "Generated", "AssetBundleKeys.cs");
+            AssetBundleKeyGenerator.Generate(finalCatalog, bundleKeyScriptPath);
+            Log($"AssetBundleKeys 已生成：{bundleKeyScriptPath}");
 
+            GenerateBootConfigAndCopyStreamingAssets(serverDataPath);
+            
             AssetDatabase.Refresh();
             Log("--- End Copy To ServerData ---\n");
+        }
+
+        public void GenerateBootConfigAndCopyStreamingAssets(string serverDataPath)
+        {
+            // 生成启动配置
+            // 可以通过配置或约定获取这个名称，这里简化为常量或从 releaseCollection 推断
+            var hotfixBundleName = $"{hotfixDllBundleName}{FileUtility.AbSuffix}"; // 或从某个设置读取
+            var bootConfig = new BootConfig
+            {
+                hotfixDllBundleName = hotfixBundleName,
+                version = DateTime.Now.Ticks.ToString()
+            };
+            
+            var bootConfigJson = jsonManager.ToJson(bootConfig);
+            var bootConfigPath = Path.Combine(serverDataPath, BootConfigName);
+            File.WriteAllText(bootConfigPath, bootConfigJson);
+            Log($"启动配置已生成：{bootConfigPath}");
+
+            // 同步拷贝到 StreamingAssets（可选，也可以在 Build 流程中单独处理）
+            var streamingBootConfigPath = Path.Combine(Application.streamingAssetsPath, BootConfigName);
+            AssetBundleUtility.EnsureDirectoryExists(Path.GetDirectoryName(streamingBootConfigPath));
+            File.Copy(bootConfigPath, streamingBootConfigPath, true);
+            Log($"启动配置已拷贝到 StreamingAssets：{streamingBootConfigPath}");
         }
 
         /// <summary>

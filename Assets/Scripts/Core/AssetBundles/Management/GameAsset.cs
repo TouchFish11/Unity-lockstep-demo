@@ -42,6 +42,9 @@ namespace Core.AssetBundles.Management
             
             // 从资源目录中查找指定的key
             var mapEntry = _assetBundleManager.Catalog.GetEntry(key);
+            if (mapEntry == null)
+                throw new NullReferenceException($"{nameof(GameAsset)}: key({key}) found entry is null");
+                
             // 加载AB包
             var bundleWrapper = await _assetBundleManager.LoadBundleAsync(mapEntry.bundleName);
             // 异步加载资源
@@ -148,6 +151,70 @@ namespace Core.AssetBundles.Management
             return newHandle.ConvertTo<IList<T>>();
         }
 
+        /// <summary>
+        /// 加载指定AB包中的所有资源
+        /// </summary>
+        /// <param name="bundleName">AB包名</param>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <returns></returns>
+        public static async Task<AssetHandle<IList<T>>> LoadAllAssetByBundleAsync<T>(string bundleName) where T : class
+        {
+            var tasks = new List<Task<AssetHandle<T>>>();
+            var handles = new List<AssetHandle>();
+            var keys = _assetBundleManager.Catalog.GetAssetKeysByBundle(bundleName);
+            foreach (var key in keys)
+            {
+                // 没有缓存就加载资源
+                if (!_keyToHandleMap.TryGetValue(key, out var handle))
+                {
+                    tasks.Add(LoadAssetAsync<T>(key));
+                }
+                // 复用缓存句柄
+                else
+                {
+                    ++_assetIdToLocationsMap[handle.HandleId].RefCount;
+                    handles.Add(handle);
+                }
+            }
+            
+            // 等待所有资源加载完成
+            var newHandles = await Task.WhenAll(tasks);
+            foreach (var handle in newHandles) 
+                handles.Add(handle);
+
+            var bundleKey = $"{bundleName}_{typeof(T)}";
+            // 创建新Handle
+            var newHandle = new AssetHandle { HandleId = GenerateNewId(), Version = 0 };
+            IList<T> list = handles.ConvertAll(h => h.ConvertTo<T>().Asset);
+            // 判断ID是否存在，存在就复用定位对象
+            if (_assetIdToLocationsMap.TryGetValue(newHandle.HandleId, out var location))
+            {
+                location.Asset = list;
+                ++location.Version;
+                location.RefCount = 1;
+                location.release = () => { foreach (var handle in handles) Release(handle); };
+                // 同步定位对象的版本
+                newHandle.Version = location.Version;
+                // 缓存句柄，通过AB包名作为句柄的Key
+                _keyToHandleMap.Add(bundleKey, newHandle);
+                _handleToKeyMap.Add(newHandle, bundleKey);
+                return newHandle.ConvertTo<IList<T>>();
+            }
+            
+            // 创建新定位对象
+            var newLocation = new AssetLocation
+            {
+                Asset = list, Version = newHandle.Version, RefCount = 1, release = () => { foreach (var handle in handles) Release(handle); }
+            };
+
+            // 缓存句柄
+            _keyToHandleMap.Add(bundleKey, newHandle);
+            _handleToKeyMap.Add(newHandle, bundleKey);
+            // 缓存定位对象
+            _assetIdToLocationsMap.Add(newHandle.HandleId, newLocation);
+            return newHandle.ConvertTo<IList<T>>();
+        }
+        
         /// <summary>
         /// 获取所有的场景路径（key）
         /// </summary>
