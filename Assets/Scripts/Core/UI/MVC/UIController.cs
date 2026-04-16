@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events;
 using Core.Log;
-using Core.Pool;
 
 namespace Core.UI.MVC
 {
@@ -12,17 +11,18 @@ namespace Core.UI.MVC
     /// </summary>
     public abstract class UIController<TView, TModel> : IuiController where TView : IuiView where TModel : IuiModel
     {
+        [DI.Inject] protected IUIManager uiManager;
+        [DI.Inject] protected IEventCenter eventCenter;
+
+        protected int panelId;
         protected TView view;
         protected TModel model;
-
-        [DI.Inject] protected readonly IUIManager uiManager;
-        [DI.Inject] protected readonly IEventCenter eventCenter;
-        [DI.Inject] protected readonly IPoolManager poolManager;
-
+        
         public async Task Init(int id, IuiView view, IuiModel model)
         {
             try
             {
+                this.panelId = id;
                 this.view = (TView)view;
                 this.model = (TModel)model;
                 await OnInit();

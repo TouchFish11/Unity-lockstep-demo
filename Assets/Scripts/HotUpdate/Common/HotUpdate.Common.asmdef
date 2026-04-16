@@ -1,7 +1,10 @@
 {
     "name": "HotUpdate.Common",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:a4a6af4070a88c44295e96802cdc9fef",
+        "GUID:62c6899ee7f45a643977578937697546"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

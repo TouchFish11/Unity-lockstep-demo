@@ -43,7 +43,7 @@ namespace Core.UI
             var memberInfos = type.GetMembers(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             foreach (var memberInfo in memberInfos)
             {
-                var attribute = memberInfo.GetCustomAttribute<InjectAttribute>();
+                var attribute = memberInfo.GetCustomAttribute<InjectUIAttribute>();
                 if (attribute == null)
                 {
                     continue;
@@ -71,7 +71,7 @@ namespace Core.UI
             var memberInfos = type.GetMembers(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             foreach (var memberInfo in memberInfos)
             {
-                var attribute = memberInfo.GetCustomAttribute<InjectAttribute>();
+                var attribute = memberInfo.GetCustomAttribute<InjectUIAttribute>();
                 if (attribute == null || attribute.RectTransformFlag == 0)
                 {
                     continue;

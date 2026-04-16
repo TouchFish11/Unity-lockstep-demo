@@ -1,6 +1,6 @@
 namespace HotUpdate.Base
 {
-    public interface IBagManager
+    public interface IInventoryManager
     {
 
     }
