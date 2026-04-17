@@ -18,6 +18,7 @@ namespace Game.Main
     public class GameLauncher : MonoBehaviour
     {
         [SerializeField] private string bootConfigFileName = "BootConfig.json";
+        private BootConfig bootConfig;
         
         private async void Start()
         {
@@ -25,11 +26,14 @@ namespace Game.Main
             {
                 // 注册框架
                 await RegisterCore.InitCore();
+                // 加载启动配置
+                LoadBootConfig();
                 // 加载热更程序集
                 await LoadHotfixDll();
                 // 创建热更入口
                 var spawner = DIContainer.Create<ObjectSpawner>();
-                var entryObj = await spawner.SpawnAsync<GameObject>("HotUpdateEntry");
+                var entryObj = await spawner.SpawnAsync<GameObject>(bootConfig.hotfixObjKey);
+                DIContainer.InjectIntoInstance(entryObj.Obj);
                 entryObj.Collect();
             }
             catch (Exception e)
@@ -37,14 +41,12 @@ namespace Game.Main
                 Logger.LogError($"{nameof(GameLauncher)}:Game startup failed {e.Message})");
             }
         }
-
+        
         /// <summary>
         /// 加载热更程序集
         /// </summary>
         private async Task LoadHotfixDll()
         {
-            // 加载启动配置
-            var bootConfig = await LoadBootConfigAsync();
             if (bootConfig == null)
             {
                 Logger.LogError($"{nameof(GameLauncher)}:无法加载启动配置，使用默认硬编码包名");
@@ -63,28 +65,30 @@ namespace Game.Main
             hotUpdateManager.LoadMetadataForAOTAssemblies(AOTGenericReferences.PatchedAOTAssemblyList);  
             // 加载所有热更程序集
             await hotUpdateManager.LoadAssembliesAsync(settings, list);
+            Logger.Log($"{nameof(GameLauncher)}:Load the hotfix assemblies complete");
         }
         
-        private async Task<BootConfig> LoadBootConfigAsync()
+        /// <summary>
+        /// 加载启动配置
+        /// </summary>
+        private void LoadBootConfig()
         {
             var jsonManager = DIContainer.GetInstance<IJsonManager>();
             // 优先从持久化目录读取（热更可能更新配置，但通常不需要）
             var persistentPath = Path.Combine(Application.persistentDataPath, bootConfigFileName);
             if (File.Exists(persistentPath))
             {
-                var json = await File.ReadAllTextAsync(persistentPath);
-                return jsonManager.FromJson<BootConfig>(json);
+                var json = File.ReadAllText(persistentPath);
+                bootConfig = jsonManager.FromJson<BootConfig>(json);
             }
 
             // 其次从 StreamingAssets 读取（首包内置）
             var streamingPath = Path.Combine(Application.streamingAssetsPath, bootConfigFileName);
             if (File.Exists(streamingPath))
             {
-                var json = await File.ReadAllTextAsync(streamingPath);
-                return jsonManager.FromJson<BootConfig>(json);
+                var json = File.ReadAllText(streamingPath);
+                bootConfig = jsonManager.FromJson<BootConfig>(json);
             }
-
-            return null;
         }
     }
 }

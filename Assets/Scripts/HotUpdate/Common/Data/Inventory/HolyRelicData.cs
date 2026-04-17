@@ -23,6 +23,8 @@ namespace HotUpdate.Common.Data.Inventory
         {
             
         }
+
+        public int level;
         
         private Dictionary<EHolyRelicEntryType, HolyRelicEntryData> entries = new();
     }

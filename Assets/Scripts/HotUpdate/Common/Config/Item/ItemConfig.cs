@@ -14,7 +14,9 @@ namespace HotUpdate.Common.Config.Item
         public string name;
         // 物品描述
         public string description;
-        // 物品图标路径
+        // 图标图集
+        public string atlasName;
+        // 物品图标
         public string icon;
         // 物品品质
         public EItemQuality itemQuality;

@@ -1,4 +1,5 @@
 using Core.UI;
+using TMPro;
 
 namespace HotUpdate.Game.Inventory.UI.Detail
 {
@@ -7,6 +8,13 @@ namespace HotUpdate.Game.Inventory.UI.Detail
     /// </summary>
     public class MaterialDetailPanel : UIBehaviourBase
     {
+        [InjectUI] private TextMeshProUGUI txtMaterialName;
+        [InjectUI] private TextMeshProUGUI txtMaterialDescription;
 
+        public void UpdateInfo(string materialName, string materialDescription)
+        {
+            txtMaterialName.text = materialName;
+            txtMaterialDescription.text = materialDescription;
+        }
     }
 }

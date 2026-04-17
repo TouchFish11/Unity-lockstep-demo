@@ -1,32 +1,25 @@
 {
   "assetMap": {
-    "hotupdate.common.dll": {
-      "key": "hotupdate.common.dll",
-      "bundleName": "hotupdate.assetbundle",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.common.dll.bytes",
-      "assetType": "Object"
-    },
-    "hotupdateassemblysettings": {
-      "key": "hotupdateassemblysettings",
-      "bundleName": "hotupdate.assetbundle",
-      "assetName": "assets/editor/artres/hotupdate/hotupdateassemblysettings.json",
+    "boss": {
+      "key": "boss",
+      "bundleName": "prefab.assetbundle",
+      "assetName": "assets/editor/artres/prefab/boss.prefab",
       "assetType": "Object"
     }
   },
   "abPackageCollection": {
     "keyToValueMap": {
-      "hotupdate.assetbundle": {
-        "name": "hotupdate.assetbundle",
-        "size": 3857,
-        "hash": "1c2bc36b60b199134f2cf19f190e302196faadc58bddb2bb5cf71f57e915f5a3",
-        "dependencies": []
-      },
-      "scenes.assetbundle": {
-        "name": "scenes.assetbundle",
-        "size": 11932560,
-        "hash": "9cbeda01cc1426c63b23a4a84e44ab484c257171bcadc32b95ce793601962d8b",
+      "prefab.assetbundle": {
+        "name": "prefab.assetbundle",
+        "size": 46749,
+        "hash": "88a61d583e2103b9c99c3565ce034b88456f995c237a57ab80c70b5ae5613fb3",
         "dependencies": []
       }
     }
+  },
+  "bundleToAssetKeys": {
+    "prefab.assetbundle": [
+      "boss"
+    ]
   }
 }

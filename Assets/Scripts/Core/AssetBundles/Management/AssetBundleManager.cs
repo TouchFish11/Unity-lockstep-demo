@@ -49,13 +49,15 @@ namespace Core.AssetBundles.Management
         /// <returns></returns>
         public async Task<BundleWrapper> LoadBundleAsync(string abName, CancellationToken token = default)
         {
-            if (!_nameToWrapperMap.TryGetValue(abName, out var wrapper))
+            // TODO：主包带拓展名，依赖包又不带拓展名，需统一一下
+            var name = abName[..abName.LastIndexOf('.')];
+            if (!_nameToWrapperMap.TryGetValue(name, out var wrapper))
             {
-                throw new KeyNotFoundException($"{nameof(AssetBundleManager)}: {abName} key is not found");
+                throw new KeyNotFoundException($"{nameof(AssetBundleManager)}: {name} key is not found");
             }
 
             // 加载依赖和目标AB包
-            await LoadDependenciesAndTargetAsync(abName, token);
+            await LoadDependenciesAndTargetAsync(name, token);
             // 返回指定AB包
             return wrapper;
         }

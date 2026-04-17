@@ -52,7 +52,9 @@ namespace Core.AssetBundles.Management
                     transform.localRotation = rot;
                 }
             }
-
+            
+            // 修改名称
+            newObj.name = key;
             poolObject = new PoolObject(newObj, this);
             return poolObject.Convert<T>();
         }

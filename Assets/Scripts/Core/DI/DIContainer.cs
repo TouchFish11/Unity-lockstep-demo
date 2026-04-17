@@ -210,27 +210,6 @@ namespace Core.DI
         }
         
         /// <summary>
-        /// 传入GameObject对象为其挂载泛型类型脚本，并初始化其中被Inject修饰的字段/属性
-        /// </summary>
-        /// <param name="obj">GameObject对象</param>
-        /// <typeparam name="T">可挂载的组件类型</typeparam>
-        /// <returns>若参数为null，则返回null；否则返回T类型；</returns>
-        /// <exception cref="ArgumentException">若 T 不是 Component 子类，则抛出异常</exception>
-        public static T CreateInstance<T>(GameObject obj) where T : class
-        {
-            if (!obj)
-                return null;
-            
-            if (!typeof(Component).IsAssignableFrom(typeof(T)))
-                throw new ArgumentException($"{typeof(T)} is not a Component type");
-            
-            var component = obj.AddComponent(typeof(T)) as T;
-            // 注入字段/属性
-            InjectIntoInstance(component);
-            return component;
-        }
-
-        /// <summary>
         /// 通过构造函数创建实例并注入参数依赖
         /// </summary>
         /// <param name="type">必须是实例类型</param>

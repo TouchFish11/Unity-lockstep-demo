@@ -3,11 +3,14 @@ public static class AssetBundleKeys
 {
     public const string Animation = "animation.assetbundle";
     public const string Fonts = "fonts.assetbundle";
+    public const string Gameconfig = "gameconfig.assetbundle";
+    public const string Hotupdate = "hotupdate.assetbundle";
+    public const string HotupdateEntry = "hotupdate_entry.assetbundle";
     public const string Mask = "mask.assetbundle";
     public const string Material = "material.assetbundle";
     public const string Scenes = "scenes.assetbundle";
-    public const string So = "so.assetbundle";
+    public const string Spriteatlas = "spriteatlas.assetbundle";
     public const string Tmpasset = "tmpasset.assetbundle";
     public const string Ui = "ui.assetbundle";
-    public const string Hotupdate = "hotupdate.assetbundle";
+    public const string Prefab = "prefab.assetbundle";
 }

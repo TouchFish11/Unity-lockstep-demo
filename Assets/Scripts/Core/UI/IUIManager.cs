@@ -43,10 +43,9 @@ namespace Core.UI
         /// <summary>
         /// 异步初始化UI管理器
         /// </summary>
-        /// <param name="canvasName"></param>
-        /// <param name="uiCameraName"></param>
+        /// <param name="uiRoot"></param>
         /// <returns></returns>
-        Task InitUIManagerAsync(string canvasName, string uiCameraName);
+        Task InitUIManagerAsync(string uiRoot);
         
         /// <summary>
         /// 销毁界面

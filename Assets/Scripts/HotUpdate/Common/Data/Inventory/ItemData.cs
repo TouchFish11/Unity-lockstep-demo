@@ -11,8 +11,8 @@ namespace HotUpdate.Common.Data.Inventory
     public abstract class ItemData
     {
         // 物品ID
-        [JsonProperty] protected int itemId;
+        [JsonProperty] public int itemId;
         // 物品数量
-        [JsonProperty] protected int itemNum;
+        [JsonProperty] public int itemNum;
     }
 }

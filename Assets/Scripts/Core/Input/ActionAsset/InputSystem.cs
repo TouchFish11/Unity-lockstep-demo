@@ -42,17 +42,14 @@ namespace Core.Input.ActionAsset
         {
             _assetBundleManager = assetBundleManager;
         }
-        
+
         /// <summary>
         /// 初始化输入系统
         /// </summary>
-        /// <param name="abName"></param>
-        public async Task InitInputsystemAsync(string abName)
+        /// <param name="inputJson"></param>
+        public void InitInputSystem(string inputJson)
         {
-            // 从AssetBundle加载输入配置JSON
-            var assetBundle = await _assetBundleManager.LoadBundleAsync(abName);
-            var handle= await GameAsset.LoadAssetAsync<TextAsset>(FileUtility.InputActionLocalFileName);
-            _jsonInputData = handle.Asset.text;
+            _jsonInputData = inputJson;
         }
 
         /// <summary>

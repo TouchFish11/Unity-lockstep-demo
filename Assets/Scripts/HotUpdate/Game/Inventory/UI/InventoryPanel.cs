@@ -14,5 +14,13 @@ namespace HotUpdate.Game.Inventory.UI
         [InjectUI] public ScrollRect svItems;
         [InjectUI(1)] public RectTransform DetailArea { get; private set; }
         [InjectUI] public Button btnClose;
+        
+        public ToggleGroup OptGroup {get; private set;}
+
+        protected override void Awake()
+        {
+            base.Awake();
+            OptGroup = svOpts.content.GetComponent<ToggleGroup>();
+        }
     }
 }

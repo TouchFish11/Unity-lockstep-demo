@@ -257,7 +257,8 @@ namespace Editor.AssetBundle.Core
             var bootConfig = new BootConfig
             {
                 hotfixDllBundleName = hotfixBundleName,
-                version = DateTime.Now.Ticks.ToString()
+                version = DateTime.Now.Ticks.ToString(),
+                hotfixObjKey = "hotupdateentry"
             };
             
             var bootConfigJson = jsonManager.ToJson(bootConfig);
@@ -383,7 +384,7 @@ namespace Editor.AssetBundle.Core
                     var assetType = assetBundle.isStreamedSceneAssetBundle ? EAssetType.Scene : EAssetType.Object;
                     if (assetBundle)
                     {
-                        var assetPaths = assetBundle.GetAllAssetNames();
+                        var assetPaths = assetType == EAssetType.Object ? assetBundle.GetAllAssetNames() : assetBundle.GetAllScenePaths();
                         foreach (var assetPath in assetPaths)
                         {
                             // 决定 key：使用文件名（不含扩展名），若担心重名可改用完整路径
@@ -397,6 +398,7 @@ namespace Editor.AssetBundle.Core
                             }
                             var entry = new AssetMapEntry(key, fileName, assetPath, assetType);
                             catalog.AddEntry(key, entry);
+                            Log($"资源名：{assetPath}");
                         }
                         assetBundle.Unload(false);
                     }

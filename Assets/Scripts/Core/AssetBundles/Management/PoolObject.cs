@@ -18,7 +18,7 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 回收对象，内部游戏对象实例回收到缓存池中
         /// </summary>
-        internal void Collect()
+        public void Collect()
         {
             _spawner.Release(Obj as GameObject);
             Obj = null;

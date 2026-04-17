@@ -24,9 +24,9 @@ namespace Core.AssetBundles.Update.Core
         private IUpdateState _currentUpdateState;
         // 当前更新状态索引
         private int _stateIndex;
-        // 更新服务
-        private readonly UpdateService _updateService;
-        
+        /// 更新服务
+        public UpdateService UpdateService { get; }
+
         /// <summary>
         /// 更新阶段
         /// </summary>
@@ -35,7 +35,7 @@ namespace Core.AssetBundles.Update.Core
         private AssetBundleUpdater(IMonoAdapter monoAdapter, IPoolManager poolManager, UpdateService updateService)
         {
             monoAdapter.AddApplicationExitNotify(this);
-            _updateService = updateService;
+            UpdateService = updateService;
             _poolManager = poolManager;
         }
 
@@ -134,7 +134,7 @@ namespace Core.AssetBundles.Update.Core
             try
             {
                 if (_currentUpdateState == null || UpdatePhase == EUpdatePhase.Finished) return;
-                _updateService.CancelDownload(_updateContext);
+                UpdateService.CancelDownload(_updateContext);
                 Logger.Log($"{nameof(AssetBundleUpdater)}.{nameof(OnAppQuit)}:已取消下载");
             }
             catch (System.Exception e)

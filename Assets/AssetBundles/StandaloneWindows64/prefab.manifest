@@ -1,0 +1,38 @@
+ManifestFileVersion: 0
+CRC: 383227256
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6f62571446378df1a7666def878c553f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 99351c94f2c7588d2486461fb0307522
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 6f62571446378df1a7666def878c553f
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8294d9b605edc0d4a96a4ac944545cd0, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Editor/ArtRes/Prefab/Boss.prefab
+Dependencies: []

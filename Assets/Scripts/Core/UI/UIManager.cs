@@ -6,7 +6,6 @@ using Core.DI;
 using Core.UI.MVC;
 using UnityEngine;
 using Logger = Core.Log.Logger;
-using Object = UnityEngine.Object;
 
 namespace Core.UI
 {
@@ -30,36 +29,29 @@ namespace Core.UI
         // 对象生成器
         private readonly ObjectSpawner _objectSpawner;
         // canvas缓存对象
-        private PoolObject _canvasPoolObject;
-        // ui相机缓存对象
-        private PoolObject _uiCameraPoolObject;
+        private PoolObject _uiRoot;
         
         private UIManager(ObjectSpawner spawner)
         {
             _objectSpawner = spawner;
         }
 
-        public async Task InitUIManagerAsync(string canvasName, string uiCameraName)
+        public async Task InitUIManagerAsync(string uiRoot)
         {
-            // 创建画布实例
-            var poolObject = await _objectSpawner.SpawnAsync<Canvas>(canvasName);
-            Canvas = poolObject.Obj;
-            _canvasPoolObject = poolObject;
-            Object.DontDestroyOnLoad(Canvas.gameObject);
-
+            // 获取画布实例
+            var poolObject = await _objectSpawner.SpawnAsync<GameObject>(uiRoot);
+            // 获取画布、UI摄像机实例
+            Canvas = poolObject.Obj.GetComponentInParent<Canvas>();
+            UICamera = poolObject.Obj.GetComponentInParent<Camera>();
+            
             // 获取对应层级对象位置
             _topLayer = Canvas.transform.Find("Top");
             _midLayer = Canvas.transform.Find("Mid");
             _botLayer = Canvas.transform.Find("Bot");   
             _systemLayer = Canvas.transform.Find("System");
             
-            // 创建UI相机实例
-            var poolObject2 = await _objectSpawner.SpawnAsync<Camera>(uiCameraName);
-            UICamera = poolObject2.Obj;
-            _uiCameraPoolObject = poolObject2;
-            Object.DontDestroyOnLoad(UICamera.gameObject);
-            // 设置UI摄像机
-            Canvas.worldCamera = UICamera;
+            // 缓存对象
+            _uiRoot = poolObject;
         }
         
         public Transform GetLayer(E_UILayer layer)
@@ -145,8 +137,7 @@ namespace Core.UI
         public Task Clear()
         {
             // 回收画布和摄像机
-            _canvasPoolObject.Collect();
-            _uiCameraPoolObject.Collect();
+            _uiRoot.Collect();
             Canvas = null;
             UICamera = null;
             
