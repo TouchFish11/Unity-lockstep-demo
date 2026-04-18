@@ -4,6 +4,7 @@ using Core.DI;
 using Core.Pool;
 using UnityEngine;
 using Logger = Core.Log.Logger;
+using Object = UnityEngine.Object;
 
 namespace Core.AssetBundles.Management
 {
@@ -18,23 +19,27 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 统一的生成入口
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <param name="key"></param>
+        /// <param name="parent"></param>
+        /// <param name="pos"></param>
+        /// <param name="rot"></param>
+        /// <param name="worldSpace"></param>
+        /// <typeparam name="T">游戏对象上的组件类型</typeparam>
+        /// <returns>返回该游戏对象上的特定组件</returns>
         public async Task<PoolObject<T>> SpawnAsync<T>(
             string key, Transform parent = null, Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
         {
             PoolObject poolObject;
-            var instance = _poolManager.Get(key);
+            var instance = _poolManager.Get<T>(key);
             if (instance)
             {
-                poolObject = new PoolObject(instance as T, this);
+                poolObject = new PoolObject(instance, this);
                 return poolObject.Convert<T>();
             }
 
             if (!_assetHandles.TryGetValue(key, out var assetHandle))
             {
-                // 底层只负责加载Prefab，实例化由中间层控制
-                assetHandle = await GameAsset.LoadAssetAsync<T>(key);
+                assetHandle = await GameAsset.LoadAssetAsync<GameObject>(key);
                 _assetHandles.Add(key, assetHandle);
             }
 
@@ -53,7 +58,7 @@ namespace Core.AssetBundles.Management
                 }
             }
             
-            // 修改名称
+            // 修改对象名称为资源唯一路径
             newObj.name = key;
             poolObject = new PoolObject(newObj, this);
             return poolObject.Convert<T>();
@@ -63,14 +68,14 @@ namespace Core.AssetBundles.Management
         /// 统一的回收入口（通过 PooledObject 自动调用）
         /// </summary>
         /// <param name="obj">游戏对象</param>
-        internal void Release(GameObject obj)
+        internal void Release(Object obj)
         {
             if (!obj)
             {
                 Logger.LogError($"{nameof(ObjectSpawner)}:Manually destroying object is not allowed");
                 return;
             }
-            
+
             _poolManager.PushObj(obj);
         }
 

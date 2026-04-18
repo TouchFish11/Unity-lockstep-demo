@@ -13,6 +13,8 @@ namespace Core.Utility
         
         public static float RealtimeSinceStartup => UnityEngine.Time.realtimeSinceStartup;
         
+        public static double RealtimeSinceStartupAsDouble => UnityEngine.Time.realtimeSinceStartupAsDouble;
+        
         public static float Timescale { get => UnityEngine.Time.timeScale; set => UnityEngine.Time.timeScale = value; }
 
         public static float UnscaledTime => UnityEngine.Time.unscaledTime;

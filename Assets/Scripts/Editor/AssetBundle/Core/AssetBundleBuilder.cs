@@ -126,25 +126,26 @@ namespace Editor.AssetBundle.Core
             }
 
             // 拷贝所有 .assetBundle 文件（只拷贝变化的）
-            foreach (var (abFileName, newAbInfo) in newCatalog.ABPackageCollection)
+            foreach (var (bundleName, newAbInfo) in newCatalog.ABPackageCollection)
             {
-                var srcFilePath = Path.Combine(outputPath, abFileName);
-                var dstFilePath = Path.Combine(serverDataPath, abFileName);
+                var fileName = bundleName + FileUtility.AbSuffix;
+                var srcFilePath = Path.Combine(outputPath, fileName);
+                var dstFilePath = Path.Combine(serverDataPath, fileName);
 
                 var needCopy = true;
-                if (serverCatalog != null && serverCatalog.ABPackageCollection.TryGetValue(abFileName, out var oldInfo))
+                if (serverCatalog != null && serverCatalog.ABPackageCollection.TryGetValue(bundleName, out var oldInfo))
                 {
                     if (oldInfo.Hash == newAbInfo.Hash)
                     {
                         needCopy = false;
-                        Log($"跳过未变化：{abFileName}");
+                        Log($"跳过未变化：{bundleName}");
                     }
                 }
 
                 if (needCopy)
                 {
                     File.Copy(srcFilePath, dstFilePath, true);
-                    Log($"已拷贝：{abFileName}");
+                    Log($"已拷贝：{fileName}");
                 }
             }
 
@@ -188,8 +189,8 @@ namespace Editor.AssetBundle.Core
             if (releaseCollection)
             {
                 var bundlesToRemove = finalCatalog.ABPackageCollection.Keys
-                    .Where(fileName => !releaseCollection.assetBundleInfos.Exists(ab =>
-                        $"{ab.assetBundleName}{FileUtility.AbSuffix}" == fileName))
+                    .Where(bName => !releaseCollection.assetBundleInfos.Exists(ab =>
+                        $"{ab.assetBundleName}" == bName))
                     .ToList();
                 foreach (var fileName in bundlesToRemove)
                 {
@@ -204,11 +205,12 @@ namespace Editor.AssetBundle.Core
              如果包 A 依赖了被移除的包 B，那么 A 一定会被反向依赖逻辑捕获并重打包。
              如果 A 没有被重打包，说明它不依赖 B，自然旧清单里也不会有 B 的依赖记录。
             */
-            
+                        
             // 更新 Assets 映射（合并策略）
-            // 先移除那些属于已删除包的资源条目
+            // 1. 移除所有被重打包的包（即在 newCatalog 中出现的包）在 finalCatalog 中的旧资源条目
+            var rebuiltBundles = new HashSet<string>(newCatalog.ABPackageCollection.Keys);
             var assetsToRemove = finalCatalog.Assets
-                .Where(entry => !finalCatalog.ABPackageCollection.ContainsKey(entry.bundleName))
+                .Where(entry => rebuiltBundles.Contains(entry.bundleName))
                 .Select(entry => entry.key)
                 .ToList();
             foreach (var key in assetsToRemove)
@@ -216,19 +218,22 @@ namespace Editor.AssetBundle.Core
                 finalCatalog.RemoveEntry(key);
             }
 
-            // 将新构建产生的资源映射添加/更新进去
-            foreach (var entry in newCatalog.Assets)
+            // 2. 移除属于已删除包的孤儿条目（包在 finalCatalog.ABPackageCollection 中已不存在）
+            var orphanKeys = finalCatalog.Assets
+                .Where(entry => !finalCatalog.ABPackageCollection.ContainsKey(entry.bundleName))
+                .Select(entry => entry.key)
+                .ToList();
+            foreach (var key in orphanKeys)
             {
-                if(finalCatalog.ContainsKey(entry.key))
-                {
-                    finalCatalog[entry.key] = entry;
-                }
-                else
-                {
-                    finalCatalog.AddEntry(entry.key, entry);
-                }
+                finalCatalog.RemoveEntry(key);
             }
 
+            // 3. 将 newCatalog 的所有资源条目添加/更新到 finalCatalog
+            foreach (var entry in newCatalog.Assets)
+            {
+                finalCatalog.AddOrUpdateEntry(entry.key, entry);
+            }
+            
             // 保存合并后的清单到服务器目录
             var finalJson = jsonManager.ToJson(finalCatalog);
             File.WriteAllText(dstCatalogPath, finalJson);
@@ -375,8 +380,8 @@ namespace Editor.AssetBundle.Core
                     var deps = manifest.GetAllDependencies(bundleName);
                     var fileInfo = new FileInfo(filePath);
                     var hash = HashUtility.GenerateFileSHA256Hash(filePath);
-                    var pkgInfo = new ABPackageInfo(fileName, fileInfo.Length, hash, deps);
-                    catalog.ABPackageCollection.TryAdd(fileName, pkgInfo);
+                    var pkgInfo = new ABPackageInfo(bundleName, fileInfo.Length, hash, deps);
+                    catalog.ABPackageCollection.TryAdd(bundleName, pkgInfo);
 
                     // 加载该包的 manifest 以获取内部资源列表
                     var bundleManifestPath = Path.Combine(outputPath, fileName);
@@ -396,8 +401,8 @@ namespace Editor.AssetBundle.Core
                                 Log($"资源名称重复：{key}，已使用路径替代：{path}，请调整命名");
                                 key = path;
                             }
-                            var entry = new AssetMapEntry(key, fileName, assetPath, assetType);
-                            catalog.AddEntry(key, entry);
+                            var entry = new AssetMapEntry(key, bundleName, assetPath, assetType);
+                            catalog.AddOrUpdateEntry(key, entry);
                             Log($"资源名：{assetPath}");
                         }
                         assetBundle.Unload(false);

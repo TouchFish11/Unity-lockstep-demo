@@ -70,14 +70,14 @@ namespace Editor.AssetBundle.Core
             var filesToUpload = new List<string>(); // 存储完整路径
 
             // 处理 .assetBundle 文件
-            foreach (var (fileName, localAbInfo) in localCatalog.ABPackageCollection)
+            foreach (var (bundleName, localAbInfo) in localCatalog.ABPackageCollection)
             {
+                var fileName = $"{bundleName}{FileUtility.AbSuffix}";
                 var filePath = Path.Combine(serverDataPath, fileName);
                 if (!File.Exists(filePath)) continue;
 
                 // 强制上传判断
-                string bundleName = Path.GetFileNameWithoutExtension(fileName);
-                bool forceUpload = forceUploadBundleNames != null && forceUploadBundleNames.Contains(bundleName);
+                var forceUpload = forceUploadBundleNames != null && forceUploadBundleNames.Contains(bundleName);
 
                 if (forceUpload)
                 {

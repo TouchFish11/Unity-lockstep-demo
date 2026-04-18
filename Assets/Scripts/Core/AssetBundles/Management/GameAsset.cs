@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Tasks.Extensions;
+using UnityEngine;
 
 namespace Core.AssetBundles.Management
 {
@@ -40,15 +41,21 @@ namespace Core.AssetBundles.Management
                 return handle.ConvertTo<T>();
             }
             
-            // 从资源目录中查找指定的key
+            // 从资源目录中查找指定的资源路径
             var mapEntry = _assetBundleManager.Catalog.GetEntry(key);
             if (mapEntry == null)
                 throw new NullReferenceException($"{nameof(GameAsset)}: key({key}) found entry is null");
                 
             // 加载AB包
             var bundleWrapper = await _assetBundleManager.LoadBundleAsync(mapEntry.bundleName);
+            if (bundleWrapper == null)
+                throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.bundleName} AssetBundle failed");
+            
             // 异步加载资源
-            var asset = await bundleWrapper.AssetBundle.LoadAssetAsync<T>(key).ToTask<T>();
+            var asset = await bundleWrapper.AssetBundle.LoadAssetAsync<T>(mapEntry.assetName).ToTask<T>();
+            if (asset == null)
+                throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.assetName} failed");
+            
             // 创建Handle
             var newHandle = new AssetHandle { HandleId = GenerateNewId(), Version = 0 };
             // 判断ID是否存在，存在就复用定位对象
@@ -259,11 +266,23 @@ namespace Core.AssetBundles.Management
             // 不用清理location状态，下次复用ID会覆盖
         }
 
+        /// <summary>
+        /// 获取类型资源，若验证的id和版本无效，返回null；泛型句柄提供资源给外部时使用该方法返回对应的资源
+        /// </summary>
+        /// <param name="handleId">句柄唯一ID</param>
+        /// <param name="version">版本号</param>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <returns>若该句柄对应的资源是GameObject，则T返回该资源身上的组件；非GameObject直接返回该资源</returns>
         internal static T GetAsset<T>(int handleId, int version) where T : class
         {
             if (!IsValidate(handleId, version)) 
                 return null;
-            return _assetIdToLocationsMap[handleId].Asset as T;
+
+            var asset = _assetIdToLocationsMap[handleId].Asset;
+            // 资源本身是GameObject，但T要是组件类型
+            if (asset is GameObject objAsset && typeof(Component).IsAssignableFrom(typeof(T)))
+                return objAsset.GetComponent<T>();
+            return asset as T;
         }
         
         /// <summary>

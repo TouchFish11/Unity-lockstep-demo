@@ -85,6 +85,10 @@ MonoBehaviour:
       size: 3434
       name: Boss.prefab
       hash: 3bbca901da744028b968486d588eb09dfb944f60bf7b2070a3c5d12719a36a20
+    - assetPath: Assets\Editor\ArtRes\Prefab\Sphere.prefab
+      size: 3425
+      name: Sphere.prefab
+      hash: dbdc922d9c95b148e892241fe3d0127389d909e95bc3c4e95f6c04cbfd89d2dc
   - assetBundleName: scenes
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Scenes\ABTestScene.unity
@@ -116,9 +120,9 @@ MonoBehaviour:
   - assetBundleName: tmpasset
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH_SDF.asset
-      size: 4291396
+      size: 7555
       name: MSYH_SDF.asset
-      hash: 9b9f8812984482f7d1b95d293399c85eaa0fb245577f84ecbc859a84b77ad938
+      hash: 2c12159e646b7163a24068793b13a84745ed40567758f0a31e27411e0462b18a
   - assetBundleName: ui
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\UI\UIRoot.prefab

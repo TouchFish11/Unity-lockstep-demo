@@ -110,7 +110,7 @@ namespace Core.Tasks
         /// <param name="operation">异步操作对象（AssetBundleRequest）</param>
         private void OnRequestCompleted(AsyncOperation operation)
         {
-            // 防止重复调用（原生回调可能存在重复触发风险）
+            // 防止重复调用
             if (_isCompleted)
             {
                 return;

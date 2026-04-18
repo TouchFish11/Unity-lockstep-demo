@@ -8,34 +8,32 @@ namespace Core.Pool
     public interface IPoolManager
     {
         /// <summary>
-        /// 获取未继承Mono的对象
+        /// 获取缓存的游戏对象
         /// </summary>
-        /// <typeparam name="T">类名</typeparam>
-        /// <param name="nameSpace">可选参数：命名空间</param>
+        /// <param name="key">资源Key</param>
         /// <returns></returns>
-        T GetData<T>(string nameSpace = "") where T : class, IPoolData, new();
+        T Get<T>(string key) where T : Object;
 
         /// <summary>
-        /// 获取缓存的对象
+        /// 缓存游戏对象
         /// </summary>
-        /// <param name="assetName">资源名称</param>
-        /// <returns></returns>
-        GameObject Get(string assetName);
-        
+        /// <param name="obj">游戏对象</param>
+        void PushObj(Object obj);
+
         /// <summary>
-        /// 缓存未继承Mono的对象
+        /// 缓存纯C#的对象
         /// </summary>
         /// <typeparam name="T">类名</typeparam>
         /// <param name="data">数据对象</param>
-        /// <param name="nameSpace">可选参数：命名空间</param>
-        void PushData<T>(T data, string nameSpace = "") where T : class, IPoolData, new();
+        void PushData<T>(T data) where T : class, IPoolData, new();
 
         /// <summary>
-        /// 缓存继承Mono的对象
+        /// 获取纯C#的对象
         /// </summary>
-        /// <param name="obj">游戏对象</param>
-        void PushObj(GameObject obj);
-
+        /// <typeparam name="T">类名</typeparam>
+        /// <returns></returns>
+        T GetData<T>() where T : class, IPoolData, new();
+        
         /// <summary>
         /// 清除指定资源缓存
         /// </summary>
@@ -54,5 +52,12 @@ namespace Core.Pool
         /// <param name="assetName"></param>
         /// <returns></returns>
         int GetUnUsedCount(string assetName);
+
+        /// <summary>
+        /// 强制释放内存，可指定释放的选择策略
+        /// </summary>
+        /// <param name="disposalStrategy"></param>
+        /// <param name="executeCount">执行次数，即释放的池子数量</param>
+        void ReleaseCache(PoolManager.EDisposalStrategy disposalStrategy = PoolManager.EDisposalStrategy.Priority, ushort executeCount = 1);
     }
 }

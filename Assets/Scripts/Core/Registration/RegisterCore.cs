@@ -3,6 +3,7 @@ using Core.AssetBundles.Management;
 using Core.AssetBundles.Update.Core;
 using Core.DI;
 using Core.EditorRes;
+using Core.Global;
 using Core.GlobalEvent;
 using Core.HotUpdate;
 using Core.Input.ActionAsset;

@@ -11,9 +11,6 @@ namespace Core.UI
         // 界面ID
         private int _id;
         
-        /// <summary>
-        /// 界面缓存对象
-        /// </summary>
         public PoolObject PoolObject { get; private set; }
 
         public IuiModel Model { get; }

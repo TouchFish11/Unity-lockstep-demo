@@ -16,8 +16,14 @@ namespace Core.AssetBundles.Management
     internal class AssetBundleManager : IAssetBundleManager
     {
         private readonly IJsonManager _jsonManager;
-        // 缓存包包装器
+        // 缓存包包装器，便于查找
         private readonly Dictionary<string, BundleWrapper> _nameToWrapperMap = new();
+        // 
+        private readonly List<BundleWrapper> _hotBundles = new();
+        //
+        private readonly List<BundleWrapper> _coldBundles = new();
+        /// 临界活跃数，高于该数值则放入热包列表，小于则放入冷包列表
+        private const int CriticalActiveCount = 2;
         
         public AssetCatalog Catalog { get; private set; }
         
@@ -35,29 +41,21 @@ namespace Core.AssetBundles.Management
             // 构建全部AB包信息
             foreach (var abPackageInfo in Catalog.ABPackageCollection.Values)
             {
-                var abName = abPackageInfo.Name.Substring(0, abPackageInfo.Name.LastIndexOf('.'));
+                var abName = abPackageInfo.Name;
                 // 初始化包装器
-                _nameToWrapperMap.TryAdd(abName, new BundleWrapper(abName, PathUtility.GetAbLoadPath(abPackageInfo.Name), this));
+                _nameToWrapperMap.TryAdd(abName, new BundleWrapper(abName, PathUtility.GetAbLoadPath($"{abPackageInfo.Name}{FileUtility.AbSuffix}"), this));
             }
         }
-
-        /// <summary>
-        /// 异步加载指定AB包
-        /// </summary>
-        /// <param name="abName"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
+        
         public async Task<BundleWrapper> LoadBundleAsync(string abName, CancellationToken token = default)
         {
-            // TODO：主包带拓展名，依赖包又不带拓展名，需统一一下
-            var name = abName[..abName.LastIndexOf('.')];
-            if (!_nameToWrapperMap.TryGetValue(name, out var wrapper))
+            if (!_nameToWrapperMap.TryGetValue(abName, out var wrapper))
             {
-                throw new KeyNotFoundException($"{nameof(AssetBundleManager)}: {name} key is not found");
+                throw new KeyNotFoundException($"{nameof(AssetBundleManager)}: {abName} key is not found");
             }
 
             // 加载依赖和目标AB包
-            await LoadDependenciesAndTargetAsync(name, token);
+            await LoadDependenciesAndTargetAsync(abName, token);
             // 返回指定AB包
             return wrapper;
         }
@@ -65,7 +63,7 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 异步加载依赖包和目标包
         /// </summary>
-        /// <param name="abName"></param>
+        /// <param name="abName">AB包名称（不含拓展名）</param>
         /// <param name="token"></param>
         /// <returns></returns>
         private async Task LoadDependenciesAndTargetAsync(string abName, CancellationToken token)
@@ -138,7 +136,7 @@ namespace Core.AssetBundles.Management
                 BundleWrapper unUseBundleWrapper = null;
                 foreach (var bundleWrapper in _nameToWrapperMap.Values)
                 {
-                    if (unUseBundleWrapper == null || unUseBundleWrapper.LastUseTime > bundleWrapper.LastUseTime && !bundleWrapper.IsActive)
+                    if (unUseBundleWrapper == null || unUseBundleWrapper.LastAccessTime > bundleWrapper.LastAccessTime && !bundleWrapper.IsActive)
                     {
                         unUseBundleWrapper = bundleWrapper;
                     }

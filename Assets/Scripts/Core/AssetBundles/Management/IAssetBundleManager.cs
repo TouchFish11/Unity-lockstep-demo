@@ -23,7 +23,7 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 异步加载指定AB包
         /// </summary>
-        /// <param name="abName"></param>
+        /// <param name="abName">AB包名称（不含拓展名）</param>
         /// <param name="token"></param>
         /// <returns></returns>
         Task<BundleWrapper> LoadBundleAsync(string abName, CancellationToken token = default);
@@ -38,7 +38,7 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 释放指定包的依赖包，用于减少依赖项的引用计数
         /// </summary>
-        /// <param name="abName"></param>
+        /// <param name="abName">AB包名称（不含拓展名）</param>
         void ReleaseDependencies(string abName);
     }
 }

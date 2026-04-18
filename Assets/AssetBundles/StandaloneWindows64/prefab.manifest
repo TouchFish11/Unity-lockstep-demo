@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 383227256
+CRC: 2722842232
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6f62571446378df1a7666def878c553f
+    Hash: b505de1c14199b4c41bee3a0f1de9325
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 99351c94f2c7588d2486461fb0307522
+    Hash: 602b01a6fef38d73698470b07e7ceca2
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 6f62571446378df1a7666def878c553f
+    Hash: b505de1c14199b4c41bee3a0f1de9325
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -30,9 +30,14 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: 8294d9b605edc0d4a96a4ac944545cd0, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0e759dbe8d2e77245b35af78304a9a0c, type: 3}
 - Class: 115
+  Script: {instanceID: 0}
+- Class: 135
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/Editor/ArtRes/Prefab/Sphere.prefab
 - Assets/Editor/ArtRes/Prefab/Boss.prefab
 Dependencies: []

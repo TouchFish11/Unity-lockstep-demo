@@ -228,8 +228,13 @@ namespace Core.Music
             }
             
             // 从对象池获取音效播放器
-            var soundObj = _poolManager.Get($"Sound_{soundName}");
-            var sound = soundObj.GetComponent<AudioSource>();
+            var sound = _poolManager.Get<AudioSource>(soundName);
+            // 没有就创建
+            if (!sound)
+            {
+                sound = new GameObject().GetComponent<AudioSource>();
+            }
+            
             // 配置音效播放器参数
             sound.clip = handle.Asset;
             sound.loop = isLoop;

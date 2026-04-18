@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using Core.AssetBundles.Management;
 using Core.DI;
+using Core.Tasks.Extensions;
+using Core.Utility;
 using HotUpdate.Game.Main.Test;
 using HotUpdate.Game.Main.UI;
 using UnityEngine;
@@ -20,6 +23,18 @@ namespace HotUpdate.UI.Test
             
             var boss = await spawner.SpawnAsync<Boss>(AssetKeys.Boss);
             Logger.Log(boss.Obj);
+            
+            var sphere = await spawner.SpawnAsync<Monster>(AssetKeys.Sphere);
+            Logger.Log(sphere.Obj);
+            
+            boss.Collect();
+            sphere.Collect();
+            
+            boss = await spawner.SpawnAsync<Boss>(AssetKeys.Boss);
+            Logger.Log(boss.Obj);
+            
+            List<string> list =  new List<string>();
+            list.Remove(null);
         }
     }
 }

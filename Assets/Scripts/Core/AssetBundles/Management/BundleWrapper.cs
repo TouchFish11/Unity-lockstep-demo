@@ -1,8 +1,9 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.DI;
 using Core.Tasks;
 using Core.Tasks.Extensions;
+using Core.Utility;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -29,19 +30,21 @@ namespace Core.AssetBundles.Management
         internal string LoadPath { get; }
         
         /// <summary>
-        /// 包引用数
+        /// 包引用数，当前存活的资源引用数
         /// </summary>
         internal uint RefCount { get; private set; }
         
         /// <summary>
-        /// 上次使用的时间
+        /// 上次访问的时间
         /// </summary>
-        internal DateTime LastUseTime { get; private set; }
+        internal double LastAccessTime { get; private set; }
         
         /// <summary>
         /// 是否有效
         /// </summary>
         internal bool IsActive { get; set; }
+        
+        internal LFUSlidingWindow Window { get; private set; }
         
         // AB包管理器
         private readonly IAssetBundleManager _assetBundleManager;
@@ -61,6 +64,7 @@ namespace Core.AssetBundles.Management
             BundleName = abName;
             LoadPath = path;
             _assetBundleManager = assetBundleManager;
+            Window = DIContainer.Create<LFUSlidingWindow>();
         }
 
         /// <summary>
@@ -80,9 +84,9 @@ namespace Core.AssetBundles.Management
             if (AssetBundle)
             {
                 RefCount += 1;
-                LastUseTime = DateTime.Now;
+                LastAccessTime = TimeUtil.RealtimeSinceStartupAsDouble;
                 IsActive = true;
-                Logger.Log($"{BundleName}包被引用，引用计数更新为：{RefCount}");
+                Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
                 return;
             }
             
@@ -90,10 +94,10 @@ namespace Core.AssetBundles.Management
             _assetBundleCreateRequestTask = AssetBundle.LoadFromFileAsync(LoadPath).ToTask(token);
             AssetBundle = await _assetBundleCreateRequestTask;
             RefCount += 1;
-            LastUseTime = DateTime.Now;
+            LastAccessTime = TimeUtil.RealtimeSinceStartupAsDouble;
             _assetBundleCreateRequestTask = null;
             IsActive = true;
-            Logger.Log($"{BundleName}包被引用，引用计数更新为：{RefCount}");
+            Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
         }
 
         /// <summary>
@@ -113,7 +117,7 @@ namespace Core.AssetBundles.Management
                 _assetBundleManager.ReleaseDependencies(BundleName);
             }
             
-            Logger.Log($"{BundleName}包，引用计数减少，更新为：{RefCount}");
+            Logger.Log($"[AssetBundle]:{BundleName} is released, and the reference count is updated to {RefCount}");
         }
 
         /// <summary>
@@ -140,7 +144,7 @@ namespace Core.AssetBundles.Management
             // 卸载完成后置空
             AssetBundle = null;
             _assetBundleUnloadTask = null;
-            Logger.Log($"{BundleName}包已被卸载，引用计数为：{RefCount}");
+            Logger.Log($"[AssetBundle]:{BundleName} is unload, and the final reference count is {RefCount}");
         }
     }
 }

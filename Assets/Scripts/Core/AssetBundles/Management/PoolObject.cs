@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Core.AssetBundles.Management
@@ -20,7 +19,7 @@ namespace Core.AssetBundles.Management
         /// </summary>
         public void Collect()
         {
-            _spawner.Release(Obj as GameObject);
+            _spawner.Release(Obj);
             Obj = null;
             _spawner = null;
         }

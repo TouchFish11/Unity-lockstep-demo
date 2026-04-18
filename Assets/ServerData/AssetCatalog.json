@@ -1,314 +1,318 @@
 {
   "assetMap": {
-    "bot": {
-      "key": "bot",
-      "bundleName": "animation.assetbundle",
-      "assetName": "assets/editor/artres/animation/bot.controller",
-      "assetType": "Object"
-    },
-    "role_controller": {
-      "key": "role_controller",
-      "bundleName": "animation.assetbundle",
-      "assetName": "assets/editor/artres/animation/role/role_controller.controller",
-      "assetType": "Object"
-    },
-    "msyh": {
-      "key": "msyh",
-      "bundleName": "fonts.assetbundle",
-      "assetName": "assets/editor/artres/fonts/msyh.ttc",
-      "assetType": "Object"
-    },
-    "itemconfigs": {
-      "key": "itemconfigs",
-      "bundleName": "gameconfig.assetbundle",
-      "assetName": "assets/editor/artres/gameconfig/itemconfigs.json",
-      "assetType": "Object"
-    },
-    "hotupdate.base.dll": {
-      "key": "hotupdate.base.dll",
-      "bundleName": "hotupdate.assetbundle",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.base.dll.bytes",
-      "assetType": "Object"
-    },
-    "hotupdate.common.dll": {
-      "key": "hotupdate.common.dll",
-      "bundleName": "hotupdate.assetbundle",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.common.dll.bytes",
-      "assetType": "Object"
-    },
-    "hotupdate.game.dll": {
-      "key": "hotupdate.game.dll",
-      "bundleName": "hotupdate.assetbundle",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.game.dll.bytes",
-      "assetType": "Object"
-    },
-    "hotupdate.ui.dll": {
-      "key": "hotupdate.ui.dll",
-      "bundleName": "hotupdate.assetbundle",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.ui.dll.bytes",
-      "assetType": "Object"
-    },
-    "hotupdate.update.dll": {
-      "key": "hotupdate.update.dll",
-      "bundleName": "hotupdate.assetbundle",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.update.dll.bytes",
-      "assetType": "Object"
-    },
-    "hotupdateassemblysettings": {
-      "key": "hotupdateassemblysettings",
-      "bundleName": "hotupdate.assetbundle",
-      "assetName": "assets/editor/artres/hotupdate/hotupdateassemblysettings.json",
-      "assetType": "Object"
-    },
-    "hotupdateentry": {
-      "key": "hotupdateentry",
-      "bundleName": "hotupdate_entry.assetbundle",
-      "assetName": "assets/editor/artres/hotupdate_entry/hotupdateentry.prefab",
-      "assetType": "Object"
-    },
-    "bot_mask": {
-      "key": "bot_mask",
-      "bundleName": "mask.assetbundle",
-      "assetName": "assets/editor/artres/mask/bot/bot_mask.mask",
-      "assetType": "Object"
-    },
-    "gray": {
-      "key": "gray",
-      "bundleName": "material.assetbundle",
-      "assetName": "assets/editor/artres/material/gray.mat",
-      "assetType": "Object"
-    },
-    "atlas_item": {
-      "key": "atlas_item",
-      "bundleName": "spriteatlas.assetbundle",
-      "assetName": "assets/editor/artres/spriteatlas/atlas_item.spriteatlasv2",
-      "assetType": "Object"
-    },
-    "common": {
-      "key": "common",
-      "bundleName": "spriteatlas.assetbundle",
-      "assetName": "assets/editor/artres/spriteatlas/common.spriteatlasv2",
-      "assetType": "Object"
-    },
-    "msyh_sdf": {
-      "key": "msyh_sdf",
-      "bundleName": "tmpasset.assetbundle",
-      "assetName": "assets/editor/artres/tmpasset/msyh_sdf.asset",
-      "assetType": "Object"
-    },
-    "battle_panel": {
-      "key": "battle_panel",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/battle/battle_panel.prefab",
-      "assetType": "Object"
-    },
-    "beginview": {
-      "key": "beginview",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/begin/beginview.prefab",
-      "assetType": "Object"
-    },
-    "materialdetailpanel": {
-      "key": "materialdetailpanel",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/inventory/detailpanel/materialdetailpanel.prefab",
-      "assetType": "Object"
-    },
-    "inventorypanel": {
-      "key": "inventorypanel",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/inventory/inventorypanel.prefab",
-      "assetType": "Object"
-    },
-    "itemcell": {
-      "key": "itemcell",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/inventory/itemcell.prefab",
-      "assetType": "Object"
-    },
-    "itemdetailpanelbase": {
-      "key": "itemdetailpanelbase",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/inventory/itemdetailpanelbase.prefab",
-      "assetType": "Object"
-    },
-    "itemtypeopt": {
-      "key": "itemtypeopt",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/inventory/itemtypeopt.prefab",
-      "assetType": "Object"
-    },
-    "chat_ui": {
-      "key": "chat_ui",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/main/chat/chat_ui.prefab",
-      "assetType": "Object"
-    },
-    "friend_ui": {
-      "key": "friend_ui",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/main/chat/friend_ui.prefab",
-      "assetType": "Object"
-    },
-    "main_chat_panel": {
-      "key": "main_chat_panel",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/main/main_chat_panel.prefab",
-      "assetType": "Object"
-    },
-    "main_panel": {
-      "key": "main_panel",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/main/main_panel.prefab",
-      "assetType": "Object"
-    },
-    "basetipview": {
-      "key": "basetipview",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/tip/basetipview.prefab",
+    "uiroot": {
+      "key": "uiroot",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/uiroot.prefab",
       "assetType": "Object"
     },
     "updatetipview": {
       "key": "updatetipview",
-      "bundleName": "ui.assetbundle",
+      "bundleName": "ui",
       "assetName": "assets/editor/artres/ui/tip/updatetipview.prefab",
       "assetType": "Object"
     },
-    "uiroot": {
-      "key": "uiroot",
-      "bundleName": "ui.assetbundle",
-      "assetName": "assets/editor/artres/ui/uiroot.prefab",
+    "basetipview": {
+      "key": "basetipview",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/tip/basetipview.prefab",
       "assetType": "Object"
     },
-    "ABTestScene": {
-      "key": "ABTestScene",
-      "bundleName": "scenes.assetbundle",
-      "assetName": "Assets/Editor/ArtRes/Scenes/ABTestScene.unity",
-      "assetType": "Scene"
+    "main_panel": {
+      "key": "main_panel",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/main/main_panel.prefab",
+      "assetType": "Object"
     },
-    "Game": {
-      "key": "Game",
-      "bundleName": "scenes.assetbundle",
-      "assetName": "Assets/Editor/ArtRes/Scenes/Game.unity",
+    "main_chat_panel": {
+      "key": "main_chat_panel",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/main/main_chat_panel.prefab",
+      "assetType": "Object"
+    },
+    "friend_ui": {
+      "key": "friend_ui",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/main/chat/friend_ui.prefab",
+      "assetType": "Object"
+    },
+    "chat_ui": {
+      "key": "chat_ui",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/main/chat/chat_ui.prefab",
+      "assetType": "Object"
+    },
+    "itemtypeopt": {
+      "key": "itemtypeopt",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/inventory/itemtypeopt.prefab",
+      "assetType": "Object"
+    },
+    "itemdetailpanelbase": {
+      "key": "itemdetailpanelbase",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/inventory/itemdetailpanelbase.prefab",
+      "assetType": "Object"
+    },
+    "itemcell": {
+      "key": "itemcell",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/inventory/itemcell.prefab",
+      "assetType": "Object"
+    },
+    "inventorypanel": {
+      "key": "inventorypanel",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/inventory/inventorypanel.prefab",
+      "assetType": "Object"
+    },
+    "materialdetailpanel": {
+      "key": "materialdetailpanel",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/inventory/detailpanel/materialdetailpanel.prefab",
+      "assetType": "Object"
+    },
+    "beginview": {
+      "key": "beginview",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/begin/beginview.prefab",
+      "assetType": "Object"
+    },
+    "battle_panel": {
+      "key": "battle_panel",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/battle/battle_panel.prefab",
+      "assetType": "Object"
+    },
+    "msyh_sdf": {
+      "key": "msyh_sdf",
+      "bundleName": "tmpasset",
+      "assetName": "assets/editor/artres/tmpasset/msyh_sdf.asset",
+      "assetType": "Object"
+    },
+    "common": {
+      "key": "common",
+      "bundleName": "spriteatlas",
+      "assetName": "assets/editor/artres/spriteatlas/common.spriteatlasv2",
+      "assetType": "Object"
+    },
+    "atlas_item": {
+      "key": "atlas_item",
+      "bundleName": "spriteatlas",
+      "assetName": "assets/editor/artres/spriteatlas/atlas_item.spriteatlasv2",
+      "assetType": "Object"
+    },
+    "Test": {
+      "key": "Test",
+      "bundleName": "scenes",
+      "assetName": "Assets/Editor/ArtRes/Scenes/Test.unity",
       "assetType": "Scene"
     },
     "Main": {
       "key": "Main",
-      "bundleName": "scenes.assetbundle",
+      "bundleName": "scenes",
       "assetName": "Assets/Editor/ArtRes/Scenes/Main.unity",
       "assetType": "Scene"
     },
-    "Test": {
-      "key": "Test",
-      "bundleName": "scenes.assetbundle",
-      "assetName": "Assets/Editor/ArtRes/Scenes/Test.unity",
+    "Game": {
+      "key": "Game",
+      "bundleName": "scenes",
+      "assetName": "Assets/Editor/ArtRes/Scenes/Game.unity",
       "assetType": "Scene"
     },
-    "cube": {
-      "key": "cube",
-      "bundleName": "prefab.assetbundle",
-      "assetName": "assets/editor/artres/prefab/cube.prefab",
+    "ABTestScene": {
+      "key": "ABTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets/Editor/ArtRes/Scenes/ABTestScene.unity",
+      "assetType": "Scene"
+    },
+    "sphere": {
+      "key": "sphere",
+      "bundleName": "prefab",
+      "assetName": "assets/editor/artres/prefab/sphere.prefab",
       "assetType": "Object"
     },
     "boss": {
       "key": "boss",
-      "bundleName": "prefab.assetbundle",
+      "bundleName": "prefab",
       "assetName": "assets/editor/artres/prefab/boss.prefab",
+      "assetType": "Object"
+    },
+    "gray": {
+      "key": "gray",
+      "bundleName": "material",
+      "assetName": "assets/editor/artres/material/gray.mat",
+      "assetType": "Object"
+    },
+    "bot_mask": {
+      "key": "bot_mask",
+      "bundleName": "mask",
+      "assetName": "assets/editor/artres/mask/bot/bot_mask.mask",
+      "assetType": "Object"
+    },
+    "hotupdateentry": {
+      "key": "hotupdateentry",
+      "bundleName": "hotupdate_entry",
+      "assetName": "assets/editor/artres/hotupdate_entry/hotupdateentry.prefab",
+      "assetType": "Object"
+    },
+    "hotupdateassemblysettings": {
+      "key": "hotupdateassemblysettings",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdateassemblysettings.json",
+      "assetType": "Object"
+    },
+    "hotupdate.update.dll": {
+      "key": "hotupdate.update.dll",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.update.dll.bytes",
+      "assetType": "Object"
+    },
+    "hotupdate.ui.dll": {
+      "key": "hotupdate.ui.dll",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.ui.dll.bytes",
+      "assetType": "Object"
+    },
+    "hotupdate.game.dll": {
+      "key": "hotupdate.game.dll",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.game.dll.bytes",
+      "assetType": "Object"
+    },
+    "hotupdate.common.dll": {
+      "key": "hotupdate.common.dll",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.common.dll.bytes",
+      "assetType": "Object"
+    },
+    "hotupdate.base.dll": {
+      "key": "hotupdate.base.dll",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.base.dll.bytes",
+      "assetType": "Object"
+    },
+    "itemconfigs": {
+      "key": "itemconfigs",
+      "bundleName": "gameconfig",
+      "assetName": "assets/editor/artres/gameconfig/itemconfigs.json",
+      "assetType": "Object"
+    },
+    "msyh": {
+      "key": "msyh",
+      "bundleName": "fonts",
+      "assetName": "assets/editor/artres/fonts/msyh.ttc",
+      "assetType": "Object"
+    },
+    "role_controller": {
+      "key": "role_controller",
+      "bundleName": "animation",
+      "assetName": "assets/editor/artres/animation/role/role_controller.controller",
+      "assetType": "Object"
+    },
+    "bot": {
+      "key": "bot",
+      "bundleName": "animation",
+      "assetName": "assets/editor/artres/animation/bot.controller",
       "assetType": "Object"
     }
   },
   "abPackageCollection": {
     "keyToValueMap": {
-      "animation.assetbundle": {
-        "name": "animation.assetbundle",
+      "animation": {
+        "name": "animation",
         "size": 186423,
         "hash": "1b4a9328657d96b86c3984eef3c25765959f6f93d257a216c1cb1641d6b783d4",
         "dependencies": [
           "mask"
         ]
       },
-      "fonts.assetbundle": {
-        "name": "fonts.assetbundle",
+      "fonts": {
+        "name": "fonts",
         "size": 13644515,
         "hash": "de49c30971ca60a442404c3eacf5998f24e19f9ce79dbe66ad2b8c3352d0e9ee",
         "dependencies": []
       },
-      "gameconfig.assetbundle": {
-        "name": "gameconfig.assetbundle",
+      "gameconfig": {
+        "name": "gameconfig",
         "size": 1571,
         "hash": "d5996f099a876e414d786bdfbdfeb9ea0a901e31702c6f495b4ed8d3e4c3e895",
         "dependencies": []
       },
-      "hotupdate.assetbundle": {
-        "name": "hotupdate.assetbundle",
+      "hotupdate": {
+        "name": "hotupdate",
         "size": 31163,
         "hash": "b995ad93664f71b0cadec6a8d8606474c0efe9ee4395ab8e1b0440a9ea2f7443",
         "dependencies": []
       },
-      "hotupdate_entry.assetbundle": {
-        "name": "hotupdate_entry.assetbundle",
+      "hotupdate_entry": {
+        "name": "hotupdate_entry",
         "size": 2313,
         "hash": "a2b9e1095b057d121eb6efac24e0a60607dfb274d43133e730c9ab6a31d6a2af",
         "dependencies": []
       },
-      "mask.assetbundle": {
-        "name": "mask.assetbundle",
+      "mask": {
+        "name": "mask",
         "size": 1291,
         "hash": "1f8d0e6cb509294c49ba449630a3deef3a7fcba6d3c87c7223ffad4aaed6e536",
         "dependencies": []
       },
-      "material.assetbundle": {
-        "name": "material.assetbundle",
+      "material": {
+        "name": "material",
         "size": 41609,
         "hash": "677905e407e3e1b2e15e4a35781c3cf185dcccfab9628c66d19bf3a19dd9128f",
         "dependencies": []
       },
-      "scenes.assetbundle": {
-        "name": "scenes.assetbundle",
-        "size": 12020849,
-        "hash": "176d7edfc65dc4b7dffa96d704fdaffa70d8f27c44db27230b7b236df929f61b",
+      "prefab": {
+        "name": "prefab",
+        "size": 47470,
+        "hash": "830d22cab02c1a9ab57115a8ff86001b18df12a34ab268a00078bb95511ee8a2",
         "dependencies": []
       },
-      "spriteatlas.assetbundle": {
-        "name": "spriteatlas.assetbundle",
+      "scenes": {
+        "name": "scenes",
+        "size": 11885211,
+        "hash": "68e80cc65600da59764291b68dee4f54bba9c75a15203dd8d40d425095d8a896",
+        "dependencies": [
+          "animation",
+          "mask",
+          "material"
+        ]
+      },
+      "spriteatlas": {
+        "name": "spriteatlas",
         "size": 3617423,
         "hash": "801b1afa65be01071638712b4f60fa2249ccd8958f2e450706cbd4526b2dfb15",
         "dependencies": []
       },
-      "tmpasset.assetbundle": {
-        "name": "tmpasset.assetbundle",
-        "size": 373221,
-        "hash": "84f39469099e5e8f420826852eca8477b271e6aab860d5a66e8d79dfe3387af6",
+      "tmpasset": {
+        "name": "tmpasset",
+        "size": 13664793,
+        "hash": "94b8469d85cb61213a5db452f00b182eb9cbfd0d64b893f34d4ffa16f83a127a",
+        "dependencies": []
+      },
+      "ui": {
+        "name": "ui",
+        "size": 2140121,
+        "hash": "019c4b33cbbbb955534b9dc0f16f5cac6d814c6d8097ddeb6818b355ff16b65e",
         "dependencies": [
-          "fonts"
+          "tmpasset"
         ]
-      },
-      "ui.assetbundle": {
-        "name": "ui.assetbundle",
-        "size": 16150544,
-        "hash": "657269ead5dcbc91e05be07653d83621f08451f49cb5b3680b8c87fe18bd1f24",
-        "dependencies": []
-      },
-      "prefab.assetbundle": {
-        "name": "prefab.assetbundle",
-        "size": 46749,
-        "hash": "88a61d583e2103b9c99c3565ce034b88456f995c237a57ab80c70b5ae5613fb3",
-        "dependencies": []
       }
     }
   },
   "bundleToAssetKeys": {
-    "animation.assetbundle": [
+    "animation": [
       "bot",
       "role_controller"
     ],
-    "fonts.assetbundle": [
+    "fonts": [
       "msyh"
     ],
-    "gameconfig.assetbundle": [
+    "gameconfig": [
       "itemconfigs"
     ],
-    "hotupdate.assetbundle": [
+    "hotupdate": [
       "hotupdate.base.dll",
       "hotupdate.common.dll",
       "hotupdate.game.dll",
@@ -316,23 +320,33 @@
       "hotupdate.update.dll",
       "hotupdateassemblysettings"
     ],
-    "hotupdate_entry.assetbundle": [
+    "hotupdate_entry": [
       "hotupdateentry"
     ],
-    "mask.assetbundle": [
+    "mask": [
       "bot_mask"
     ],
-    "material.assetbundle": [
+    "material": [
       "gray"
     ],
-    "spriteatlas.assetbundle": [
+    "prefab": [
+      "boss",
+      "sphere"
+    ],
+    "scenes": [
+      "ABTestScene",
+      "Game",
+      "Main",
+      "Test"
+    ],
+    "spriteatlas": [
       "atlas_item",
       "common"
     ],
-    "tmpasset.assetbundle": [
+    "tmpasset": [
       "msyh_sdf"
     ],
-    "ui.assetbundle": [
+    "ui": [
       "battle_panel",
       "beginview",
       "materialdetailpanel",
@@ -347,16 +361,6 @@
       "basetipview",
       "updatetipview",
       "uiroot"
-    ],
-    "scenes.assetbundle": [
-      "ABTestScene",
-      "Game",
-      "Main",
-      "Test"
-    ],
-    "prefab.assetbundle": [
-      "cube",
-      "boss"
     ]
   }
 }

@@ -46,9 +46,34 @@ namespace Core.AssetBundles.Management
             return assetMap.ContainsKey(key);
         }
 
-        public void AddEntry(string key, AssetMapEntry entry)
+        /// <summary>
+        /// 添加或更新条目
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="entry"></param>
+        public void AddOrUpdateEntry(string key, AssetMapEntry entry)
         {
-            assetMap.Add(key, entry);
+            // 如果 key 已存在，先移除旧的记录（维护 bundleToAssetKeys）
+            if (assetMap.TryGetValue(key, out var oldEntry))
+            {
+                // 如果旧包名与新包名不同，需要从旧包列表中移除
+                if (oldEntry.bundleName != entry.bundleName)
+                {
+                    if (bundleToAssetKeys.TryGetValue(oldEntry.bundleName, out var oldList))
+                        oldList.Remove(key);
+                }
+                else
+                {
+                    // 包名相同，直接覆盖 assetMap 即可，bundleToAssetKeys 无需变动
+                    assetMap[key] = entry;
+                    return;
+                }
+            }
+
+            // 添加或更新 assetMap
+            assetMap[key] = entry;
+
+            // 维护 bundleToAssetKeys
             if (!bundleToAssetKeys.ContainsKey(entry.bundleName))
                 bundleToAssetKeys[entry.bundleName] = new List<string>();
             bundleToAssetKeys[entry.bundleName].Add(key);

@@ -2,24 +2,154 @@
   "assetMap": {
     "boss": {
       "key": "boss",
-      "bundleName": "prefab.assetbundle",
+      "bundleName": "prefab",
       "assetName": "assets/editor/artres/prefab/boss.prefab",
+      "assetType": "Object"
+    },
+    "sphere": {
+      "key": "sphere",
+      "bundleName": "prefab",
+      "assetName": "assets/editor/artres/prefab/sphere.prefab",
+      "assetType": "Object"
+    },
+    "msyh_sdf": {
+      "key": "msyh_sdf",
+      "bundleName": "tmpasset",
+      "assetName": "assets/editor/artres/tmpasset/msyh_sdf.asset",
+      "assetType": "Object"
+    },
+    "battle_panel": {
+      "key": "battle_panel",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/battle/battle_panel.prefab",
+      "assetType": "Object"
+    },
+    "beginview": {
+      "key": "beginview",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/begin/beginview.prefab",
+      "assetType": "Object"
+    },
+    "materialdetailpanel": {
+      "key": "materialdetailpanel",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/inventory/detailpanel/materialdetailpanel.prefab",
+      "assetType": "Object"
+    },
+    "inventorypanel": {
+      "key": "inventorypanel",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/inventory/inventorypanel.prefab",
+      "assetType": "Object"
+    },
+    "itemcell": {
+      "key": "itemcell",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/inventory/itemcell.prefab",
+      "assetType": "Object"
+    },
+    "itemdetailpanelbase": {
+      "key": "itemdetailpanelbase",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/inventory/itemdetailpanelbase.prefab",
+      "assetType": "Object"
+    },
+    "itemtypeopt": {
+      "key": "itemtypeopt",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/inventory/itemtypeopt.prefab",
+      "assetType": "Object"
+    },
+    "chat_ui": {
+      "key": "chat_ui",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/main/chat/chat_ui.prefab",
+      "assetType": "Object"
+    },
+    "friend_ui": {
+      "key": "friend_ui",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/main/chat/friend_ui.prefab",
+      "assetType": "Object"
+    },
+    "main_chat_panel": {
+      "key": "main_chat_panel",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/main/main_chat_panel.prefab",
+      "assetType": "Object"
+    },
+    "main_panel": {
+      "key": "main_panel",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/main/main_panel.prefab",
+      "assetType": "Object"
+    },
+    "basetipview": {
+      "key": "basetipview",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/tip/basetipview.prefab",
+      "assetType": "Object"
+    },
+    "updatetipview": {
+      "key": "updatetipview",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/tip/updatetipview.prefab",
+      "assetType": "Object"
+    },
+    "uiroot": {
+      "key": "uiroot",
+      "bundleName": "ui",
+      "assetName": "assets/editor/artres/ui/uiroot.prefab",
       "assetType": "Object"
     }
   },
   "abPackageCollection": {
     "keyToValueMap": {
-      "prefab.assetbundle": {
-        "name": "prefab.assetbundle",
-        "size": 46749,
-        "hash": "88a61d583e2103b9c99c3565ce034b88456f995c237a57ab80c70b5ae5613fb3",
+      "prefab": {
+        "name": "prefab",
+        "size": 47470,
+        "hash": "830d22cab02c1a9ab57115a8ff86001b18df12a34ab268a00078bb95511ee8a2",
         "dependencies": []
+      },
+      "tmpasset": {
+        "name": "tmpasset",
+        "size": 13664793,
+        "hash": "94b8469d85cb61213a5db452f00b182eb9cbfd0d64b893f34d4ffa16f83a127a",
+        "dependencies": []
+      },
+      "ui": {
+        "name": "ui",
+        "size": 2140121,
+        "hash": "019c4b33cbbbb955534b9dc0f16f5cac6d814c6d8097ddeb6818b355ff16b65e",
+        "dependencies": [
+          "tmpasset"
+        ]
       }
     }
   },
   "bundleToAssetKeys": {
-    "prefab.assetbundle": [
-      "boss"
+    "prefab": [
+      "boss",
+      "sphere"
+    ],
+    "tmpasset": [
+      "msyh_sdf"
+    ],
+    "ui": [
+      "battle_panel",
+      "beginview",
+      "materialdetailpanel",
+      "inventorypanel",
+      "itemcell",
+      "itemdetailpanelbase",
+      "itemtypeopt",
+      "chat_ui",
+      "friend_ui",
+      "main_chat_panel",
+      "main_panel",
+      "basetipview",
+      "updatetipview",
+      "uiroot"
     ]
   }
 }
