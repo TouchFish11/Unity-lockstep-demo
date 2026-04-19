@@ -114,18 +114,26 @@ namespace Core.DI
         /// 若类型已经通过BindSingleton绑定，则忽略参数isSingleton
         /// </summary>
         /// <param name="isSingleton">是否是单例，true创建为单例，false则是瞬态对象</param>
-        /// <param name="constructorArgs">构造参数</param>
+        /// <param name="parameterValues">构造参数值，需按参数顺序匹配，否则无法赋值</param>
         /// <typeparam name="T">非接口引用类型</typeparam>
         /// <returns>新类型实例</returns>
         /// <exception cref="ArgumentException">重复创建单例类型则抛出异常</exception>
-        public static T Create<T>(bool isSingleton = false, params ParameterArg[] constructorArgs) where T : class
+        public static T Create<T>(bool isSingleton = false, params object[] parameterValues) where T : class
         {
             var instance = _instanceMap.GetValueOrDefault(typeof(T)) ?? _interfaceMap.GetValueOrDefault(typeof(T));
             if (instance != null)
                 return instance as T;
             
+            // 创建参数结构数组
+            var parameters = new Parameter[parameterValues.Length];
+            for (var i = 0; i < parameterValues.Length; i++)
+            {
+                var parameterValue = parameterValues[i];
+                parameters[i] = new Parameter { ArgType = parameterValue.GetType(), ArgValue = parameterValue };
+            }
+            
             // 先通过构造函数创建实例
-            var newInstance = CreateInstanceWithConstructorInjection(typeof(T), constructorArgs);
+            var newInstance = CreateInstanceWithConstructorInjection(typeof(T), parameters);
             // 注入字段/属性
             InjectIntoInstance(newInstance);
             
@@ -157,7 +165,7 @@ namespace Core.DI
         /// <param name="constructorArgs">构造参数</param>
         /// <returns>新类型实例</returns>
         /// <exception cref="ArgumentException">重复创建单例类型则抛出异常</exception>
-        public static object Create(Type interfaceType, Type instanceType, bool isSingleton = false, params ParameterArg[] constructorArgs)
+        public static object Create(Type interfaceType, Type instanceType, bool isSingleton = false, params Parameter[] constructorArgs)
         {
             if (instanceType == null)
                 return null;
@@ -208,34 +216,24 @@ namespace Core.DI
             }
             return component;
         }
-        
+
         /// <summary>
         /// 通过构造函数创建实例并注入参数依赖
         /// </summary>
         /// <param name="type">必须是实例类型</param>
-        /// <param name="explicitArgs">构造函数参数</param>
+        /// <param name="parameters">构造函数参数，需按参数匹配</param>
         /// <returns></returns>
         /// <exception cref="Exception">若是接口类型，则抛出异常</exception>
-        private static object CreateInstanceWithConstructorInjection(Type type, ParameterArg[] explicitArgs)
+        private static object CreateInstanceWithConstructorInjection(Type type, params Parameter[] parameters)
         {
             if (type.IsInterface)
                 throw new ArgumentException($"{nameof(DIContainer)}:Type is an interface, not allowed，{type}");
-
-            Dictionary<string, object> _argMap = null;
-            if (explicitArgs != null && explicitArgs.Length > 0)
-            {
-                // 临时字典，参数名称到值的映射，解决多线程同时创建实例问题（线程安全字典）
-                 _argMap = new Dictionary<string, object>();
-                // 将显式参数转换为按参数名称索引类型的字典
-                foreach (var kv in explicitArgs)
-                    _argMap.TryAdd(kv.ArgName, kv.ArgValue);
-            }
             
             if (_constructorCache.TryGetValue(type, out var constructorInfos))
             {
                 foreach (var constructorInfo in constructorInfos)
                 {
-                    var (available, instance) = MatchCtorArg(constructorInfo, _argMap);
+                    var (available, instance) = MatchCtorArg(constructorInfo, parameters);
                     if (available)
                         return instance;
                 }
@@ -251,7 +249,7 @@ namespace Core.DI
                 _constructorCache.TryAdd(type, new List<ConstructorInfo>(constructors));
                 foreach (var constructorInfo in constructors)
                 {
-                    var (available, instance) = MatchCtorArg(constructorInfo, _argMap);
+                    var (available, instance) = MatchCtorArg(constructorInfo, parameters);
                     if (available)
                     {
                         return instance;
@@ -259,7 +257,7 @@ namespace Core.DI
                 } 
             }
             
-            // 如果没有合适的构造函数，抛出异常，可能会因为无法解析的参数名，而抛出异常
+            // 如果没有合适的构造函数，抛出异常
             throw new Exception($"Cannot create instance of {type.Name}: no suitable constructor found");
         }
 
@@ -267,9 +265,9 @@ namespace Core.DI
         /// 匹配构造参数
         /// </summary>
         /// <param name="ctor">构造信息</param>
-        /// <param name="argMap">参数映射，可为null</param>
+        /// <param name="values">参数映射，可为null</param>
         /// <returns>(是否可用，实例)</returns>
-        private static (bool available, object instance) MatchCtorArg(ConstructorInfo ctor, Dictionary<string, object> argMap)
+        private static (bool available, object instance) MatchCtorArg(ConstructorInfo ctor, Parameter[] values)
         {
             // 获取当前构造所有参数
             var parameters = ctor.GetParameters();
@@ -278,16 +276,19 @@ namespace Core.DI
             for (var i = 0; i < parameters.Length; i++)
             {
                 var paramType = parameters[i].ParameterType;
-                var paramName = parameters[i].Name;
                 // 优先使用显式参数中名称匹配的值
-                if (argMap != null && argMap.TryGetValue(paramName, out var value))
+                // 存在参数值，且参数类型匹配或是参数值类型从构造参数中派生
+                if (values != null && values.Length > 0 && i < values.Length)
                 {
-                    args[i] = value;
-                    continue;
+                    if(values[i].ArgType == paramType || paramType.IsAssignableFrom(values[i].ArgType))
+                    {
+                        args[i] = values[i].ArgValue;
+                        continue;
+                    }
                 }
 
-                // 尝试从容器中获取依赖
-                value = Resolve(paramType);
+                // 参数值不匹配，尝试从容器中获取依赖
+                var value = Resolve(paramType);
                 if (value != null)
                 {
                     args[i] = value;

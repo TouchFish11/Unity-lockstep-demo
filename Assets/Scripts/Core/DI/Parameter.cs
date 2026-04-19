@@ -1,14 +1,16 @@
+using System;
+
 namespace Core.DI
 {
     /// <summary>
-    /// 构造参数结构
+    /// 构造参数封装
     /// </summary>
-    public struct ParameterArg
+    public struct Parameter
     {
         /// <summary>
-        /// 参数名
+        /// 参数类型
         /// </summary>
-        public string ArgName { get; set; }
+        public Type ArgType { get; set; }
         
         /// <summary>
         /// 参数值

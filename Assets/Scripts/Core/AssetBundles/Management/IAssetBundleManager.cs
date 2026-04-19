@@ -30,13 +30,12 @@ namespace Core.AssetBundles.Management
 
         /// <summary>
         /// 卸载所有已加载的AssetBundle
-        /// 调用该方法后，若需要加载AB包，需重新初始化（Init）管理器
         /// </summary>
         /// <param name="unloadAllObjects"></param>
         Task UnloadAllBundles(bool unloadAllObjects);
         
         /// <summary>
-        /// 释放指定包的依赖包，用于减少依赖项的引用计数
+        /// 释放指定包的所有依赖包，用于减少依赖项的引用计数
         /// </summary>
         /// <param name="abName">AB包名称（不含拓展名）</param>
         void ReleaseDependencies(string abName);

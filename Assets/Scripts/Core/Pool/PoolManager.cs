@@ -58,6 +58,7 @@ namespace Core.Pool
             {
                 var pool = _objectPools[key];
                 var cacheObj = pool?.Get<T>();
+                // 只有取出的对象不为空，才去更新子池状态
                 if (cacheObj)
                     UpdatePoolState(pool);
                 return cacheObj;
@@ -83,6 +84,8 @@ namespace Core.Pool
             if (_objectPools.TryGetValue(obj.name, out var objectPool))
             {
                 objectPool?.Push(obj);
+                // 更新该对象子池状态
+                UpdatePoolState(objectPool);
             }
             else
             {
@@ -94,8 +97,6 @@ namespace Core.Pool
                 // 默认放入惰性队列
                 _lazies.Add(objectPool);
             }
-            
-            // 
         }
         
         public T GetData<T>() where T : class, IPoolData, new()
@@ -149,6 +150,8 @@ namespace Core.Pool
             var count = poolObj.UnUsedCount;
             poolObj.Clear();
             _objectPools.Remove(key);
+            _lazies.Remove(poolObj);
+            _actives.Remove(poolObj);
             return count;
         }
         
@@ -162,6 +165,8 @@ namespace Core.Pool
             _poolRootObj = null;
             _objectPools.Clear();
             _poolDataDic.Clear();
+            _actives.Clear();
+            _lazies.Clear();
             GC.Collect();
         }
 
@@ -191,7 +196,7 @@ namespace Core.Pool
                         if(destroyPool != null) break;
                         // 再考虑从活跃列表中释放
                         _actives.Sort((x, y) => x.ObjectType.CompareTo(y.ObjectType));
-                        if (_lazies.Count > 0)
+                        if (_actives.Count > 0)
                         {
                             destroyPool = _actives[0];
                             _actives.RemoveAt(0);
@@ -254,7 +259,7 @@ namespace Core.Pool
                 _lazies.Add(pool);
             }
             // 处理已经在惰性列表中的池子
-            else if(_lazies.Contains(pool))
+            else if(_lazies.Contains(pool) && pool.UsedCount >= CriticalActiveCount)
             {
                 // 先从惰性列表中移除
                 _lazies.Remove(pool);

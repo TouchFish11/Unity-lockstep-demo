@@ -1,26 +1,47 @@
 using System;
+using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
 namespace Core.AssetBundles.Management
 {
+    /// <summary>
+    /// 池化对象
+    /// </summary>
     public struct PoolObject : IDisposable
     {
         private ObjectSpawner _spawner;
         
         internal Object Obj { get; private set; }
+        
+        internal List<Object> Objs { get; private set; }
 
         public PoolObject(Object obj, ObjectSpawner spawner)
         {
             Obj = obj;
             _spawner = spawner;
+            Objs = new List<Object>();
         }
+        
         /// <summary>
         /// 回收对象，内部游戏对象实例回收到缓存池中
         /// </summary>
         public void Collect()
         {
-            _spawner.Release(Obj);
-            Obj = null;
+            if (Obj)
+            {
+                _spawner.Release(Obj);
+                Obj = null;
+            }
+            else
+            {
+                foreach (var obj in Objs)
+                {
+                    _spawner.Release(obj);
+                }
+                Objs.Clear();
+                Objs = null;
+            }
+            
             _spawner = null;
         }
         
@@ -43,6 +64,8 @@ namespace Core.AssetBundles.Management
         private PoolObject _innerObject;
 
         public T Obj => _innerObject.Obj as T;
+
+        public IList<T> Objs => _innerObject.Objs.ConvertAll(o => o as T);
         
         public PoolObject(PoolObject inner)
         {

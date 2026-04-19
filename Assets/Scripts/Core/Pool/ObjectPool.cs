@@ -31,7 +31,7 @@ namespace Core.Pool
         public string PoolId { get; private set; }
         
         /// <summary>
-        /// 使用次数，获取时增加，缓存时不变
+        /// 使用次数，当前正在使用的对象数量
         /// </summary>
         public uint UsedCount { get; private set; }
         
@@ -136,6 +136,8 @@ namespace Core.Pool
 
             // 将对象压入未使用栈，等待下次复用
             _unUsedObjStack.Push(obj);
+            // 该类型池减少使用次数
+            --UsedCount;
         }
 
         /// <summary>

@@ -60,7 +60,12 @@ namespace Core.Registration
             DIContainer.BindSingleton<IPreLoadManager, PreLoadManager>();
             
             // 初始化AB包管理器
-            var assetBundleManager = DIContainer.Create<AssetBundleManager>();
+            var assetBundleManager = DIContainer.Create<AssetBundleManager>(parameterValues: new object[]
+            {
+                GlobalSettings.Instance.criticalActiveThreshold,
+                GlobalSettings.Instance.bundleSlidingWindowMaxCount,
+                GlobalSettings.Instance.maxDurationPerWindow
+            });
             await assetBundleManager.Init();
             // 初始化
             GameAsset.Init(assetBundleManager);

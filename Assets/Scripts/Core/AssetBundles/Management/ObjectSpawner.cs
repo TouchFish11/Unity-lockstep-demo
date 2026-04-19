@@ -17,7 +17,7 @@ namespace Core.AssetBundles.Management
         private readonly Dictionary<string, AssetHandle> _assetHandles = new();
         
         /// <summary>
-        /// 统一的生成入口
+        /// 异步生成对象
         /// </summary>
         /// <param name="key"></param>
         /// <param name="parent"></param>
@@ -64,6 +64,35 @@ namespace Core.AssetBundles.Management
             return poolObject.Convert<T>();
         }
 
+        // 异步生成多个对象
+        public async Task<PoolObject<T>> SpawnsAsync<T>(params string[] keys) where T : Object
+        {
+            var loadTasks = new List<Task<PoolObject<T>>>();
+            var poolObject = new PoolObject(null, this);
+            foreach (var key in keys)
+            {
+                var instance = _poolManager.Get<T>(key);
+                if (instance)
+                {
+                    poolObject.Objs.Add(instance);
+                }
+                else
+                {
+                    loadTasks.Add(SpawnAsync<T>(key));
+                }
+            }
+            
+            // 等待所有加载任务结束
+            var poolObjects = await Task.WhenAll(loadTasks);
+            
+            foreach (var po in poolObjects)
+            {
+                poolObject.Objs.Add(po.Obj);
+            }
+
+            return poolObject.Convert<T>();
+        }
+        
         /// <summary>
         /// 统一的回收入口（通过 PooledObject 自动调用）
         /// </summary>

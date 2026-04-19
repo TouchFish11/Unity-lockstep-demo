@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.DI;
@@ -6,6 +8,7 @@ using Core.Tasks.Extensions;
 using Core.Utility;
 using UnityEngine;
 using Logger = Core.Log.Logger;
+using Object = UnityEngine.Object;
 
 namespace Core.AssetBundles.Management
 {
@@ -14,10 +17,19 @@ namespace Core.AssetBundles.Management
     /// </summary>
     internal class BundleWrapper
     {
+        // AB包管理器
+        private readonly IAssetBundleManager _assetBundleManager;
+        // AB包加载任务
+        private AssetBundleCreateRequestTask _assetBundleCreateRequestTask;
+        // AB包卸载任务
+        private AssetBundleUnloadOperationTask _assetBundleUnloadTask;
+        // LFU滑动窗口
+        private readonly LFUSlidingWindow _window;
+        
         /// <summary>
         /// AssetBundle对象
         /// </summary>
-        internal AssetBundle AssetBundle { get; private set; }
+        private AssetBundle AssetBundle { get; set; }
         
         /// <summary>
         /// 包名称
@@ -43,28 +55,37 @@ namespace Core.AssetBundles.Management
         /// 是否有效
         /// </summary>
         internal bool IsActive { get; set; }
-        
-        internal LFUSlidingWindow Window { get; private set; }
-        
-        // AB包管理器
-        private readonly IAssetBundleManager _assetBundleManager;
-        // AB包加载任务
-        private AssetBundleCreateRequestTask _assetBundleCreateRequestTask;
-        // AB包卸载任务
-        private AssetBundleUnloadOperationTask _assetBundleUnloadTask;
 
+        /// <summary>
+        /// 获取当前包 LFU 热度值
+        /// </summary>
+        internal int AccessCount => _window.GetCurrentHotness();
+        
+        /// <summary>
+        /// 在访问资源时触发回调
+        /// </summary>
+        internal Action<BundleWrapper> OnAccessAsset;
+        
         /// <summary>
         /// 包装载器
         /// </summary>
         /// <param name="abName"></param>
         /// <param name="path"></param>
         /// <param name="assetBundleManager"></param>
-        public BundleWrapper(string abName, string path, IAssetBundleManager assetBundleManager)
+        /// <param name="window"></param>
+        public BundleWrapper(string abName, string path, IAssetBundleManager assetBundleManager, LFUSlidingWindow window)
         {
             BundleName = abName;
             LoadPath = path;
             _assetBundleManager = assetBundleManager;
-            Window = DIContainer.Create<LFUSlidingWindow>();
+            _window = window;
+        }
+
+        public void RecordAccess()
+        {
+            LastAccessTime =  TimeUtil.RealtimeSinceStartupAsDouble;
+            _window.RecordAccess();
+            OnAccessAsset?.Invoke(this);
         }
 
         /// <summary>
@@ -74,32 +95,69 @@ namespace Core.AssetBundles.Management
         /// <returns></returns>
         public async Task LoadFromFileAsync(CancellationToken token = default)
         {
-            // 正在异步加载，等待加载完成，避免多线程并发问题
-            if (_assetBundleCreateRequestTask != null)
+            try
             {
-                await _assetBundleCreateRequestTask;
-            }
-            
-            // 已加载完成，直接返回，避免重复加载
-            if (AssetBundle)
-            {
+                // 已加载完成，直接返回，避免重复加载
+                if (AssetBundle)
+                {
+                    RefCount += 1;
+                    IsActive = true;
+                    Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
+                    return;
+                }
+        
+                // 正在异步加载，等待加载完成，引用计数增加，避免并发问题重复加载
+                if (_assetBundleCreateRequestTask != null)
+                {
+                    AssetBundle ??= await _assetBundleCreateRequestTask;
+                    RefCount += 1;
+                    IsActive = true;
+                    Debug.Log($"AB包创建1");
+                    return;
+                }
+        
+                // 异步加载AB包
+                Debug.Log($"[{BundleName}] enter create branch");
+                _assetBundleCreateRequestTask = AssetBundle.LoadFromFileAsync(LoadPath).ToTask(token);
+                Debug.Log($"[{BundleName}] task created");
+                AssetBundle = await _assetBundleCreateRequestTask;
+                Debug.Log($"[{BundleName}] after await");
+                _assetBundleCreateRequestTask = null;
                 RefCount += 1;
-                LastAccessTime = TimeUtil.RealtimeSinceStartupAsDouble;
                 IsActive = true;
                 Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
-                return;
             }
-            
-            // 异步加载AB包
-            _assetBundleCreateRequestTask = AssetBundle.LoadFromFileAsync(LoadPath).ToTask(token);
-            AssetBundle = await _assetBundleCreateRequestTask;
-            RefCount += 1;
-            LastAccessTime = TimeUtil.RealtimeSinceStartupAsDouble;
-            _assetBundleCreateRequestTask = null;
-            IsActive = true;
-            Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
+            catch (Exception e)
+            {
+                Logger.LogError($"[AssetBundle]:{BundleName} Load fail,{e.Message}");
+                _assetBundleCreateRequestTask = null;
+            }
+        }
+        
+        public async Task<AssetWrapper> LoadAssetAsync<T>(string assetName, CancellationToken token = default) where T : class
+        {
+            var asset = await AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token);
+            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, this });
         }
 
+        public async Task<AssetWrapper> LoadAssetsAsync<T>(CancellationToken token = default, params string[] assetNames) where T : class
+        {
+            IList<T> list = new List<T>();
+            foreach (var assetName in assetNames)
+            {
+                var asset = await AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token);
+                list.Add(asset);
+            }
+            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { list, this });
+        }
+
+        public async Task<AssetWrapper> LoadAllAssetAsync<T>(CancellationToken token = default) where T : Object
+        {
+            IList<T> list = new List<T>();
+            await AssetBundle.LoadAllAssetsAsync<T>().ToTask(list, token);
+            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { list, this });
+        }
+        
         /// <summary>
         /// 释放指定AssetBundle，仅减少引用计数
         /// </summary>

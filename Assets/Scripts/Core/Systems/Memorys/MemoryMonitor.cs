@@ -73,15 +73,12 @@ namespace Core.Systems.Memorys
 
         private void SetCurrentOccupationLevel(EMemoryOccupationLevel currentOccupationLevel)
         {
-            Logger.Log($"当前内存占用级别：{currentOccupationLevel}。" +
-                           $"当前内存占用：{TextUtility.ToByteUnit((ulong)currentMemory)}，" +
-                           $"系统内存：{TextUtility.ToByteUnit((ulong)currentSystemMemory)}，" +
-                           $"比值：{TextUtility.FloatToStr(currentRatio * 100, 2)}%");
+            if (this.currentOccupationLevel == currentOccupationLevel) return;
             
-            if (this.currentOccupationLevel == currentOccupationLevel)
-            {
-                return;
-            }
+            Logger.Log($"当前内存占用级别：{currentOccupationLevel}。" +
+                       $"当前内存占用：{TextUtility.ToByteUnit((ulong)currentMemory)}，" +
+                       $"系统内存：{TextUtility.ToByteUnit((ulong)currentSystemMemory)}，" +
+                       $"比值：{TextUtility.FloatToStr(currentRatio * 100, 2)}%");
             
             this.currentOccupationLevel = currentOccupationLevel;
             // 通知所有监听者
@@ -98,10 +95,10 @@ namespace Core.Systems.Memorys
 
         private void OnUpdate()
         {
-            if (UnityEngine.Time.realtimeSinceStartup - nowTime >= checkIntervalSeconds)
+            if (TimeUtil.RealtimeSinceStartup - nowTime >= checkIntervalSeconds)
             {
                 CheckMemory();
-                nowTime = UnityEngine.Time.realtimeSinceStartup;
+                nowTime = TimeUtil.RealtimeSinceStartup;
             }
         }
     }

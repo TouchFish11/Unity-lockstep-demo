@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Core.Pool;
 using Core.Tasks.Awaiter;
@@ -12,6 +13,7 @@ namespace Core.Tasks
     /// </summary>
     public class AssetBundleCreateRequestTask : IPoolData
     {
+        private readonly object _lock = new();
         // 原生的AssetBundle创建请求对象
         private AssetBundleCreateRequest _abcr;
         // 任务取消令牌，用于监听外部取消请求
@@ -20,7 +22,7 @@ namespace Core.Tasks
         private CancellationTokenRegistration _cancellationTokenRegistration;
         
         // 任务完成后的延续回调
-        private Action _continuation;
+        private readonly List<Action> _continuations = new();
         // 任务执行结果：成功时存储加载的AssetBundle
         private AssetBundle _result;
         // 任务执行过程中抛出的异常（取消/加载失败）
@@ -65,24 +67,15 @@ namespace Core.Tasks
                         {
                             return;
                         }
-                        
-                        // 尝试获取已加载的AssetBundle并卸载，避免资源泄漏
-                        var ab = task._abcr.assetBundle;
-                        if (ab != null)
-                        {
-                            // TODO：通知管理器卸载该AB包
-                            // DIContainer.GetInstance<IAssetBundleManager>().UnloadBundleAsync()
-                        }
-                    
+
                         // 标记任务为取消异常
                         _exception = new OperationCanceledException(token);
                         // 标记任务完成
-                        _isCompleted = true;
+                        // _isCompleted = true;
                     }
                     
                     // 如果已设置延续回调，触发回调通知任务完成
-                    task._continuation?.Invoke();
-                    Debug.Log($"任务已取消");
+                    Complete();
                 }, this);
             }
             else
@@ -98,7 +91,23 @@ namespace Core.Tasks
         /// <param name="continuation">任务完成后执行的回调方法</param>
         public void SetContinuation(Action continuation)
         {
-            _continuation = continuation;
+            var invokeNow = false;
+            lock (_lock)
+            {
+                if (_isCompleted)
+                {
+                    invokeNow = true;
+                }
+                else
+                {
+                    _continuations.Add(continuation);
+                }
+            }
+
+            if (invokeNow)
+            {
+                continuation?.Invoke();
+            }
         }
         
         /// <summary>
@@ -119,11 +128,14 @@ namespace Core.Tasks
         private void OnRequestCompleted(AsyncOperation operation)
         {
             // 防止重复调用（任务可能已被取消）
-            if (_isCompleted)
+            lock (_lock)
             {
-                return;
+                if (_isCompleted)
+                {
+                    return;
+                }
             }
-            
+
             try
             {
                 // 如果未触发取消请求，获取加载完成的AssetBundle
@@ -135,13 +147,31 @@ namespace Core.Tasks
             finally
             {
                 // 无论成功/失败，标记任务完成
-                _isCompleted = true;
+                // _isCompleted = true;
                 // 注销原生请求的完成回调，防止内存泄漏
                 _abcr.completed -= OnRequestCompleted;
                 // 注销取消令牌的注册器，防止内存泄漏
                 _cancellationTokenRegistration.Dispose();
                 // 触发延续回调，通知任务完成
-                _continuation?.Invoke();
+                Complete();
+            }
+        }
+        
+        private void Complete()
+        {
+            Action[] callbacks;
+            lock (_lock)
+            {
+                if (_isCompleted) 
+                    return;
+                _isCompleted = true;
+                callbacks = _continuations.ToArray();
+                _continuations.Clear();
+            }
+
+            foreach (var c in callbacks)
+            {
+                c?.Invoke();
             }
         }
         
@@ -157,10 +187,13 @@ namespace Core.Tasks
         public void ResetData()
         {
             _abcr = null;
-            _continuation = null;
+            _continuations.Clear();
             _result = null;
             _exception = null;
-            _isCompleted = false;
+            lock (_lock)
+            {
+                _isCompleted = false;
+            }
         }
     }
 }

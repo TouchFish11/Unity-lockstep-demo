@@ -13,8 +13,8 @@ namespace Core.AssetBundles.Management
         private int _currentIndex;     
         // 上一次移动指针的时间
         private double _lastUpdateTime; 
-        // 每个格子代表多少秒（比如 10 秒）
-        private readonly float _slotDuration;   
+        // 每个格子代表多少秒
+        private readonly float _slotDuration;
 
         public LFUSlidingWindow(int windowSizeSlots, float slotDuration)
         {
@@ -24,7 +24,9 @@ namespace Core.AssetBundles.Management
             _lastUpdateTime = TimeUtil.RealtimeSinceStartupAsDouble;
         }
 
-        // 每次加载 AB 包里的资源时，调用这个方法
+        /// <summary>
+        /// 每次加载/访问 AB 包里的资源时，调用这个方法更新记录
+        /// </summary>
         public void RecordAccess()
         {
             // 看看是不是该往前转一格了

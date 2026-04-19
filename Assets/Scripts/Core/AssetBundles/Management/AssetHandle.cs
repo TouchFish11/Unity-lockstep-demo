@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Core.AssetBundles.Management
 {
@@ -16,7 +17,11 @@ namespace Core.AssetBundles.Management
         /// 资源定位对象的版本号
         /// </summary>
         internal int Version { get; set; }
+        
+        internal bool IsCombine { get; set; }
 
+        internal List<AssetHandle> CombineHandles { get; set; }
+        
         /// <summary>
         /// 转换为泛型句柄
         /// </summary>
@@ -46,11 +51,25 @@ namespace Core.AssetBundles.Management
         {
             _innerHandle = inner;
         }
-        
+
         /// <summary>
         /// 原始资源
         /// </summary>
-        public T Asset => GameAsset.GetAsset<T>(_innerHandle.HandleId, _innerHandle.Version);
+        public T Asset
+        {
+            get
+            {
+                if (!_innerHandle.IsCombine) 
+                    return GameAsset.GetAsset<T>(_innerHandle.HandleId, _innerHandle.Version);
+            
+                IList<T> list = new List<T>(_innerHandle.CombineHandles.Count);
+                foreach (var innerHandleCombineHandle in _innerHandle.CombineHandles)
+                {
+                    list.Add(innerHandleCombineHandle.ConvertTo<T>().Asset);
+                }
+                return list as T;
+            }
+        }
 
         public static implicit operator AssetHandle(AssetHandle<T> handle) => handle._innerHandle;
     }
