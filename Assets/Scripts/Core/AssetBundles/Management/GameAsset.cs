@@ -52,15 +52,15 @@ namespace Core.AssetBundles.Management
                 throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.bundleName} AssetBundle failed");
             
             // 异步加载资源
-            var assetWrapper = await bundleWrapper.LoadAssetAsync<T>(mapEntry.assetName);
+            var assetWrapper = await AssetLoader.LoadAssetAsync<T>(bundleWrapper, mapEntry);
             if (assetWrapper.IsNull)
-                throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.assetName} failed");
-
+                throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.assetName} failed, key({key})");
+            
             // 避免逻辑上重复添加
             if (_keyToHandleMap.TryGetValue(key, out var assetHandle))
             {
                 if (!_assetIdToLocationsMap.TryGetValue(handle.HandleId, out var loc))
-                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error");
+                    throw new System.Exception($"{nameof(GameAsset)}:Resource management logic error");
                 
                 ++loc.RefCount;
                 return assetHandle.ConvertTo<T>();
@@ -98,12 +98,11 @@ namespace Core.AssetBundles.Management
         }
         
         /// <summary>
-        /// 异步加载多个资源
+        /// 异步加载相同类型的多个资源
         /// </summary>
         /// <param name="keys">相同类型的多个资源键，传入不同类型的键其返回的资源为null</param>
         /// <typeparam name="T">资源类型</typeparam>
         /// <returns></returns>
-        [Obsolete]
         public static async Task<AssetHandle<IList<T>>> LoadAssetsAsync<T>(params string[] keys) where T : class
         {
             // 先对 keys 排序，确保同一组资源无论传入顺序如何都能命中同一缓存
@@ -123,17 +122,7 @@ namespace Core.AssetBundles.Management
             var allHandles = new List<AssetHandle>();
             foreach (var key in keys)
             {
-                // 没有缓存就加载资源
-                if (!_keyToHandleMap.TryGetValue(key, out var handle))
-                {
-                    tasks.Add(LoadAssetAsync<T>(key));
-                }
-                // 复用缓存句柄
-                else
-                {
-                    ++_assetIdToLocationsMap[handle.HandleId].RefCount;
-                    allHandles.Add(handle);
-                }
+                tasks.Add(LoadAssetAsync<T>(key));
             }
             
             // 等待所有资源加载完成
@@ -141,7 +130,7 @@ namespace Core.AssetBundles.Management
             foreach (var handle in newHandles) 
                 allHandles.Add(handle);
             
-            // 创建新Handle
+            // 创建新Handle，并且是组合句柄，该句柄对应的定位对象不持有资源，该句柄存储所有持有资源的子句柄
             var newHandle = new AssetHandle
             {
                 HandleId = GenerateNewId(), Version = 0, IsCombine = true,
@@ -155,7 +144,7 @@ namespace Core.AssetBundles.Management
                 ++location.Version;
                 location.RefCount = 1;
                 location.release = () => { foreach (var handle in newHandle.CombineHandles) Release(handle); };
-                // 同步定位对象的版本
+                // 同步定位对象的版本到句柄
                 newHandle.Version = location.Version;
                 // 缓存句柄
                 _keyToHandleMap.Add(combinedKey, newHandle);

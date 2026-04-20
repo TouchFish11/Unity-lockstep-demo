@@ -36,7 +36,7 @@ namespace Editor.AssetBundle.Core
         /// <summary>
         /// 构建 AssetBundles
         /// </summary>
-        public bool Build(string outputPath, BuildTarget target, BuildAssetBundleOptions options, string assetsInputPath)
+        public bool Build(string outputPath, BuildTarget target, BuildAssetBundleOptions options, string assetsInputPath, AssetBundlesCollections releaseCollection)
         {
             if (!Directory.Exists(outputPath))
             {
@@ -361,7 +361,6 @@ namespace Editor.AssetBundle.Core
                 }
 
                 var allBundleNames = manifest.GetAllAssetBundles();
-                var dirInfo = new DirectoryInfo(outputPath);
                 var index = 0;
                 foreach (var bundleName in allBundleNames)
                 {
@@ -401,7 +400,7 @@ namespace Editor.AssetBundle.Core
                                 Log($"资源名称重复：{key}，已使用路径替代：{path}，请调整命名");
                                 key = path;
                             }
-                            var entry = new AssetMapEntry(key, bundleName, assetPath, assetType);
+                            var entry = new AssetEntry(key, bundleName, assetPath, assetType);
                             catalog.AddOrUpdateEntry(key, entry);
                             Log($"资源名：{assetPath}");
                         }

@@ -14,7 +14,7 @@ namespace Core.AssetBundles.Management
     public class AssetCatalog
     {
         // 资源Key到资源映射条目的映射
-        [JsonProperty] private Dictionary<string, AssetMapEntry> assetMap = new();
+        [JsonProperty] private Dictionary<string, AssetEntry> assetMap = new();
         // AB包集合
         [JsonProperty] private ABPackageCollection abPackageCollection = new();
         // 包名到该包内所有资源的 Key 列表
@@ -28,14 +28,14 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 资源的所有Key
         /// </summary>
-        public Dictionary<string, AssetMapEntry>.KeyCollection AssetKeys => assetMap.Keys;
+        public Dictionary<string, AssetEntry>.KeyCollection AssetKeys => assetMap.Keys;
         
         /// <summary>
         /// 所有资源的Values
         /// </summary>
-        public Dictionary<string, AssetMapEntry>.ValueCollection Assets => assetMap.Values;
+        public Dictionary<string, AssetEntry>.ValueCollection Assets => assetMap.Values;
 
-        public AssetMapEntry this[string key]
+        public AssetEntry this[string key]
         {
             get => assetMap[key];
             set => assetMap[key] = value;
@@ -51,7 +51,7 @@ namespace Core.AssetBundles.Management
         /// </summary>
         /// <param name="key"></param>
         /// <param name="entry"></param>
-        public void AddOrUpdateEntry(string key, AssetMapEntry entry)
+        public void AddOrUpdateEntry(string key, AssetEntry entry)
         {
             // 如果 key 已存在，先移除旧的记录（维护 bundleToAssetKeys）
             if (assetMap.TryGetValue(key, out var oldEntry))
@@ -95,7 +95,7 @@ namespace Core.AssetBundles.Management
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public AssetMapEntry GetEntry(string key)
+        public AssetEntry GetEntry(string key)
         {
             return assetMap.GetValueOrDefault(key);
         }
@@ -110,9 +110,9 @@ namespace Core.AssetBundles.Management
             return bundleToAssetKeys.TryGetValue(bundleName, out var keys) ? keys : Enumerable.Empty<string>();
         }
 
-        public AssetMapEntry[] GetEntries(params string[] keys)
+        public AssetEntry[] GetEntries(params string[] keys)
         {
-            List<AssetMapEntry> list = new();
+            List<AssetEntry> list = new();
             foreach (var assetName in keys)
             {
                 if (assetMap.TryGetValue(assetName, out var entry))

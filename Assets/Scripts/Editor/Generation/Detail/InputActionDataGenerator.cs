@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text;
 using Core.Extensions;
 using Core.Input.ActionAsset;
-using Core.Res;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,7 +16,7 @@ namespace Editor.Generation.Detail
     /// ��������������
     /// �������ݽṹ�����ݽṹ���������붯��ö��
     /// </summary>
-    public class InputActionDataGenerator : ClassGenerator
+    internal class InputActionDataGenerator : ClassGenerator
     {
         protected override string NameSpace => "Core.Input.ActionAsset";
         protected override string Note { get; set; }

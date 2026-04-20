@@ -4,13 +4,13 @@ using Newtonsoft.Json;
 namespace Core.AssetBundles.Management
 {
     /// <summary>
-    /// 资源映射项
+    /// 资源项
     /// </summary>
     [Serializable]
     [JsonObject(MemberSerialization.OptIn)]
-    public class AssetMapEntry
+    public class AssetEntry
     {
-        // 资源的加载key
+        /// 用户使用的资源标识
         [JsonProperty] public string key;     
         // 资源所在的AB包名
         [JsonProperty] public string bundleName;     
@@ -19,7 +19,7 @@ namespace Core.AssetBundles.Management
         // 资源类型
         [JsonProperty] public EAssetType assetType;
         
-        public AssetMapEntry(string key, string bundleName, string assetName, EAssetType assetType)
+        public AssetEntry(string key, string bundleName, string assetName, EAssetType assetType)
         {
             this.key = key;
             this.bundleName = bundleName;

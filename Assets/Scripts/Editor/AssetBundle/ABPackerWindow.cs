@@ -305,7 +305,7 @@ namespace Editor.AssetBundle
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Build AssetBundles"))
             {
-                builder.Build(outputPath, targetPlatform, buildOptions, AssetsInputPath);
+                builder.Build(outputPath, targetPlatform, buildOptions, AssetsInputPath, assetsCollection_Release);
             }
             if (GUILayout.Button("Clean Output"))
             {

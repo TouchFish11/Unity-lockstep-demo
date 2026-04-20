@@ -112,16 +112,12 @@ namespace Core.AssetBundles.Management
                     AssetBundle ??= await _assetBundleCreateRequestTask;
                     RefCount += 1;
                     IsActive = true;
-                    Debug.Log($"AB包创建1");
                     return;
                 }
         
                 // 异步加载AB包
-                Debug.Log($"[{BundleName}] enter create branch");
                 _assetBundleCreateRequestTask = AssetBundle.LoadFromFileAsync(LoadPath).ToTask(token);
-                Debug.Log($"[{BundleName}] task created");
                 AssetBundle = await _assetBundleCreateRequestTask;
-                Debug.Log($"[{BundleName}] after await");
                 _assetBundleCreateRequestTask = null;
                 RefCount += 1;
                 IsActive = true;

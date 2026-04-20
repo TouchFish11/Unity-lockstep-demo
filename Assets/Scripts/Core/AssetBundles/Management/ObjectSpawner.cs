@@ -64,7 +64,12 @@ namespace Core.AssetBundles.Management
             return poolObject.Convert<T>();
         }
 
-        // 异步生成多个对象
+        /// <summary>
+        /// 异步生成多个对象，只能获取同一类型的多个资源，不支持混合类型
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public async Task<PoolObject<T>> SpawnsAsync<T>(params string[] keys) where T : Object
         {
             var loadTasks = new List<Task<PoolObject<T>>>();

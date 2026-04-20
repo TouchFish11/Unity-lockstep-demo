@@ -7,28 +7,11 @@ namespace Core.AssetBundles.Management
     /// </summary>
     internal class AssetLocation
     {
-        // // 资源
-        // private object _asset;
-        //
-        // /// <summary>
-        // /// 资源
-        // /// </summary>
-        // internal object Asset
-        // {
-        //     get => _asset;
-        //     set
-        //     {
-        //         _asset = value;
-        //         access?.Invoke();
-        //     }
-        // }
-        //
-        
         /// <summary>
         /// 资源包装器
         /// </summary>
         internal AssetWrapper AssetWrapper { get; set; }
-            
+        
         /// <summary>
         /// 当前有效版本号
         /// </summary>

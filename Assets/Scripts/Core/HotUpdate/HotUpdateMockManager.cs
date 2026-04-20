@@ -24,11 +24,9 @@ namespace Core.HotUpdate
             _assetBundleManager = assetBundleManager;
         }
         
-        public async Task LoadAssembliesAsync(HotUpdateAssemblySettings settings, List<TextAsset> textAssets)
+        public Task LoadAssembliesAsync(HotUpdateAssemblySettings settings, List<TextAsset> textAssets)
         {
-            // 加载热更新AB包资源
-            var handle = await GameAsset.LoadAssetsAsync<TextAsset>();
-            foreach (var dllText in handle.Asset)
+            foreach (var dllText in textAssets)
             {
                 if (_assemblyNames.Contains(dllText.name[..dllText.name.LastIndexOf('.')]))
                     continue;
@@ -43,7 +41,7 @@ namespace Core.HotUpdate
                     Logger.Log($"{nameof(HotUpdateMockManager)}.{nameof(LoadAssembliesAsync)}:Editor found hotfix dll({dllText.name})");
                 }
             }
-            GameAsset.Release(handle);
+            return Task.CompletedTask;
         }
 
         public Assembly GetAssembly(string assemblyName)

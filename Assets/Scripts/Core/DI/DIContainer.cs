@@ -15,17 +15,19 @@ namespace Core.DI
     {
         // 绑定标志
         private const BindingFlags _bindingFlags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-        // 接口类型映射
+        // 接口到实例类型映射
         private static readonly ConcurrentDictionary<Type, object> _interfaceMap = new();
-        // 实例类型映射
+        // 实例类型到实例映射
         private static readonly ConcurrentDictionary<Type, object> _instanceMap = new();
+        // 新增统一的注入成员缓存
+        private static readonly ConcurrentDictionary<Type, List<MemberInfo>> _injectMemberCache = new();
         // 存储接口类型与其默认实现类型的映射（由 BindSingleton 填充）
-        private static readonly ConcurrentDictionary<Type, Type> _interfaceToImpl = new();
+        private static readonly ConcurrentDictionary<Type, Type> _interfaceToImplTypeMap = new();
         // 记录类型是否为单例（默认为瞬态）,key为实例类型
         private static readonly ConcurrentDictionary<Type, bool> _lifetimes = new();
         // 解析栈，处理循环依赖
         private static readonly ConcurrentStack<Type> _resolveStack = new();
-        // 类型构造缓存，缓存能创建该类型的所有构造函数
+        // 类型构造缓存，缓存能创建该实例类型的所有构造函数
         private static readonly ConcurrentDictionary<Type, List<ConstructorInfo>> _constructorCache = new();
         
         /// <summary>
@@ -53,7 +55,7 @@ namespace Core.DI
                 throw new Exception($"{nameof(DIContainer)}.{nameof(BindType)}: {typeof(TInterface).Name} is not assignable from {typeof(TInstance).Name}");
             
             // 记录接口与实现类型的映射
-            _interfaceToImpl.TryAdd(typeof(TInterface), typeof(TInstance));
+            _interfaceToImplTypeMap.TryAdd(typeof(TInterface), typeof(TInstance));
         }
 
         /// <summary>
@@ -83,12 +85,17 @@ namespace Core.DI
                 if (type.IsInterface)
                 {
                     // 从映射中查找
-                    var find = _interfaceToImpl.TryGetValue(type, out var itnType);
+                    var find = _interfaceToImplTypeMap.TryGetValue(type, out var itnType);
                     implType = find ? itnType : throw new Exception($"No implementation registered for interface {type.Name}");
                     // 是接口且是Mono
                     if (typeof(Component).IsAssignableFrom(implType))
                     {
                         return CreateMono(type, implType, _lifetimes.GetValueOrDefault(implType));
+                    }
+                    else
+                    {
+                        // 先尝试从具体类型缓存中获取已存在的单例实例
+                        return _instanceMap.GetValueOrDefault(implType);
                     }
                 }
                 else
@@ -158,6 +165,7 @@ namespace Core.DI
 
         /// <summary>
         /// 通过反射创建实例。先尝试构造函数注入（选择参数都能解析的构造函数），再对标记了[Inject]的字段/属性进行补充注入
+        /// 若类型已经通过BindSingleton绑定，则忽略参数isSingleton
         /// </summary>
         /// <param name="interfaceType">实例类型</param>
         /// <param name="instanceType"></param>
@@ -200,8 +208,23 @@ namespace Core.DI
         {
             var instance = _instanceMap.GetValueOrDefault(instanceType) ?? 
                            (interfaceType != null ? _interfaceMap.GetValueOrDefault(interfaceType) : null);
+            
+            // 如果实例存在，需要额外判断其是否为有效的 UnityEngine.Object
             if (instance != null)
-                return instance;
+            {
+                // 如果是 UnityEngine.Object 且已被销毁，则清理缓存并视为未命中
+                if (instance is Object unityObj && !unityObj)
+                {
+                    _instanceMap.Remove(instanceType, out _);
+                    if (interfaceType != null)
+                        _interfaceMap.Remove(interfaceType, out _);
+                }
+                // 是Unity对象但不为空直接返回
+                else
+                {
+                    return instance;
+                }
+            }
             
             var go = new GameObject(instanceType.Name);
             if (isSingleton) 
@@ -317,52 +340,58 @@ namespace Core.DI
         public static void InjectIntoInstance(object instance)
         {
             var type = instance.GetType();
-            // 注入字段
-            var fields = type.GetFields(_bindingFlags);
-            foreach (var field in fields)
+            if (!_injectMemberCache.TryGetValue(type, out var members))
             {
-                // 跳过标记为过时的字段
-                if(field.IsDefined(typeof(ObsoleteAttribute), true)) continue;
-                // 字段有值，则是上一步构造赋值，跳过即可
-                if (field.GetValue(instance) != null) continue;
-                if (!Attribute.IsDefined(field, typeof(InjectAttribute))) continue;
-
-                var value = Resolve(field.FieldType);
-                if (value != null)
+                members = new List<MemberInfo>();
+                // 筛选所有带 [Inject] 的字段
+                foreach (var field in type.GetFields(_bindingFlags))
                 {
-                    field.SetValue(instance, value);
+                    if (field.IsDefined(typeof(ObsoleteAttribute), true)) continue;
+                    if (!Attribute.IsDefined(field, typeof(InjectAttribute))) continue;
+                    members.Add(field);
                 }
-                else
-                {
-                    Debug.Log($"{type}的字段 {field.FieldType} 未找到依赖项");
-                }
-            }
         
-            // 注入属性
-            var properties = type.GetProperties(_bindingFlags);
-            foreach (var property in properties)
-            {
-                // 跳过标记为过时的属性
-                if(property.IsDefined(typeof(ObsoleteAttribute), true)) continue;
-                // 字属性有值，则是上一步构造赋值，跳过即可
-                if (property.CanRead && property.GetValue(instance) != null) continue;
-                if (!Attribute.IsDefined(property, typeof(InjectAttribute))) continue;
-                if (!property.CanWrite) continue;
-            
-                var value = Resolve(property.PropertyType);
-                if (value != null)
+                // 筛选所有带 [Inject] 且可写的属性
+                foreach (var prop in type.GetProperties(_bindingFlags))
                 {
-                    property.SetValue(instance, value);
+                    if (prop.IsDefined(typeof(ObsoleteAttribute), true)) continue;
+                    if (!Attribute.IsDefined(prop, typeof(InjectAttribute))) continue;
+                    if (!prop.CanWrite) continue;
+                    members.Add(prop);
                 }
-                else
+        
+                _injectMemberCache[type] = members;
+            }
+    
+            // 遍历缓存成员，执行注入
+            foreach (var member in members)
+            {
+                switch (member)
                 {
-                    Debug.Log($"{type}的属性 {property.PropertyType} 未找到依赖项");
+                    case FieldInfo field:
+                        if (field.GetValue(instance) != null) 
+                            continue;
+                        var fieldValue = Resolve(field.FieldType);
+                        if (fieldValue != null)
+                            field.SetValue(instance, fieldValue);
+                        else
+                            Debug.LogWarning($"{type} 的字段 {field.Name} 未找到依赖项");
+                        break;
+                    case PropertyInfo prop:
+                        if (prop.CanRead && prop.GetValue(instance) != null) 
+                            continue;
+                        var propValue = Resolve(prop.PropertyType);
+                        if (propValue != null)
+                            prop.SetValue(instance, propValue);
+                        else
+                            Debug.LogWarning($"{type} 的属性 {prop.Name} 未找到依赖项");
+                        break;
                 }
             }
         }
 
         /// <summary>
-        /// 获取实例
+        /// 获取实例，未找到返回null
         /// </summary>
         /// <typeparam name="T">接口类型/实例类型</typeparam>
         /// <returns>未找到返回null</returns>
@@ -391,13 +420,13 @@ namespace Core.DI
                 var interfaces = implementationType.GetInterfaces();
                 foreach (var face in interfaces)
                 {
-                    _interfaceToImpl.Remove(face, out _);
+                    _interfaceToImplTypeMap.Remove(face, out _);
                     _interfaceMap.Remove(face, out _);
                 }
             }
             else
             {
-                _interfaceToImpl.Remove(interfaceType, out _);
+                _interfaceToImplTypeMap.Remove(interfaceType, out _);
                 _interfaceMap.Remove(interfaceType, out _);
             }
             
@@ -406,16 +435,17 @@ namespace Core.DI
         }
 
         /// <summary>
-        /// 情况所有缓存
+        /// 清空所有缓存
         /// </summary>
         public static void Clear()
         {
             _interfaceMap.Clear();
             _instanceMap.Clear();
-            _interfaceToImpl.Clear();
+            _interfaceToImplTypeMap.Clear();
             _lifetimes.Clear();
             _resolveStack.Clear();
             _constructorCache.Clear();
+            _injectMemberCache.Clear();
         }
     }
 }

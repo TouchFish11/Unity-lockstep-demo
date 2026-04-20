@@ -14,5 +14,10 @@ namespace Core.AssetBundles.Management
         /// 场景
         /// </summary>
         Scene,
+        
+        /// <summary>
+        /// 图片
+        /// </summary>
+        Sprite
     }
 }

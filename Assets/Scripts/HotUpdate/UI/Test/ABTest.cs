@@ -15,41 +15,31 @@ namespace HotUpdate.UI.Test
             await Core.Registration.RegisterCore.InitCore();
             var spawner = DIContainer.Create<ObjectSpawner>();
             
-            // var poolObject = await spawner.SpawnAsync<GameObject>(AssetKeys.Uiroot);
-            // Logger.Log(poolObject.Obj);
-            //
-            // var boss = await spawner.SpawnAsync<Boss>(AssetKeys.Boss);
-            // Logger.Log(boss.Obj);
-            //
-            // var sphere = await spawner.SpawnAsync<Monster>(AssetKeys.Sphere);
-            // Logger.Log(sphere.Obj);
-            //
-            // boss.Collect();
-            // sphere.Collect();
-            //
-            // boss = await spawner.SpawnAsync<Boss>(AssetKeys.Boss);
-            // Logger.Log(boss.Obj);
+            var poolObject = await spawner.SpawnAsync<GameObject>(AssetKeys.Uiroot);
+            Logger.Log(poolObject.Obj);
             
-            var pos = await spawner.SpawnsAsync<GameObject>(AssetKeys.Boss, AssetKeys.Sphere);
+            var boss = await spawner.SpawnAsync<Boss>(AssetKeys.Boss);
+            Logger.Log(boss.Obj);
+            
+            var sphere = await spawner.SpawnAsync<Monster>(AssetKeys.Sphere);
+            Logger.Log(sphere.Obj);
+            
+            boss.Collect();
+            sphere.Collect();
+            
+            boss = await spawner.SpawnAsync<Boss>(AssetKeys.Boss);
+            Logger.Log(boss.Obj);
+            
+            var pos = await spawner.SpawnsAsync<Boss>(AssetKeys.Boss);
             foreach (var posObj in pos.Objs)
             {
                 Logger.Log(posObj);
             }
             
-            // await ABTest_TextAsset();
+            await ABTest_TextAsset();
             // await ABTest_TextAsset();
             //
             // await Task.WhenAll(ABTest_GameObject(), ABTest_GameObject());
-        }
-        
-        private static async Task ABTest_GameObject()
-        {
-            var handle = await GameAsset.LoadAllAssetAsync<GameObject>(AssetBundleKeys.Prefab);
-            foreach (var o in handle.Asset)
-            {
-                Object.Instantiate(o);
-            }
-            //GameAsset.Release(handle);
         }
 
         private static async Task ABTest_TextAsset()
