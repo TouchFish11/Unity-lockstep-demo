@@ -1,5 +1,4 @@
 using UnityEngine;
-using Logger = Core.Log.Logger;
 
 namespace HotUpdate.Base.Grid
 {
@@ -14,20 +13,16 @@ namespace HotUpdate.Base.Grid
         public override (int minIndex, int maxIndex) CalcIndex()
         {
             // 单行总高度 = 格子高度 + 垂直间距
-            var rowHeight = _gridHeight + _gridYSpace;
-
             // minIndex：当前视口顶部对应的格子索引
             // _content.anchoredPosition.y 表示 Content 顶部轴心相对于其锚点参考点（通常为视口顶部）的垂直偏移量（正值表示内容向上滚动）
             // 除以单行高度得到当前屏幕顶部已滚过的行数（向下取整），再乘 _maxCol 得到该行第一个格子的索引
-            var minIndex = (int)(_content.anchoredPosition.y / rowHeight) * maxCol;
+            var minIndex = (int)(_content.anchoredPosition.y / (_gridHeight + _gridYSpace)) * maxCol;
 
             // maxIndex：当前视口底部对应的格子索引
             // _sv.viewport.rect.height 是视口（显示区域）的实际高度
             // 视口底部位置 = 已滚动偏移量 + 视口高度
             // 同样方式算出底部所在行数，乘 _maxCol 再加 (_maxCol - 1) 得到该行最后一个格子的索引
-            var maxIndex = (int)((_content.anchoredPosition.y + _sv.viewport.rect.height) / rowHeight) * maxCol + (maxCol - 1);
-            
-            Logger.Log($"Viewport height: {_sv.viewport.rect.height}, Content anchoredY: {_content.anchoredPosition.y}");
+            var maxIndex = (int)((_content.anchoredPosition.y + _sv.viewport.rect.height) / (_gridHeight + _gridYSpace)) * maxCol + (maxCol - 1);
             
             return (minIndex, maxIndex);
         }

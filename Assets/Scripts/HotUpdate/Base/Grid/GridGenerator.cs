@@ -98,6 +98,10 @@ namespace HotUpdate.Base.Grid
             }
         }
 
+        /// <summary>
+        /// 设置显示的数据
+        /// </summary>
+        /// <param name="datas"></param>
         public void SetDatas(List<T> datas)
         {
             _dataList.Clear();
