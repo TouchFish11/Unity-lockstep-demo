@@ -2,7 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events;
-using Core.Log;
+using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Core.UI.MVC
 {
@@ -22,10 +23,11 @@ namespace Core.UI.MVC
         {
             try
             {
-                this.panelId = id;
+                panelId = id;
                 this.view = (TView)view;
                 this.model = (TModel)model;
                 await OnInit();
+                await Show();
             }
             catch (Exception e)
             {
@@ -54,6 +56,7 @@ namespace Core.UI.MVC
             view.GetBinder().OnSliderValueChanged += SliderValueChanged;
             view.GetBinder().OnToggleValueChanged += ToggleValueChanged;
             view.GetBinder().OnInputFieldValueChanged += InputFieldValueChanged;
+            view.GetBinder().OnScrollRectValueChanged += ScrollRectValueChanged;
             return OnShow();
         }
         
@@ -77,6 +80,7 @@ namespace Core.UI.MVC
             view.GetBinder().OnSliderValueChanged -= SliderValueChanged;
             view.GetBinder().OnToggleValueChanged -= ToggleValueChanged;
             view.GetBinder().OnInputFieldValueChanged -= InputFieldValueChanged;
+            view.GetBinder().OnScrollRectValueChanged -= ScrollRectValueChanged;
             await OnHide();
             model.ClearData();
             view.ViewObj.SetActive(false);
@@ -125,6 +129,13 @@ namespace Core.UI.MVC
         /// <param name="fieldName">输入框名</param>
         /// <param name="inputStr">输入内容</param>
         protected virtual void InputFieldValueChanged(string fieldName, string inputStr) { }
+
+        /// <summary>
+        /// 滚动视图滚动监听
+        /// </summary>
+        /// <param name="scrollViewName">ScrollRect的名称</param>
+        /// <param name="pos">滚动区域的归一化位置（Normalized Position）</param>
+        protected virtual void ScrollRectValueChanged(string scrollViewName, Vector2 pos) { }
 
         public async Task Destroy()
         {

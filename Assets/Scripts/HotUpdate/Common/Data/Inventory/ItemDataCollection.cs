@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core.Log;
 using Newtonsoft.Json;
 
 namespace HotUpdate.Common.Data.Inventory
@@ -12,7 +13,16 @@ namespace HotUpdate.Common.Data.Inventory
     public class ItemDataCollection
     {
         [JsonProperty] private List<ItemData> items = new();
+
+        public void AddItemData(ItemData itemData)
+        {
+            if (itemData == null)
+                return;
+            
+            items.Add(itemData);
+            Logger.Log($"{nameof(ItemDataCollection)}: Item(id = {itemData.itemId}, num = {itemData.itemNum}) added");
+        }
         
-        public List<ItemData> Items => items;
+        public IEnumerable<ItemData> GetItems() => items;
     }
 }

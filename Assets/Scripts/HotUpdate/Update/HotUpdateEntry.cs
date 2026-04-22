@@ -7,10 +7,14 @@ using Core.Input.ActionAsset;
 using Core.Scene;
 using Core.UI;
 using Core.Utility;
+using HotUpdate.Base;
 using HotUpdate.Game.Data;
+using HotUpdate.Game.Inventory;
+using HotUpdate.Game.Main.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Logger = Core.Log.Logger;
+using SceneManager = Core.Scene.SceneManager;
 
 namespace HotUpdate.Update
 {
@@ -41,7 +45,7 @@ namespace HotUpdate.Update
                 // 初始化游戏设置
                 await InitSettings();
                 // 初始化UI管理器，创建画布和UI相机
-                var uiManager = DIContainer.GetInstance<IUIManager>();
+                var uiManager = DIContainer.Create<UIManager>();
                 await uiManager.InitUIManagerAsync(AssetKeys.Uiroot);
                 // 显示开始界面
                 var controller = await uiManager.CreateViewAsync<BeginView, BeginModel, BeginController>(AssetKeys.Beginview, E_UILayer.Mid);
@@ -74,6 +78,8 @@ namespace HotUpdate.Update
             {
                 var tasks = new List<Task>
                 {
+                    // 初始化管理器
+                    InitManagers(),
                     // 切换场景
                     LoadSceneAsync(),
                     // 初始化输入系统
@@ -83,6 +89,9 @@ namespace HotUpdate.Update
                 };
                 
                 await Task.WhenAll(tasks);
+                
+                // 打开主界面
+                await DIContainer.Create<UIManager>().CreateViewAsync<MainPanel, MainModel, MainController>(AssetKeys.Main_Panel,  E_UILayer.Mid);
             }
             catch (Exception e)
             {
@@ -90,11 +99,22 @@ namespace HotUpdate.Update
             }
         }
 
+        public static Task InitManagers()
+        {
+            // 绑定背包管理器类型
+            DIContainer.BindSingleton<IInventoryManager, InventoryManager>();
+            //...
+            
+            return Task.CompletedTask;
+        }
+        
         /// <summary>
         /// 初始化输入系统
         /// </summary>
         private async Task InitInputSystemAsync()
         {
+            Logger.Log($"{nameof(HotUpdateEntry)}:Initialization of the InputSystem is complete");
+            return;
             var handle = await GameAsset.LoadAssetAsync<TextAsset>(FileUtility.InputActionLocalFileName);
             _inputSystem.InitInputSystem(handle.Asset.text);
             GameAsset.Release(handle);
@@ -107,7 +127,7 @@ namespace HotUpdate.Update
         private static async Task LoadPlayerDataAsync()
         {
             var gameDataManager = DIContainer.Create<GameDataManager>(true);
-            await gameDataManager.LoadDataAsync();
+            await Task.WhenAll(gameDataManager.LoadConfigAsync(),  gameDataManager.LoadDataAsync());
             Logger.Log($"{nameof(HotUpdateEntry)}:Initialization of the GameData is complete");
         }
 
@@ -117,7 +137,7 @@ namespace HotUpdate.Update
         /// <returns></returns>
         private static Task LoadSceneAsync()
         {
-            return DIContainer.GetInstance<ISceneManager>().LoadSceneAsync("", LoadSceneMode.Single, null);
+            return DIContainer.Create<SceneManager>().LoadSceneAsync(AssetKeys.Inventorytestscene, LoadSceneMode.Single, null);
         }
     }
 }

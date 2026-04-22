@@ -6,7 +6,7 @@ namespace Core.AssetBundles.Management
     /// <summary>
     /// 资源句柄
     /// </summary>
-    public struct AssetHandle : IEquatable<AssetHandle>
+    public struct AssetHandle : IEquatable<AssetHandle>, IDisposable
     {
         /// <summary>
         /// 自身句柄唯一ID
@@ -31,6 +31,19 @@ namespace Core.AssetBundles.Management
         {
             return new AssetHandle<T>(this);
         }
+        
+        void IDisposable.Dispose()
+        {
+            if (CombineHandles != null && CombineHandles.Count > 0)
+            {
+                foreach (var handle in CombineHandles)
+                {
+                    GameAsset.Release(handle);
+                }
+            }
+            
+            GameAsset.Release(this);
+        }
 
         public static bool operator ==(AssetHandle handle1, AssetHandle handle2) => handle1.HandleId == handle2.HandleId && handle1.Version == handle2.Version;
         public static bool operator !=(AssetHandle handle1, AssetHandle handle2) => !(handle1 == handle2);
@@ -42,7 +55,7 @@ namespace Core.AssetBundles.Management
     /// <summary>
     /// 泛型资源句柄
     /// </summary>
-    public readonly struct AssetHandle<T> where T : class
+    public readonly struct AssetHandle<T> : IDisposable where T : class
     {
         // 内部非泛型句柄实例
         private readonly AssetHandle _innerHandle;
@@ -69,6 +82,11 @@ namespace Core.AssetBundles.Management
                 }
                 return list as T;
             }
+        }
+
+        void IDisposable.Dispose()
+        {
+            (_innerHandle as IDisposable).Dispose();
         }
 
         public static implicit operator AssetHandle(AssetHandle<T> handle) => handle._innerHandle;

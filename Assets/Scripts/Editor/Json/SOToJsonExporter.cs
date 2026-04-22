@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Core.DI;
 using Core.Serialize.Json;
+using Core.SO;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,14 +14,14 @@ namespace Editor.Json
         public static void ExportSelectedSOToJson()
         {
             var selected = Selection.activeObject;
-            if (!selected)
+            if (!selected || selected is not SOBase soBase)
             {
-                Debug.LogError("请先选择一个SO");
+                Debug.LogError($"请先选择一个继承 {nameof(SOBase)} 的 SO");
                 return;
             }
             
             // 序列化数据
-            var json = DIContainer.Create<JsonManager>().ToJson(selected, settings: Core.Utility.NewtonsoftJsonUtility.SerializerSettings);
+            var json = DIContainer.Create<JsonManager>().ToJson(soBase.target, settings: Core.Utility.NewtonsoftJsonUtility.SerializerSettings);
             
             // 保存到文件
             var path = EditorUtility.SaveFilePanel(

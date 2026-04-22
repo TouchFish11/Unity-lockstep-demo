@@ -18,12 +18,12 @@ namespace Core.AssetBundles.Update.Core
     /// </summary>
     public class ABWebRequester : IPoolData
     {
-        // UnityWebRequest核心请求对象，用于发起网络下载请求
-        [Inject] private UnityWebRequest _request;
         // Mono适配器
         [Inject] private IMonoAdapter _monoAdapter;
         // AB包更新器
         [Inject] private IAssetBundleUpdater _updater;
+        // UnityWebRequest核心请求对象，用于发起网络下载请求
+        private UnityWebRequest _request;
         // 取消源
         private CancellationTokenSource _cancellationTokenSource;
         // 是否停止

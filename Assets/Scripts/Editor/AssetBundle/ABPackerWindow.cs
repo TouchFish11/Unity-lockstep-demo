@@ -140,25 +140,41 @@ namespace Editor.AssetBundle
         {
             EditorGUILayout.Space();
             GUILayout.Label("Asset Key Generate", EditorStyles.boldLabel);
+    
             GUILayout.BeginHorizontal();
-            EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.TextField("Generate Path", $"{Application.dataPath}/Scripts/HotUpdate/Common/Generated/AssetKeys.cs");
-            EditorGUI.EndDisabledGroup();
-            if (GUILayout.Button("Generate AssetKeys from ServerData",GUILayout.Width(250)))
+            if (GUILayout.Button("Refresh Asset Keys Now", GUILayout.Width(200)))
             {
-                var serverCatalogPath = Path.Combine(serverDataPath, AssetBundleBuilder.AssetCatalogName);
-                if (File.Exists(serverCatalogPath))
-                {
-                    var catalog = jsonManager.FromJson<AssetCatalog>(File.ReadAllText(serverCatalogPath));
-                    var scriptPath = Path.Combine(Application.dataPath, "Scripts", "HotUpdate", "Common", "Generated", "AssetKeys.cs");
-                    AssetKeyGenerator.Generate(catalog, scriptPath);
-                    AppendToLog($"AssetKeys generated from ServerData.");
-                }
-                else
-                    AppendToLog("ServerData 中没有 AssetCatalog.json，请先执行 CopyToServerData。");
+                RefreshAssetKeys();
+                AppendToLog("资源键常量已手动刷新。");
             }
             GUILayout.EndHorizontal();
+    
+            // 原有的其他 UI 元素（如 ResKeyCollection 生成按钮）可以保留或移除
         }
+        
+        // private void DrawResKeyView()
+        // {
+        //     EditorGUILayout.Space();
+        //     GUILayout.Label("Asset Key Generate", EditorStyles.boldLabel);
+        //     GUILayout.BeginHorizontal();
+        //     EditorGUI.BeginDisabledGroup(true);
+        //     EditorGUILayout.TextField("Generate Path", $"{Application.dataPath}/Scripts/HotUpdate/Common/Generated/AssetKeys.cs");
+        //     EditorGUI.EndDisabledGroup();
+        //     if (GUILayout.Button("Generate AssetKeys from ServerData",GUILayout.Width(250)))
+        //     {
+        //         var serverCatalogPath = Path.Combine(serverDataPath, AssetBundleBuilder.AssetCatalogName);
+        //         if (File.Exists(serverCatalogPath))
+        //         {
+        //             var catalog = jsonManager.FromJson<AssetCatalog>(File.ReadAllText(serverCatalogPath));
+        //             var scriptPath = Path.Combine(Application.dataPath, "Scripts", "HotUpdate", "Common", "Generated", "AssetKeys.cs");
+        //             AssetKeyGenerator.Generate(catalog, scriptPath);
+        //             AppendToLog($"AssetKeys generated from ServerData.");
+        //         }
+        //         else
+        //             AppendToLog("ServerData 中没有 AssetCatalog.json，请先执行 CopyToServerData。");
+        //     }
+        //     GUILayout.EndHorizontal();
+        // }
 
         private void DrawHotUpdateView()
         {
@@ -503,6 +519,56 @@ namespace Editor.AssetBundle
 
             jsonManager.SaveToJson(settings, savePath);
             AssetDatabase.Refresh();
+        }
+        
+        /// <summary>
+        /// 从临时收集的资源快照中生成资源键常量（不覆盖 Release 快照）
+        /// </summary>
+        public static void RefreshAssetKeys()
+        {
+            var collector = new AssetBundleCollector(
+                AssetsInputPath, 
+                new[] { ".meta" }, 
+                new[] { "Texture" }, 
+                null, 
+                null
+            );
+    
+            // 使用一个不会影响发布配置的临时文件名
+            const string tempFileName = "AssetBundlesCollections_Temp_Keys.asset";
+            var savePath = "Assets/Editor/AssetBundleSettings/";
+    
+            var tempCollection = collector.CollectLatestInfos(savePath, tempFileName);
+            if (!tempCollection)
+            {
+                Debug.LogError("刷新资源键失败：无法收集资源信息。");
+                return;
+            }
+
+            // 生成资源键常量
+            var keys = new HashSet<string>();
+            foreach (var abInfo in tempCollection.assetBundleInfos)
+            {
+                foreach (var assetInfo in abInfo.assetInfos)
+                {
+                    var key = Path.GetFileNameWithoutExtension(assetInfo.name);
+                    keys.Add(key);
+                }
+            }
+
+            var assetKeyScriptPath = Path.Combine(Application.dataPath, "Scripts", "HotUpdate", "Common", "Generated", "AssetKeys.cs");
+            AssetKeyGenerator.GenerateFromKeys(keys, assetKeyScriptPath);
+    
+            // 生成 AB 包键常量
+            var bundleNames = tempCollection.assetBundleInfos.Select(ab => ab.assetBundleName).ToList();
+            var bundleKeyScriptPath = Path.Combine(Application.dataPath, "Scripts", "HotUpdate", "Common", "Generated", "AssetBundleKeys.cs");
+            AssetBundleKeyGenerator.GenerateFromNames(bundleNames, bundleKeyScriptPath);
+    
+            // 清理临时文件（可选）
+            AssetDatabase.DeleteAsset($"{savePath}{tempFileName}");
+            AssetDatabase.Refresh();
+    
+            Debug.Log($"资源键常量已刷新。\nAssetKeys: {assetKeyScriptPath}\nAssetBundleKeys: {bundleKeyScriptPath}");
         }
         #endregion
     }

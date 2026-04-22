@@ -34,7 +34,6 @@ namespace Game.Main
                 var spawner = DIContainer.Create<ObjectSpawner>();
                 var entryObj = await spawner.SpawnAsync<GameObject>(bootConfig.hotfixObjKey);
                 DIContainer.InjectIntoInstance(entryObj.Obj);
-                entryObj.Collect();
             }
             catch (Exception e)
             {
@@ -50,7 +49,7 @@ namespace Game.Main
             if (bootConfig == null)
             {
                 Logger.LogError($"{nameof(GameLauncher)}:无法加载启动配置，使用默认硬编码包名");
-                bootConfig = new BootConfig { hotfixDllBundleName = "hotupdate.assetbundle" };
+                bootConfig = new BootConfig { hotfixDllBundleName = "hotupdate" };
             }
             
             // 加载所有dll资源
@@ -60,7 +59,7 @@ namespace Game.Main
             var settingsTextAsset = list.Find(text => text.name.Contains(nameof(HotUpdateAssemblySettings)));
             list.Remove(settingsTextAsset);
             var settings = DIContainer.Create<JsonManager>().FromJson<HotUpdateAssemblySettings>(settingsTextAsset.text);
-            var hotUpdateManager = DIContainer.GetInstance<IHotUpdateManager>();
+            var hotUpdateManager = DIContainer.Create<HotUpdateMockManager>();
             // 补充元数据
             hotUpdateManager.LoadMetadataForAOTAssemblies(AOTGenericReferences.PatchedAOTAssemblyList);  
             // 加载所有热更程序集

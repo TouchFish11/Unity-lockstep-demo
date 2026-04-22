@@ -258,10 +258,9 @@ namespace Editor.AssetBundle.Core
         {
             // 生成启动配置
             // 可以通过配置或约定获取这个名称，这里简化为常量或从 releaseCollection 推断
-            var hotfixBundleName = $"{hotfixDllBundleName}{FileUtility.AbSuffix}"; // 或从某个设置读取
             var bootConfig = new BootConfig
             {
-                hotfixDllBundleName = hotfixBundleName,
+                hotfixDllBundleName = hotfixDllBundleName,
                 version = DateTime.Now.Ticks.ToString(),
                 hotfixObjKey = "hotupdateentry"
             };

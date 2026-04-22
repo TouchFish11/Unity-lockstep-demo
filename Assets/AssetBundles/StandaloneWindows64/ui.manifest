@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1968816712
+CRC: 1028285894
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4b32b66860f3d6d75c88ab56b7c45d60
+    Hash: 591b69cd5639be4889e51ad389a1261d
   TypeTreeHash:
     serializedVersion: 2
-    Hash: db4fffd769bdb961fa0d06cd1db1a1e6
+    Hash: 76e19b52fdbf16a2683964379d8aef2b
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 4b32b66860f3d6d75c88ab56b7c45d60
+    Hash: 591b69cd5639be4889e51ad389a1261d
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -21,6 +21,8 @@ ClassTypes:
 - Class: 21
   Script: {instanceID: 0}
 - Class: 28
+  Script: {instanceID: 0}
+- Class: 48
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
@@ -57,8 +59,6 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: ed5c030be80bf3e43845487c3523664a, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
@@ -90,6 +90,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: a9f20106dbbb8ab47afbeee617b8703d, type: 3}
 - Class: 115
   Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
 - Class: 213
   Script: {instanceID: 0}
 - Class: 222
@@ -99,8 +101,6 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 - Class: 225
-  Script: {instanceID: 0}
-- Class: 687078895
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers:
 - AssemblyName: Unity.InputSystem
@@ -113,6 +113,24 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.InputSystem.InputControlScheme
 - AssemblyName: Unity.InputSystem
   ClassName: UnityEngine.InputSystem.InputControlScheme/DeviceRequirement
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.FaceInfo_Legacy
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.FontAssetCreationSettings
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.KerningTable
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_Character
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_FontFeatureTable
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_FontWeightPair
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphAdjustmentRecord
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphPairAdjustmentRecord
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphValueRecord
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_InputField/OnChangeEvent
 - AssemblyName: Unity.TextMeshPro
@@ -129,6 +147,14 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.Events.PersistentCallGroup
 - AssemblyName: UnityEngine.CoreModule
   ClassName: UnityEngine.RectOffset
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.FaceInfo
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.Glyph
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphMetrics
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphRect
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.AnimationTriggers
 - AssemblyName: UnityEngine.UI
@@ -164,5 +190,4 @@ Assets:
 - Assets/Editor/ArtRes/UI/Main/Main_Panel.prefab
 - Assets/Editor/ArtRes/UI/Tip/BaseTipView.prefab
 - Assets/Editor/ArtRes/UI/Battle/Battle_Panel.prefab
-Dependencies:
-- D:/UnityProject/AnimationSystem/Assets/AssetBundles/StandaloneWindows64/tmpasset
+Dependencies: []

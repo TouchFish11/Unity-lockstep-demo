@@ -63,15 +63,7 @@ namespace Core.Scene
                 return;
             
             // 缓存所有场景名称
-            _scenePaths = new List<string>();
-            // 缓存所有的场景路径
-            var paths = GameAsset.GetAllScenePath();
-            foreach (var scenePath in paths)
-            {
-                var sceneNames = scenePath.Split('/');
-                var sceneName = sceneNames[sceneNames.Length - 1];
-                _scenePaths.Add(sceneName.Substring(0, sceneName.LastIndexOf('.')));
-            }
+            _scenePaths = new List<string>(GameAsset.GetAllScenePath());
         }
 
         /// <summary>

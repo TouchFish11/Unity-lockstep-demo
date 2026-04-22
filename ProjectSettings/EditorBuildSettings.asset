@@ -4,5 +4,20 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Editor/ArtRes/Scenes/ABTestScene.unity
+    guid: 30b67a73ee5e7ab46bb4ed34fe36e916
+  - enabled: 1
+    path: Assets/Editor/ArtRes/Scenes/GameScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Editor/ArtRes/Scenes/InventoryMainTestScene.unity
+    guid: ffd68e4ec7f52124f9dc33673adae270
+  - enabled: 1
+    path: Assets/Editor/ArtRes/Scenes/InventoryTestScene.unity
+    guid: 04f13cb8a339ddc42934da0e756e4ff0
+  - enabled: 1
+    path: Assets/Editor/ArtRes/Scenes/MainScene.unity
+    guid: 24959f4ec1bcd4245ad5c6ccf4af3563
   m_configObjects: {}

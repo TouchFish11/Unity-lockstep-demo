@@ -14,8 +14,13 @@ namespace HotUpdate.Common.Config.Item
         public string iconPath;
         public EItemQuality qualityType;
         public EItemType itemType;
-        // 运行时数据
+        
+        // 玩家数据
         public int itemNumOrLv;
+        
+        // 运行时数据——实例ID
+        public int instanceId;
+        
         // 引擎数据
         [NonSerialized] public Sprite icon;
         [NonSerialized] public Color qualityBk;

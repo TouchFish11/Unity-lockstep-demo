@@ -1,5 +1,83 @@
 {
   "assetMap": {
+    "bot": {
+      "key": "bot",
+      "bundleName": "animation",
+      "assetName": "assets/editor/artres/animation/bot.controller",
+      "assetType": "Object"
+    },
+    "role_controller": {
+      "key": "role_controller",
+      "bundleName": "animation",
+      "assetName": "assets/editor/artres/animation/role/role_controller.controller",
+      "assetType": "Object"
+    },
+    "msyh": {
+      "key": "msyh",
+      "bundleName": "fonts",
+      "assetName": "assets/editor/artres/fonts/msyh.ttc",
+      "assetType": "Object"
+    },
+    "itemconfigs": {
+      "key": "itemconfigs",
+      "bundleName": "gameconfig",
+      "assetName": "assets/editor/artres/gameconfig/itemconfigs.json",
+      "assetType": "Object"
+    },
+    "hotupdate.base.dll": {
+      "key": "hotupdate.base.dll",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.base.dll.bytes",
+      "assetType": "Object"
+    },
+    "hotupdate.common.dll": {
+      "key": "hotupdate.common.dll",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.common.dll.bytes",
+      "assetType": "Object"
+    },
+    "hotupdate.game.dll": {
+      "key": "hotupdate.game.dll",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.game.dll.bytes",
+      "assetType": "Object"
+    },
+    "hotupdate.ui.dll": {
+      "key": "hotupdate.ui.dll",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.ui.dll.bytes",
+      "assetType": "Object"
+    },
+    "hotupdate.update.dll": {
+      "key": "hotupdate.update.dll",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdate.update.dll.bytes",
+      "assetType": "Object"
+    },
+    "hotupdateassemblysettings": {
+      "key": "hotupdateassemblysettings",
+      "bundleName": "hotupdate",
+      "assetName": "assets/editor/artres/hotupdate/hotupdateassemblysettings.json",
+      "assetType": "Object"
+    },
+    "hotupdateentry": {
+      "key": "hotupdateentry",
+      "bundleName": "hotupdate_entry",
+      "assetName": "assets/editor/artres/hotupdate_entry/hotupdateentry.prefab",
+      "assetType": "Object"
+    },
+    "bot_mask": {
+      "key": "bot_mask",
+      "bundleName": "mask",
+      "assetName": "assets/editor/artres/mask/bot/bot_mask.mask",
+      "assetType": "Object"
+    },
+    "gray": {
+      "key": "gray",
+      "bundleName": "material",
+      "assetName": "assets/editor/artres/material/gray.mat",
+      "assetType": "Object"
+    },
     "uiroot": {
       "key": "uiroot",
       "bundleName": "ui",
@@ -28,6 +106,24 @@
       "key": "main_chat_panel",
       "bundleName": "ui",
       "assetName": "assets/editor/artres/ui/main/main_chat_panel.prefab",
+      "assetType": "Object"
+    },
+    "sphere": {
+      "key": "sphere",
+      "bundleName": "prefab",
+      "assetName": "assets/editor/artres/prefab/sphere.prefab",
+      "assetType": "Object"
+    },
+    "atlas_item": {
+      "key": "atlas_item",
+      "bundleName": "spriteatlas",
+      "assetName": "assets/editor/artres/spriteatlas/atlas_item.spriteatlasv2",
+      "assetType": "Object"
+    },
+    "common": {
+      "key": "common",
+      "bundleName": "spriteatlas",
+      "assetName": "assets/editor/artres/spriteatlas/common.spriteatlasv2",
       "assetType": "Object"
     },
     "friend_ui": {
@@ -90,34 +186,28 @@
       "assetName": "assets/editor/artres/tmpasset/msyh_sdf.asset",
       "assetType": "Object"
     },
-    "common": {
-      "key": "common",
-      "bundleName": "spriteatlas",
-      "assetName": "assets/editor/artres/spriteatlas/common.spriteatlasv2",
-      "assetType": "Object"
-    },
-    "atlas_item": {
-      "key": "atlas_item",
-      "bundleName": "spriteatlas",
-      "assetName": "assets/editor/artres/spriteatlas/atlas_item.spriteatlasv2",
-      "assetType": "Object"
-    },
-    "Test": {
-      "key": "Test",
+    "MainScene": {
+      "key": "MainScene",
       "bundleName": "scenes",
-      "assetName": "Assets/Editor/ArtRes/Scenes/Test.unity",
+      "assetName": "Assets/Editor/ArtRes/Scenes/MainScene.unity",
       "assetType": "Scene"
     },
-    "Main": {
-      "key": "Main",
+    "InventoryTestScene": {
+      "key": "InventoryTestScene",
       "bundleName": "scenes",
-      "assetName": "Assets/Editor/ArtRes/Scenes/Main.unity",
+      "assetName": "Assets/Editor/ArtRes/Scenes/InventoryTestScene.unity",
       "assetType": "Scene"
     },
-    "Game": {
-      "key": "Game",
+    "InventoryMainTestScene": {
+      "key": "InventoryMainTestScene",
       "bundleName": "scenes",
-      "assetName": "Assets/Editor/ArtRes/Scenes/Game.unity",
+      "assetName": "Assets/Editor/ArtRes/Scenes/InventoryMainTestScene.unity",
+      "assetType": "Scene"
+    },
+    "GameScene": {
+      "key": "GameScene",
+      "bundleName": "scenes",
+      "assetName": "Assets/Editor/ArtRes/Scenes/GameScene.unity",
       "assetType": "Scene"
     },
     "ABTestScene": {
@@ -125,96 +215,6 @@
       "bundleName": "scenes",
       "assetName": "Assets/Editor/ArtRes/Scenes/ABTestScene.unity",
       "assetType": "Scene"
-    },
-    "sphere": {
-      "key": "sphere",
-      "bundleName": "prefab",
-      "assetName": "assets/editor/artres/prefab/sphere.prefab",
-      "assetType": "Object"
-    },
-    "boss": {
-      "key": "boss",
-      "bundleName": "prefab",
-      "assetName": "assets/editor/artres/prefab/boss.prefab",
-      "assetType": "Object"
-    },
-    "gray": {
-      "key": "gray",
-      "bundleName": "material",
-      "assetName": "assets/editor/artres/material/gray.mat",
-      "assetType": "Object"
-    },
-    "bot_mask": {
-      "key": "bot_mask",
-      "bundleName": "mask",
-      "assetName": "assets/editor/artres/mask/bot/bot_mask.mask",
-      "assetType": "Object"
-    },
-    "hotupdateentry": {
-      "key": "hotupdateentry",
-      "bundleName": "hotupdate_entry",
-      "assetName": "assets/editor/artres/hotupdate_entry/hotupdateentry.prefab",
-      "assetType": "Object"
-    },
-    "hotupdateassemblysettings": {
-      "key": "hotupdateassemblysettings",
-      "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdateassemblysettings.json",
-      "assetType": "Object"
-    },
-    "hotupdate.update.dll": {
-      "key": "hotupdate.update.dll",
-      "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.update.dll.bytes",
-      "assetType": "Object"
-    },
-    "hotupdate.ui.dll": {
-      "key": "hotupdate.ui.dll",
-      "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.ui.dll.bytes",
-      "assetType": "Object"
-    },
-    "hotupdate.game.dll": {
-      "key": "hotupdate.game.dll",
-      "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.game.dll.bytes",
-      "assetType": "Object"
-    },
-    "hotupdate.common.dll": {
-      "key": "hotupdate.common.dll",
-      "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.common.dll.bytes",
-      "assetType": "Object"
-    },
-    "hotupdate.base.dll": {
-      "key": "hotupdate.base.dll",
-      "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.base.dll.bytes",
-      "assetType": "Object"
-    },
-    "itemconfigs": {
-      "key": "itemconfigs",
-      "bundleName": "gameconfig",
-      "assetName": "assets/editor/artres/gameconfig/itemconfigs.json",
-      "assetType": "Object"
-    },
-    "msyh": {
-      "key": "msyh",
-      "bundleName": "fonts",
-      "assetName": "assets/editor/artres/fonts/msyh.ttc",
-      "assetType": "Object"
-    },
-    "role_controller": {
-      "key": "role_controller",
-      "bundleName": "animation",
-      "assetName": "assets/editor/artres/animation/role/role_controller.controller",
-      "assetType": "Object"
-    },
-    "bot": {
-      "key": "bot",
-      "bundleName": "animation",
-      "assetName": "assets/editor/artres/animation/bot.controller",
-      "assetType": "Object"
     }
   },
   "abPackageCollection": {
@@ -235,8 +235,8 @@
       },
       "gameconfig": {
         "name": "gameconfig",
-        "size": 1571,
-        "hash": "d5996f099a876e414d786bdfbdfeb9ea0a901e31702c6f495b4ed8d3e4c3e895",
+        "size": 1547,
+        "hash": "e0ad8305b6cac2e27eb0776cf92bc6bc5753f82d1dd79076c1f1676acd912ca4",
         "dependencies": []
       },
       "hotupdate": {
@@ -265,39 +265,35 @@
       },
       "prefab": {
         "name": "prefab",
-        "size": 47470,
-        "hash": "830d22cab02c1a9ab57115a8ff86001b18df12a34ab268a00078bb95511ee8a2",
+        "size": 46790,
+        "hash": "f28cc4f04abe3fd906749052c81dd14d4626e49d973b75064d7d7e7c9c232f07",
         "dependencies": []
       },
       "scenes": {
         "name": "scenes",
-        "size": 11885211,
-        "hash": "68e80cc65600da59764291b68dee4f54bba9c75a15203dd8d40d425095d8a896",
+        "size": 26473073,
+        "hash": "8ff8a5d669c52f92f861b75ba180e3770e3f9f5405633bd6d54e362f2390cccc",
         "dependencies": [
-          "animation",
-          "mask",
-          "material"
+          "ui"
         ]
       },
       "spriteatlas": {
         "name": "spriteatlas",
-        "size": 3617423,
-        "hash": "801b1afa65be01071638712b4f60fa2249ccd8958f2e450706cbd4526b2dfb15",
+        "size": 1956,
+        "hash": "25cd8e594e2f790391490c45400409e52bb40ef869aafbf21b0fc268dcea2bda",
         "dependencies": []
       },
       "tmpasset": {
         "name": "tmpasset",
-        "size": 13664793,
-        "hash": "94b8469d85cb61213a5db452f00b182eb9cbfd0d64b893f34d4ffa16f83a127a",
+        "size": 13986809,
+        "hash": "17e9c8c7af9152ece6fe403738440ef3d3ca020bae80b7d1d965e1a6a2b68dee",
         "dependencies": []
       },
       "ui": {
         "name": "ui",
-        "size": 2140121,
-        "hash": "019c4b33cbbbb955534b9dc0f16f5cac6d814c6d8097ddeb6818b355ff16b65e",
-        "dependencies": [
-          "tmpasset"
-        ]
+        "size": 14511855,
+        "hash": "49933842f39a4679012079edaefb4e3973beda2fb5fe7637d533ef299630ba12",
+        "dependencies": []
       }
     }
   },
@@ -330,14 +326,14 @@
       "gray"
     ],
     "prefab": [
-      "boss",
       "sphere"
     ],
     "scenes": [
       "ABTestScene",
-      "Game",
-      "Main",
-      "Test"
+      "GameScene",
+      "InventoryMainTestScene",
+      "InventoryTestScene",
+      "MainScene"
     ],
     "spriteatlas": [
       "atlas_item",

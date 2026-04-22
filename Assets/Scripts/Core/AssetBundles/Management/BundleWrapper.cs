@@ -102,7 +102,7 @@ namespace Core.AssetBundles.Management
                 {
                     RefCount += 1;
                     IsActive = true;
-                    Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
+                    //Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
                     return;
                 }
         
@@ -121,7 +121,7 @@ namespace Core.AssetBundles.Management
                 _assetBundleCreateRequestTask = null;
                 RefCount += 1;
                 IsActive = true;
-                Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
+                //Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
             }
             catch (Exception e)
             {
@@ -171,7 +171,7 @@ namespace Core.AssetBundles.Management
                 _assetBundleManager.ReleaseDependencies(BundleName);
             }
             
-            Logger.Log($"[AssetBundle]:{BundleName} is released, and the reference count is updated to {RefCount}");
+            //Logger.Log($"[AssetBundle]:{BundleName} is released, and the reference count is updated to {RefCount}");
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Core.AssetBundles.Management
             // 卸载完成后置空
             AssetBundle = null;
             _assetBundleUnloadTask = null;
-            Logger.Log($"[AssetBundle]:{BundleName} is unload, and the final reference count is {RefCount}");
+            //Logger.Log($"[AssetBundle]:{BundleName} is unload, and the final reference count is {RefCount}");
         }
     }
 }

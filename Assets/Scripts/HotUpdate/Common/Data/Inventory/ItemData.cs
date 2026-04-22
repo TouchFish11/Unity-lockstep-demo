@@ -8,7 +8,7 @@ namespace HotUpdate.Common.Data.Inventory
     /// </summary>
     [Serializable]
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class ItemData
+    public class ItemData
     {
         // 物品ID
         [JsonProperty] public int itemId;

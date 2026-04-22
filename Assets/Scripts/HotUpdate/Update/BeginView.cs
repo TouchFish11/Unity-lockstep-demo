@@ -14,8 +14,7 @@ namespace HotUpdate.Update
     /// </summary>
     public class BeginView : UIView
     {
-        [Inject] private IMonoAdapter _monoAdapter;
-        
+        private IMonoAdapter _monoAdapter;
         [InjectUI] public Image imgLoading;
         [InjectUI] public TextMeshProUGUI txtPhase;
         [InjectUI] public TextMeshProUGUI txtProgress;
@@ -32,6 +31,7 @@ namespace HotUpdate.Update
         protected override void Awake()
         {
             base.Awake();
+            _monoAdapter = DIContainer.Create<MonoAdapter>();
             SetUpdateAreaActive(false);
             SetEnterAreaActive(false);
             SetStopButtonActive(false);

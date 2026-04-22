@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -42,6 +43,11 @@ namespace Core.UI
         /// 输入值变化事件
         /// </summary>
         public event UnityAction<string, string> OnInputFieldValueChanged;
+        
+        /// <summary>
+        /// 滚动列表滚动事件
+        /// </summary>
+        public event UnityAction<string, Vector2> OnScrollRectValueChanged; 
 
         public UIComponentBinder(UIBehaviour uIBehaviour)
         {
@@ -146,13 +152,16 @@ namespace Core.UI
                         button.onClick.AddListener(() => { OnButtonClick?.Invoke(controlName); });
                         break;
                     case Slider slider:
-                        slider.onValueChanged.AddListener((value) => { OnSliderValueChanged?.Invoke(controlName, value); });
+                        slider.onValueChanged.AddListener(value => { OnSliderValueChanged?.Invoke(controlName, value); });
                         break;
                     case Toggle toggle:
-                        toggle.onValueChanged.AddListener((isOn) => { OnToggleValueChanged?.Invoke(controlName, isOn); });
+                        toggle.onValueChanged.AddListener(isOn => { OnToggleValueChanged?.Invoke(controlName, isOn); });
                         break;
                     case InputField inputField:
-                        inputField.onValueChanged.AddListener((inputValue) => { OnInputFieldValueChanged?.Invoke(controlName, inputValue); });
+                        inputField.onValueChanged.AddListener(inputValue => { OnInputFieldValueChanged?.Invoke(controlName, inputValue); });
+                        break;
+                    case ScrollRect scrollRect:
+                        scrollRect.onValueChanged.AddListener(posValues => OnScrollRectValueChanged?.Invoke(controlName, posValues));
                         break;
                 }
             }

@@ -4,6 +4,7 @@ using Core.UI;
 using HotUpdate.Common.Config.Item;
 using UnityEngine;
 using UnityEngine.UI;
+using Logger = Core.Log.Logger;
 
 namespace HotUpdate.Game.Inventory.UI
 {
@@ -22,7 +23,8 @@ namespace HotUpdate.Game.Inventory.UI
         public void InitOption(EItemType itemType, Sprite icon, ToggleGroup group)
         {
             ItemType = itemType;
-            imgIcon.sprite = icon;
+            if(icon)
+                imgIcon.sprite = icon;
             togOpt.group = group;
         }
 
@@ -31,12 +33,24 @@ namespace HotUpdate.Game.Inventory.UI
             togOpt.isOn = true;
         }
 
-        protected override void OnToggleValueChanged(string togName, bool isOn)
+        protected override async void OnToggleValueChanged(string togName, bool isOn)
         {
-            if (togName == nameof(togOpt) && isOn)
+            try
             {
-                OnItemTypeOptChange?.Invoke(ItemType);
+                if (togName == nameof(togOpt) && isOn)
+                {
+                    await OnItemTypeOptChange?.Invoke(ItemType);
+                }
             }
+            catch (Exception e)
+            {
+                Logger.LogError($"{nameof(ItemTypeOpt)}: {e.Message}");
+            }
+        }
+
+        protected override void OnDisable()
+        {
+            OnItemTypeOptChange = null;
         }
     }
 }

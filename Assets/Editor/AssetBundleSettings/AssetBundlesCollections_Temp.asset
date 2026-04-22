@@ -32,9 +32,9 @@ MonoBehaviour:
   - assetBundleName: gameconfig
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\GameConfig\ItemConfigs.json
-      size: 1413
+      size: 1245
       name: ItemConfigs.json
-      hash: 9bf18fb4fbff98fa77442a9a521b82ba179c0b8bcb43d55110877a0073cd689e
+      hash: 5dd43223b34c00fea4a4cc1d7bc75a8fa7996ca49a387316609af5263e8cafd6
   - assetBundleName: hotupdate
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Base.dll.bytes
@@ -81,10 +81,6 @@ MonoBehaviour:
       hash: 639d9c2a8faf4713d90c3793700b7b3c2e4cdbf72e4093e629ac3f557a559b62
   - assetBundleName: prefab
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\Prefab\Boss.prefab
-      size: 3434
-      name: Boss.prefab
-      hash: 3bbca901da744028b968486d588eb09dfb944f60bf7b2070a3c5d12719a36a20
     - assetPath: Assets\Editor\ArtRes\Prefab\Sphere.prefab
       size: 3425
       name: Sphere.prefab
@@ -92,37 +88,41 @@ MonoBehaviour:
   - assetBundleName: scenes
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Scenes\ABTestScene.unity
-      size: 12359
+      size: 9401
       name: ABTestScene.unity
-      hash: e6ac04132542c21d4e987badc94ae9988e65c654e22c1620dfacd6d497c12c08
-    - assetPath: Assets\Editor\ArtRes\Scenes\Game.unity
+      hash: db67fc3052b8f67e95b348ec75c243384e5aecbc6b8cd071c632319ef0a82df7
+    - assetPath: Assets\Editor\ArtRes\Scenes\GameScene.unity
       size: 131567
-      name: Game.unity
+      name: GameScene.unity
       hash: 39e2e7c79f0e333d3795ae1a1c93154d80bde4f3ef46a93f8ec479f1576474b8
-    - assetPath: Assets\Editor\ArtRes\Scenes\Main.unity
+    - assetPath: Assets\Editor\ArtRes\Scenes\InventoryMainTestScene.unity
+      size: 43834
+      name: InventoryMainTestScene.unity
+      hash: 5d5692de938bd9dbda530064da24476b20d884eee2a04b233a3f90bf8fe4e8fb
+    - assetPath: Assets\Editor\ArtRes\Scenes\InventoryTestScene.unity
+      size: 8115
+      name: InventoryTestScene.unity
+      hash: 5aa6703c6bab78baef861f40cb5bc1df8f94c8cee1fb8b5f93fedaeb6244f774
+    - assetPath: Assets\Editor\ArtRes\Scenes\MainScene.unity
       size: 13745
-      name: Main.unity
+      name: MainScene.unity
       hash: 8eee0432e96aaa894b810adc9c1bf40bb90280055bf61f1595cb69916dae7b07
-    - assetPath: Assets\Editor\ArtRes\Scenes\Test.unity
-      size: 11214
-      name: Test.unity
-      hash: 2fe55373828f0a601569a5006e02cd4b21a771b980771f19aa4da9fb3ef2d04a
   - assetBundleName: spriteatlas
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\SpriteAtlas\Atlas_Item.spriteatlasv2
-      size: 394
+      size: 322
       name: Atlas_Item.spriteatlasv2
-      hash: 2983f1b0c8203a1878abd8ef35dc3704d3baae0a01cdb841ebb556a82cc6277e
+      hash: 61b51b4a909fbd80757f1c3e9f18eed34c5a528f80067613e7d1029214580944
     - assetPath: Assets\Editor\ArtRes\SpriteAtlas\Common.spriteatlasv2
-      size: 540
+      size: 322
       name: Common.spriteatlasv2
-      hash: ea3bb039ac4c70f55f60a21fc78e2c6be054fbb1a678e6979a524d4050ebde51
+      hash: 61b51b4a909fbd80757f1c3e9f18eed34c5a528f80067613e7d1029214580944
   - assetBundleName: tmpasset
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH_SDF.asset
-      size: 7555
+      size: 2153231
       name: MSYH_SDF.asset
-      hash: 2c12159e646b7163a24068793b13a84745ed40567758f0a31e27411e0462b18a
+      hash: 68aabeb9ba6218ba4eb0fd475fd9bae411ab0f5d1f29755f1a6d534eb1b4cd74
   - assetBundleName: ui
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\UI\UIRoot.prefab
@@ -134,17 +134,17 @@ MonoBehaviour:
       name: Battle_Panel.prefab
       hash: 71a5fa219d39bed6185e714317014be094045b49ba510037e147d7e1fa9a3083
     - assetPath: Assets\Editor\ArtRes\UI\Begin\BeginView.prefab
-      size: 45139
+      size: 45141
       name: BeginView.prefab
-      hash: 2cca97c5d221aecbd9d161ad7487569656a77967d7ed183f9aaae22c96d50d0d
+      hash: 8c6d374278397a3786e916d560caeb8dc7aea4003b7e320d2c79c2281a490676
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\InventoryPanel.prefab
-      size: 40879
+      size: 39776
       name: InventoryPanel.prefab
-      hash: c603a7fcf0f4b6574e9507034354700bd5c44c254400b8e2b3e91913e5e4709b
+      hash: b7592e7c5efc0269e1df98654d4df092c922eead7d2c9fa1a2682a7386d9aded
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemCell.prefab
-      size: 15683
+      size: 15689
       name: ItemCell.prefab
-      hash: bc6b58eb5f6a06523f9546ebd2818c34e26750aacf4d3a6837b3efafdc394783
+      hash: 61a3d41a172d8937703e6efb19a823499d5537466d4c59c0fbd7606bfe4e89f0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemDetailPanelBase.prefab
       size: 3225
       name: ItemDetailPanelBase.prefab
@@ -152,7 +152,7 @@ MonoBehaviour:
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemTypeOpt.prefab
       size: 6912
       name: ItemTypeOpt.prefab
-      hash: 71569ddd26afe04cd62600816a9ad3f111e927e4ece422b954b86b13e0ecc2e0
+      hash: 2a71a91e5dcbaae2900bf1b1590b89373722a031bdd6d8d3ba2ad370a66a7d33
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\DetailPanel\MaterialDetailPanel.prefab
       size: 13500
       name: MaterialDetailPanel.prefab
@@ -162,9 +162,9 @@ MonoBehaviour:
       name: Main_Chat_Panel.prefab
       hash: 145cf605995d9fd7f80d56616675f97278ddc834ffddc3456c105d79fa5b62dc
     - assetPath: Assets\Editor\ArtRes\UI\Main\Main_Panel.prefab
-      size: 10344
+      size: 18365
       name: Main_Panel.prefab
-      hash: 22ee06dde0d5ec90676cf55f29af76df137f8f28ca708a8bd7834edf98df46df
+      hash: a24b8c37feaa0f9598dd73f0b9d782c969a81329c02f17c1d5a01d86e39f8ab4
     - assetPath: Assets\Editor\ArtRes\UI\Main\Chat\Chat_UI.prefab
       size: 7662
       name: Chat_UI.prefab
@@ -178,6 +178,6 @@ MonoBehaviour:
       name: BaseTipView.prefab
       hash: 855af5c5730e673805df9abbd997cb21fae2cb8aa41972579c171b5ae6a3243d
     - assetPath: Assets\Editor\ArtRes\UI\Tip\UpdateTipView.prefab
-      size: 24293
+      size: 24432
       name: UpdateTipView.prefab
-      hash: a2dc286b96d599aaee1b23b57cedf0e714ee0a31b95dce928a794f290c4acda0
+      hash: 49d34912f93f7164a8c0a6d4bd86cc2d4e9a0db63c590864f8aa985914cf28e9

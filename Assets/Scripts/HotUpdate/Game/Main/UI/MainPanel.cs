@@ -7,5 +7,6 @@ namespace HotUpdate.Game.Main.UI
     public class MainPanel : UIView
     {
         [InjectUI] public Button btnInventory;
+        [InjectUI] public Button btnAddItem;
     }
 }

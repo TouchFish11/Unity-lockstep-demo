@@ -95,7 +95,9 @@ namespace Core.DI
                     else
                     {
                         // 先尝试从具体类型缓存中获取已存在的单例实例
-                        return _instanceMap.GetValueOrDefault(implType);
+                        var cacheInstance = _instanceMap.GetValueOrDefault(implType);
+                        if(cacheInstance != null)
+                            return _instanceMap.GetValueOrDefault(implType);
                     }
                 }
                 else
@@ -119,6 +121,7 @@ namespace Core.DI
         /// <summary>
         /// 通过反射创建实例。先尝试构造函数注入（选择参数都能解析的构造函数），再对标记了[Inject]的字段/属性进行补充注入
         /// 若类型已经通过BindSingleton绑定，则忽略参数isSingleton
+        /// 若类型已存在单例实例，则返回，否则创建
         /// </summary>
         /// <param name="isSingleton">是否是单例，true创建为单例，false则是瞬态对象</param>
         /// <param name="parameterValues">构造参数值，需按参数顺序匹配，否则无法赋值</param>
@@ -143,9 +146,6 @@ namespace Core.DI
             var newInstance = CreateInstanceWithConstructorInjection(typeof(T), parameters);
             // 注入字段/属性
             InjectIntoInstance(newInstance);
-            
-            Debug.Log($"创建类型：{typeof(T)}");
-
             // 先检查是否是绑定单例的具体类型，是的话就忽略isSingleton参数
             var isBindSingleton = _lifetimes.TryGetValue(typeof(T), out var lifetime) && lifetime;
             if (isBindSingleton)
@@ -187,9 +187,6 @@ namespace Core.DI
             var newInstance = CreateInstanceWithConstructorInjection(instanceType, constructorArgs);
             // 注入字段/属性
             InjectIntoInstance(newInstance);
-            
-            Debug.Log($"创建类型：{instanceType}");
-            
             // 不是单例直接返回
             if (!isSingleton) return newInstance;
             return _instanceMap.TryAdd(instanceType, newInstance) && (interfaceType == null || _interfaceMap.TryAdd(interfaceType, newInstance)) 
@@ -231,7 +228,6 @@ namespace Core.DI
                 Object.DontDestroyOnLoad(go);
             var component = go.AddComponent(instanceType);
             InjectIntoInstance(component); // 添加注入
-            Debug.Log($"创建类型：{instanceType}");
             if (isSingleton)
             {
                 _instanceMap.TryAdd(instanceType, component);

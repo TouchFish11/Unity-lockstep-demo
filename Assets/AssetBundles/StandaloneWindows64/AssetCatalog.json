@@ -1,22 +1,34 @@
 {
   "assetMap": {
-    "boss": {
-      "key": "boss",
-      "bundleName": "prefab",
-      "assetName": "assets/editor/artres/prefab/boss.prefab",
-      "assetType": "Object"
+    "ABTestScene": {
+      "key": "ABTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets/Editor/ArtRes/Scenes/ABTestScene.unity",
+      "assetType": "Scene"
     },
-    "sphere": {
-      "key": "sphere",
-      "bundleName": "prefab",
-      "assetName": "assets/editor/artres/prefab/sphere.prefab",
-      "assetType": "Object"
+    "GameScene": {
+      "key": "GameScene",
+      "bundleName": "scenes",
+      "assetName": "Assets/Editor/ArtRes/Scenes/GameScene.unity",
+      "assetType": "Scene"
     },
-    "msyh_sdf": {
-      "key": "msyh_sdf",
-      "bundleName": "tmpasset",
-      "assetName": "assets/editor/artres/tmpasset/msyh_sdf.asset",
-      "assetType": "Object"
+    "InventoryMainTestScene": {
+      "key": "InventoryMainTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets/Editor/ArtRes/Scenes/InventoryMainTestScene.unity",
+      "assetType": "Scene"
+    },
+    "InventoryTestScene": {
+      "key": "InventoryTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets/Editor/ArtRes/Scenes/InventoryTestScene.unity",
+      "assetType": "Scene"
+    },
+    "MainScene": {
+      "key": "MainScene",
+      "bundleName": "scenes",
+      "assetName": "Assets/Editor/ArtRes/Scenes/MainScene.unity",
+      "assetType": "Scene"
     },
     "battle_panel": {
       "key": "battle_panel",
@@ -105,35 +117,29 @@
   },
   "abPackageCollection": {
     "keyToValueMap": {
-      "prefab": {
-        "name": "prefab",
-        "size": 47470,
-        "hash": "830d22cab02c1a9ab57115a8ff86001b18df12a34ab268a00078bb95511ee8a2",
-        "dependencies": []
-      },
-      "tmpasset": {
-        "name": "tmpasset",
-        "size": 13664793,
-        "hash": "94b8469d85cb61213a5db452f00b182eb9cbfd0d64b893f34d4ffa16f83a127a",
-        "dependencies": []
+      "scenes": {
+        "name": "scenes",
+        "size": 26473073,
+        "hash": "8ff8a5d669c52f92f861b75ba180e3770e3f9f5405633bd6d54e362f2390cccc",
+        "dependencies": [
+          "ui"
+        ]
       },
       "ui": {
         "name": "ui",
-        "size": 2140121,
-        "hash": "019c4b33cbbbb955534b9dc0f16f5cac6d814c6d8097ddeb6818b355ff16b65e",
-        "dependencies": [
-          "tmpasset"
-        ]
+        "size": 14511855,
+        "hash": "49933842f39a4679012079edaefb4e3973beda2fb5fe7637d533ef299630ba12",
+        "dependencies": []
       }
     }
   },
   "bundleToAssetKeys": {
-    "prefab": [
-      "boss",
-      "sphere"
-    ],
-    "tmpasset": [
-      "msyh_sdf"
+    "scenes": [
+      "ABTestScene",
+      "GameScene",
+      "InventoryMainTestScene",
+      "InventoryTestScene",
+      "MainScene"
     ],
     "ui": [
       "battle_panel",

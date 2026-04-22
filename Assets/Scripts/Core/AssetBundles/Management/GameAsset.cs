@@ -29,6 +29,11 @@ namespace Core.AssetBundles.Management
         {
             _assetBundleManager = assetBundleManager;
         }
+
+        public static AssetHandle<T> LoadAsset<T>(string key) where T : class
+        {
+            return default;
+        }
         
         public static async Task<AssetHandle<T>> LoadAssetAsync<T>(string key) where T : class
         {
@@ -59,7 +64,7 @@ namespace Core.AssetBundles.Management
             // 避免逻辑上重复添加
             if (_keyToHandleMap.TryGetValue(key, out var assetHandle))
             {
-                if (!_assetIdToLocationsMap.TryGetValue(handle.HandleId, out var loc))
+                if (!_assetIdToLocationsMap.TryGetValue(assetHandle.HandleId, out var loc))
                     throw new System.Exception($"{nameof(GameAsset)}:Resource management logic error");
                 
                 ++loc.RefCount;

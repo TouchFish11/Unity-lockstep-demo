@@ -40,7 +40,7 @@ namespace Core.Utility
         {
             if (task == null)
             {
-                throw  new ArgumentNullException(nameof(task));
+                throw new ArgumentNullException(nameof(task));
             }
             
             while (!task.IsCompleted)

@@ -6,6 +6,7 @@ using Core.DI;
 using Core.UI.MVC;
 using UnityEngine;
 using Logger = Core.Log.Logger;
+using Object = UnityEngine.Object;
 
 namespace Core.UI
 {
@@ -41,14 +42,16 @@ namespace Core.UI
             // 获取画布实例
             var poolObject = await _objectSpawner.SpawnAsync<GameObject>(uiRoot);
             // 获取画布、UI摄像机实例
-            Canvas = poolObject.Obj.GetComponentInParent<Canvas>();
-            UICamera = poolObject.Obj.GetComponentInParent<Camera>();
+            Canvas = poolObject.Obj.GetComponentInChildren<Canvas>();
+            UICamera = poolObject.Obj.GetComponentInChildren<Camera>();
             
             // 获取对应层级对象位置
             _topLayer = Canvas.transform.Find("Top");
             _midLayer = Canvas.transform.Find("Mid");
             _botLayer = Canvas.transform.Find("Bot");   
             _systemLayer = Canvas.transform.Find("System");
+            
+            Object.DontDestroyOnLoad(poolObject.Obj);
             
             // 缓存对象
             _uiRoot = poolObject;
@@ -100,7 +103,7 @@ namespace Core.UI
                 // 调用控制器的销毁
                 await panelInfo.Controller.Destroy();
                 // 回收界面
-                panelInfo.PoolObject.Collect();
+                panelInfo.PoolObject.Collect(true);
                 // 从缓存中移除
                 _panels.Remove(panelId);
             }
@@ -137,7 +140,7 @@ namespace Core.UI
         public Task Clear()
         {
             // 回收画布和摄像机
-            _uiRoot.Collect();
+            _uiRoot.Collect(true);
             Canvas = null;
             UICamera = null;
             
@@ -148,6 +151,7 @@ namespace Core.UI
             
             // 清空缓存
             _panels.Clear();
+            _objectSpawner.ClearCache();
             return Task.WhenAll(list);
         }
 
