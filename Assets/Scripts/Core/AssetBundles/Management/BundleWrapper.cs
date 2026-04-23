@@ -125,9 +125,44 @@ namespace Core.AssetBundles.Management
             }
             catch (Exception e)
             {
-                Logger.LogError($"[AssetBundle]:{BundleName} Load fail,{e.Message}");
+                Logger.LogError($"[AssetBundle]:{BundleName} Load fail, {e.Message}");
                 _assetBundleCreateRequestTask = null;
             }
+        }
+        
+        /// <summary>
+        /// 从文件加载AssetBundle
+        /// </summary>
+        /// <returns></returns>
+        public void LoadFromFile()
+        {
+            try
+            {
+                // 已加载完成，直接返回，避免重复加载
+                if (AssetBundle)
+                {
+                    RefCount += 1;
+                    IsActive = true;
+                    //Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
+                    return;
+                }
+                
+                // 异步加载AB包
+                AssetBundle = AssetBundle.LoadFromFile(LoadPath);
+                RefCount += 1;
+                IsActive = true;
+                //Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"[AssetBundle]:{BundleName} Load fail, {e.Message}");
+            }
+        }
+
+        public AssetWrapper LoadAsset<T>(string assetName) where T : Object
+        {
+            var asset = AssetBundle.LoadAsset<T>(assetName);
+            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, this });
         }
         
         public async Task<AssetWrapper> LoadAssetAsync<T>(string assetName, CancellationToken token = default) where T : class

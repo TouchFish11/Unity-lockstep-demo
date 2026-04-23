@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Core.AssetBundles.Management;
 using Core.Utility;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.U2D;
 
 namespace Editor.AssetBundle.Core
 {
@@ -76,11 +78,27 @@ namespace Editor.AssetBundle.Core
                     var dataPath = fileInfo.FullName.Substring(fileInfo.FullName.IndexOf("Assets", StringComparison.Ordinal));
                     Progress($"Collecting Path：{dataPath}", (float)index++ / (total - 1));
 
+                    EAssetType assetType;
+                    var type = AssetDatabase.GetMainAssetTypeAtPath(dataPath);
+                    if (type == typeof(SpriteAtlas))
+                    {
+                        assetType = EAssetType.SpiteAtlas;
+                    }
+                    else if (type == typeof(SceneAsset))
+                    {
+                        assetType = EAssetType.Scene;
+                    }
+                    else
+                    {
+                        assetType = EAssetType.Object;
+                    }
+                    
                     var assetInfo = new AssetBundlesCollections.AssetInfo(
                         dataPath,
                         fileInfo.Length,
                         fileInfo.Name,
-                        HashUtility.GenerateFileSHA256Hash(fileInfo.FullName)
+                        HashUtility.GenerateFileSHA256Hash(fileInfo.FullName),
+                        assetType
                     );
                     collection.Add(abName.ToLower(), assetInfo);
                 }

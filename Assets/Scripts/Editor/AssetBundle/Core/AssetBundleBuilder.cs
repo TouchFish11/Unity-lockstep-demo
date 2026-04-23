@@ -8,7 +8,9 @@ using Core.DI;
 using Core.Serialize.Json;
 using Core.Utility;
 using UnityEditor;
+using UnityEditor.U2D;
 using UnityEngine;
+using UnityEngine.U2D;
 
 namespace Editor.AssetBundle.Core
 {
@@ -88,7 +90,7 @@ namespace Editor.AssetBundle.Core
             AssetDatabase.Refresh();
             Log("--- Build End ---\n");
 
-            var catalog = GenerateAssetCatalog(outputPath, target);
+            var catalog = GenerateAssetCatalog(outputPath, target, releaseCollection);
             return catalog != null;
         }
 
@@ -332,9 +334,16 @@ namespace Editor.AssetBundle.Core
         /// <summary>
         /// 生成资源目录文件（包含包信息和资源映射）
         /// </summary>
-        private AssetCatalog GenerateAssetCatalog(string outputPath, BuildTarget target)
+        private AssetCatalog GenerateAssetCatalog(string outputPath, BuildTarget target, AssetBundlesCollections releaseCollection)
         {
+            if (!releaseCollection)
+            {
+                Log("发布配置为空，无法生成资源目录。");
+                return null;
+            }
+            
             var platformBundleName = AssetBundleUtility.GetPlatformBundleName(target);
+            // 先获取主包 manifest，用于提取每个包的依赖信息（依赖信息仍需从 manifest 获取）
             var catalogPath = Path.Combine(outputPath, platformBundleName);
             if (!File.Exists(catalogPath))
             {
@@ -352,6 +361,7 @@ namespace Editor.AssetBundle.Core
                     Log("无法加载主 AssetBundleManifest");
                     return null;
                 }
+                
                 var manifest = mainBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
                 if (!manifest)
                 {
@@ -359,56 +369,123 @@ namespace Editor.AssetBundle.Core
                     return null;
                 }
 
-                var allBundleNames = manifest.GetAllAssetBundles();
-                var index = 0;
-                foreach (var bundleName in allBundleNames)
+                // 遍历发布配置中的所有包
+                foreach (var abInfo in releaseCollection.assetBundleInfos)
                 {
-                    Progress($"Generating combined manifest: {bundleName}", (float)index++ / allBundleNames.Length);
-
-                    // 对应的物理文件（已重命名为 .assetBundle）
+                    var bundleName = abInfo.assetBundleName; // 不带后缀
                     var fileName = $"{bundleName}{FileUtility.AbSuffix}";
                     var filePath = Path.Combine(outputPath, fileName);
+
                     if (!File.Exists(filePath))
                     {
-                        Log($"警告：AB包文件不存在 {filePath}");
+                        Log($"AB包文件不在当前构建中 {filePath}，跳过该包的资源映射。");
                         continue;
                     }
 
-                    // 添加包信息
-                    var deps = manifest.GetAllDependencies(bundleName);
+                    // 获取依赖信息（从 manifest）
+                    var deps = manifest.GetAllDependencies(bundleName) ?? Array.Empty<string>();
                     var fileInfo = new FileInfo(filePath);
                     var hash = HashUtility.GenerateFileSHA256Hash(filePath);
                     var pkgInfo = new ABPackageInfo(bundleName, fileInfo.Length, hash, deps);
                     catalog.ABPackageCollection.TryAdd(bundleName, pkgInfo);
 
                     // 加载该包的 manifest 以获取内部资源列表
-                    var bundleManifestPath = Path.Combine(outputPath, fileName);
-                    var assetBundle = UnityEngine.AssetBundle.LoadFromFile(bundleManifestPath);
-                    var assetType = assetBundle.isStreamedSceneAssetBundle ? EAssetType.Scene : EAssetType.Object;
-                    if (assetBundle)
+                    var assetBundle = UnityEngine.AssetBundle.LoadFromFile(filePath);
+                    // 判断资源类型
+                    EAssetType assetType;
+                    var type = AssetDatabase.GetMainAssetTypeAtPath(filePath.Substring(filePath.IndexOf("Assets")));
+                    if (type == typeof(SpriteAtlas))
                     {
-                        var assetPaths = assetType == EAssetType.Object ? assetBundle.GetAllAssetNames() : assetBundle.GetAllScenePaths();
-                        foreach (var assetPath in assetPaths)
-                        {
-                            // 决定 key：使用文件名（不含扩展名），若担心重名可改用完整路径
-                            var key = Path.GetFileNameWithoutExtension(assetPath);
-                            // 如果 key 已存在，使用完整路径作为备用
-                            if (catalog.ContainsKey(key))
-                            {
-                                var path = assetPath.ToLowerInvariant();
-                                Log($"资源名称重复：{key}，已使用路径替代：{path}，请调整命名");
-                                key = path;
-                            }
-                            var entry = new AssetEntry(key, bundleName, assetPath, assetType);
-                            catalog.AddOrUpdateEntry(key, entry);
-                            Log($"资源名：{assetPath}");
-                        }
-                        assetBundle.Unload(false);
+                        assetType = EAssetType.SpiteAtlas;
                     }
-                }
+                    else if (type == typeof(SceneAsset))
+                    {
+                        assetType = EAssetType.Scene;
+                    }
+                    else
+                    {
+                        assetType = EAssetType.Object;
+                    }
 
+                    Log($"资源类型：{type.Name}");
+                    // 遍历该包下的所有资源（直接来自发布配置）
+                    foreach (var assetInfo in abInfo.assetInfos)
+                    {
+                        // 使用资源在项目中的原始文件名（保留大小写）
+                        var key = Path.GetFileNameWithoutExtension(assetInfo.name);
+                        // 重名处理：如果 key 已存在，使用完整路径作为备用
+                        if (catalog.ContainsKey(key))
+                        {
+                            var fallbackKey = assetInfo.assetPath.ToLowerInvariant();
+                            Log($"资源名称重复：{key}，已使用路径替代：{fallbackKey}，请调整命名");
+                            key = fallbackKey;
+                        }
+                        
+                        var entry = new AssetEntry(key, bundleName, assetInfo.assetPath, assetType);
+                        catalog.AddOrUpdateEntry(key, entry);
+                        
+                        // 若是图集，将其子图片也要添加进资源目录，因为收集资源信息不会收集图片
+                        if (assetInfo.assetType == EAssetType.SpiteAtlas)
+                        { 
+                           // 根据图集路径加载图集
+                           var atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(assetInfo.assetPath);
+                           // 获取图集的所有打包对象
+                           var packables = atlas.GetPackables();
+                           foreach (var packable in packables)
+                           {
+                               var path = AssetDatabase.GetAssetPath(packable);
+                               // packable 本身就是 Sprite / Texture2D 等资产
+                               Log($"packable path: {path}");
+                               // 如果它就是 图片相关，直接记录即可
+                               if (packable is Sprite || packable is Texture2D)
+                               {
+                                   catalog.AddOrUpdateEntry(packable.name,
+                                       new SpriteAssetEntry(packable.name, bundleName, path, EAssetType.Texture, assetInfo.assetPath));
+                                   continue;
+                               }
+                               
+                               // 如果是文件夹类 packable，就枚举这个文件夹下的 图片
+                               if (packable is DefaultAsset folderAsset)
+                               {
+                                   var folderPath = AssetDatabase.GetAssetPath(folderAsset);
+                                   var guids = AssetDatabase.FindAssets("t:Object", new[] { folderPath });
+                                   foreach (var guid in guids)
+                                   {
+                                       var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                                       var importerType = AssetDatabase.GetImporterType(assetPath);
+                                       if (importerType == typeof(TextureImporter))
+                                       {
+                                           var importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+                                           if (importer && importer.textureType == TextureImporterType.Sprite)
+                                           {
+                                               // 这是 Sprite 图
+                                               var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
+                                               catalog.AddOrUpdateEntry(sprite.name,
+                                                   new SpriteAssetEntry(sprite.name, bundleName, assetPath, EAssetType.Texture, assetInfo.assetPath));
+                                           }
+                                           else
+                                           {
+                                               // 这是普通 Texture2D / 其他纹理，不当 Sprite 处理
+                                               var texture2D = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+                                               catalog.AddOrUpdateEntry(texture2D.name,
+                                                   new SpriteAssetEntry(texture2D.name, bundleName, assetPath, EAssetType.Texture, assetInfo.assetPath));
+                                           }
+                                       }
+                                   }
+                               }
+                           }
+                        }
+                    }
+                    // 卸载该包
+                    assetBundle.Unload(false);
+                }
+                
+                // 清理主包
+                if (mainBundle)
+                    mainBundle.Unload(false);
+                
                 // 保存 JSON
-                var json = jsonManager.ToJson(catalog);
+                var json = jsonManager.ToJson(catalog, settings: NewtonsoftJsonUtility.SerializerSettings);
                 var savePath = Path.Combine(outputPath, AssetCatalogName);
                 File.WriteAllText(savePath, json);
                 Log($"资源目录已生成：{savePath}\n");

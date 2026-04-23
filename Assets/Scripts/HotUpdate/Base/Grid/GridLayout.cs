@@ -20,6 +20,8 @@ namespace HotUpdate.Base.Grid
         internal float _gridXSpace;
         // 格子之间的垂直间距
         internal float _gridYSpace;
+        // 格子总数
+        internal int dataCount;
         
         /// <summary>
         /// 计算格子索引起始索引和结束索引
@@ -38,6 +40,9 @@ namespace HotUpdate.Base.Grid
         /// 计算内容区域大小
         /// </summary>
         /// <param name="dataCount"></param>
-        public abstract void CalcContentSize(int dataCount);
+        public virtual void CalcContentSize(int dataCount)
+        {
+            this.dataCount = dataCount;
+        }
     }
 }

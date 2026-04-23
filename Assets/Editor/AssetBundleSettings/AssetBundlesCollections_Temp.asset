@@ -19,165 +19,201 @@ MonoBehaviour:
       size: 12460
       name: Bot.controller
       hash: cb243ea874261dc3b0a24f5aee09953d076dcdcd7189cb69f3428477b95c0927
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\Animation\Role\Role_Controller.controller
       size: 6869
       name: Role_Controller.controller
       hash: 9f5a747a5f10e8b483097fbb3ad7f4ebcbf6a2df2c060c797b35509b00a8c77f
+      assetType: 0
   - assetBundleName: fonts
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Fonts\MSYH.TTC
       size: 19704352
       name: MSYH.TTC
       hash: d79c55e68b1131eea0cc1c47be4f572d964f28c682e143db2ad09c1e4cb07a3f
+      assetType: 0
   - assetBundleName: gameconfig
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\GameConfig\ItemConfigs.json
       size: 1245
       name: ItemConfigs.json
       hash: 5dd43223b34c00fea4a4cc1d7bc75a8fa7996ca49a387316609af5263e8cafd6
+      assetType: 0
   - assetBundleName: hotupdate
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Base.dll.bytes
       size: 5120
       name: HotUpdate.Base.dll.bytes
       hash: 95db86ff5ff04250c436034e7f77725a4dbb889ed6c68dbb810f046dbfc7c5d7
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Common.dll.bytes
       size: 10240
       name: HotUpdate.Common.dll.bytes
       hash: 07b8f72c778cf66e9a0f687ce7434990e4f0d0b4c5f2a034d6b4fdf7e61a69d2
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Game.dll.bytes
       size: 25600
       name: HotUpdate.Game.dll.bytes
       hash: a0e956a751cf2c5fd914569f0f811e32f35f5f836d9068aba7e50910e0dc1995
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.UI.dll.bytes
       size: 7168
       name: HotUpdate.UI.dll.bytes
       hash: 256a2cf43dabb6284c24e05398ab17d910a64557edfa4839b9520a119b0d87f4
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Update.dll.bytes
       size: 19456
       name: HotUpdate.Update.dll.bytes
       hash: fc9b9c08e31a3d9f8752155f5794d1ab6d6ab722ea3c1b6b269cdd0e11ca72e7
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdateAssemblySettings.json
       size: 445
       name: HotUpdateAssemblySettings.json
       hash: b8a822740630f285e2badf4626d47bec236ec5fd1157158e866af9e7695f823e
+      assetType: 0
   - assetBundleName: hotupdate_entry
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\HotUpdate_Entry\HotUpdateEntry.prefab
       size: 1333
       name: HotUpdateEntry.prefab
       hash: 999d6b9975ddb4944d96f429e09555e6e73576e246126189ca1de6abe3b6a978
+      assetType: 0
   - assetBundleName: mask
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Mask\Bot\Bot_Mask.mask
       size: 352
       name: Bot_Mask.mask
       hash: d356e18a973e0a6026f23b7e0a6d37f7834ef0bdc39c475dc534862eaa284fbe
+      assetType: 0
   - assetBundleName: material
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Material\Gray.mat
       size: 2202
       name: Gray.mat
       hash: 639d9c2a8faf4713d90c3793700b7b3c2e4cdbf72e4093e629ac3f557a559b62
+      assetType: 0
   - assetBundleName: prefab
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Prefab\Sphere.prefab
       size: 3425
       name: Sphere.prefab
       hash: dbdc922d9c95b148e892241fe3d0127389d909e95bc3c4e95f6c04cbfd89d2dc
+      assetType: 0
   - assetBundleName: scenes
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Scenes\ABTestScene.unity
       size: 9401
       name: ABTestScene.unity
       hash: db67fc3052b8f67e95b348ec75c243384e5aecbc6b8cd071c632319ef0a82df7
+      assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\GameScene.unity
       size: 131567
       name: GameScene.unity
       hash: 39e2e7c79f0e333d3795ae1a1c93154d80bde4f3ef46a93f8ec479f1576474b8
+      assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryMainTestScene.unity
-      size: 43834
+      size: 24629
       name: InventoryMainTestScene.unity
-      hash: 5d5692de938bd9dbda530064da24476b20d884eee2a04b233a3f90bf8fe4e8fb
+      hash: 741d089c95ce87a3c3fa5f8db6d6c9e99cd37a96d4b946d9defa3cbf49cedd12
+      assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryTestScene.unity
       size: 8115
       name: InventoryTestScene.unity
       hash: 5aa6703c6bab78baef861f40cb5bc1df8f94c8cee1fb8b5f93fedaeb6244f774
+      assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\MainScene.unity
       size: 13745
       name: MainScene.unity
       hash: 8eee0432e96aaa894b810adc9c1bf40bb90280055bf61f1595cb69916dae7b07
+      assetType: 1
   - assetBundleName: spriteatlas
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\SpriteAtlas\Atlas_Item.spriteatlasv2
-      size: 322
+      size: 394
       name: Atlas_Item.spriteatlasv2
-      hash: 61b51b4a909fbd80757f1c3e9f18eed34c5a528f80067613e7d1029214580944
+      hash: ef7211397fe66a98a1d9694f73b7add3b2b70eff68516e72722cb74b1ad00532
+      assetType: 3
     - assetPath: Assets\Editor\ArtRes\SpriteAtlas\Common.spriteatlasv2
-      size: 322
+      size: 394
       name: Common.spriteatlasv2
-      hash: 61b51b4a909fbd80757f1c3e9f18eed34c5a528f80067613e7d1029214580944
+      hash: 23d0db6055c774e9f8aa6492349f6ec3e816f5654c5f01507c9af7343685eb2f
+      assetType: 3
   - assetBundleName: tmpasset
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH_SDF.asset
-      size: 2153231
+      size: 4269275
       name: MSYH_SDF.asset
-      hash: 68aabeb9ba6218ba4eb0fd475fd9bae411ab0f5d1f29755f1a6d534eb1b4cd74
+      hash: c36fb51fb724d725fb3ff219eb1fee452bb640824f553dc9585b74b888839667
+      assetType: 0
   - assetBundleName: ui
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\UI\UIRoot.prefab
       size: 13381
       name: UIRoot.prefab
       hash: 59fe70b92b5ec12bfd42dd1f9bbefe6be5da843d186946a010735f4bcf86a169
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Battle\Battle_Panel.prefab
       size: 116839
       name: Battle_Panel.prefab
       hash: 71a5fa219d39bed6185e714317014be094045b49ba510037e147d7e1fa9a3083
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Begin\BeginView.prefab
       size: 45141
       name: BeginView.prefab
       hash: 8c6d374278397a3786e916d560caeb8dc7aea4003b7e320d2c79c2281a490676
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\InventoryPanel.prefab
-      size: 39776
+      size: 70167
       name: InventoryPanel.prefab
-      hash: b7592e7c5efc0269e1df98654d4df092c922eead7d2c9fa1a2682a7386d9aded
+      hash: 3cd56077865cab471b83b26245a2d5ffd491d06d119773a8c1ca18920fbc28ef
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemCell.prefab
       size: 15689
       name: ItemCell.prefab
       hash: 61a3d41a172d8937703e6efb19a823499d5537466d4c59c0fbd7606bfe4e89f0
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemDetailPanelBase.prefab
       size: 3225
       name: ItemDetailPanelBase.prefab
       hash: 7f1f10c39c319af4c6734a8873d0f70a16a99b70df9eb46fba50c702f8baf3b6
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemTypeOpt.prefab
       size: 6912
       name: ItemTypeOpt.prefab
       hash: 2a71a91e5dcbaae2900bf1b1590b89373722a031bdd6d8d3ba2ad370a66a7d33
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\DetailPanel\MaterialDetailPanel.prefab
       size: 13500
       name: MaterialDetailPanel.prefab
       hash: 0104cb8d12e849a25964184dee5e5501db40f2b85995f1e413f4421ef6fd0bca
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Main\Main_Chat_Panel.prefab
       size: 72448
       name: Main_Chat_Panel.prefab
       hash: 145cf605995d9fd7f80d56616675f97278ddc834ffddc3456c105d79fa5b62dc
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Main\Main_Panel.prefab
       size: 18365
       name: Main_Panel.prefab
       hash: a24b8c37feaa0f9598dd73f0b9d782c969a81329c02f17c1d5a01d86e39f8ab4
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Main\Chat\Chat_UI.prefab
       size: 7662
       name: Chat_UI.prefab
       hash: 8029d6de68b9e65fd096bc1651a113d32c9d0e0da849f412297c4aa491366186
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Main\Chat\Friend_UI.prefab
       size: 9042
       name: Friend_UI.prefab
       hash: 3248bdc42d6fc8f19d4a077eb34150f39f3bb1e4532cbd711203e7aa4ec932eb
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Tip\BaseTipView.prefab
       size: 11727
       name: BaseTipView.prefab
       hash: 855af5c5730e673805df9abbd997cb21fae2cb8aa41972579c171b5ae6a3243d
+      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Tip\UpdateTipView.prefab
       size: 24432
       name: UpdateTipView.prefab
       hash: 49d34912f93f7164a8c0a6d4bd86cc2d4e9a0db63c590864f8aa985914cf28e9
+      assetType: 0

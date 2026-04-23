@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core.AssetBundles.Management;
 using Core.Singleton;
 using UnityEditor;
 using UnityEngine;
@@ -65,6 +66,12 @@ namespace Editor.AssetBundle
             /// </summary>
             [Tooltip("Hash字符串")]
             public string hash;
+            
+            /// <summary>
+            /// 资源类型
+            /// </summary>
+            [Tooltip("资源类型枚举")]
+            public EAssetType assetType;
 
             /// <summary>
             /// 构造函数：初始化资源的核心信息
@@ -73,12 +80,13 @@ namespace Editor.AssetBundle
             /// <param name="assetBundleSize">资源大小（字节）</param>
             /// <param name="name">资源名称</param>
             /// <param name="hash"></param>
-            public AssetInfo(string assetPath, long assetBundleSize, string name, string hash)
+            public AssetInfo(string assetPath, long assetBundleSize, string name, string hash, EAssetType assetType)
             {
                 this.assetPath = assetPath;
                 this.size = assetBundleSize;
                 this.name = name;
                 this.hash = hash;
+                this.assetType = assetType;
             }
         }
 

@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 147653814
+CRC: 3409105422
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 35ecf09aa476d7d5b36d69d1b09c9a26
+    Hash: 9bb0c648f708e7cd8d017bcbf5365805
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 2d21d48fd68c12224c6a36389e3eb7cf
+    Hash: 3fa0d4f1c806ec1c144d5bab59022327
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 35ecf09aa476d7d5b36d69d1b09c9a26
+    Hash: 9bb0c648f708e7cd8d017bcbf5365805
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -53,9 +53,13 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
 - Class: 114
@@ -79,8 +83,6 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: f200d3291a3383e4c9c191da6bce989a, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
@@ -88,8 +90,6 @@ ClassTypes:
   Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 44d13e5e5e174ce458c8c8e80b564734, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: b1f5232cf165d664294eb006e20089a9, type: 3}
 - Class: 114
@@ -104,8 +104,6 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 35a05ed1c8246214c92fe32f81259b02, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: a9f20106dbbb8ab47afbeee617b8703d, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 1e0b5a2801cfd6b4584d8baa7094ac80, type: 3}
 - Class: 114
@@ -134,6 +132,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 225
   Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Editor/ArtRes/Scenes/InventoryTestScene.unity
@@ -142,4 +142,6 @@ Assets:
 - Assets/Editor/ArtRes/Scenes/InventoryMainTestScene.unity
 - Assets/Editor/ArtRes/Scenes/ABTestScene.unity
 Dependencies:
+- D:/UnityProject/AnimationSystem/Assets/AssetBundles/StandaloneWindows64/animation
+- D:/UnityProject/AnimationSystem/Assets/AssetBundles/StandaloneWindows64/material
 - D:/UnityProject/AnimationSystem/Assets/AssetBundles/StandaloneWindows64/ui

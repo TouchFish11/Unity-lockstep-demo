@@ -46,7 +46,9 @@ namespace Core.AssetBundles.Management
         public async Task Init()
         {
             // 读取本地清单文件
-            Catalog = await _jsonManager.FromJsonAsync<AssetCatalog>(PathUtility.GetAbLoadPath(FileUtility.CatalogDefaultName));
+            Catalog = await _jsonManager.FromJsonAsync<AssetCatalog>(
+                PathUtility.GetAbLoadPath(FileUtility.CatalogDefaultName),
+                settings: NewtonsoftJsonUtility.SerializerSettings);
             // 构建全部AB包信息
             foreach (var abPackageInfo in Catalog.ABPackageCollection.Values)
             {
@@ -73,6 +75,47 @@ namespace Core.AssetBundles.Management
             return wrapper;
         }
 
+        /// <summary>
+        /// 同步加载指定AB包
+        /// </summary>
+        /// <param name="abName">AB包名称（不含拓展名） </param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public BundleWrapper LoadBundle(string abName)
+        {
+            if (!_nameToWrapperMap.TryGetValue(abName, out var wrapper))
+            {
+                throw new KeyNotFoundException($"{nameof(AssetBundleManager)}: {abName} key is not found");
+            }
+
+            // 加载依赖和目标AB包
+            LoadDependenciesAndTarget(abName);
+            // 返回指定AB包
+            return wrapper;
+        }
+
+        /// <summary>
+        /// 异步加载依赖包和目标包
+        /// </summary>
+        /// <param name="abName">AB包名称（不含拓展名）</param>
+        /// <returns></returns>
+        private void LoadDependenciesAndTarget(string abName)
+        {
+            // 获取该AB包的所有依赖
+            var dependencies = Catalog.ABPackageCollection.GetAllDependencies(abName);
+            // 加载所有依赖包
+            foreach (var dependency in dependencies)
+            {
+                var wrapper = _nameToWrapperMap[dependency];
+                wrapper.IsActive = true;
+                wrapper.LoadFromFile();
+                Logger.Log($"{nameof(AssetBundleManager)}: {abName} package dependency {dependency} will be loaded");
+            }
+
+            // 加载目标包
+            _nameToWrapperMap[abName].LoadFromFile();
+        }
+        
         /// <summary>
         /// 异步加载依赖包和目标包
         /// </summary>

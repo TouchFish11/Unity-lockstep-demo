@@ -30,11 +30,87 @@ namespace Core.AssetBundles.Management
             _assetBundleManager = assetBundleManager;
         }
 
-        public static AssetHandle<T> LoadAsset<T>(string key) where T : class
+        /// <summary>
+        /// 同步加载资源
+        /// </summary>
+        /// <param name="key"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static AssetHandle<T> LoadAsset<T>(string key) where T : Object
         {
-            return default;
+            if (_keyToHandleMap.TryGetValue(key, out var handle))
+            {
+                if (!_assetIdToLocationsMap.TryGetValue(handle.HandleId, out var loc))
+                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error");
+                
+                ++loc.RefCount;
+                return handle.ConvertTo<T>();
+            }
+            
+            // 从资源目录中查找指定的资源路径
+            var mapEntry = _assetBundleManager.Catalog.GetEntry(key);
+            if (mapEntry == null)
+                throw new NullReferenceException($"{nameof(GameAsset)}: key({key}) found entry is null");
+                
+            // 加载AB包
+            var bundleWrapper = _assetBundleManager.LoadBundle(mapEntry.bundleName);
+            if (bundleWrapper == null)
+                throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.bundleName} AssetBundle failed");
+            
+            // 异步加载资源
+            var assetWrapper = AssetLoader.LoadAsset<T>(bundleWrapper, mapEntry);
+            if (assetWrapper.IsNull)
+                throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.assetName} failed, key({key})");
+            
+            // 避免逻辑上重复添加
+            if (_keyToHandleMap.TryGetValue(key, out var assetHandle))
+            {
+                if (!_assetIdToLocationsMap.TryGetValue(assetHandle.HandleId, out var loc))
+                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error");
+                
+                ++loc.RefCount;
+                return assetHandle.ConvertTo<T>();
+            }
+            
+            // 创建新Handle
+            var newHandle = new AssetHandle { HandleId = GenerateNewId(), Version = 0 };
+            // 判断ID是否存在，存在就复用定位对象
+            if (_assetIdToLocationsMap.TryGetValue(newHandle.HandleId, out var location))
+            {
+                location.AssetWrapper = assetWrapper;
+                ++location.Version;
+                location.RefCount = 1;
+                location.release = bundleWrapper.Release;
+                // 同步新句柄的版本
+                newHandle.Version = location.Version;
+                // 缓存新句柄
+                _keyToHandleMap.Add(key, newHandle);
+                _handleToKeyMap.Add(newHandle, key);
+                return newHandle.ConvertTo<T>();
+            }
+            
+            // 创建新定位对象
+            var newLocation = new AssetLocation
+            {
+                AssetWrapper = assetWrapper, Version = 0, RefCount = 1, release = bundleWrapper.Release
+            };
+            // 缓存新句柄
+            _keyToHandleMap.TryAdd(key, newHandle);
+            _handleToKeyMap.TryAdd(newHandle, key);
+            // 缓存新定位对象
+            _assetIdToLocationsMap.TryAdd(newHandle.HandleId, newLocation);
+            // 转换为泛型句柄
+            return newHandle.ConvertTo<T>();
         }
         
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        /// <param name="key"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="NullReferenceException"></exception>
         public static async Task<AssetHandle<T>> LoadAssetAsync<T>(string key) where T : class
         {
             if (_keyToHandleMap.TryGetValue(key, out var handle))
@@ -65,7 +141,7 @@ namespace Core.AssetBundles.Management
             if (_keyToHandleMap.TryGetValue(key, out var assetHandle))
             {
                 if (!_assetIdToLocationsMap.TryGetValue(assetHandle.HandleId, out var loc))
-                    throw new System.Exception($"{nameof(GameAsset)}:Resource management logic error");
+                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error");
                 
                 ++loc.RefCount;
                 return assetHandle.ConvertTo<T>();
@@ -79,7 +155,7 @@ namespace Core.AssetBundles.Management
                 location.AssetWrapper = assetWrapper;
                 ++location.Version;
                 location.RefCount = 1;
-                location.release = () => bundleWrapper.Release();
+                location.release = bundleWrapper.Release;
                 // 同步新句柄的版本
                 newHandle.Version = location.Version;
                 // 缓存新句柄
@@ -91,7 +167,7 @@ namespace Core.AssetBundles.Management
             // 创建新定位对象
             var newLocation = new AssetLocation
             {
-                AssetWrapper = assetWrapper, Version = 0, RefCount = 1, release = () => bundleWrapper.Release()
+                AssetWrapper = assetWrapper, Version = 0, RefCount = 1, release = bundleWrapper.Release
             };
             // 缓存新句柄
             _keyToHandleMap.TryAdd(key, newHandle);
@@ -172,7 +248,7 @@ namespace Core.AssetBundles.Management
         }
 
         /// <summary>
-        /// 加载指定AB包中的所有资源
+        /// 异步加载指定AB包中的所有资源
         /// </summary>
         /// <param name="bundleName">AB包名</param>
         /// <typeparam name="T">资源类型</typeparam>
@@ -211,7 +287,7 @@ namespace Core.AssetBundles.Management
                 location.AssetWrapper = assetWrapper;
                 ++location.Version;
                 location.RefCount = 1;
-                location.release = () => bundleWrapper.Release();
+                location.release = bundleWrapper.Release;
                 // 同步定位对象的版本
                 newHandle.Version = location.Version;
                 // 缓存句柄，通过AB包名作为句柄的Key
@@ -223,7 +299,7 @@ namespace Core.AssetBundles.Management
             // 创建新定位对象
             var newLocation = new AssetLocation
             {
-                AssetWrapper = assetWrapper, Version = newHandle.Version, RefCount = 1, release = () => bundleWrapper.Release()
+                AssetWrapper = assetWrapper, Version = newHandle.Version, RefCount = 1, release = bundleWrapper.Release
             };
 
             // 缓存句柄
@@ -289,8 +365,14 @@ namespace Core.AssetBundles.Management
         {
             if (!IsValidate(handleId, version)) 
                 return null;
+            
+            var location = _assetIdToLocationsMap[handleId];
+            if (location is AtlasLocation atlasLocation)
+            {
+                return atlasLocation.Texture as T;
+            }
 
-            var asset = _assetIdToLocationsMap[handleId].AssetWrapper.Asset;
+            var asset = location.AssetWrapper.Asset;
             // 资源本身是GameObject，T要是组件类型，从资源中获取对应组件类型返回
             if (asset is GameObject objAsset && typeof(Component).IsAssignableFrom(typeof(T)))
                 return objAsset.GetComponent<T>();

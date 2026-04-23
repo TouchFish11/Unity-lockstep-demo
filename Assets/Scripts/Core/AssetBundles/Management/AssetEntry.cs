@@ -12,11 +12,11 @@ namespace Core.AssetBundles.Management
     {
         /// 用户使用的资源标识
         [JsonProperty] public string key;     
-        // 资源所在的AB包名
+        /// 资源所在的AB包名
         [JsonProperty] public string bundleName;     
-        // 资源在AB包内的名称
+        /// 资源在AB包内的名称
         [JsonProperty] public string assetName;
-        // 资源类型
+        /// 资源类型
         [JsonProperty] public EAssetType assetType;
         
         public AssetEntry(string key, string bundleName, string assetName, EAssetType assetType)

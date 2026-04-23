@@ -24,6 +24,12 @@ namespace HotUpdate.Base.Grid
             // 同样方式算出底部所在行数，乘 _maxCol 再加 (_maxCol - 1) 得到该行最后一个格子的索引
             var maxIndex = (int)((_content.anchoredPosition.x - _sv.viewport.rect.height) / (_gridHeight + _gridYSpace)) * maxRow + (maxRow - 1);
             
+            // 边界保护：不能超出数据范围
+            if (minIndex < 0)
+                minIndex = 0;
+            if (maxIndex >= dataCount)
+                maxIndex = dataCount - 1;
+            
             return (minIndex, maxIndex);
         }
 
@@ -41,6 +47,7 @@ namespace HotUpdate.Base.Grid
 
         public override void CalcContentSize(int dataCount)
         {
+            base.CalcContentSize(dataCount);
             // 计算 Content 总高度
             // 总行数 = 向上取整(数据总数 / 最大列数)
             // 总高度 = 总行数 * (格子高度 + 垂直间距)

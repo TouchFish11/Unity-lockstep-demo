@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 1467618801
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 9256731e8cb735219bf81ded97c9d496
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 618316c8167c7e3ed46bc262a34af1a0
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 9256731e8cb735219bf81ded97c9d496
+HashAppended: 0
+ClassTypes:
+- Class: 319
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Editor/ArtRes/Mask/Bot/Bot_Mask.mask
+Dependencies: []

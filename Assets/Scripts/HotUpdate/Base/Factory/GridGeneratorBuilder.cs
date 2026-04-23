@@ -73,37 +73,13 @@ namespace HotUpdate.Base.Factory
                 Logger.LogError($"{nameof(GridGeneratorBuilder<T, K>)} can only be used with {nameof(HorizontalGridLayout)}");
             return this;
         }
-        
-        /// <summary>
-        /// 设置点击事件，让格子监听该事件
-        /// </summary>
-        /// <param name="callback"></param>
-        public GridGeneratorBuilder<T, K> SetClick(Action<T> callback)
-        {
-            _gridGenerator.SetClick(callback);
-            return this;
-        }
-        
-        public GridGeneratorBuilder<T, K> SetDatas(List<T> dataList)
-        {
-            _gridGenerator.SetDatas(dataList);
-            return this;
-        }
-        
-        /// <summary>
-        /// 设置选中的格子索引，当对应索引的格子创建完毕后会自动执行其点击事件
-        /// 执行完后索引重置，需重新调用方法设置
-        /// </summary>
-        /// <param name="index"></param>
-        public GridGeneratorBuilder<T, K> SetSelectIndex(int index)
-        {
-            _gridGenerator.SetSelectIndex(index);
-            return this;
-        }
 
+        /// <summary>
+        /// 构建格子生成器，返回配置好的生成器，同时计算内容显示的长度，依赖于SetDatas的数据
+        /// </summary>
+        /// <returns></returns>
         public GridGenerator<T, K> Build()
         {
-            _gridGenerator.CalcContentSize();
             return _gridGenerator;
         }
         

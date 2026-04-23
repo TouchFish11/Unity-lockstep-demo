@@ -31,7 +31,7 @@ namespace HotUpdate.Game.Data
 
         public async Task LoadConfigAsync()
         {
-            var handle = await GameAsset.LoadAssetAsync<TextAsset>(AssetKeys.Itemconfigs);
+            var handle = await GameAsset.LoadAssetAsync<TextAsset>(AssetKeys.ItemConfigs);
             ItemConfigCollection = _jsonManager.FromJson<ItemConfigCollection>(handle.Asset.text, settings: NewtonsoftJsonUtility.SerializerSettings);
             GameAsset.Release(handle);
         }

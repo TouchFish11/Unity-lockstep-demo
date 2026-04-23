@@ -12,8 +12,10 @@ namespace HotUpdate.Game.Inventory.UI
     {
         [InjectUI] public ScrollRect svOpts;
         [InjectUI] public ScrollRect svItems;
-        [InjectUI(1)] public RectTransform DetailArea { get; private set; }
+        [InjectUI] public Dropdown dpSorts;
         [InjectUI] public Button btnClose;
+        
+        [InjectUI(1)] public RectTransform DetailArea { get; private set; }
         
         public ToggleGroup OptGroup {get; private set;}
 

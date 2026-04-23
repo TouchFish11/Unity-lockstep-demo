@@ -46,9 +46,9 @@ namespace HotUpdate.Update
                 await InitSettings();
                 // 初始化UI管理器，创建画布和UI相机
                 var uiManager = DIContainer.Create<UIManager>();
-                await uiManager.InitUIManagerAsync(AssetKeys.Uiroot);
+                await uiManager.InitUIManagerAsync(AssetKeys.UIRoot);
                 // 显示开始界面
-                var controller = await uiManager.CreateViewAsync<BeginView, BeginModel, BeginController>(AssetKeys.Beginview, E_UILayer.Mid);
+                var controller = await uiManager.CreateViewAsync<BeginView, BeginModel, BeginController>(AssetKeys.BeginView, E_UILayer.Mid);
                 // 进入游戏
                 controller.OnClickEnterGame += EnterGame;
                 // 检查更新
@@ -137,7 +137,7 @@ namespace HotUpdate.Update
         /// <returns></returns>
         private static Task LoadSceneAsync()
         {
-            return DIContainer.Create<SceneManager>().LoadSceneAsync(AssetKeys.Inventorytestscene, LoadSceneMode.Single, null);
+            return DIContainer.Create<SceneManager>().LoadSceneAsync(AssetKeys.InventoryTestScene, LoadSceneMode.Single, null);
         }
     }
 }

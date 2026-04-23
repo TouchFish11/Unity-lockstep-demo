@@ -182,7 +182,7 @@ namespace HotUpdate.Update
                 {
                     if (_assetBundleUpdater.GetContext().IsHasUpdate)
                     {
-                        var controller = await uiManager.CreateViewAsync<UpdateTipView, UpdateTipModel, UpdateTipController>(AssetKeys.Updatetipview, E_UILayer.Mid);
+                        var controller = await uiManager.CreateViewAsync<UpdateTipView, UpdateTipModel, UpdateTipController>(AssetKeys.UpdateTipView, E_UILayer.Mid);
                         // 设置消息
                         controller.SetUpdateMessage("更新成功，请重新启动游戏");
                         // 暂时这样处理，可根据枚举类型决定如何处理按钮点击逻辑
@@ -199,7 +199,7 @@ namespace HotUpdate.Update
                 else
                 {
                     // 更新失败
-                    var controller = await uiManager.CreateViewAsync<UpdateTipView, UpdateTipModel, UpdateTipController>(AssetKeys.Updatetipview, E_UILayer.Mid);
+                    var controller = await uiManager.CreateViewAsync<UpdateTipView, UpdateTipModel, UpdateTipController>(AssetKeys.UpdateTipView, E_UILayer.Mid);
                     // 设置消息
                     controller.SetUpdateMessage(GetErrorMessage(updateResult.UpdateError));
                 

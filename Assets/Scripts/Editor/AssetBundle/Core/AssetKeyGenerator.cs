@@ -43,36 +43,14 @@ namespace Editor.AssetBundle.Core
         /// <summary>
         /// 将资源路径转换为合法的 C# 标识符（驼峰命名）
         /// </summary>
-        private static string ConvertToPascalCase(string assetPath)
+        private static string ConvertToPascalCase(string key)
         {
-            // 去掉扩展名，只留文件名（若需要目录，可自行拼接）
-            var fileName = Path.GetFileNameWithoutExtension(assetPath);
+            // 去掉扩展名，只留文件名
+            var fileName = Path.GetFileNameWithoutExtension(key);
 
             fileName = fileName.Replace('.', '_').Replace(' ', '_').Replace('-', '_');
             
-            // 按下划线切分
-            var words = fileName.Split('_', StringSplitOptions.RemoveEmptyEntries);
-    
-            var sb = new StringBuilder();
-            for (var i = 0; i < words.Length; i++)
-            {
-                if (words[i].Length > 0)
-                {
-                    sb.Append(char.ToUpperInvariant(words[i][0]));
-                    if (words[i].Length > 1)
-                        sb.Append(words[i].Substring(1).ToLowerInvariant());
-                    
-                    if(i < words.Length - 1)
-                        sb.Append("_");
-                }
-            }
-    
-            var result = sb.ToString();
-            // 若首字符是数字，加下划线前缀
-            if (result.Length > 0 && char.IsDigit(result[0]))
-                result = $"_{result}";
-        
-            return result;
+            return fileName;
         }
         
         public static void GenerateFromKeys(IEnumerable<string> keys, string savePath)
@@ -84,7 +62,7 @@ namespace Editor.AssetBundle.Core
 
             foreach (var key in keys)
             {
-                string memberName = ConvertToPascalCase(key);
+                var memberName = ConvertToPascalCase(key);
                 sb.AppendLine($"    public const string {memberName} = \"{key}\";");
             }
 

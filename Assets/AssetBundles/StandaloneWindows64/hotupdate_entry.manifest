@@ -1,0 +1,26 @@
+ManifestFileVersion: 0
+CRC: 3337282647
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 26470d77d0ab21b8ee2a6967c5061526
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1d8cbdef5e92e0f95494ef72287fc233
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 26470d77d0ab21b8ee2a6967c5061526
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 47bfec72f0cc5644ba3bcee5b3903cbc, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Editor/ArtRes/HotUpdate_Entry/HotUpdateEntry.prefab
+Dependencies: []

@@ -34,7 +34,7 @@ namespace HotUpdate.Game.Main.UI
             {
                 if (btnName == nameof(view.btnInventory))
                 {
-                    await uiManager.CreateViewAsync<InventoryPanel, InventoryModel, InventoryController>(AssetKeys.Inventorypanel, E_UILayer.Mid);
+                    await uiManager.CreateViewAsync<InventoryPanel, InventoryModel, InventoryController>(AssetKeys.InventoryPanel, E_UILayer.Mid);
                 }
                 else if (btnName == nameof(view.btnAddItem))
                 {

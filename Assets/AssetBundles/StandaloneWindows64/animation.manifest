@@ -1,0 +1,24 @@
+ManifestFileVersion: 0
+CRC: 2301642814
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: be9f550226b8dabe03f8357006b9d7eb
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 147058da82bee871bbce28e472030442
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: be9f550226b8dabe03f8357006b9d7eb
+HashAppended: 0
+ClassTypes:
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Editor/ArtRes/Animation/Role/Role_Controller.controller
+- Assets/Editor/ArtRes/Animation/Bot.controller
+Dependencies:
+- D:/UnityProject/AnimationSystem/Assets/AssetBundles/StandaloneWindows64/mask

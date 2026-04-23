@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Core.AssetBundles.Management;
 using Core.DI;
+using Core.Mono;
 using Core.Pool;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -17,39 +19,50 @@ namespace HotUpdate.Base.Grid
     /// <typeparam name="K">格子组件类型，必须继承自 Object 并实现 IGridBase&lt;T&gt; 接口</typeparam>
     public sealed class GridGenerator<T, K> : IPoolData where K : Object, IGridBase<T>
     {
-        // ---------- 数据与显示缓存 ----------
-        private readonly Dictionary<int, PoolObject> _nowShowGridDic = new();  // 当前显示的格子字典，Key：数据索引，Value：对象池包装对象
-        private readonly List<T> _dataList = new();                            // 全部数据列表
+        // 对象生成器（支持异步实例化与对象池）
+        [Inject] private ObjectSpawner _objectSpawner;
+        [Inject] private IMonoAdapter _monoAdapter;
+        
+        // 当前显示的格子字典，Key：数据索引，Value：对象池包装对象
+        private readonly Dictionary<int, PoolObject> _nowShowGridDic = new();
+        // 全部数据列表
+        private readonly List<T> _dataList = new();
 
-        // ---------- 上一次可见索引范围（用于判断回收） ----------
+        // 上一次可见索引范围（用于判断回收）
         private int oldMinIndex = -1;
         private int oldMaxIndex = -1;
         
-        // ---------- 依赖注入 ----------
-        [Inject] private ObjectSpawner _objectSpawner;   // 对象生成器（支持异步实例化与对象池）
-
         // 事件注册
         private Action<T> _callback;
         // 当前选中的数据索引，-1 表示无选中
         private int _selectedIndex = -1;
+        /// 格子创建间隔
+        private const float CreateGridInterval = 0.002f;
         // 当前布局类型
         internal GridLayout gridLayout;
+        // 正在逐个创建格子
+        private bool _queueCreateGrid = true;
         
         /// <summary>
-        /// 更新可见格子（通常在 ScrollRect.onValueChanged 事件或 Update 中调用）
+        /// 渐变创建格子，仅在第一次打开或切换类型时使用，只是为了呈现一个好的动画效果
         /// </summary>
-        /// <param name="comparison">可选的数据排序委托，每次刷新前会调用</param>
-        public void UpdateGrid(Comparison<T> comparison = null)
+        public void FadeUpdateGrid()
         {
+            _monoAdapter.StartCoroutine(FadeCreate_Cor());
+        }
+        
+        /// <summary>
+        /// 更新可见格子
+        /// 通常在 ScrollRect.onValueChanged 事件或 Update 中调用
+        /// </summary>
+        public void UpdateGrid()
+        {
+            // 正在排队创建格子，不执行逻辑，避免出问题
+            if(_queueCreateGrid)
+                return;
+            
             // 计算索引
             var (minIndex, maxIndex) = gridLayout.CalcIndex();
-            
-            // 边界保护：不能超出数据范围
-            if (minIndex < 0)
-                minIndex = 0;
-            if (maxIndex >= _dataList.Count)
-                maxIndex = _dataList.Count - 1;
-            
             // 与上一次索引范围比较，回收移出视口的格子
             if (minIndex != oldMinIndex || maxIndex != oldMaxIndex)
             {
@@ -81,11 +94,7 @@ namespace HotUpdate.Base.Grid
             // 记录当前索引范围为上一次范围，供下一帧使用
             oldMinIndex = minIndex;
             oldMaxIndex = maxIndex;
-
-            // 排序数据（可选）
-            if (comparison != null)
-                _dataList.Sort(comparison);
-
+            
             // 创建新进入视口的格子
             for (var i = minIndex; i <= maxIndex; ++i)
             {
@@ -106,6 +115,11 @@ namespace HotUpdate.Base.Grid
         {
             _dataList.Clear();
             _dataList.AddRange(datas);
+            /*
+             * 内容区域大小依赖于数据的设置（数据数量），又因为通过构建器构建时不会设置数据数据，而是在生成器自己初始化时设置数据
+             * 所以延迟到设置完数据后，再计算总内容区域大小。构建时保证其它固定的数据会被设置，这里只需补充缺少的数据数量即可计算
+             */ 
+            CalcContentSize();
         }
         
         /// <summary>
@@ -157,7 +171,7 @@ namespace HotUpdate.Base.Grid
             {
                 // 异步从对象池获取格子实例（自动处理实例化、激活、父节点设置）
                 var pos = gridLayout.CalcPosition(index);
-                var poolObj = await _objectSpawner.SpawnAsync<K>(AssetKeys.Itemcell, gridLayout._content, pos, Quaternion.identity);
+                var poolObj = await _objectSpawner.SpawnAsync<K>(AssetKeys.ItemCell, gridLayout._content, pos, Quaternion.identity);
                 // 初始化格子数据
                 poolObj.Obj.InitGrid(_dataList[index]);
                 // 二次确认：异步加载期间该索引是否仍有效（未被回收）
@@ -184,6 +198,63 @@ namespace HotUpdate.Base.Grid
             {
                 Logger.LogError($"{nameof(GridGenerator<T, K>)}: {e.Message}");
             }
+        }
+        
+        /// <summary>
+        /// 渐变创建格子
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator FadeCreate_Cor()
+        {
+            // 重置标识
+            _queueCreateGrid = true;
+            // 创建格子时禁用对应方向的滑动
+            SetSlide(false);
+            
+            // 视图自动回到顶部
+            gridLayout._content.anchoredPosition = Vector2.zero;
+            
+            // 计算索引
+            var (minIndex, maxIndex) = gridLayout.CalcIndex();
+            // 记录当前索引范围为上一次范围，供真正滑动时使用
+            oldMinIndex = minIndex;
+            oldMaxIndex = maxIndex;
+            for (var i = minIndex; i <= maxIndex; i++)
+            {
+                // 异步从对象池获取格子实例（自动处理实例化、激活、父节点设置）
+                var pos = gridLayout.CalcPosition(i);
+                var poolObj = _objectSpawner.Spawn<K>(AssetKeys.ItemCell, gridLayout._content, pos, Quaternion.identity);
+                // 初始化格子数据
+                poolObj.Obj.InitGrid(_dataList[i]);
+                // 有效：将实际对象替换占位
+                _nowShowGridDic[i] = poolObj;
+                // 注册交互事件
+                poolObj.Obj.OnClick += _callback;
+                // 判断是否需要默认选中该索引的格子
+                if(_selectedIndex != -1 &&  _selectedIndex == i)
+                {
+                    poolObj.Obj.TriggerClick();
+                    _selectedIndex = -1;
+                }
+                
+                yield return new WaitForSeconds(CreateGridInterval);
+            }
+            
+            // 格子创建完成，启用对应方向的滑动，重置标识
+            SetSlide(true);
+            _queueCreateGrid = false;
+        }
+        
+        /// <summary>
+        /// 设置是否可滑动，根据不同的布局启用/禁用对应方向的滑动
+        /// </summary>
+        /// <param name="slide"></param>
+        private void SetSlide(bool slide)
+        {
+            if (gridLayout is VerticalGridLayout)
+                gridLayout._sv.vertical = slide;
+            else
+                gridLayout._sv.horizontal = slide;
         }
         
         /// <summary>

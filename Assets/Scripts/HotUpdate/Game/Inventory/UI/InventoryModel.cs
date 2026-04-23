@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Core.AssetBundles.Management;
 using Core.DI;
@@ -16,6 +17,13 @@ namespace HotUpdate.Game.Inventory.UI
         [Inject] private IPoolManager _poolManager;
         /// 缓存所有选项
         private readonly List<PoolObject> _itemTypeOpts = new();
+        // 物品排序委托
+        public Comparison<ItemDTO> sortComparison = InventorySorterFactory.DefaultIDSorter(1);
+        
+        /// <summary>
+        /// 当前显示的物品类型
+        /// </summary>
+        public EItemType CurrentItemType { get; set; }
         
         /// <summary>
         /// 格子生成器
@@ -58,7 +66,9 @@ namespace HotUpdate.Game.Inventory.UI
         {
             ClearOpt();
             _poolManager.PushData(GridGenerator);
+            GridGenerator = null;
             InventoryDetailPanel = null;
+            sortComparison = null;
             DetailPanelPoolObject.Collect();
         }
     }

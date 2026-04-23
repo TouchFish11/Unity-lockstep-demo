@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 669394816
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fa4549bc8527b00814e10d7fcc82aa76
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5e762ccb57c4caaabbb5a4199ac82c23
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: fa4549bc8527b00814e10d7fcc82aa76
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Editor/ArtRes/Material/Gray.mat
+Dependencies: []

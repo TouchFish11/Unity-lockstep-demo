@@ -19,10 +19,16 @@ namespace HotUpdate.Base.Grid
             var minIndex = (int)(_content.anchoredPosition.y / (_gridHeight + _gridYSpace)) * maxCol;
 
             // maxIndex：当前视口底部对应的格子索引
-            // _sv.viewport.rect.height 是视口（显示区域）的实际高度
+            // ((RectTransform)_sv.transform).sizeDelta.y 是视口（显示区域）的实际高度
             // 视口底部位置 = 已滚动偏移量 + 视口高度
             // 同样方式算出底部所在行数，乘 _maxCol 再加 (_maxCol - 1) 得到该行最后一个格子的索引
-            var maxIndex = (int)((_content.anchoredPosition.y + _sv.viewport.rect.height) / (_gridHeight + _gridYSpace)) * maxCol + (maxCol - 1);
+            var maxIndex = (int)((_content.anchoredPosition.y + ((RectTransform)_sv.transform).sizeDelta.y) / (_gridHeight + _gridYSpace)) * maxCol + (maxCol - 1);
+            
+            // 边界保护：不能超出数据范围
+            if (minIndex < 0)
+                minIndex = 0;
+            if (maxIndex >= dataCount)
+                maxIndex = dataCount - 1;
             
             return (minIndex, maxIndex);
         }
@@ -41,6 +47,8 @@ namespace HotUpdate.Base.Grid
 
         public override void CalcContentSize(int dataCount)
         {
+            base.CalcContentSize(dataCount);
+            
             // 计算 Content 总高度
             // 总行数 = 向上取整(数据总数 / 最大列数)
             // 总高度 = 总行数 * (格子高度 + 垂直间距)

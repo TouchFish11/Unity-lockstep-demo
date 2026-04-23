@@ -18,6 +18,11 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 图片
         /// </summary>
-        Sprite
+        Texture,
+        
+        /// <summary>
+        /// 图集
+        /// </summary>
+        SpiteAtlas,
     }
 }

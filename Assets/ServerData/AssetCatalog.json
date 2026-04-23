@@ -1,220 +1,1594 @@
 {
   "assetMap": {
-    "bot": {
-      "key": "bot",
+    "Bot": {
+      "key": "Bot",
       "bundleName": "animation",
-      "assetName": "assets/editor/artres/animation/bot.controller",
+      "assetName": "Assets\\Editor\\ArtRes\\Animation\\Bot.controller",
       "assetType": "Object"
     },
-    "role_controller": {
-      "key": "role_controller",
+    "Role_Controller": {
+      "key": "Role_Controller",
       "bundleName": "animation",
-      "assetName": "assets/editor/artres/animation/role/role_controller.controller",
+      "assetName": "Assets\\Editor\\ArtRes\\Animation\\Role\\Role_Controller.controller",
       "assetType": "Object"
     },
-    "msyh": {
-      "key": "msyh",
+    "MSYH": {
+      "key": "MSYH",
       "bundleName": "fonts",
-      "assetName": "assets/editor/artres/fonts/msyh.ttc",
+      "assetName": "Assets\\Editor\\ArtRes\\Fonts\\MSYH.TTC",
       "assetType": "Object"
     },
-    "itemconfigs": {
-      "key": "itemconfigs",
+    "ItemConfigs": {
+      "key": "ItemConfigs",
       "bundleName": "gameconfig",
-      "assetName": "assets/editor/artres/gameconfig/itemconfigs.json",
+      "assetName": "Assets\\Editor\\ArtRes\\GameConfig\\ItemConfigs.json",
       "assetType": "Object"
     },
-    "hotupdate.base.dll": {
-      "key": "hotupdate.base.dll",
+    "HotUpdate.Base.dll": {
+      "key": "HotUpdate.Base.dll",
       "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.base.dll.bytes",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Base.dll.bytes",
       "assetType": "Object"
     },
-    "hotupdate.common.dll": {
-      "key": "hotupdate.common.dll",
+    "HotUpdate.Common.dll": {
+      "key": "HotUpdate.Common.dll",
       "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.common.dll.bytes",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Common.dll.bytes",
       "assetType": "Object"
     },
-    "hotupdate.game.dll": {
-      "key": "hotupdate.game.dll",
+    "HotUpdate.Game.dll": {
+      "key": "HotUpdate.Game.dll",
       "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.game.dll.bytes",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Game.dll.bytes",
       "assetType": "Object"
     },
-    "hotupdate.ui.dll": {
-      "key": "hotupdate.ui.dll",
+    "HotUpdate.UI.dll": {
+      "key": "HotUpdate.UI.dll",
       "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.ui.dll.bytes",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.UI.dll.bytes",
       "assetType": "Object"
     },
-    "hotupdate.update.dll": {
-      "key": "hotupdate.update.dll",
+    "HotUpdate.Update.dll": {
+      "key": "HotUpdate.Update.dll",
       "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdate.update.dll.bytes",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Update.dll.bytes",
       "assetType": "Object"
     },
-    "hotupdateassemblysettings": {
-      "key": "hotupdateassemblysettings",
+    "HotUpdateAssemblySettings": {
+      "key": "HotUpdateAssemblySettings",
       "bundleName": "hotupdate",
-      "assetName": "assets/editor/artres/hotupdate/hotupdateassemblysettings.json",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdateAssemblySettings.json",
       "assetType": "Object"
     },
-    "hotupdateentry": {
-      "key": "hotupdateentry",
+    "HotUpdateEntry": {
+      "key": "HotUpdateEntry",
       "bundleName": "hotupdate_entry",
-      "assetName": "assets/editor/artres/hotupdate_entry/hotupdateentry.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate_Entry\\HotUpdateEntry.prefab",
       "assetType": "Object"
     },
-    "bot_mask": {
-      "key": "bot_mask",
+    "Bot_Mask": {
+      "key": "Bot_Mask",
       "bundleName": "mask",
-      "assetName": "assets/editor/artres/mask/bot/bot_mask.mask",
+      "assetName": "Assets\\Editor\\ArtRes\\Mask\\Bot\\Bot_Mask.mask",
       "assetType": "Object"
     },
-    "gray": {
-      "key": "gray",
+    "Gray": {
+      "key": "Gray",
       "bundleName": "material",
-      "assetName": "assets/editor/artres/material/gray.mat",
+      "assetName": "Assets\\Editor\\ArtRes\\Material\\Gray.mat",
       "assetType": "Object"
     },
-    "uiroot": {
-      "key": "uiroot",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/uiroot.prefab",
-      "assetType": "Object"
-    },
-    "updatetipview": {
-      "key": "updatetipview",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/tip/updatetipview.prefab",
-      "assetType": "Object"
-    },
-    "basetipview": {
-      "key": "basetipview",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/tip/basetipview.prefab",
-      "assetType": "Object"
-    },
-    "main_panel": {
-      "key": "main_panel",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/main/main_panel.prefab",
-      "assetType": "Object"
-    },
-    "main_chat_panel": {
-      "key": "main_chat_panel",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/main/main_chat_panel.prefab",
-      "assetType": "Object"
-    },
-    "sphere": {
-      "key": "sphere",
+    "Sphere": {
+      "key": "Sphere",
       "bundleName": "prefab",
-      "assetName": "assets/editor/artres/prefab/sphere.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Sphere.prefab",
       "assetType": "Object"
     },
-    "atlas_item": {
-      "key": "atlas_item",
-      "bundleName": "spriteatlas",
-      "assetName": "assets/editor/artres/spriteatlas/atlas_item.spriteatlasv2",
+    "ABTestScene": {
+      "key": "ABTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
       "assetType": "Object"
     },
-    "common": {
-      "key": "common",
-      "bundleName": "spriteatlas",
-      "assetName": "assets/editor/artres/spriteatlas/common.spriteatlasv2",
+    "GameScene": {
+      "key": "GameScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
       "assetType": "Object"
     },
-    "friend_ui": {
-      "key": "friend_ui",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/main/chat/friend_ui.prefab",
+    "InventoryMainTestScene": {
+      "key": "InventoryMainTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
       "assetType": "Object"
     },
-    "chat_ui": {
-      "key": "chat_ui",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/main/chat/chat_ui.prefab",
-      "assetType": "Object"
-    },
-    "itemtypeopt": {
-      "key": "itemtypeopt",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/inventory/itemtypeopt.prefab",
-      "assetType": "Object"
-    },
-    "itemdetailpanelbase": {
-      "key": "itemdetailpanelbase",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/inventory/itemdetailpanelbase.prefab",
-      "assetType": "Object"
-    },
-    "itemcell": {
-      "key": "itemcell",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/inventory/itemcell.prefab",
-      "assetType": "Object"
-    },
-    "inventorypanel": {
-      "key": "inventorypanel",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/inventory/inventorypanel.prefab",
-      "assetType": "Object"
-    },
-    "materialdetailpanel": {
-      "key": "materialdetailpanel",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/inventory/detailpanel/materialdetailpanel.prefab",
-      "assetType": "Object"
-    },
-    "beginview": {
-      "key": "beginview",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/begin/beginview.prefab",
-      "assetType": "Object"
-    },
-    "battle_panel": {
-      "key": "battle_panel",
-      "bundleName": "ui",
-      "assetName": "assets/editor/artres/ui/battle/battle_panel.prefab",
-      "assetType": "Object"
-    },
-    "msyh_sdf": {
-      "key": "msyh_sdf",
-      "bundleName": "tmpasset",
-      "assetName": "assets/editor/artres/tmpasset/msyh_sdf.asset",
+    "InventoryTestScene": {
+      "key": "InventoryTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryTestScene.unity",
       "assetType": "Object"
     },
     "MainScene": {
       "key": "MainScene",
       "bundleName": "scenes",
-      "assetName": "Assets/Editor/ArtRes/Scenes/MainScene.unity",
-      "assetType": "Scene"
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\MainScene.unity",
+      "assetType": "Object"
     },
-    "InventoryTestScene": {
-      "key": "InventoryTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets/Editor/ArtRes/Scenes/InventoryTestScene.unity",
-      "assetType": "Scene"
+    "Atlas_Item": {
+      "key": "Atlas_Item",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "assetType": "Object"
     },
-    "InventoryMainTestScene": {
-      "key": "InventoryMainTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets/Editor/ArtRes/Scenes/InventoryMainTestScene.unity",
-      "assetType": "Scene"
+    "arrow_basic": {
+      "key": "arrow_basic",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/arrow_basic.png",
+      "assetType": "Texture"
     },
-    "GameScene": {
-      "key": "GameScene",
-      "bundleName": "scenes",
-      "assetName": "Assets/Editor/ArtRes/Scenes/GameScene.unity",
-      "assetType": "Scene"
+    "bone_skull": {
+      "key": "bone_skull",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bone_skull.png",
+      "assetType": "Texture"
     },
-    "ABTestScene": {
-      "key": "ABTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets/Editor/ArtRes/Scenes/ABTestScene.unity",
-      "assetType": "Scene"
+    "bone_white": {
+      "key": "bone_white",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bone_white.png",
+      "assetType": "Texture"
+    },
+    "bottle_standard_blue": {
+      "key": "bottle_standard_blue",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bottle_standard_blue.png",
+      "assetType": "Texture"
+    },
+    "bottle_standard_empty": {
+      "key": "bottle_standard_empty",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bottle_standard_empty.png",
+      "assetType": "Texture"
+    },
+    "bottle_standard_green": {
+      "key": "bottle_standard_green",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bottle_standard_green.png",
+      "assetType": "Texture"
+    },
+    "bow_wood1": {
+      "key": "bow_wood1",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bow_wood1.png",
+      "assetType": "Texture"
+    },
+    "cape_hood_darkyellow": {
+      "key": "cape_hood_darkyellow",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/cape_hood_darkyellow.png",
+      "assetType": "Texture"
+    },
+    "crown_gold": {
+      "key": "crown_gold",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/crown_gold.png",
+      "assetType": "Texture"
+    },
+    "fish_green": {
+      "key": "fish_green",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/fish_green.png",
+      "assetType": "Texture"
+    },
+    "gold_bars_three": {
+      "key": "gold_bars_three",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/gold_bars_three.png",
+      "assetType": "Texture"
+    },
+    "gold_coins_many": {
+      "key": "gold_coins_many",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/gold_coins_many.png",
+      "assetType": "Texture"
+    },
+    "key_silver": {
+      "key": "key_silver",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/key_silver.png",
+      "assetType": "Texture"
+    },
+    "leafs_long": {
+      "key": "leafs_long",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/leafs_long.png",
+      "assetType": "Texture"
+    },
+    "mushroom_big_red": {
+      "key": "mushroom_big_red",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/mushroom_big_red.png",
+      "assetType": "Texture"
+    },
+    "necklace_silver_red": {
+      "key": "necklace_silver_red",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/necklace_silver_red.png",
+      "assetType": "Texture"
+    },
+    "pickaxe_basic": {
+      "key": "pickaxe_basic",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/pickaxe_basic.png",
+      "assetType": "Texture"
+    },
+    "pouch_leather_small": {
+      "key": "pouch_leather_small",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/pouch_leather_small.png",
+      "assetType": "Texture"
+    },
+    "ring_gold_magic": {
+      "key": "ring_gold_magic",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/ring_gold_magic.png",
+      "assetType": "Texture"
+    },
+    "scroll_map2": {
+      "key": "scroll_map2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/scroll_map2.png",
+      "assetType": "Texture"
+    },
+    "shield_basic_metal": {
+      "key": "shield_basic_metal",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/shield_basic_metal.png",
+      "assetType": "Texture"
+    },
+    "silver_bars": {
+      "key": "silver_bars",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/silver_bars.png",
+      "assetType": "Texture"
+    },
+    "silver_coins_many": {
+      "key": "silver_coins_many",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/silver_coins_many.png",
+      "assetType": "Texture"
+    },
+    "stone_blocks_grey": {
+      "key": "stone_blocks_grey",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/stone_blocks_grey.png",
+      "assetType": "Texture"
+    },
+    "sword_basic4_blue": {
+      "key": "sword_basic4_blue",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/sword_basic4_blue.png",
+      "assetType": "Texture"
+    },
+    "sword_basic_blue": {
+      "key": "sword_basic_blue",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/sword_basic_blue.png",
+      "assetType": "Texture"
+    },
+    "twig_green": {
+      "key": "twig_green",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/twig_green.png",
+      "assetType": "Texture"
+    },
+    "wood_log": {
+      "key": "wood_log",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/wood_log.png",
+      "assetType": "Texture"
+    },
+    "wood_log_single_birch": {
+      "key": "wood_log_single_birch",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/wood_log_single_birch.png",
+      "assetType": "Texture"
+    },
+    "wood_logs_three": {
+      "key": "wood_logs_three",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/wood_logs_three.png",
+      "assetType": "Texture"
+    },
+    "wood_stick": {
+      "key": "wood_stick",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/wood_stick.png",
+      "assetType": "Texture"
+    },
+    "Common": {
+      "key": "Common",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "assetType": "Object"
+    },
+    "air": {
+      "key": "air",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/air.png",
+      "assetType": "Texture"
+    },
+    "armor": {
+      "key": "armor",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/armor.png",
+      "assetType": "Texture"
+    },
+    "arrow-big-down": {
+      "key": "arrow-big-down",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-down.png",
+      "assetType": "Texture"
+    },
+    "arrow-big-left-down": {
+      "key": "arrow-big-left-down",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-left-down.png",
+      "assetType": "Texture"
+    },
+    "arrow-big-left-up": {
+      "key": "arrow-big-left-up",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-left-up.png",
+      "assetType": "Texture"
+    },
+    "arrow-big-left": {
+      "key": "arrow-big-left",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-left.png",
+      "assetType": "Texture"
+    },
+    "arrow-big-right-down": {
+      "key": "arrow-big-right-down",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-right-down.png",
+      "assetType": "Texture"
+    },
+    "arrow-big-right-up": {
+      "key": "arrow-big-right-up",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-right-up.png",
+      "assetType": "Texture"
+    },
+    "arrow-big-right": {
+      "key": "arrow-big-right",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-right.png",
+      "assetType": "Texture"
+    },
+    "arrow-big-up": {
+      "key": "arrow-big-up",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-up.png",
+      "assetType": "Texture"
+    },
+    "arrow-round-down": {
+      "key": "arrow-round-down",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-round-down.png",
+      "assetType": "Texture"
+    },
+    "arrow-round-left": {
+      "key": "arrow-round-left",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-round-left.png",
+      "assetType": "Texture"
+    },
+    "arrow-round-right": {
+      "key": "arrow-round-right",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-round-right.png",
+      "assetType": "Texture"
+    },
+    "arrow-round-up": {
+      "key": "arrow-round-up",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-round-up.png",
+      "assetType": "Texture"
+    },
+    "arrows-contract": {
+      "key": "arrows-contract",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrows-contract.png",
+      "assetType": "Texture"
+    },
+    "arrows-expand": {
+      "key": "arrows-expand",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/arrows-expand.png",
+      "assetType": "Texture"
+    },
+    "axe": {
+      "key": "axe",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/axe.png",
+      "assetType": "Texture"
+    },
+    "badge": {
+      "key": "badge",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/badge.png",
+      "assetType": "Texture"
+    },
+    "balloon": {
+      "key": "balloon",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/balloon.png",
+      "assetType": "Texture"
+    },
+    "banner": {
+      "key": "banner",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/banner.png",
+      "assetType": "Texture"
+    },
+    "bars": {
+      "key": "bars",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/bars.png",
+      "assetType": "Texture"
+    },
+    "battleaxe": {
+      "key": "battleaxe",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/battleaxe.png",
+      "assetType": "Texture"
+    },
+    "bell": {
+      "key": "bell",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/bell.png",
+      "assetType": "Texture"
+    },
+    "bolt": {
+      "key": "bolt",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/bolt.png",
+      "assetType": "Texture"
+    },
+    "bomb": {
+      "key": "bomb",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/bomb.png",
+      "assetType": "Texture"
+    },
+    "bone": {
+      "key": "bone",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/bone.png",
+      "assetType": "Texture"
+    },
+    "boss": {
+      "key": "boss",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/boss.png",
+      "assetType": "Texture"
+    },
+    "bridge": {
+      "key": "bridge",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/bridge.png",
+      "assetType": "Texture"
+    },
+    "btn-round-check": {
+      "key": "btn-round-check",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/btn-round-check.png",
+      "assetType": "Texture"
+    },
+    "btn-round-cross": {
+      "key": "btn-round-cross",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/btn-round-cross.png",
+      "assetType": "Texture"
+    },
+    "bug": {
+      "key": "bug",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/bug.png",
+      "assetType": "Texture"
+    },
+    "building1": {
+      "key": "building1",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/building1.png",
+      "assetType": "Texture"
+    },
+    "camera": {
+      "key": "camera",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/camera.png",
+      "assetType": "Texture"
+    },
+    "camp": {
+      "key": "camp",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/camp.png",
+      "assetType": "Texture"
+    },
+    "card-clubs": {
+      "key": "card-clubs",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/card-clubs.png",
+      "assetType": "Texture"
+    },
+    "card-diamonds": {
+      "key": "card-diamonds",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/card-diamonds.png",
+      "assetType": "Texture"
+    },
+    "card-hearts": {
+      "key": "card-hearts",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/card-hearts.png",
+      "assetType": "Texture"
+    },
+    "card-spades": {
+      "key": "card-spades",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/card-spades.png",
+      "assetType": "Texture"
+    },
+    "caret-down": {
+      "key": "caret-down",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/caret-down.png",
+      "assetType": "Texture"
+    },
+    "caret-left": {
+      "key": "caret-left",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/caret-left.png",
+      "assetType": "Texture"
+    },
+    "caret-right": {
+      "key": "caret-right",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/caret-right.png",
+      "assetType": "Texture"
+    },
+    "caret-up": {
+      "key": "caret-up",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/caret-up.png",
+      "assetType": "Texture"
+    },
+    "chat": {
+      "key": "chat",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/chat.png",
+      "assetType": "Texture"
+    },
+    "chat1-minus": {
+      "key": "chat1-minus",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/chat1-minus.png",
+      "assetType": "Texture"
+    },
+    "chat1-plus": {
+      "key": "chat1-plus",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/chat1-plus.png",
+      "assetType": "Texture"
+    },
+    "check-box2a": {
+      "key": "check-box2a",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/check-box2a.png",
+      "assetType": "Texture"
+    },
+    "check-box2b": {
+      "key": "check-box2b",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/check-box2b.png",
+      "assetType": "Texture"
+    },
+    "check-box2c": {
+      "key": "check-box2c",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/check-box2c.png",
+      "assetType": "Texture"
+    },
+    "check-box2d": {
+      "key": "check-box2d",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/check-box2d.png",
+      "assetType": "Texture"
+    },
+    "check-markbox": {
+      "key": "check-markbox",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/check-markbox.png",
+      "assetType": "Texture"
+    },
+    "chest": {
+      "key": "chest",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/chest.png",
+      "assetType": "Texture"
+    },
+    "city": {
+      "key": "city",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/city.png",
+      "assetType": "Texture"
+    },
+    "close-cross": {
+      "key": "close-cross",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/close-cross.png",
+      "assetType": "Texture"
+    },
+    "close-x": {
+      "key": "close-x",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/close-x.png",
+      "assetType": "Texture"
+    },
+    "close-y": {
+      "key": "close-y",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/close-y.png",
+      "assetType": "Texture"
+    },
+    "Close": {
+      "key": "Close",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/Close.png",
+      "assetType": "Texture"
+    },
+    "cloud": {
+      "key": "cloud",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/cloud.png",
+      "assetType": "Texture"
+    },
+    "coffee": {
+      "key": "coffee",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/coffee.png",
+      "assetType": "Texture"
+    },
+    "coin": {
+      "key": "coin",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/coin.png",
+      "assetType": "Texture"
+    },
+    "coin2": {
+      "key": "coin2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/coin2.png",
+      "assetType": "Texture"
+    },
+    "crown": {
+      "key": "crown",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/crown.png",
+      "assetType": "Texture"
+    },
+    "dark": {
+      "key": "dark",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/dark.png",
+      "assetType": "Texture"
+    },
+    "diamond": {
+      "key": "diamond",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/diamond.png",
+      "assetType": "Texture"
+    },
+    "directions": {
+      "key": "directions",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/directions.png",
+      "assetType": "Texture"
+    },
+    "divine": {
+      "key": "divine",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/divine.png",
+      "assetType": "Texture"
+    },
+    "dungeons": {
+      "key": "dungeons",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/dungeons.png",
+      "assetType": "Texture"
+    },
+    "eclipse": {
+      "key": "eclipse",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/eclipse.png",
+      "assetType": "Texture"
+    },
+    "exp": {
+      "key": "exp",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/exp.png",
+      "assetType": "Texture"
+    },
+    "eye-on": {
+      "key": "eye-on",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/eye-on.png",
+      "assetType": "Texture"
+    },
+    "fairy-wand": {
+      "key": "fairy-wand",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/fairy-wand.png",
+      "assetType": "Texture"
+    },
+    "fire": {
+      "key": "fire",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/fire.png",
+      "assetType": "Texture"
+    },
+    "fire2": {
+      "key": "fire2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/fire2.png",
+      "assetType": "Texture"
+    },
+    "flash-symbol": {
+      "key": "flash-symbol",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/flash-symbol.png",
+      "assetType": "Texture"
+    },
+    "flower": {
+      "key": "flower",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/flower.png",
+      "assetType": "Texture"
+    },
+    "footprint": {
+      "key": "footprint",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/footprint.png",
+      "assetType": "Texture"
+    },
+    "forbidden": {
+      "key": "forbidden",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/forbidden.png",
+      "assetType": "Texture"
+    },
+    "fort": {
+      "key": "fort",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/fort.png",
+      "assetType": "Texture"
+    },
+    "globe": {
+      "key": "globe",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/globe.png",
+      "assetType": "Texture"
+    },
+    "gold-ingot": {
+      "key": "gold-ingot",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/gold-ingot.png",
+      "assetType": "Texture"
+    },
+    "grab": {
+      "key": "grab",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/grab.png",
+      "assetType": "Texture"
+    },
+    "hand-open": {
+      "key": "hand-open",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-open.png",
+      "assetType": "Texture"
+    },
+    "hand-point-down": {
+      "key": "hand-point-down",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-point-down.png",
+      "assetType": "Texture"
+    },
+    "hand-point-left": {
+      "key": "hand-point-left",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-point-left.png",
+      "assetType": "Texture"
+    },
+    "hand-point-right": {
+      "key": "hand-point-right",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-point-right.png",
+      "assetType": "Texture"
+    },
+    "hand-point-up": {
+      "key": "hand-point-up",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-point-up.png",
+      "assetType": "Texture"
+    },
+    "hand-thumbs-down": {
+      "key": "hand-thumbs-down",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-thumbs-down.png",
+      "assetType": "Texture"
+    },
+    "hand-thumbs-up": {
+      "key": "hand-thumbs-up",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-thumbs-up.png",
+      "assetType": "Texture"
+    },
+    "home": {
+      "key": "home",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/home.png",
+      "assetType": "Texture"
+    },
+    "home2": {
+      "key": "home2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/home2.png",
+      "assetType": "Texture"
+    },
+    "iceberg": {
+      "key": "iceberg",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/iceberg.png",
+      "assetType": "Texture"
+    },
+    "iceberg2": {
+      "key": "iceberg2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/iceberg2.png",
+      "assetType": "Texture"
+    },
+    "image-square": {
+      "key": "image-square",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/image-square.png",
+      "assetType": "Texture"
+    },
+    "inbox": {
+      "key": "inbox",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/inbox.png",
+      "assetType": "Texture"
+    },
+    "inferno": {
+      "key": "inferno",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/inferno.png",
+      "assetType": "Texture"
+    },
+    "info-question": {
+      "key": "info-question",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/info-question.png",
+      "assetType": "Texture"
+    },
+    "info-round": {
+      "key": "info-round",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/info-round.png",
+      "assetType": "Texture"
+    },
+    "key": {
+      "key": "key",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/key.png",
+      "assetType": "Texture"
+    },
+    "ladder": {
+      "key": "ladder",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/ladder.png",
+      "assetType": "Texture"
+    },
+    "landmark": {
+      "key": "landmark",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/landmark.png",
+      "assetType": "Texture"
+    },
+    "left-arrow": {
+      "key": "left-arrow",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/left-arrow.png",
+      "assetType": "Texture"
+    },
+    "light": {
+      "key": "light",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/light.png",
+      "assetType": "Texture"
+    },
+    "light1": {
+      "key": "light1",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/light1.png",
+      "assetType": "Texture"
+    },
+    "lightning": {
+      "key": "lightning",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/lightning.png",
+      "assetType": "Texture"
+    },
+    "log-in": {
+      "key": "log-in",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/log-in.png",
+      "assetType": "Texture"
+    },
+    "magic-wand": {
+      "key": "magic-wand",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/magic-wand.png",
+      "assetType": "Texture"
+    },
+    "magic": {
+      "key": "magic",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/magic.png",
+      "assetType": "Texture"
+    },
+    "map-marker": {
+      "key": "map-marker",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/map-marker.png",
+      "assetType": "Texture"
+    },
+    "map1": {
+      "key": "map1",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/map1.png",
+      "assetType": "Texture"
+    },
+    "metal": {
+      "key": "metal",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/metal.png",
+      "assetType": "Texture"
+    },
+    "meteor": {
+      "key": "meteor",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/meteor.png",
+      "assetType": "Texture"
+    },
+    "microphone": {
+      "key": "microphone",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/microphone.png",
+      "assetType": "Texture"
+    },
+    "minus": {
+      "key": "minus",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/minus.png",
+      "assetType": "Texture"
+    },
+    "misc": {
+      "key": "misc",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/misc.png",
+      "assetType": "Texture"
+    },
+    "money": {
+      "key": "money",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/money.png",
+      "assetType": "Texture"
+    },
+    "moon": {
+      "key": "moon",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/moon.png",
+      "assetType": "Texture"
+    },
+    "mountains": {
+      "key": "mountains",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/mountains.png",
+      "assetType": "Texture"
+    },
+    "move-alt": {
+      "key": "move-alt",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/move-alt.png",
+      "assetType": "Texture"
+    },
+    "move": {
+      "key": "move",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/move.png",
+      "assetType": "Texture"
+    },
+    "no-entry": {
+      "key": "no-entry",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/no-entry.png",
+      "assetType": "Texture"
+    },
+    "north": {
+      "key": "north",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/north.png",
+      "assetType": "Texture"
+    },
+    "padlock-locked": {
+      "key": "padlock-locked",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/padlock-locked.png",
+      "assetType": "Texture"
+    },
+    "padlock-unlocked": {
+      "key": "padlock-unlocked",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/padlock-unlocked.png",
+      "assetType": "Texture"
+    },
+    "paper": {
+      "key": "paper",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/paper.png",
+      "assetType": "Texture"
+    },
+    "pause": {
+      "key": "pause",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/pause.png",
+      "assetType": "Texture"
+    },
+    "pause2": {
+      "key": "pause2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/pause2.png",
+      "assetType": "Texture"
+    },
+    "pencil-tool": {
+      "key": "pencil-tool",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/pencil-tool.png",
+      "assetType": "Texture"
+    },
+    "pencil": {
+      "key": "pencil",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/pencil.png",
+      "assetType": "Texture"
+    },
+    "plain-heart": {
+      "key": "plain-heart",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/plain-heart.png",
+      "assetType": "Texture"
+    },
+    "plant": {
+      "key": "plant",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/plant.png",
+      "assetType": "Texture"
+    },
+    "plus": {
+      "key": "plus",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/plus.png",
+      "assetType": "Texture"
+    },
+    "poison-bottle": {
+      "key": "poison-bottle",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/poison-bottle.png",
+      "assetType": "Texture"
+    },
+    "portal": {
+      "key": "portal",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/portal.png",
+      "assetType": "Texture"
+    },
+    "potion": {
+      "key": "potion",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/potion.png",
+      "assetType": "Texture"
+    },
+    "potion2": {
+      "key": "potion2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/potion2.png",
+      "assetType": "Texture"
+    },
+    "pouch": {
+      "key": "pouch",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/pouch.png",
+      "assetType": "Texture"
+    },
+    "puzzle": {
+      "key": "puzzle",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/puzzle.png",
+      "assetType": "Texture"
+    },
+    "quest": {
+      "key": "quest",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/quest.png",
+      "assetType": "Texture"
+    },
+    "radiation": {
+      "key": "radiation",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/radiation.png",
+      "assetType": "Texture"
+    },
+    "reading-book": {
+      "key": "reading-book",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/reading-book.png",
+      "assetType": "Texture"
+    },
+    "rewards": {
+      "key": "rewards",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/rewards.png",
+      "assetType": "Texture"
+    },
+    "rocket": {
+      "key": "rocket",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/rocket.png",
+      "assetType": "Texture"
+    },
+    "round-info": {
+      "key": "round-info",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/round-info.png",
+      "assetType": "Texture"
+    },
+    "search": {
+      "key": "search",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/search.png",
+      "assetType": "Texture"
+    },
+    "select-icon2": {
+      "key": "select-icon2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/select-icon2.png",
+      "assetType": "Texture"
+    },
+    "select-icon3": {
+      "key": "select-icon3",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/select-icon3.png",
+      "assetType": "Texture"
+    },
+    "settings-tool": {
+      "key": "settings-tool",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/settings-tool.png",
+      "assetType": "Texture"
+    },
+    "settings-wrench": {
+      "key": "settings-wrench",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/settings-wrench.png",
+      "assetType": "Texture"
+    },
+    "settings": {
+      "key": "settings",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/settings.png",
+      "assetType": "Texture"
+    },
+    "shield": {
+      "key": "shield",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/shield.png",
+      "assetType": "Texture"
+    },
+    "signboard": {
+      "key": "signboard",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/signboard.png",
+      "assetType": "Texture"
+    },
+    "sorcrery": {
+      "key": "sorcrery",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/sorcrery.png",
+      "assetType": "Texture"
+    },
+    "spa": {
+      "key": "spa",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/spa.png",
+      "assetType": "Texture"
+    },
+    "spiral": {
+      "key": "spiral",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/spiral.png",
+      "assetType": "Texture"
+    },
+    "star-alt": {
+      "key": "star-alt",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/star-alt.png",
+      "assetType": "Texture"
+    },
+    "star": {
+      "key": "star",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/star.png",
+      "assetType": "Texture"
+    },
+    "stone": {
+      "key": "stone",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/stone.png",
+      "assetType": "Texture"
+    },
+    "storm": {
+      "key": "storm",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/storm.png",
+      "assetType": "Texture"
+    },
+    "sun": {
+      "key": "sun",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/sun.png",
+      "assetType": "Texture"
+    },
+    "sun2": {
+      "key": "sun2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/sun2.png",
+      "assetType": "Texture"
+    },
+    "sword": {
+      "key": "sword",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/sword.png",
+      "assetType": "Texture"
+    },
+    "sword2": {
+      "key": "sword2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/sword2.png",
+      "assetType": "Texture"
+    },
+    "symbol": {
+      "key": "symbol",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/symbol.png",
+      "assetType": "Texture"
+    },
+    "target": {
+      "key": "target",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/target.png",
+      "assetType": "Texture"
+    },
+    "temple": {
+      "key": "temple",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/temple.png",
+      "assetType": "Texture"
+    },
+    "toggle-off": {
+      "key": "toggle-off",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/toggle-off.png",
+      "assetType": "Texture"
+    },
+    "toggle-on": {
+      "key": "toggle-on",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/toggle-on.png",
+      "assetType": "Texture"
+    },
+    "toggle2-off": {
+      "key": "toggle2-off",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/toggle2-off.png",
+      "assetType": "Texture"
+    },
+    "toggle2-on": {
+      "key": "toggle2-on",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/toggle2-on.png",
+      "assetType": "Texture"
+    },
+    "tower": {
+      "key": "tower",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/tower.png",
+      "assetType": "Texture"
+    },
+    "tower2": {
+      "key": "tower2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/tower2.png",
+      "assetType": "Texture"
+    },
+    "trash-bin": {
+      "key": "trash-bin",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/trash-bin.png",
+      "assetType": "Texture"
+    },
+    "tree-alt": {
+      "key": "tree-alt",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/tree-alt.png",
+      "assetType": "Texture"
+    },
+    "tree-small": {
+      "key": "tree-small",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/tree-small.png",
+      "assetType": "Texture"
+    },
+    "trophy": {
+      "key": "trophy",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/trophy.png",
+      "assetType": "Texture"
+    },
+    "trophy2": {
+      "key": "trophy2",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/trophy2.png",
+      "assetType": "Texture"
+    },
+    "umbrella": {
+      "key": "umbrella",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/umbrella.png",
+      "assetType": "Texture"
+    },
+    "up-arrow-1": {
+      "key": "up-arrow-1",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/up-arrow-1.png",
+      "assetType": "Texture"
+    },
+    "up-arrow-alt": {
+      "key": "up-arrow-alt",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/up-arrow-alt.png",
+      "assetType": "Texture"
+    },
+    "user": {
+      "key": "user",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/user.png",
+      "assetType": "Texture"
+    },
+    "Vacuity": {
+      "key": "Vacuity",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/Vacuity.png",
+      "assetType": "Texture"
+    },
+    "village": {
+      "key": "village",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/village.png",
+      "assetType": "Texture"
+    },
+    "virus": {
+      "key": "virus",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/virus.png",
+      "assetType": "Texture"
+    },
+    "volcano": {
+      "key": "volcano",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volcano.png",
+      "assetType": "Texture"
+    },
+    "volume-full": {
+      "key": "volume-full",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-full.png",
+      "assetType": "Texture"
+    },
+    "volume-low": {
+      "key": "volume-low",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-low.png",
+      "assetType": "Texture"
+    },
+    "volume-medium": {
+      "key": "volume-medium",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-medium.png",
+      "assetType": "Texture"
+    },
+    "volume-mute": {
+      "key": "volume-mute",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-mute.png",
+      "assetType": "Texture"
+    },
+    "volume-off": {
+      "key": "volume-off",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-off.png",
+      "assetType": "Texture"
+    },
+    "wall-clock": {
+      "key": "wall-clock",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/wall-clock.png",
+      "assetType": "Texture"
+    },
+    "water-drop": {
+      "key": "water-drop",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/water-drop.png",
+      "assetType": "Texture"
+    },
+    "water-wave": {
+      "key": "water-wave",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/water-wave.png",
+      "assetType": "Texture"
+    },
+    "windmill": {
+      "key": "windmill",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/windmill.png",
+      "assetType": "Texture"
+    },
+    "wine": {
+      "key": "wine",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/wine.png",
+      "assetType": "Texture"
+    },
+    "zoom-minus": {
+      "key": "zoom-minus",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-minus.png",
+      "assetType": "Texture"
+    },
+    "zoom-plus": {
+      "key": "zoom-plus",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-plus.png",
+      "assetType": "Texture"
+    },
+    "zoom-tool": {
+      "key": "zoom-tool",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-tool.png",
+      "assetType": "Texture"
+    },
+    "zselect-arrow": {
+      "key": "zselect-arrow",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/zselect-arrow.png",
+      "assetType": "Texture"
+    },
+    "zselect-icon": {
+      "key": "zselect-icon",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/zselect-icon.png",
+      "assetType": "Texture"
+    },
+    "MSYH_SDF": {
+      "key": "MSYH_SDF",
+      "bundleName": "tmpasset",
+      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
+      "assetType": "Object"
+    },
+    "UIRoot": {
+      "key": "UIRoot",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\UIRoot.prefab",
+      "assetType": "Object"
+    },
+    "Battle_Panel": {
+      "key": "Battle_Panel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Battle\\Battle_Panel.prefab",
+      "assetType": "Object"
+    },
+    "BeginView": {
+      "key": "BeginView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Begin\\BeginView.prefab",
+      "assetType": "Object"
+    },
+    "InventoryPanel": {
+      "key": "InventoryPanel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\InventoryPanel.prefab",
+      "assetType": "Object"
+    },
+    "ItemCell": {
+      "key": "ItemCell",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemCell.prefab",
+      "assetType": "Object"
+    },
+    "ItemDetailPanelBase": {
+      "key": "ItemDetailPanelBase",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemDetailPanelBase.prefab",
+      "assetType": "Object"
+    },
+    "ItemTypeOpt": {
+      "key": "ItemTypeOpt",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemTypeOpt.prefab",
+      "assetType": "Object"
+    },
+    "MaterialDetailPanel": {
+      "key": "MaterialDetailPanel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\DetailPanel\\MaterialDetailPanel.prefab",
+      "assetType": "Object"
+    },
+    "Main_Chat_Panel": {
+      "key": "Main_Chat_Panel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Chat_Panel.prefab",
+      "assetType": "Object"
+    },
+    "Main_Panel": {
+      "key": "Main_Panel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Panel.prefab",
+      "assetType": "Object"
+    },
+    "Chat_UI": {
+      "key": "Chat_UI",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Chat_UI.prefab",
+      "assetType": "Object"
+    },
+    "Friend_UI": {
+      "key": "Friend_UI",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Friend_UI.prefab",
+      "assetType": "Object"
+    },
+    "BaseTipView": {
+      "key": "BaseTipView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\BaseTipView.prefab",
+      "assetType": "Object"
+    },
+    "UpdateTipView": {
+      "key": "UpdateTipView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\UpdateTipView.prefab",
+      "assetType": "Object"
     }
   },
   "abPackageCollection": {
@@ -265,68 +1639,78 @@
       },
       "prefab": {
         "name": "prefab",
-        "size": 46790,
-        "hash": "f28cc4f04abe3fd906749052c81dd14d4626e49d973b75064d7d7e7c9c232f07",
+        "size": 44705,
+        "hash": "7e6862d6f990377e7d7bf1e8d6ea610527e7742bb32018266525273453e2de32",
         "dependencies": []
       },
       "scenes": {
         "name": "scenes",
-        "size": 26473073,
-        "hash": "8ff8a5d669c52f92f861b75ba180e3770e3f9f5405633bd6d54e362f2390cccc",
+        "size": 12011921,
+        "hash": "ce843a34e51301255e7448c73695d862bb9d031b6ebec618db2dcded0e15c85e",
         "dependencies": [
+          "animation",
+          "fonts",
+          "mask",
+          "material",
+          "tmpasset",
           "ui"
         ]
       },
       "spriteatlas": {
         "name": "spriteatlas",
-        "size": 1956,
-        "hash": "25cd8e594e2f790391490c45400409e52bb40ef869aafbf21b0fc268dcea2bda",
+        "size": 3302183,
+        "hash": "2427fdb2305ecdeb6c2bbf6778a9ab32d26af723f6e1f135eca307d52c2b89d4",
         "dependencies": []
       },
       "tmpasset": {
         "name": "tmpasset",
-        "size": 13986809,
-        "hash": "17e9c8c7af9152ece6fe403738440ef3d3ca020bae80b7d1d965e1a6a2b68dee",
-        "dependencies": []
+        "size": 424636,
+        "hash": "5d6b5a0fc47bcf3264ff21ea40877de2ec5adb3e50a7a31f131b3713e9ad6919",
+        "dependencies": [
+          "fonts"
+        ]
       },
       "ui": {
         "name": "ui",
-        "size": 14511855,
-        "hash": "49933842f39a4679012079edaefb4e3973beda2fb5fe7637d533ef299630ba12",
-        "dependencies": []
+        "size": 190063,
+        "hash": "1aac8f8de80b2f39c78630c1b2c3b9a985e7e3cc5553c9c2a287a205bb0119b8",
+        "dependencies": [
+          "fonts",
+          "tmpasset"
+        ]
       }
     }
   },
   "bundleToAssetKeys": {
     "animation": [
-      "bot",
-      "role_controller"
+      "Bot",
+      "Role_Controller"
     ],
     "fonts": [
-      "msyh"
+      "MSYH"
     ],
     "gameconfig": [
-      "itemconfigs"
+      "ItemConfigs"
     ],
     "hotupdate": [
-      "hotupdate.base.dll",
-      "hotupdate.common.dll",
-      "hotupdate.game.dll",
-      "hotupdate.ui.dll",
-      "hotupdate.update.dll",
-      "hotupdateassemblysettings"
+      "HotUpdate.Base.dll",
+      "HotUpdate.Common.dll",
+      "HotUpdate.Game.dll",
+      "HotUpdate.UI.dll",
+      "HotUpdate.Update.dll",
+      "HotUpdateAssemblySettings"
     ],
     "hotupdate_entry": [
-      "hotupdateentry"
+      "HotUpdateEntry"
     ],
     "mask": [
-      "bot_mask"
+      "Bot_Mask"
     ],
     "material": [
-      "gray"
+      "Gray"
     ],
     "prefab": [
-      "sphere"
+      "Sphere"
     ],
     "scenes": [
       "ABTestScene",
@@ -336,27 +1720,256 @@
       "MainScene"
     ],
     "spriteatlas": [
-      "atlas_item",
-      "common"
+      "Atlas_Item",
+      "arrow_basic",
+      "bone_skull",
+      "bone_white",
+      "bottle_standard_blue",
+      "bottle_standard_empty",
+      "bottle_standard_green",
+      "bow_wood1",
+      "cape_hood_darkyellow",
+      "crown_gold",
+      "fish_green",
+      "gold_bars_three",
+      "gold_coins_many",
+      "key_silver",
+      "leafs_long",
+      "mushroom_big_red",
+      "necklace_silver_red",
+      "pickaxe_basic",
+      "pouch_leather_small",
+      "ring_gold_magic",
+      "scroll_map2",
+      "shield_basic_metal",
+      "silver_bars",
+      "silver_coins_many",
+      "stone_blocks_grey",
+      "sword_basic4_blue",
+      "sword_basic_blue",
+      "twig_green",
+      "wood_log",
+      "wood_log_single_birch",
+      "wood_logs_three",
+      "wood_stick",
+      "Common",
+      "air",
+      "armor",
+      "arrow-big-down",
+      "arrow-big-left-down",
+      "arrow-big-left-up",
+      "arrow-big-left",
+      "arrow-big-right-down",
+      "arrow-big-right-up",
+      "arrow-big-right",
+      "arrow-big-up",
+      "arrow-round-down",
+      "arrow-round-left",
+      "arrow-round-right",
+      "arrow-round-up",
+      "arrows-contract",
+      "arrows-expand",
+      "axe",
+      "badge",
+      "balloon",
+      "banner",
+      "bars",
+      "battleaxe",
+      "bell",
+      "bolt",
+      "bomb",
+      "bone",
+      "boss",
+      "bridge",
+      "btn-round-check",
+      "btn-round-cross",
+      "bug",
+      "building1",
+      "camera",
+      "camp",
+      "card-clubs",
+      "card-diamonds",
+      "card-hearts",
+      "card-spades",
+      "caret-down",
+      "caret-left",
+      "caret-right",
+      "caret-up",
+      "chat",
+      "chat1-minus",
+      "chat1-plus",
+      "check-box2a",
+      "check-box2b",
+      "check-box2c",
+      "check-box2d",
+      "check-markbox",
+      "chest",
+      "city",
+      "close-cross",
+      "close-x",
+      "close-y",
+      "Close",
+      "cloud",
+      "coffee",
+      "coin",
+      "coin2",
+      "crown",
+      "dark",
+      "diamond",
+      "directions",
+      "divine",
+      "dungeons",
+      "eclipse",
+      "exp",
+      "eye-on",
+      "fairy-wand",
+      "fire",
+      "fire2",
+      "flash-symbol",
+      "flower",
+      "footprint",
+      "forbidden",
+      "fort",
+      "globe",
+      "gold-ingot",
+      "grab",
+      "hand-open",
+      "hand-point-down",
+      "hand-point-left",
+      "hand-point-right",
+      "hand-point-up",
+      "hand-thumbs-down",
+      "hand-thumbs-up",
+      "home",
+      "home2",
+      "iceberg",
+      "iceberg2",
+      "image-square",
+      "inbox",
+      "inferno",
+      "info-question",
+      "info-round",
+      "key",
+      "ladder",
+      "landmark",
+      "left-arrow",
+      "light",
+      "light1",
+      "lightning",
+      "log-in",
+      "magic-wand",
+      "magic",
+      "map-marker",
+      "map1",
+      "metal",
+      "meteor",
+      "microphone",
+      "minus",
+      "misc",
+      "money",
+      "moon",
+      "mountains",
+      "move-alt",
+      "move",
+      "no-entry",
+      "north",
+      "padlock-locked",
+      "padlock-unlocked",
+      "paper",
+      "pause",
+      "pause2",
+      "pencil-tool",
+      "pencil",
+      "plain-heart",
+      "plant",
+      "plus",
+      "poison-bottle",
+      "portal",
+      "potion",
+      "potion2",
+      "pouch",
+      "puzzle",
+      "quest",
+      "radiation",
+      "reading-book",
+      "rewards",
+      "rocket",
+      "round-info",
+      "search",
+      "select-icon2",
+      "select-icon3",
+      "settings-tool",
+      "settings-wrench",
+      "settings",
+      "shield",
+      "signboard",
+      "sorcrery",
+      "spa",
+      "spiral",
+      "star-alt",
+      "star",
+      "stone",
+      "storm",
+      "sun",
+      "sun2",
+      "sword",
+      "sword2",
+      "symbol",
+      "target",
+      "temple",
+      "toggle-off",
+      "toggle-on",
+      "toggle2-off",
+      "toggle2-on",
+      "tower",
+      "tower2",
+      "trash-bin",
+      "tree-alt",
+      "tree-small",
+      "trophy",
+      "trophy2",
+      "umbrella",
+      "up-arrow-1",
+      "up-arrow-alt",
+      "user",
+      "Vacuity",
+      "village",
+      "virus",
+      "volcano",
+      "volume-full",
+      "volume-low",
+      "volume-medium",
+      "volume-mute",
+      "volume-off",
+      "wall-clock",
+      "water-drop",
+      "water-wave",
+      "windmill",
+      "wine",
+      "zoom-minus",
+      "zoom-plus",
+      "zoom-tool",
+      "zselect-arrow",
+      "zselect-icon"
     ],
     "tmpasset": [
-      "msyh_sdf"
+      "MSYH_SDF"
     ],
     "ui": [
-      "battle_panel",
-      "beginview",
-      "materialdetailpanel",
-      "inventorypanel",
-      "itemcell",
-      "itemdetailpanelbase",
-      "itemtypeopt",
-      "chat_ui",
-      "friend_ui",
-      "main_chat_panel",
-      "main_panel",
-      "basetipview",
-      "updatetipview",
-      "uiroot"
+      "UIRoot",
+      "Battle_Panel",
+      "BeginView",
+      "InventoryPanel",
+      "ItemCell",
+      "ItemDetailPanelBase",
+      "ItemTypeOpt",
+      "MaterialDetailPanel",
+      "Main_Chat_Panel",
+      "Main_Panel",
+      "Chat_UI",
+      "Friend_UI",
+      "BaseTipView",
+      "UpdateTipView"
     ]
   }
 }

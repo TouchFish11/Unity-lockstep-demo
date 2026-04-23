@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events;
 using UnityEngine;
+using UnityEngine.UI;
 using Logger = Core.Log.Logger;
 
 namespace Core.UI.MVC
@@ -57,6 +58,7 @@ namespace Core.UI.MVC
             view.GetBinder().OnToggleValueChanged += ToggleValueChanged;
             view.GetBinder().OnInputFieldValueChanged += InputFieldValueChanged;
             view.GetBinder().OnScrollRectValueChanged += ScrollRectValueChanged;
+            view.GetBinder().OnDropdownValueChanged += DropdownValueChanged;
             return OnShow();
         }
         
@@ -81,6 +83,7 @@ namespace Core.UI.MVC
             view.GetBinder().OnToggleValueChanged -= ToggleValueChanged;
             view.GetBinder().OnInputFieldValueChanged -= InputFieldValueChanged;
             view.GetBinder().OnScrollRectValueChanged -= ScrollRectValueChanged;
+            view.GetBinder().OnDropdownValueChanged -= DropdownValueChanged;
             await OnHide();
             model.ClearData();
             view.ViewObj.SetActive(false);
@@ -136,6 +139,13 @@ namespace Core.UI.MVC
         /// <param name="scrollViewName">ScrollRect的名称</param>
         /// <param name="pos">滚动区域的归一化位置（Normalized Position）</param>
         protected virtual void ScrollRectValueChanged(string scrollViewName, Vector2 pos) { }
+        
+        /// <summary>
+        /// 下拉菜单监听
+        /// </summary>
+        /// <param name="dropdownName"></param>
+        /// <param name="index"></param>
+        protected virtual void DropdownValueChanged(string dropdownName, int index) { }
 
         public async Task Destroy()
         {

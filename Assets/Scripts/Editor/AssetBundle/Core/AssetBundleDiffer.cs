@@ -86,7 +86,7 @@ namespace Editor.AssetBundle.Core
                             // 这个的所有资源都要重新打包（排除待移除的资源）
                             foreach (var a in abInfo.assetInfos)
                                 if (a.name != assetInfo.name)
-                                    rebuildList.Add(new AssetBundlesCollections.AssetInfo(a.assetPath, a.size, a.name, a.hash));
+                                    rebuildList.Add(new AssetBundlesCollections.AssetInfo(a.assetPath, a.size, a.name, a.hash, a.assetType));
                             result.BundlesToRebuild.Add(abInfo.assetBundleName, rebuildList);
                         }
                         else
@@ -172,14 +172,14 @@ namespace Editor.AssetBundle.Core
         {
             if (!result.BundlesToRebuild.ContainsKey(bundleName))
             {
-                var list = new List<AssetBundlesCollections.AssetInfo> { new(latestAsset.assetPath, latestAsset.size, latestAsset.name, latestAsset.hash) };
+                var list = new List<AssetBundlesCollections.AssetInfo> { new(latestAsset.assetPath, latestAsset.size, latestAsset.name, latestAsset.hash,latestAsset.assetType) };
                 // 添加该包原有且未被移除的资源
                 foreach (var oldAsset in releaseAbInfo.assetInfos)
                 {
                     if (oldAsset.name == latestAsset.name) continue;
                     if (result.AssetsToRemovePerBundle.TryGetValue(bundleName, out var removedList) && removedList.Exists(a => a.name == oldAsset.name))
                         continue;
-                    list.Add(new AssetBundlesCollections.AssetInfo(oldAsset.assetPath, oldAsset.size, oldAsset.name, oldAsset.hash));
+                    list.Add(new AssetBundlesCollections.AssetInfo(oldAsset.assetPath, oldAsset.size, oldAsset.name, oldAsset.hash, oldAsset.assetType));
                 }
                 result.BundlesToRebuild.Add(bundleName, list);
             }
@@ -189,7 +189,7 @@ namespace Editor.AssetBundle.Core
                 // 移除旧资源，添加新资源
                 var existing = list.Find(a => a.name == latestAsset.name);
                 if (existing != null) list.Remove(existing);
-                list.Add(new AssetBundlesCollections.AssetInfo(latestAsset.assetPath, latestAsset.size, latestAsset.name, latestAsset.hash));
+                list.Add(new AssetBundlesCollections.AssetInfo(latestAsset.assetPath, latestAsset.size, latestAsset.name, latestAsset.hash, latestAsset.assetType));
             }
         }
 

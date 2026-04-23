@@ -148,34 +148,8 @@ namespace Editor.AssetBundle
                 AppendToLog("资源键常量已手动刷新。");
             }
             GUILayout.EndHorizontal();
-    
-            // 原有的其他 UI 元素（如 ResKeyCollection 生成按钮）可以保留或移除
         }
         
-        // private void DrawResKeyView()
-        // {
-        //     EditorGUILayout.Space();
-        //     GUILayout.Label("Asset Key Generate", EditorStyles.boldLabel);
-        //     GUILayout.BeginHorizontal();
-        //     EditorGUI.BeginDisabledGroup(true);
-        //     EditorGUILayout.TextField("Generate Path", $"{Application.dataPath}/Scripts/HotUpdate/Common/Generated/AssetKeys.cs");
-        //     EditorGUI.EndDisabledGroup();
-        //     if (GUILayout.Button("Generate AssetKeys from ServerData",GUILayout.Width(250)))
-        //     {
-        //         var serverCatalogPath = Path.Combine(serverDataPath, AssetBundleBuilder.AssetCatalogName);
-        //         if (File.Exists(serverCatalogPath))
-        //         {
-        //             var catalog = jsonManager.FromJson<AssetCatalog>(File.ReadAllText(serverCatalogPath));
-        //             var scriptPath = Path.Combine(Application.dataPath, "Scripts", "HotUpdate", "Common", "Generated", "AssetKeys.cs");
-        //             AssetKeyGenerator.Generate(catalog, scriptPath);
-        //             AppendToLog($"AssetKeys generated from ServerData.");
-        //         }
-        //         else
-        //             AppendToLog("ServerData 中没有 AssetCatalog.json，请先执行 CopyToServerData。");
-        //     }
-        //     GUILayout.EndHorizontal();
-        // }
-
         private void DrawHotUpdateView()
         {
             EditorGUILayout.Space();
@@ -529,7 +503,7 @@ namespace Editor.AssetBundle
             var collector = new AssetBundleCollector(
                 AssetsInputPath, 
                 new[] { ".meta" }, 
-                new[] { "Texture" }, 
+                null, 
                 null, 
                 null
             );

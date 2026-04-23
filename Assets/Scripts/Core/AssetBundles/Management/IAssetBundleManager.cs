@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Systems.Memorys;
@@ -39,5 +40,13 @@ namespace Core.AssetBundles.Management
         /// </summary>
         /// <param name="abName">AB包名称（不含拓展名）</param>
         void ReleaseDependencies(string abName);
+
+        /// <summary>
+        /// 同步加载指定AB包
+        /// </summary>
+        /// <param name="abName">AB包名称（不含拓展名） </param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        BundleWrapper LoadBundle(string abName);
     }
 }

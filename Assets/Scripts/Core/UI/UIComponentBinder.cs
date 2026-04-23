@@ -47,7 +47,12 @@ namespace Core.UI
         /// <summary>
         /// 滚动列表滚动事件
         /// </summary>
-        public event UnityAction<string, Vector2> OnScrollRectValueChanged; 
+        public event UnityAction<string, Vector2> OnScrollRectValueChanged;
+        
+        /// <summary>
+        /// 下拉菜单选择事件
+        /// </summary>
+        public event UnityAction<string, int> OnDropdownValueChanged; 
 
         public UIComponentBinder(UIBehaviour uIBehaviour)
         {
@@ -59,6 +64,7 @@ namespace Core.UI
             FindChildrenControl<Slider>();
             FindChildrenControl<InputField>();
             FindChildrenControl<ScrollRect>();
+            FindChildrenControl<TMP_Dropdown>();
             FindChildrenControl<Dropdown>();
             FindChildrenControl<TextMeshProUGUI>();
             FindChildrenControl<VerticalLayoutGroup>();
@@ -162,6 +168,9 @@ namespace Core.UI
                         break;
                     case ScrollRect scrollRect:
                         scrollRect.onValueChanged.AddListener(posValues => OnScrollRectValueChanged?.Invoke(controlName, posValues));
+                        break;
+                    case TMP_Dropdown tmpDropdown:
+                        tmpDropdown.onValueChanged.AddListener(indexValue => { OnDropdownValueChanged?.Invoke(controlName, indexValue); });
                         break;
                 }
             }
