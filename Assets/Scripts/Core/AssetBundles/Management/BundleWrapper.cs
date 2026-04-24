@@ -23,6 +23,11 @@ namespace Core.AssetBundles.Management
         private AssetBundleCreateRequestTask _assetBundleCreateRequestTask;
         // AB包卸载任务
         private AssetBundleUnloadOperationTask _assetBundleUnloadTask;
+        // 物理文件到加载任务的映射缓存
+        private readonly Dictionary<string, object> _assetTasks =  new();
+        // 批量加载资源任务
+        private object _assetBundleRequestsTask;
+        
         // LFU滑动窗口
         private readonly LFUSlidingWindow _window;
         
@@ -100,9 +105,8 @@ namespace Core.AssetBundles.Management
                 // 已加载完成，直接返回，避免重复加载
                 if (AssetBundle)
                 {
-                    RefCount += 1;
                     IsActive = true;
-                    //Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
+                    Logger.Log($"[BundleWrapper]: '{BundleName}' is load");
                     return;
                 }
         
@@ -110,22 +114,20 @@ namespace Core.AssetBundles.Management
                 if (_assetBundleCreateRequestTask != null)
                 {
                     AssetBundle ??= await _assetBundleCreateRequestTask;
-                    RefCount += 1;
                     IsActive = true;
                     return;
                 }
         
                 // 异步加载AB包
                 _assetBundleCreateRequestTask = AssetBundle.LoadFromFileAsync(LoadPath).ToTask(token);
-                AssetBundle = await _assetBundleCreateRequestTask;
+                AssetBundle ??= await _assetBundleCreateRequestTask;
                 _assetBundleCreateRequestTask = null;
-                RefCount += 1;
                 IsActive = true;
-                //Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
+                Logger.Log($"[BundleWrapper]: '{BundleName}' is load");
             }
             catch (Exception e)
             {
-                Logger.LogError($"[AssetBundle]:{BundleName} Load fail, {e.Message}");
+                Logger.LogError($"[BundleWrapper]: '{BundleName}' Load fail, {e.Message}");
                 _assetBundleCreateRequestTask = null;
             }
         }
@@ -141,54 +143,92 @@ namespace Core.AssetBundles.Management
                 // 已加载完成，直接返回，避免重复加载
                 if (AssetBundle)
                 {
-                    RefCount += 1;
                     IsActive = true;
-                    //Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
+                    Logger.Log($"[BundleWrapper]: '{BundleName}' is load");
                     return;
                 }
                 
-                // 异步加载AB包
+                // 加载AB包
                 AssetBundle = AssetBundle.LoadFromFile(LoadPath);
-                RefCount += 1;
                 IsActive = true;
-                //Logger.Log($"[AssetBundle]:{BundleName} is referenced, and the reference count is updated to {RefCount}");
+                Logger.Log($"[BundleWrapper]: '{BundleName}' is load");
             }
             catch (Exception e)
             {
-                Logger.LogError($"[AssetBundle]:{BundleName} Load fail, {e.Message}");
+                Logger.LogError($"[BundleWrapper]: '{BundleName}' Load fail, {e.Message}");
             }
         }
 
-        public AssetWrapper LoadAsset<T>(string assetName) where T : Object
+        /// <summary>
+        /// 同步加载资源
+        /// </summary>
+        /// <param name="assetKey"></param>
+        /// <param name="assetName"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public AssetWrapper LoadAsset<T>(string assetKey, string assetName) where T : Object
         {
             var asset = AssetBundle.LoadAsset<T>(assetName);
-            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, this });
+            Retain();
+            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
         }
         
-        public async Task<AssetWrapper> LoadAssetAsync<T>(string assetName, CancellationToken token = default) where T : class
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        /// <param name="assetKey"></param>
+        /// <param name="assetName"></param>
+        /// <param name="token"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public async Task<AssetWrapper> LoadAssetAsync<T>(string assetKey, string assetName, CancellationToken token = default) where T : class
         {
-            var asset = await AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token);
-            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, this });
-        }
-
-        public async Task<AssetWrapper> LoadAssetsAsync<T>(CancellationToken token = default, params string[] assetNames) where T : class
-        {
-            IList<T> list = new List<T>();
-            foreach (var assetName in assetNames)
+            T asset;
+            if (_assetTasks.TryGetValue(assetKey, out var value) && value is AssetBundleRequestTask<T> cacheTask)
             {
-                var asset = await AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token);
-                list.Add(asset);
+                asset = await cacheTask;
+                Retain();
+                return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
             }
-            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { list, this });
+            
+            var task = AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token);
+            _assetTasks.Add(assetKey, task);
+            asset = await task;
+            Retain();
+            _assetTasks.Remove(assetKey);
+            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
         }
 
-        public async Task<AssetWrapper> LoadAllAssetAsync<T>(CancellationToken token = default) where T : Object
+        /// <summary>
+        /// 加载所有资源
+        /// </summary>
+        /// <param name="token"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public async Task<AssetWrapper[]> LoadAllAssetAsync<T>(CancellationToken token = default) where T : Object
         {
             IList<T> list = new List<T>();
             await AssetBundle.LoadAllAssetsAsync<T>().ToTask(list, token);
-            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { list, this });
+            
+            var assetWrappers = new List<AssetWrapper>(list.Count);
+            foreach (var o in list)
+            {
+                assetWrappers.Add(DIContainer.Create<AssetWrapper>(parameterValues: new object[] { o, o.name, this }));
+                Retain();
+            }
+            
+            return assetWrappers.ToArray();
         }
-        
+
+        /// <summary>
+        /// 增加引用计数
+        /// </summary>
+        private void Retain()
+        {
+            ++RefCount;
+            Logger.Log($"[BundleWrapper]: '{BundleName}' is referenced, refCount updated to {RefCount}");
+        }
+
         /// <summary>
         /// 释放指定AssetBundle，仅减少引用计数
         /// </summary>
@@ -206,7 +246,7 @@ namespace Core.AssetBundles.Management
                 _assetBundleManager.ReleaseDependencies(BundleName);
             }
             
-            //Logger.Log($"[AssetBundle]:{BundleName} is released, and the reference count is updated to {RefCount}");
+            Logger.Log($"[BundleWrapper]: '{BundleName}' is released, refCount updated to {RefCount}");
         }
 
         /// <summary>
@@ -233,7 +273,7 @@ namespace Core.AssetBundles.Management
             // 卸载完成后置空
             AssetBundle = null;
             _assetBundleUnloadTask = null;
-            //Logger.Log($"[AssetBundle]:{BundleName} is unload, and the final reference count is {RefCount}");
+            Logger.Log($"[BundleWrapper]: '{BundleName}' is unload, final refCount is {RefCount}");
         }
     }
 }

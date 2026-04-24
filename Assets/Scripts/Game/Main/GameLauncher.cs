@@ -54,7 +54,7 @@ namespace Game.Main
             
             // 加载所有dll资源
             var handle = await GameAsset.LoadAllAssetAsync<TextAsset>(bootConfig.hotfixDllBundleName);
-            var list = new List<TextAsset>(handle.Asset);
+            var list = new List<TextAsset>(handle.Assets);
             // 获取热更程序集依赖设置
             var settingsTextAsset = list.Find(text => text.name.Contains(nameof(HotUpdateAssemblySettings)));
             list.Remove(settingsTextAsset);

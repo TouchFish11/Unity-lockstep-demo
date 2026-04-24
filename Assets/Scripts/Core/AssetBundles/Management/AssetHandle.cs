@@ -66,23 +66,14 @@ namespace Core.AssetBundles.Management
         }
 
         /// <summary>
-        /// 原始资源
+        /// 资源，若是组合类型的句柄则返回null，资源存储在列表中
         /// </summary>
-        public T Asset
-        {
-            get
-            {
-                if (!_innerHandle.IsCombine) 
-                    return GameAsset.GetAsset<T>(_innerHandle.HandleId, _innerHandle.Version);
-            
-                IList<T> list = new List<T>(_innerHandle.CombineHandles.Count);
-                foreach (var innerHandleCombineHandle in _innerHandle.CombineHandles)
-                {
-                    list.Add(innerHandleCombineHandle.ConvertTo<T>().Asset);
-                }
-                return list as T;
-            }
-        }
+        public T Asset => _innerHandle.IsCombine ? null : GameAsset.GetAsset<T>(_innerHandle.HandleId, _innerHandle.Version);
+
+        /// <summary>
+        /// 资源列表，若是非组合类型的句柄，返回空列表
+        /// </summary>
+        public List<T> Assets => !_innerHandle.IsCombine ? new List<T>() : _innerHandle.CombineHandles.ConvertAll(handle => handle.ConvertTo<T>().Asset);
 
         void IDisposable.Dispose()
         {

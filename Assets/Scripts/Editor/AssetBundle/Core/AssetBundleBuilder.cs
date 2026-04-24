@@ -119,12 +119,12 @@ namespace Editor.AssetBundle.Core
 
             // 读取本次生成的资源目录
             var newCatalogJson = File.ReadAllText(srcCatalogPath);
-            var newCatalog = jsonManager.FromJson<AssetCatalog>(newCatalogJson);
+            var newCatalog = jsonManager.FromJson<AssetCatalog>(newCatalogJson, settings: NewtonsoftJsonUtility.SerializerSettings);
 
             AssetCatalog serverCatalog = null;
             if (File.Exists(dstCatalogPath))
             {
-                serverCatalog = jsonManager.FromJson<AssetCatalog>(File.ReadAllText(dstCatalogPath));
+                serverCatalog = jsonManager.FromJson<AssetCatalog>(File.ReadAllText(dstCatalogPath), settings: NewtonsoftJsonUtility.SerializerSettings);
             }
 
             // 拷贝所有 .assetBundle 文件（只拷贝变化的）
@@ -237,7 +237,7 @@ namespace Editor.AssetBundle.Core
             }
             
             // 保存合并后的清单到服务器目录
-            var finalJson = jsonManager.ToJson(finalCatalog);
+            var finalJson = jsonManager.ToJson(finalCatalog, settings: NewtonsoftJsonUtility.SerializerSettings);
             File.WriteAllText(dstCatalogPath, finalJson);
             Log($"{AssetCatalogName} 已合并更新。");
             
@@ -440,7 +440,8 @@ namespace Editor.AssetBundle.Core
                                if (packable is Sprite || packable is Texture2D)
                                {
                                    catalog.AddOrUpdateEntry(packable.name,
-                                       new SpriteAssetEntry(packable.name, bundleName, path, EAssetType.Texture, assetInfo.assetPath));
+                                       new SpriteAssetEntry(packable.name, bundleName, path, EAssetType.Texture, assetInfo.assetPath,
+                                           assetInfo.name));
                                    continue;
                                }
                                
@@ -461,14 +462,16 @@ namespace Editor.AssetBundle.Core
                                                // 这是 Sprite 图
                                                var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
                                                catalog.AddOrUpdateEntry(sprite.name,
-                                                   new SpriteAssetEntry(sprite.name, bundleName, assetPath, EAssetType.Texture, assetInfo.assetPath));
+                                                   new SpriteAssetEntry(sprite.name, bundleName, assetPath, EAssetType.Texture, assetInfo.assetPath,
+                                                        assetInfo.name));
                                            }
                                            else
                                            {
                                                // 这是普通 Texture2D / 其他纹理，不当 Sprite 处理
                                                var texture2D = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
                                                catalog.AddOrUpdateEntry(texture2D.name,
-                                                   new SpriteAssetEntry(texture2D.name, bundleName, assetPath, EAssetType.Texture, assetInfo.assetPath));
+                                                   new SpriteAssetEntry(texture2D.name, bundleName, assetPath, EAssetType.Texture, assetInfo.assetPath,
+                                                       assetInfo.name));
                                            }
                                        }
                                    }

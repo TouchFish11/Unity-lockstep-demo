@@ -145,6 +145,7 @@
     "arrow_basic": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "arrow_basic",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/arrow_basic.png",
@@ -153,6 +154,7 @@
     "bone_skull": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "bone_skull",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bone_skull.png",
@@ -161,6 +163,7 @@
     "bone_white": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "bone_white",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bone_white.png",
@@ -169,6 +172,7 @@
     "bottle_standard_blue": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "bottle_standard_blue",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bottle_standard_blue.png",
@@ -177,6 +181,7 @@
     "bottle_standard_empty": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "bottle_standard_empty",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bottle_standard_empty.png",
@@ -185,6 +190,7 @@
     "bottle_standard_green": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "bottle_standard_green",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bottle_standard_green.png",
@@ -193,6 +199,7 @@
     "bow_wood1": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "bow_wood1",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/bow_wood1.png",
@@ -201,6 +208,7 @@
     "cape_hood_darkyellow": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "cape_hood_darkyellow",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/cape_hood_darkyellow.png",
@@ -209,6 +217,7 @@
     "crown_gold": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "crown_gold",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/crown_gold.png",
@@ -217,6 +226,7 @@
     "fish_green": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "fish_green",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/fish_green.png",
@@ -225,6 +235,7 @@
     "gold_bars_three": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "gold_bars_three",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/gold_bars_three.png",
@@ -233,6 +244,7 @@
     "gold_coins_many": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "gold_coins_many",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/gold_coins_many.png",
@@ -241,6 +253,7 @@
     "key_silver": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "key_silver",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/key_silver.png",
@@ -249,6 +262,7 @@
     "leafs_long": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "leafs_long",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/leafs_long.png",
@@ -257,6 +271,7 @@
     "mushroom_big_red": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "mushroom_big_red",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/mushroom_big_red.png",
@@ -265,6 +280,7 @@
     "necklace_silver_red": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "necklace_silver_red",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/necklace_silver_red.png",
@@ -273,6 +289,7 @@
     "pickaxe_basic": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "pickaxe_basic",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/pickaxe_basic.png",
@@ -281,6 +298,7 @@
     "pouch_leather_small": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "pouch_leather_small",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/pouch_leather_small.png",
@@ -289,6 +307,7 @@
     "ring_gold_magic": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "ring_gold_magic",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/ring_gold_magic.png",
@@ -297,6 +316,7 @@
     "scroll_map2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "scroll_map2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/scroll_map2.png",
@@ -305,6 +325,7 @@
     "shield_basic_metal": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "shield_basic_metal",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/shield_basic_metal.png",
@@ -313,6 +334,7 @@
     "silver_bars": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "silver_bars",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/silver_bars.png",
@@ -321,6 +343,7 @@
     "silver_coins_many": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "silver_coins_many",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/silver_coins_many.png",
@@ -329,6 +352,7 @@
     "stone_blocks_grey": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "stone_blocks_grey",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/stone_blocks_grey.png",
@@ -337,6 +361,7 @@
     "sword_basic4_blue": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "sword_basic4_blue",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/sword_basic4_blue.png",
@@ -345,6 +370,7 @@
     "sword_basic_blue": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "sword_basic_blue",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/sword_basic_blue.png",
@@ -353,6 +379,7 @@
     "twig_green": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "twig_green",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/twig_green.png",
@@ -361,6 +388,7 @@
     "wood_log": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "wood_log",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/wood_log.png",
@@ -369,6 +397,7 @@
     "wood_log_single_birch": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "wood_log_single_birch",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/wood_log_single_birch.png",
@@ -377,6 +406,7 @@
     "wood_logs_three": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "wood_logs_three",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/wood_logs_three.png",
@@ -385,6 +415,7 @@
     "wood_stick": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Atlas_Item.spriteatlasv2",
+      "atlasKey": "Atlas_Item.spriteatlasv2",
       "key": "wood_stick",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/RGP icons free start pack/items/wood_stick.png",
@@ -400,6 +431,7 @@
     "air": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "air",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/air.png",
@@ -408,6 +440,7 @@
     "armor": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "armor",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/armor.png",
@@ -416,6 +449,7 @@
     "arrow-big-down": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-big-down",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-down.png",
@@ -424,6 +458,7 @@
     "arrow-big-left-down": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-big-left-down",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-left-down.png",
@@ -432,6 +467,7 @@
     "arrow-big-left-up": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-big-left-up",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-left-up.png",
@@ -440,6 +476,7 @@
     "arrow-big-left": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-big-left",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-left.png",
@@ -448,6 +485,7 @@
     "arrow-big-right-down": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-big-right-down",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-right-down.png",
@@ -456,6 +494,7 @@
     "arrow-big-right-up": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-big-right-up",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-right-up.png",
@@ -464,6 +503,7 @@
     "arrow-big-right": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-big-right",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-right.png",
@@ -472,6 +512,7 @@
     "arrow-big-up": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-big-up",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-big-up.png",
@@ -480,6 +521,7 @@
     "arrow-round-down": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-round-down",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-round-down.png",
@@ -488,6 +530,7 @@
     "arrow-round-left": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-round-left",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-round-left.png",
@@ -496,6 +539,7 @@
     "arrow-round-right": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-round-right",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-round-right.png",
@@ -504,6 +548,7 @@
     "arrow-round-up": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrow-round-up",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrow-round-up.png",
@@ -512,6 +557,7 @@
     "arrows-contract": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrows-contract",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrows-contract.png",
@@ -520,6 +566,7 @@
     "arrows-expand": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "arrows-expand",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/arrows-expand.png",
@@ -528,6 +575,7 @@
     "axe": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "axe",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/axe.png",
@@ -536,6 +584,7 @@
     "badge": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "badge",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/badge.png",
@@ -544,6 +593,7 @@
     "balloon": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "balloon",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/balloon.png",
@@ -552,6 +602,7 @@
     "banner": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "banner",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/banner.png",
@@ -560,6 +611,7 @@
     "bars": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "bars",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/bars.png",
@@ -568,6 +620,7 @@
     "battleaxe": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "battleaxe",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/battleaxe.png",
@@ -576,6 +629,7 @@
     "bell": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "bell",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/bell.png",
@@ -584,6 +638,7 @@
     "bolt": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "bolt",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/bolt.png",
@@ -592,6 +647,7 @@
     "bomb": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "bomb",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/bomb.png",
@@ -600,6 +656,7 @@
     "bone": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "bone",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/bone.png",
@@ -608,6 +665,7 @@
     "boss": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "boss",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/boss.png",
@@ -616,6 +674,7 @@
     "bridge": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "bridge",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/bridge.png",
@@ -624,6 +683,7 @@
     "btn-round-check": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "btn-round-check",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/btn-round-check.png",
@@ -632,6 +692,7 @@
     "btn-round-cross": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "btn-round-cross",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/btn-round-cross.png",
@@ -640,6 +701,7 @@
     "bug": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "bug",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/bug.png",
@@ -648,6 +710,7 @@
     "building1": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "building1",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/building1.png",
@@ -656,6 +719,7 @@
     "camera": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "camera",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/camera.png",
@@ -664,6 +728,7 @@
     "camp": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "camp",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/camp.png",
@@ -672,6 +737,7 @@
     "card-clubs": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "card-clubs",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/card-clubs.png",
@@ -680,6 +746,7 @@
     "card-diamonds": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "card-diamonds",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/card-diamonds.png",
@@ -688,6 +755,7 @@
     "card-hearts": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "card-hearts",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/card-hearts.png",
@@ -696,6 +764,7 @@
     "card-spades": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "card-spades",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/card-spades.png",
@@ -704,6 +773,7 @@
     "caret-down": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "caret-down",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/caret-down.png",
@@ -712,6 +782,7 @@
     "caret-left": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "caret-left",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/caret-left.png",
@@ -720,6 +791,7 @@
     "caret-right": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "caret-right",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/caret-right.png",
@@ -728,6 +800,7 @@
     "caret-up": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "caret-up",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/caret-up.png",
@@ -736,6 +809,7 @@
     "chat": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "chat",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/chat.png",
@@ -744,6 +818,7 @@
     "chat1-minus": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "chat1-minus",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/chat1-minus.png",
@@ -752,6 +827,7 @@
     "chat1-plus": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "chat1-plus",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/chat1-plus.png",
@@ -760,6 +836,7 @@
     "check-box2a": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "check-box2a",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/check-box2a.png",
@@ -768,6 +845,7 @@
     "check-box2b": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "check-box2b",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/check-box2b.png",
@@ -776,6 +854,7 @@
     "check-box2c": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "check-box2c",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/check-box2c.png",
@@ -784,6 +863,7 @@
     "check-box2d": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "check-box2d",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/check-box2d.png",
@@ -792,6 +872,7 @@
     "check-markbox": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "check-markbox",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/check-markbox.png",
@@ -800,6 +881,7 @@
     "chest": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "chest",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/chest.png",
@@ -808,6 +890,7 @@
     "city": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "city",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/city.png",
@@ -816,6 +899,7 @@
     "close-cross": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "close-cross",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/close-cross.png",
@@ -824,6 +908,7 @@
     "close-x": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "close-x",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/close-x.png",
@@ -832,6 +917,7 @@
     "close-y": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "close-y",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/close-y.png",
@@ -840,6 +926,7 @@
     "Close": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "Close",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/Close.png",
@@ -848,6 +935,7 @@
     "cloud": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "cloud",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/cloud.png",
@@ -856,6 +944,7 @@
     "coffee": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "coffee",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/coffee.png",
@@ -864,6 +953,7 @@
     "coin": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "coin",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/coin.png",
@@ -872,6 +962,7 @@
     "coin2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "coin2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/coin2.png",
@@ -880,6 +971,7 @@
     "crown": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "crown",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/crown.png",
@@ -888,6 +980,7 @@
     "dark": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "dark",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/dark.png",
@@ -896,6 +989,7 @@
     "diamond": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "diamond",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/diamond.png",
@@ -904,6 +998,7 @@
     "directions": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "directions",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/directions.png",
@@ -912,6 +1007,7 @@
     "divine": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "divine",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/divine.png",
@@ -920,6 +1016,7 @@
     "dungeons": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "dungeons",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/dungeons.png",
@@ -928,6 +1025,7 @@
     "eclipse": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "eclipse",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/eclipse.png",
@@ -936,6 +1034,7 @@
     "exp": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "exp",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/exp.png",
@@ -944,6 +1043,7 @@
     "eye-on": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "eye-on",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/eye-on.png",
@@ -952,6 +1052,7 @@
     "fairy-wand": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "fairy-wand",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/fairy-wand.png",
@@ -960,6 +1061,7 @@
     "fire": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "fire",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/fire.png",
@@ -968,6 +1070,7 @@
     "fire2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "fire2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/fire2.png",
@@ -976,6 +1079,7 @@
     "flash-symbol": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "flash-symbol",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/flash-symbol.png",
@@ -984,6 +1088,7 @@
     "flower": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "flower",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/flower.png",
@@ -992,6 +1097,7 @@
     "footprint": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "footprint",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/footprint.png",
@@ -1000,6 +1106,7 @@
     "forbidden": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "forbidden",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/forbidden.png",
@@ -1008,6 +1115,7 @@
     "fort": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "fort",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/fort.png",
@@ -1016,6 +1124,7 @@
     "globe": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "globe",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/globe.png",
@@ -1024,6 +1133,7 @@
     "gold-ingot": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "gold-ingot",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/gold-ingot.png",
@@ -1032,6 +1142,7 @@
     "grab": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "grab",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/grab.png",
@@ -1040,6 +1151,7 @@
     "hand-open": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "hand-open",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-open.png",
@@ -1048,6 +1160,7 @@
     "hand-point-down": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "hand-point-down",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-point-down.png",
@@ -1056,6 +1169,7 @@
     "hand-point-left": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "hand-point-left",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-point-left.png",
@@ -1064,6 +1178,7 @@
     "hand-point-right": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "hand-point-right",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-point-right.png",
@@ -1072,6 +1187,7 @@
     "hand-point-up": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "hand-point-up",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-point-up.png",
@@ -1080,6 +1196,7 @@
     "hand-thumbs-down": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "hand-thumbs-down",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-thumbs-down.png",
@@ -1088,6 +1205,7 @@
     "hand-thumbs-up": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "hand-thumbs-up",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/hand-thumbs-up.png",
@@ -1096,6 +1214,7 @@
     "home": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "home",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/home.png",
@@ -1104,6 +1223,7 @@
     "home2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "home2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/home2.png",
@@ -1112,6 +1232,7 @@
     "iceberg": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "iceberg",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/iceberg.png",
@@ -1120,6 +1241,7 @@
     "iceberg2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "iceberg2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/iceberg2.png",
@@ -1128,6 +1250,7 @@
     "image-square": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "image-square",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/image-square.png",
@@ -1136,6 +1259,7 @@
     "inbox": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "inbox",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/inbox.png",
@@ -1144,6 +1268,7 @@
     "inferno": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "inferno",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/inferno.png",
@@ -1152,6 +1277,7 @@
     "info-question": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "info-question",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/info-question.png",
@@ -1160,6 +1286,7 @@
     "info-round": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "info-round",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/info-round.png",
@@ -1168,6 +1295,7 @@
     "key": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "key",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/key.png",
@@ -1176,6 +1304,7 @@
     "ladder": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "ladder",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/ladder.png",
@@ -1184,6 +1313,7 @@
     "landmark": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "landmark",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/landmark.png",
@@ -1192,6 +1322,7 @@
     "left-arrow": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "left-arrow",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/left-arrow.png",
@@ -1200,6 +1331,7 @@
     "light": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "light",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/light.png",
@@ -1208,6 +1340,7 @@
     "light1": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "light1",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/light1.png",
@@ -1216,6 +1349,7 @@
     "lightning": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "lightning",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/lightning.png",
@@ -1224,6 +1358,7 @@
     "log-in": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "log-in",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/log-in.png",
@@ -1232,6 +1367,7 @@
     "magic-wand": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "magic-wand",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/magic-wand.png",
@@ -1240,6 +1376,7 @@
     "magic": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "magic",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/magic.png",
@@ -1248,6 +1385,7 @@
     "map-marker": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "map-marker",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/map-marker.png",
@@ -1256,6 +1394,7 @@
     "map1": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "map1",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/map1.png",
@@ -1264,6 +1403,7 @@
     "metal": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "metal",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/metal.png",
@@ -1272,6 +1412,7 @@
     "meteor": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "meteor",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/meteor.png",
@@ -1280,6 +1421,7 @@
     "microphone": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "microphone",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/microphone.png",
@@ -1288,6 +1430,7 @@
     "minus": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "minus",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/minus.png",
@@ -1296,6 +1439,7 @@
     "misc": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "misc",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/misc.png",
@@ -1304,6 +1448,7 @@
     "money": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "money",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/money.png",
@@ -1312,6 +1457,7 @@
     "moon": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "moon",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/moon.png",
@@ -1320,6 +1466,7 @@
     "mountains": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "mountains",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/mountains.png",
@@ -1328,6 +1475,7 @@
     "move-alt": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "move-alt",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/move-alt.png",
@@ -1336,6 +1484,7 @@
     "move": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "move",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/move.png",
@@ -1344,6 +1493,7 @@
     "no-entry": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "no-entry",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/no-entry.png",
@@ -1352,6 +1502,7 @@
     "north": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "north",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/north.png",
@@ -1360,6 +1511,7 @@
     "padlock-locked": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "padlock-locked",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/padlock-locked.png",
@@ -1368,6 +1520,7 @@
     "padlock-unlocked": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "padlock-unlocked",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/padlock-unlocked.png",
@@ -1376,6 +1529,7 @@
     "paper": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "paper",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/paper.png",
@@ -1384,6 +1538,7 @@
     "pause": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "pause",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/pause.png",
@@ -1392,6 +1547,7 @@
     "pause2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "pause2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/pause2.png",
@@ -1400,6 +1556,7 @@
     "pencil-tool": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "pencil-tool",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/pencil-tool.png",
@@ -1408,6 +1565,7 @@
     "pencil": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "pencil",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/pencil.png",
@@ -1416,6 +1574,7 @@
     "plain-heart": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "plain-heart",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/plain-heart.png",
@@ -1424,6 +1583,7 @@
     "plant": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "plant",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/plant.png",
@@ -1432,6 +1592,7 @@
     "plus": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "plus",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/plus.png",
@@ -1440,6 +1601,7 @@
     "poison-bottle": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "poison-bottle",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/poison-bottle.png",
@@ -1448,6 +1610,7 @@
     "portal": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "portal",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/portal.png",
@@ -1456,6 +1619,7 @@
     "potion": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "potion",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/potion.png",
@@ -1464,6 +1628,7 @@
     "potion2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "potion2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/potion2.png",
@@ -1472,6 +1637,7 @@
     "pouch": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "pouch",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/pouch.png",
@@ -1480,6 +1646,7 @@
     "puzzle": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "puzzle",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/puzzle.png",
@@ -1488,6 +1655,7 @@
     "quest": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "quest",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/quest.png",
@@ -1496,6 +1664,7 @@
     "radiation": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "radiation",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/radiation.png",
@@ -1504,6 +1673,7 @@
     "reading-book": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "reading-book",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/reading-book.png",
@@ -1512,6 +1682,7 @@
     "rewards": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "rewards",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/rewards.png",
@@ -1520,6 +1691,7 @@
     "rocket": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "rocket",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/rocket.png",
@@ -1528,6 +1700,7 @@
     "round-info": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "round-info",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/round-info.png",
@@ -1536,6 +1709,7 @@
     "search": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "search",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/search.png",
@@ -1544,6 +1718,7 @@
     "select-icon2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "select-icon2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/select-icon2.png",
@@ -1552,6 +1727,7 @@
     "select-icon3": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "select-icon3",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/select-icon3.png",
@@ -1560,6 +1736,7 @@
     "settings-tool": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "settings-tool",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/settings-tool.png",
@@ -1568,6 +1745,7 @@
     "settings-wrench": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "settings-wrench",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/settings-wrench.png",
@@ -1576,6 +1754,7 @@
     "settings": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "settings",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/settings.png",
@@ -1584,6 +1763,7 @@
     "shield": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "shield",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/shield.png",
@@ -1592,6 +1772,7 @@
     "signboard": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "signboard",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/signboard.png",
@@ -1600,6 +1781,7 @@
     "sorcrery": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "sorcrery",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/sorcrery.png",
@@ -1608,6 +1790,7 @@
     "spa": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "spa",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/spa.png",
@@ -1616,6 +1799,7 @@
     "spiral": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "spiral",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/spiral.png",
@@ -1624,6 +1808,7 @@
     "star-alt": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "star-alt",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/star-alt.png",
@@ -1632,6 +1817,7 @@
     "star": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "star",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/star.png",
@@ -1640,6 +1826,7 @@
     "stone": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "stone",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/stone.png",
@@ -1648,6 +1835,7 @@
     "storm": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "storm",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/storm.png",
@@ -1656,6 +1844,7 @@
     "sun": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "sun",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/sun.png",
@@ -1664,6 +1853,7 @@
     "sun2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "sun2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/sun2.png",
@@ -1672,6 +1862,7 @@
     "sword": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "sword",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/sword.png",
@@ -1680,6 +1871,7 @@
     "sword2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "sword2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/sword2.png",
@@ -1688,6 +1880,7 @@
     "symbol": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "symbol",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/symbol.png",
@@ -1696,6 +1889,7 @@
     "target": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "target",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/target.png",
@@ -1704,6 +1898,7 @@
     "temple": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "temple",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/temple.png",
@@ -1712,6 +1907,7 @@
     "toggle-off": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "toggle-off",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/toggle-off.png",
@@ -1720,6 +1916,7 @@
     "toggle-on": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "toggle-on",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/toggle-on.png",
@@ -1728,6 +1925,7 @@
     "toggle2-off": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "toggle2-off",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/toggle2-off.png",
@@ -1736,6 +1934,7 @@
     "toggle2-on": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "toggle2-on",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/toggle2-on.png",
@@ -1744,6 +1943,7 @@
     "tower": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "tower",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/tower.png",
@@ -1752,6 +1952,7 @@
     "tower2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "tower2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/tower2.png",
@@ -1760,6 +1961,7 @@
     "trash-bin": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "trash-bin",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/trash-bin.png",
@@ -1768,6 +1970,7 @@
     "tree-alt": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "tree-alt",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/tree-alt.png",
@@ -1776,6 +1979,7 @@
     "tree-small": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "tree-small",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/tree-small.png",
@@ -1784,6 +1988,7 @@
     "trophy": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "trophy",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/trophy.png",
@@ -1792,6 +1997,7 @@
     "trophy2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "trophy2",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/trophy2.png",
@@ -1800,6 +2006,7 @@
     "umbrella": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "umbrella",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/umbrella.png",
@@ -1808,6 +2015,7 @@
     "up-arrow-1": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "up-arrow-1",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/up-arrow-1.png",
@@ -1816,6 +2024,7 @@
     "up-arrow-alt": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "up-arrow-alt",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/up-arrow-alt.png",
@@ -1824,6 +2033,7 @@
     "user": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "user",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/user.png",
@@ -1832,6 +2042,7 @@
     "Vacuity": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "Vacuity",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/Vacuity.png",
@@ -1840,6 +2051,7 @@
     "village": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "village",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/village.png",
@@ -1848,6 +2060,7 @@
     "virus": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "virus",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/virus.png",
@@ -1856,6 +2069,7 @@
     "volcano": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "volcano",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/volcano.png",
@@ -1864,6 +2078,7 @@
     "volume-full": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "volume-full",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-full.png",
@@ -1872,6 +2087,7 @@
     "volume-low": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "volume-low",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-low.png",
@@ -1880,6 +2096,7 @@
     "volume-medium": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "volume-medium",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-medium.png",
@@ -1888,6 +2105,7 @@
     "volume-mute": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "volume-mute",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-mute.png",
@@ -1896,6 +2114,7 @@
     "volume-off": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "volume-off",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-off.png",
@@ -1904,6 +2123,7 @@
     "wall-clock": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "wall-clock",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/wall-clock.png",
@@ -1912,6 +2132,7 @@
     "water-drop": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "water-drop",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/water-drop.png",
@@ -1920,6 +2141,7 @@
     "water-wave": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "water-wave",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/water-wave.png",
@@ -1928,6 +2150,7 @@
     "windmill": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "windmill",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/windmill.png",
@@ -1936,6 +2159,7 @@
     "wine": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "wine",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/wine.png",
@@ -1944,6 +2168,7 @@
     "zoom-minus": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "zoom-minus",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-minus.png",
@@ -1952,6 +2177,7 @@
     "zoom-plus": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "zoom-plus",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-plus.png",
@@ -1960,6 +2186,7 @@
     "zoom-tool": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "zoom-tool",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-tool.png",
@@ -1968,6 +2195,7 @@
     "zselect-arrow": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "zselect-arrow",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/zselect-arrow.png",
@@ -1976,6 +2204,7 @@
     "zselect-icon": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "spriteAssetName": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
       "key": "zselect-icon",
       "bundleName": "spriteatlas",
       "assetName": "Assets/Editor/ArtRes/Texture/Common/zselect-icon.png",
@@ -2166,8 +2395,8 @@
       "prefab": {
         "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
         "name": "prefab",
-        "size": 44705,
-        "hash": "7e6862d6f990377e7d7bf1e8d6ea610527e7742bb32018266525273453e2de32",
+        "size": 46790,
+        "hash": "f28cc4f04abe3fd906749052c81dd14d4626e49d973b75064d7d7e7c9c232f07",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -2176,8 +2405,8 @@
       "scenes": {
         "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 12011921,
-        "hash": "ce843a34e51301255e7448c73695d862bb9d031b6ebec618db2dcded0e15c85e",
+        "size": 12014863,
+        "hash": "e230c3c22f303e068e599a04ccf943408544647834b29427cfe9ca36612e2e10",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [

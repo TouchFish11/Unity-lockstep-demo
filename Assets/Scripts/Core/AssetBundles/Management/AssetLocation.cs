@@ -1,5 +1,3 @@
-using System;
-
 namespace Core.AssetBundles.Management
 {
     /// <summary>
@@ -8,23 +6,13 @@ namespace Core.AssetBundles.Management
     internal class AssetLocation
     {
         /// <summary>
-        /// 资源包装器
+        /// 物理资源键或组合资源键
         /// </summary>
-        internal AssetWrapper AssetWrapper { get; set; }
+        internal string AssetKey { get; set; }
         
         /// <summary>
         /// 当前有效版本号
         /// </summary>
         internal int Version { get; set; }
-            
-        /// <summary>
-        /// 资源引用计数
-        /// </summary>
-        internal int RefCount { get; set; }
-            
-        /// <summary>
-        /// 资源释放回调
-        /// </summary>
-        internal Action release;
     }
 }
