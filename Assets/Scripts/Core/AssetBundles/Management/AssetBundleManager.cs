@@ -179,10 +179,16 @@ namespace Core.AssetBundles.Management
         
         public async Task UnloadAllBundles(bool unloadAllObjects)
         {
+            _hotBundles.Clear();
+            _coldBundles.Clear();
+            
+            var unloads = new List<Task>(_nameToWrapperMap.Values.Count);
             foreach (var bundleWrapper in _nameToWrapperMap.Values)
             {
-                await bundleWrapper.TryUnloadAsync(unloadAllObjects);
+                unloads.Add(bundleWrapper.TryUnloadAsync(unloadAllObjects));
             }
+            // 等到所有包卸载完成
+            await Task.WhenAll(unloads);
             
             // 卸载所有AB包
             AssetBundle.UnloadAllAssetBundles(unloadAllObjects);
@@ -211,7 +217,7 @@ namespace Core.AssetBundles.Management
                 // 存在符合的包，卸载
                 if (unUseBundleWrapper != null)
                 {
-                    await unUseBundleWrapper.TryUnloadAsync(false);
+                    await unUseBundleWrapper.TryUnloadAsync(true);
                     // 从列表中移除
                     bundles.Remove(unUseBundleWrapper);
                 }

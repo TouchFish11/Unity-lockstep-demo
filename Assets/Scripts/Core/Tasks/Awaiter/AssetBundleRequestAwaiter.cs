@@ -8,7 +8,7 @@ namespace Core.Tasks.Awaiter
     /// 用于支持Unity AssetBundle请求的await异步语法
     /// </summary>
     /// <typeparam name="T">要加载的资源类型</typeparam>
-    public readonly struct AssetBundleRequestAwaiter<T> : ICriticalNotifyCompletion where T : class
+    internal readonly struct AssetBundleRequestAwaiter<T> : ICriticalNotifyCompletion where T : class
     {
         // 持有对应的AssetBundle请求任务实例
         private readonly AssetBundleRequestTask<T> _task;

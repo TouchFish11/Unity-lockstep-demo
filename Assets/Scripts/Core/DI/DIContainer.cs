@@ -245,10 +245,20 @@ namespace Core.DI
         /// <exception cref="Exception">若是接口类型，则抛出异常</exception>
         private static object CreateInstanceWithConstructorInjection(Type type, params Parameter[] parameters)
         {
+            Type impType;
+            // 接口类型找实例映射
             if (type.IsInterface)
-                throw new ArgumentException($"{nameof(DIContainer)}:Type is an interface, not allowed，{type}");
+            {
+                impType = _interfaceToImplTypeMap.GetValueOrDefault(type);
+                if(impType == null)
+                    throw new ArgumentException($"Cannot create instance of {type.Name}: no implemented map");
+            }
+            else
+            {
+                impType = type;
+            }
             
-            if (_constructorCache.TryGetValue(type, out var constructorInfos))
+            if (_constructorCache.TryGetValue(impType, out var constructorInfos))
             {
                 foreach (var constructorInfo in constructorInfos)
                 {
@@ -261,11 +271,11 @@ namespace Core.DI
             else
             {
                 // 获取所有的构造函数
-                var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                var constructors = impType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 // 按参数数量降序排序（优先匹配参数最多的构造函数）
                 Array.Sort(constructors, (a, b) => b.GetParameters().Length.CompareTo(a.GetParameters().Length));
                 // 缓存所有构造
-                _constructorCache.TryAdd(type, new List<ConstructorInfo>(constructors));
+                _constructorCache.TryAdd(impType, new List<ConstructorInfo>(constructors));
                 foreach (var constructorInfo in constructors)
                 {
                     var (available, instance) = MatchCtorArg(constructorInfo, parameters);
@@ -277,7 +287,7 @@ namespace Core.DI
             }
             
             // 如果没有合适的构造函数，抛出异常
-            throw new Exception($"Cannot create instance of {type.Name}: no suitable constructor found");
+            throw new Exception($"Cannot create instance of {impType.Name}: no suitable constructor found");
         }
 
         /// <summary>

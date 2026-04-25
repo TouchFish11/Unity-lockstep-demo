@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Core.Tasks.Awaiter
 {
-    public readonly struct AssetBundleRequestsAwaiter<T> : ICriticalNotifyCompletion where T : class
+    internal readonly struct AssetBundleRequestsAwaiter<T> : ICriticalNotifyCompletion where T : class
     {
         // 持有对应的AssetBundle请求任务实例
         private readonly AssetBundleRequestsTask<T> _task;
@@ -46,9 +47,9 @@ namespace Core.Tasks.Awaiter
         /// 获取异步任务的执行结果（已加载的资源）
         /// </summary>
         /// <returns>加载完成的T类型资源</returns>
-        public void GetResult()
+        public IReadOnlyList<T> GetResult()
         {
-            _task.GetResult();
+            return _task.GetResult();
         }
     }
 }

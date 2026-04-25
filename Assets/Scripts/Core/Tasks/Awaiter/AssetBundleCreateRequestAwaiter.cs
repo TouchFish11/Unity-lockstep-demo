@@ -8,7 +8,7 @@ namespace Core.Tasks.Awaiter
     /// 用于异步等待AssetBundleCreateRequest完成的自定义Awaiter结构体
     /// 实现ICriticalNotifyCompletion接口以支持高效的异步等待逻辑
     /// </summary>
-    public readonly struct AssetBundleCreateRequestAwaiter : ICriticalNotifyCompletion
+    internal readonly struct AssetBundleCreateRequestAwaiter : ICriticalNotifyCompletion
     {
         // 持有对应的AssetBundle创建任务实例
         private readonly AssetBundleCreateRequestTask _task;

@@ -12,7 +12,13 @@ namespace Core.AssetBundles.Management
         private readonly object _asset;
         // 该资源所在的AB包
         private readonly BundleWrapper _bundleWrapper;
-                
+        
+        /// <summary>
+        /// 资源Key
+        /// </summary>
+        public string AssetKey { get; }
+        
+        
         public AssetWrapper(object asset, string assetKey, BundleWrapper bundleWrapper)
         {
             _asset = asset;
@@ -21,24 +27,17 @@ namespace Core.AssetBundles.Management
         }
         
         /// <summary>
-        /// 资源Key
-        /// </summary>
-        public string AssetKey { get; }
-        
-        /// <summary>
         /// 引用计数
         /// </summary>
         public uint RefCount { get; private set; }
         
         /// <summary>
-        /// 获取资源，同时更新AB包的访问次数和引用计数
+        /// 获取资源，同时更新AB包的访问次数
         /// </summary>
         public object Asset
         {
             get
             {
-                Retain();
-                Logger.Log($"[AssetWrapper]: '{AssetKey}' RefCount Add to: {RefCount}");
                 _bundleWrapper.RecordAccess();
                 return _asset;
             }
@@ -49,15 +48,22 @@ namespace Core.AssetBundles.Management
         /// </summary>
         public event Action OnUnload;
 
+        /// <summary>
+        /// 增加引用计数
+        /// </summary>
         public void Retain()
         {
             ++RefCount;
+            Logger.Log($"[AssetWrapper]: '{AssetKey}' asset refCount Add to: {RefCount}");
         }
 
+        /// <summary>
+        /// 释放引用计数
+        /// </summary>
         public void Release()
         {
             --RefCount;
-            Logger.Log($"[AssetWrapper]: '{AssetKey}' RefCount Reduce to: {RefCount}");
+            Logger.Log($"[AssetWrapper]: '{AssetKey}' asset refCount Reduce to: {RefCount}");
             if (RefCount != 0) 
                 return;
             

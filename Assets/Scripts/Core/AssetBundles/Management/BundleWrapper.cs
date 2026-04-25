@@ -17,6 +17,12 @@ namespace Core.AssetBundles.Management
     /// </summary>
     internal class BundleWrapper
     {
+        private class LoadState<T> where T : class
+        {
+            public AssetBundleRequestTask<T> Task;
+            public bool Retained;
+        }
+        
         // AB包管理器
         private readonly IAssetBundleManager _assetBundleManager;
         // AB包加载任务
@@ -25,9 +31,8 @@ namespace Core.AssetBundles.Management
         private AssetBundleUnloadOperationTask _assetBundleUnloadTask;
         // 物理文件到加载任务的映射缓存
         private readonly Dictionary<string, object> _assetTasks =  new();
-        // 批量加载资源任务
-        private object _assetBundleRequestsTask;
-        
+        // 批量加载资源任务缓存
+        private readonly Dictionary<Type, object> _assetBundleRequestsTasks = new();
         // LFU滑动窗口
         private readonly LFUSlidingWindow _window;
         
@@ -39,37 +44,42 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 包名称
         /// </summary>
-        internal string BundleName { get; }
+        public string BundleName { get; }
 
         /// <summary>
         /// 包加载路径
         /// </summary>
-        internal string LoadPath { get; }
+        public string LoadPath { get; }
         
         /// <summary>
         /// 包引用数，当前存活的资源引用数
         /// </summary>
-        internal uint RefCount { get; private set; }
+        public uint RefCount { get; private set; }
         
         /// <summary>
         /// 上次访问的时间
         /// </summary>
-        internal double LastAccessTime { get; private set; }
+        public double LastAccessTime { get; private set; }
         
         /// <summary>
         /// 是否有效
         /// </summary>
-        internal bool IsActive { get; set; }
+        public bool IsActive { get; set; }
 
         /// <summary>
         /// 获取当前包 LFU 热度值
         /// </summary>
-        internal int AccessCount => _window.GetCurrentHotness();
+        public int AccessCount => _window.GetCurrentHotness();
         
         /// <summary>
         /// 在访问资源时触发回调
         /// </summary>
-        internal Action<BundleWrapper> OnAccessAsset;
+        public Action<BundleWrapper> OnAccessAsset;
+        
+        /// <summary>
+        /// AB包是否为null
+        /// </summary>
+        public bool IsNull => !AssetBundle;
         
         /// <summary>
         /// 包装载器
@@ -106,7 +116,6 @@ namespace Core.AssetBundles.Management
                 if (AssetBundle)
                 {
                     IsActive = true;
-                    Logger.Log($"[BundleWrapper]: '{BundleName}' is load");
                     return;
                 }
         
@@ -123,11 +132,11 @@ namespace Core.AssetBundles.Management
                 AssetBundle ??= await _assetBundleCreateRequestTask;
                 _assetBundleCreateRequestTask = null;
                 IsActive = true;
-                Logger.Log($"[BundleWrapper]: '{BundleName}' is load");
+                Logger.Log($"[BundleWrapper]: '{BundleName}' assetBundle is load");
             }
             catch (Exception e)
             {
-                Logger.LogError($"[BundleWrapper]: '{BundleName}' Load fail, {e.Message}");
+                Logger.LogError($"[BundleWrapper]: '{BundleName}' assetBundle Load fail, {e.Message}");
                 _assetBundleCreateRequestTask = null;
             }
         }
@@ -144,18 +153,17 @@ namespace Core.AssetBundles.Management
                 if (AssetBundle)
                 {
                     IsActive = true;
-                    Logger.Log($"[BundleWrapper]: '{BundleName}' is load");
                     return;
                 }
                 
                 // 加载AB包
                 AssetBundle = AssetBundle.LoadFromFile(LoadPath);
                 IsActive = true;
-                Logger.Log($"[BundleWrapper]: '{BundleName}' is load");
+                Logger.Log($"[BundleWrapper]: '{BundleName}' assetBundle is load");
             }
             catch (Exception e)
             {
-                Logger.LogError($"[BundleWrapper]: '{BundleName}' Load fail, {e.Message}");
+                Logger.LogError($"[BundleWrapper]: '{BundleName}' assetBundle Load fail, {e.Message}");
             }
         }
 
@@ -183,50 +191,97 @@ namespace Core.AssetBundles.Management
         /// <returns></returns>
         public async Task<AssetWrapper> LoadAssetAsync<T>(string assetKey, string assetName, CancellationToken token = default) where T : class
         {
-            T asset;
-            if (_assetTasks.TryGetValue(assetKey, out var value) && value is AssetBundleRequestTask<T> cacheTask)
+            if (!_assetTasks.TryGetValue(assetKey, out var state))
             {
-                asset = await cacheTask;
-                Retain();
+                try
+                {
+                    var newTask = AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token);
+                    var newState = new LoadState<T> { Task = newTask };
+                    // 先缓存加载状态
+                    _assetTasks.Add(assetKey, newState);
+                    var asset = await newTask;
+                    if (!newState.Retained)
+                    {
+                        Retain();
+                        newState.Retained = true;
+                    }
+                    return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
+                }
+                catch(Exception e)
+                {
+                    Logger.LogError($"[BundleWrapper]: '{BundleName}' asset Load fail, {e.Message}");
+                }
+                finally
+                {
+                    _assetTasks.Remove(assetKey);
+                }
+            }
+
+            {
+                var cacheState = (LoadState<T>)state;
+                // 等待同一加载任务
+                var asset = await cacheState.Task;
+                if (!cacheState.Retained)
+                {
+                    Retain();
+                    cacheState.Retained = true;
+                }
                 return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
             }
-            
-            var task = AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token);
-            _assetTasks.Add(assetKey, task);
-            asset = await task;
-            Retain();
-            _assetTasks.Remove(assetKey);
-            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
         }
-
+        
         /// <summary>
-        /// 加载所有资源
+        /// 异步加载所有资源
         /// </summary>
         /// <param name="token"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public async Task<AssetWrapper[]> LoadAllAssetAsync<T>(CancellationToken token = default) where T : Object
         {
-            IList<T> list = new List<T>();
-            await AssetBundle.LoadAllAssetsAsync<T>().ToTask(list, token);
-            
-            var assetWrappers = new List<AssetWrapper>(list.Count);
-            foreach (var o in list)
+            if (!_assetBundleRequestsTasks.TryGetValue(typeof(T), out var obj))
             {
-                assetWrappers.Add(DIContainer.Create<AssetWrapper>(parameterValues: new object[] { o, o.name, this }));
-                Retain();
+                var task = LoadAllAssetAsyncInternal<T>(token);
+                _assetBundleRequestsTasks.Add(typeof(T), task);
+                return await task;
             }
             
-            return assetWrappers.ToArray();
+            return await (Task<AssetWrapper[]>)obj;
         }
 
+        /// 异步加载所有资源（内部）
+        private async Task<AssetWrapper[]> LoadAllAssetAsyncInternal<T>(CancellationToken token = default) where T : Object
+        {
+            try
+            {
+                var assets = await AssetBundle.LoadAllAssetsAsync<T>().ToTasks<T>(token);
+                var assetWrappers = new List<AssetWrapper>(assets.Count);
+                foreach (var asset in assets)
+                {
+                    assetWrappers.Add(DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, asset.name, this }));
+                    Retain();
+                }
+
+                return assetWrappers.ToArray();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"[BundleWrapper]: '{BundleName}' assetBundle Load assets fail, {e.Message}");
+                return Array.Empty<AssetWrapper>();
+            }
+            finally
+            {
+                // 无论成败都移除，允许后续重新加载
+                _assetBundleRequestsTasks.Remove(typeof(T));
+            }
+        }
+        
         /// <summary>
         /// 增加引用计数
         /// </summary>
         private void Retain()
         {
             ++RefCount;
-            Logger.Log($"[BundleWrapper]: '{BundleName}' is referenced, refCount updated to {RefCount}");
+            Logger.Log($"[BundleWrapper]: '{BundleName}' assetBundle is referenced, refCount updated to {RefCount}");
         }
 
         /// <summary>
@@ -246,7 +301,7 @@ namespace Core.AssetBundles.Management
                 _assetBundleManager.ReleaseDependencies(BundleName);
             }
             
-            Logger.Log($"[BundleWrapper]: '{BundleName}' is released, refCount updated to {RefCount}");
+            Logger.Log($"[BundleWrapper]: '{BundleName}' assetBundle is released, refCount updated to {RefCount}");
         }
 
         /// <summary>

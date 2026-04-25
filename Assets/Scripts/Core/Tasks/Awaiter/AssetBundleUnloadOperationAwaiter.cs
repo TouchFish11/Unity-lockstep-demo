@@ -7,7 +7,7 @@ namespace Core.Tasks.Awaiter
     /// AssetBundle卸载操作的等待器（Awaiter）
     /// 实现ICriticalNotifyCompletion接口，支持异步await语法，用于等待AssetBundle卸载操作完成
     /// </summary>
-    public class AssetBundleUnloadOperationAwaiter : ICriticalNotifyCompletion
+    internal readonly struct AssetBundleUnloadOperationAwaiter : ICriticalNotifyCompletion
     {
         // 持有对应的AssetBundle卸载任务实例，作为异步操作的核心载体
         private readonly AssetBundleUnloadOperationTask _task;

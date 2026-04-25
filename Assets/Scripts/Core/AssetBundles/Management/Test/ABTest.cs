@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Core.DI;
 using Core.Mono;
+using Core.Tasks.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,11 +34,15 @@ namespace Core.AssetBundles.Management.Test
 
             //Test8();
 
-            //Test9();
+            Test9();
 
-            Test10();
+            //Test10();
 
             //Test11();
+
+            //Test12();
+
+            //Test13();
         }
 
         // 加载单个资源
@@ -45,6 +50,7 @@ namespace Core.AssetBundles.Management.Test
         {
             var handle = await GameAsset.LoadAssetAsync<GameObject>("Sphere");
             EngineUtility.Instantiate(handle.Asset);
+            GameAsset.Release(handle);
         }
         
         // 串行加载同类同个资源
@@ -92,6 +98,7 @@ namespace Core.AssetBundles.Management.Test
             foreach (var assetHandle in handles)
             {
                 EngineUtility.Instantiate(assetHandle.Asset);
+                GameAsset.Release(assetHandle);
             }
         }
         
@@ -104,7 +111,8 @@ namespace Core.AssetBundles.Management.Test
             var handles = await Task.WhenAll(task1, task2);
             foreach (var assetHandle in handles)
             {
-                EngineUtility.Instantiate(assetHandle.Asset);
+                Debug.Log(assetHandle.Asset.name);
+                GameAsset.Release(assetHandle);
             }
         }
 
@@ -126,13 +134,16 @@ namespace Core.AssetBundles.Management.Test
         
         private async void Test9()
         {
-            var handle = await GameAsset.LoadAllAssetAsync<TextAsset>("hotupdate");
-            foreach (var handleAsset in handle.Assets)
+            var task1 = GameAsset.LoadAllAssetAsync<TextAsset>("hotupdate");
+            var task2 = GameAsset.LoadAllAssetAsync<TextAsset>("hotupdate");
+            
+            var handles = await Task.WhenAll(task1, task2);
+            
+            foreach (var assetHandle in handles)
             {
-                Debug.Log(handleAsset.name);
+                Debug.Log(assetHandle.Assets.Count);
+                GameAsset.Release(assetHandle);
             }
-
-            GameAsset.Release(handle);
         }
         
         private async void Test10()
@@ -159,5 +170,34 @@ namespace Core.AssetBundles.Management.Test
             GameAsset.Release(handle1);
             GameAsset.Release(handle2);
         }
+        
+        private async void Test12()
+        {
+            var task1 =  GameAsset.LoadAssetAsync<Sprite>("banner");
+            var task2 = GameAsset.LoadAssetAsync<Sprite>("btn-round-check");
+            
+            var handles = await Task.WhenAll(task1, task2);
+            
+            foreach (var assetHandle in handles)
+            {
+                Debug.Log(assetHandle.Asset.name);
+                GameAsset.Release(assetHandle);
+            }
+        }
+
+        private async void Test13()
+        {
+            var handle = await GameAsset.LoadAllAssetAsync<TextAsset>("hotupdate");
+            foreach (var handleAsset in handle.Assets)
+            {
+                Debug.Log(handleAsset.name);
+            }
+            GameAsset.Release(handle);
+        }
+
+        // private async Task Test14()
+        // {
+        //     await AssetBundle.LoadFromFileAsync("").ToTask();
+        // }
     }
 }

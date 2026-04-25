@@ -6,7 +6,7 @@ namespace Core.Tasks.Awaiter
     /// <summary>
     /// UnityWebRequest异步操作等待器
     /// </summary>
-    public class UnityWebRequestAsyncOperationAwaiter : ICriticalNotifyCompletion
+    internal readonly struct UnityWebRequestAsyncOperationAwaiter : ICriticalNotifyCompletion
     {
         // UnityWebRequest异步操作Task
         private readonly UnityWebRequestAsyncOperationTask _task;

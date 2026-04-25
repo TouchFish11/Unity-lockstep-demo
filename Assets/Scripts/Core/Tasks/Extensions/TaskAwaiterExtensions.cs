@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -9,7 +8,7 @@ namespace Core.Tasks.Extensions
     /// 任务等待器拓展类
     /// 为Unity的AssetBundle相关异步操作提供Task封装拓展方法，方便异步等待和取消
     /// </summary>
-    public static class TaskAwaiterExtensions
+    internal static class TaskAwaiterExtensions
     {
         /// <summary>
         /// 将AssetBundleCreateRequest异步请求封装为可等待的Task
@@ -39,12 +38,11 @@ namespace Core.Tasks.Extensions
         /// </summary>
         /// <typeparam name="T">加载的资源类型，继承自UnityEngine.Object</typeparam>
         /// <param name="req">AssetBundle资源请求实例</param>
-        /// <param name="assets">类型所有资源</param>
         /// <param name="token">取消令牌，可选参数，用于取消异步操作</param>
         /// <returns>封装后的泛型AssetBundleRequestTask任务实例</returns>
-        public static AssetBundleRequestsTask<T> ToTask<T>(this AssetBundleRequest req, IList<T> assets, CancellationToken token = default) where  T : class
+        public static AssetBundleRequestsTask<T> ToTasks<T>(this AssetBundleRequest req, CancellationToken token = default) where  T : class
         {
-            return TaskFactory.Create(req, assets, token);
+            return TaskFactory.Creates<T>(req, token);
         }
         
         /// <summary>

@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using System.Threading;
 using Core.DI;
+using Core.Pool;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -9,8 +9,10 @@ namespace Core.Tasks
     /// <summary>
     /// 任务工厂：用于创建各类AssetBundle相关任务实例
     /// </summary>
-    public static class TaskFactory
+    internal static class TaskFactory
     {
+        private static readonly IPoolManager _poolManager = DIContainer.Create<IPoolManager>();
+        
         /// <summary>
         /// 创建AssetBundle创建请求任务
         /// </summary>
@@ -19,7 +21,7 @@ namespace Core.Tasks
         /// <returns>AB创建请求任务实例</returns>
         public static AssetBundleCreateRequestTask Create(AssetBundleCreateRequest req, CancellationToken token = default)
         {
-            var assetBundleCreateRequestTask = DIContainer.Create<AssetBundleCreateRequestTask>();
+            var assetBundleCreateRequestTask = _poolManager.GetData<AssetBundleCreateRequestTask>();
             assetBundleCreateRequestTask.Init(req, token);
             return assetBundleCreateRequestTask;
         }
@@ -33,7 +35,7 @@ namespace Core.Tasks
         /// <returns>泛型AB资源请求任务实例</returns>
         public static AssetBundleRequestTask<T> Create<T>(AssetBundleRequest req, CancellationToken token = default) where T : class
         {
-            var assetBundleRequestTask = DIContainer.Create<AssetBundleRequestTask<T>>();
+            var assetBundleRequestTask = _poolManager.GetData<AssetBundleRequestTask<T>>();
             assetBundleRequestTask.Init(req, token);
             return assetBundleRequestTask;
         }
@@ -43,25 +45,23 @@ namespace Core.Tasks
         /// </summary>
         /// <typeparam name="T">资源类型</typeparam>
         /// <param name="req">AB资源请求</param>
-        /// <param name="assets">类型所有资源</param>
         /// <param name="token">取消令牌</param>
         /// <returns>泛型AB资源请求任务实例</returns>
-        public static AssetBundleRequestsTask<T> Create<T>(AssetBundleRequest req, IList<T> assets, CancellationToken token = default) where T : class
+        public static AssetBundleRequestsTask<T> Creates<T>(AssetBundleRequest req, CancellationToken token = default) where T : class
         {
-            var assetBundleRequestsTask = DIContainer.Create<AssetBundleRequestsTask<T>>();
-            assetBundleRequestsTask.Init(req, assets, token);
+            var assetBundleRequestsTask = _poolManager.GetData<AssetBundleRequestsTask<T>>();
+            assetBundleRequestsTask.Init(req, token);
             return assetBundleRequestsTask;
         }
-        
+
         /// <summary>
         /// 创建AssetBundle卸载操作任务
         /// </summary>
         /// <param name="req">AB卸载操作请求</param>
-        /// <param name="token">取消令牌</param>
         /// <returns>AB卸载操作任务实例</returns>
-        public static AssetBundleUnloadOperationTask Create(AssetBundleUnloadOperation req, CancellationToken token = default)
+        public static AssetBundleUnloadOperationTask Create(AssetBundleUnloadOperation req)
         {
-            var assetBundleUnloadOperationTask = DIContainer.Create<AssetBundleUnloadOperationTask>();
+            var assetBundleUnloadOperationTask = _poolManager.GetData<AssetBundleUnloadOperationTask>();
             assetBundleUnloadOperationTask.Init(req);
             return assetBundleUnloadOperationTask;
         }
@@ -74,7 +74,7 @@ namespace Core.Tasks
         /// <returns>UnityWebRequest异步操作任务实例</returns>
         public static UnityWebRequestAsyncOperationTask Create(UnityWebRequestAsyncOperation req, CancellationToken token = default)
         {
-            var unityWebRequestAsyncOperationTask = DIContainer.Create<UnityWebRequestAsyncOperationTask>();
+            var unityWebRequestAsyncOperationTask = _poolManager.GetData<UnityWebRequestAsyncOperationTask>();
             unityWebRequestAsyncOperationTask.Init(req, token);
             return unityWebRequestAsyncOperationTask;
         }

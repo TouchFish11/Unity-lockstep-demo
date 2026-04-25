@@ -17,9 +17,9 @@ namespace Core.AssetBundles.Management
         // 资源管理器
         private static AssetManager _assetManager;
         // Key到句柄的映射
-        private static readonly Dictionary<string, AssetHandle> _keyToHandleMap = new();
+        //private static readonly Dictionary<string, AssetHandle> _keyToHandleMap = new();
         // 句柄到Key的映射
-        private static readonly Dictionary<AssetHandle, string> _handleToKeyMap = new();
+        //private static readonly Dictionary<AssetHandle, string> _handleToKeyMap = new();
         // 句柄ID到资源定位对象的映射
         private static readonly Dictionary<int, AssetLocation> _assetIdToLocationsMap = new();
         // 全局句柄ID
@@ -40,143 +40,16 @@ namespace Core.AssetBundles.Management
         /// <returns></returns>
         public static AssetHandle<T> LoadAsset<T>(string key) where T : Object
         {
-            if (_keyToHandleMap.TryGetValue(key, out var handle))
-            {
-                return !_assetIdToLocationsMap.ContainsKey(handle.HandleId) ?
-                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error") : handle.ConvertTo<T>();
-            }
-
             var assetWrapper = _assetManager.LoadAsset<T>(key);
             AssetHandle newAssetHandle = CreateSingleHandle<T>(key);
             assetWrapper.OnUnload += () =>
             {
                 // 回收ID
                 _idPool.Enqueue(newAssetHandle.HandleId);
-                // 移除缓存
-                _keyToHandleMap.Remove(key);
-                _handleToKeyMap.Remove(newAssetHandle);
             };
 
             return newAssetHandle.ConvertTo<T>();
         }
-
-        // private static async Task<AssetHandle<T>> LoadSpriteAsync<T>(AssetEntry entry) where T : Object
-        // {
-        //     // 先获取图集
-        //     SpriteAtlas spriteAtlas = null;
-        //     BundleWrapper bundleWrapper = null;
-        //     // 找到复用图集
-        //     var spriteAssetEntry = entry as SpriteAssetEntry;
-        //     if(_keyToHandleMap.TryGetValue(spriteAssetEntry.atlasKey, out var atlasHandle))
-        //     {
-        //         if (_assetIdToLocationsMap.TryGetValue(atlasHandle.HandleId, out var loc))
-        //         {
-        //             // 图集引用增加
-        //             ++loc.RefCount;
-        //             var handle = atlasHandle.ConvertTo<SpriteAtlas>();
-        //             spriteAtlas = handle.Asset;
-        //         }
-        //     }
-        //     // 加载图集
-        //     else
-        //     {
-        //         // 加载图集AB包
-        //         bundleWrapper = await _assetBundleManager.LoadBundleAsync(spriteAssetEntry.bundleName);
-        //         // 异步加载图集资源
-        //         var assetWrapper = await bundleWrapper.LoadAssetAsync<T>(spriteAssetEntry.spriteAssetName);
-        //         if (assetWrapper.IsNull)
-        //             throw new NullReferenceException($"{nameof(GameAsset)}: load {spriteAssetEntry.spriteAssetName} failed, key({spriteAssetEntry.key})");
-        //         
-        //         // 避免逻辑上重复添加
-        //         if (_keyToHandleMap.TryGetValue(spriteAssetEntry.atlasKey, out var assetHandle))
-        //         {
-        //             if (!_assetIdToLocationsMap.TryGetValue(assetHandle.HandleId, out var loc))
-        //                 throw new Exception($"{nameof(GameAsset)}:Resource management logic error");
-        //         
-        //             ++loc.RefCount;
-        //             spriteAtlas = assetHandle.ConvertTo<SpriteAtlas>().Asset;
-        //         }
-        //         else
-        //         {
-        //             // 创建新图集Handle
-        //             var newAtlasHandle = new AssetHandle { HandleId = GenerateNewId(), Version = 0 };
-        //             // 判断ID是否存在，存在就复用定位对象
-        //             if (_assetIdToLocationsMap.TryGetValue(newAtlasHandle.HandleId, out var atlaslocation))
-        //             {
-        //                 atlaslocation.AssetWrapper = assetWrapper;
-        //                 ++atlaslocation.Version;
-        //                 atlaslocation.RefCount = 1;
-        //                 atlaslocation.release = bundleWrapper.Release;
-        //                 // 同步新句柄的版本
-        //                 newAtlasHandle.Version = atlaslocation.Version;
-        //                 // 缓存新句柄
-        //                 _keyToHandleMap.Add(spriteAssetEntry.atlasKey, newAtlasHandle);
-        //                 _handleToKeyMap.Add(newAtlasHandle, spriteAssetEntry.atlasKey);
-        //                 // 获取图集资源
-        //                 spriteAtlas = newAtlasHandle.ConvertTo<SpriteAtlas>().Asset;
-        //             }
-        //             else
-        //             {
-        //                 // 创建新定位对象
-        //                 var newLocation = new AssetLocation
-        //                 {
-        //                     AssetWrapper = assetWrapper, Version = 0, RefCount = 1, release = bundleWrapper.Release
-        //                 };
-        //                 // 缓存新句柄
-        //                 _keyToHandleMap.TryAdd(spriteAssetEntry.atlasKey, newAtlasHandle);
-        //                 _handleToKeyMap.TryAdd(newAtlasHandle, spriteAssetEntry.atlasKey);
-        //                 // 缓存新定位对象
-        //                 _assetIdToLocationsMap.TryAdd(newAtlasHandle.HandleId, newLocation);
-        //                 // 获取图集资源
-        //                 spriteAtlas = newAtlasHandle.ConvertTo<SpriteAtlas>().Asset;
-        //             }
-        //         }
-        //     }
-        //
-        //     // 这里可以不用判断，外部已经判断过了，图片资源被缓存过，直接返回句柄
-        //     if (_keyToHandleMap.TryGetValue(entry.key, out var spriteHandle))
-        //     {
-        //         if (!_assetIdToLocationsMap.TryGetValue(spriteHandle.HandleId, out var loc))
-        //             throw new Exception($"{nameof(GameAsset)}:Resource management logic error");
-        //         
-        //         ++loc.RefCount;
-        //         return spriteHandle.ConvertTo<T>();
-        //     }
-        //     
-        //     // 从图集中加载新图片资源
-        //     var sprite = spriteAtlas.GetSprite(spriteAssetEntry.key);
-        //     var spriteAssetWrapper = DIContainer.Create<AssetWrapper>(parameterValues: new object[] { sprite, bundleWrapper });
-        //     // 创建新图片句柄
-        //     var newHandle = new AssetHandle { HandleId = GenerateNewId(), Version = 0 };
-        //     // 判断ID是否存在，存在就复用定位对象
-        //     if (_assetIdToLocationsMap.TryGetValue(newHandle.HandleId, out var spriteLocation))
-        //     {
-        //         // 图片资源包装，资源是图片，包是图集包
-        //         spriteLocation.AssetWrapper = spriteAssetWrapper;
-        //         ++spriteLocation.Version;
-        //         spriteLocation.RefCount = 1;
-        //         spriteLocation.release = bundleWrapper.Release;
-        //         // 同步新句柄的版本
-        //         newHandle.Version = spriteLocation.Version;
-        //         // 缓存新句柄
-        //         _keyToHandleMap.Add(spriteAssetEntry.key, newHandle);
-        //         _handleToKeyMap.Add(newHandle, spriteAssetEntry.key);
-        //         return newHandle.ConvertTo<T>();
-        //     }
-        //     
-        //     // 创建新定位对象
-        //     var newSpriteLocation = new AssetLocation
-        //     {
-        //         AssetWrapper = spriteAssetWrapper, Version = 0, RefCount = 1, release = bundleWrapper.Release
-        //     };
-        //     // 缓存新句柄
-        //     _keyToHandleMap.TryAdd(spriteAssetEntry.key, newHandle);
-        //     _handleToKeyMap.TryAdd(newHandle, spriteAssetEntry.key);
-        //     // 缓存新定位对象
-        //     _assetIdToLocationsMap.TryAdd(newHandle.HandleId, newSpriteLocation);
-        //     // 获取图集资源
-        //     return newHandle.ConvertTo<T>();
-        // }
         
         /// <summary>
         /// 异步加载资源
@@ -188,68 +61,15 @@ namespace Core.AssetBundles.Management
         /// <exception cref="NullReferenceException"></exception>
         public static async Task<AssetHandle<T>> LoadAssetAsync<T>(string key) where T : Object
         {
-            // 存在资源缓存句柄，直接返回
-            if (_keyToHandleMap.TryGetValue(key, out var handle))
-            {
-                return !_assetIdToLocationsMap.ContainsKey(handle.HandleId) ? 
-                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error") : handle.ConvertTo<T>();
-            }
-
             // 异步加载资源
             var assetWrapper = await _assetManager.LoadAssetAsync<T>(key);
-            // 避免并发逻辑重复添加
-            if (_keyToHandleMap.TryGetValue(key, out var assetHandle))
-            {
-                return !_assetIdToLocationsMap.ContainsKey(assetHandle.HandleId) ? 
-                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error") : assetHandle.ConvertTo<T>();
-            }
-            
             AssetHandle newAssetHandle = CreateSingleHandle<T>(key);
             assetWrapper.OnUnload += () =>
             {
                 // 回收ID
                 _idPool.Enqueue(newAssetHandle.HandleId);
-                // 移除缓存
-                _keyToHandleMap.Remove(key);
-                _handleToKeyMap.Remove(newAssetHandle);
             };
-            
             return newAssetHandle.ConvertTo<T>();
-            
-            // // 创建新资源Handle
-            // var newAssetHandle = new AssetHandle { HandleId = GenerateNewId(), Version = 0 };
-            // // 当资源被卸载的时候，回收句柄ID，移除句柄缓存
-            // assetWrapper.OnUnload += () =>
-            // {
-            //     // 回收ID
-            //     _idPool.Enqueue(newAssetHandle.HandleId);
-            //     // 移除缓存
-            //     _keyToHandleMap.Remove(key);
-            //     _handleToKeyMap.Remove(newAssetHandle);
-            // };
-            //
-            // // 判断ID是否存在，存在就复用定位对象
-            // if (_assetIdToLocationsMap.TryGetValue(newAssetHandle.HandleId, out var location))
-            // {
-            //     location.AssetKey = key;
-            //     ++location.Version;
-            //     // 同步新句柄的版本
-            //     newAssetHandle.Version = location.Version;
-            //     // 缓存新句柄
-            //     _keyToHandleMap.Add(key, newAssetHandle);
-            //     _handleToKeyMap.Add(newAssetHandle, key);
-            //     return newAssetHandle.ConvertTo<T>();
-            // }
-            //
-            // // 创建新定位对象
-            // var newLocation = new AssetLocation { AssetKey = key, Version = 0 };
-            // // 缓存新句柄
-            // _keyToHandleMap.Add(key, newAssetHandle);
-            // _handleToKeyMap.Add(newAssetHandle, key);
-            // // 缓存新定位对象
-            // _assetIdToLocationsMap.Add(newAssetHandle.HandleId, newLocation);
-            // // 转换为泛型句柄
-            // return newAssetHandle.ConvertTo<T>();
         }
         
         /// <summary>
@@ -263,12 +83,6 @@ namespace Core.AssetBundles.Management
             // 先对 keys 排序，确保同一组资源无论传入顺序如何都能命中同一缓存
             var sortedKeys = keys.OrderBy(k => k).ToArray();
             var combinedKey = KeysToKey(sortedKeys);
-            
-            if (_keyToHandleMap.TryGetValue(combinedKey, out var cacheHandle))
-            {
-                return !_assetIdToLocationsMap.ContainsKey(cacheHandle.HandleId) ? 
-                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error") : cacheHandle.ConvertTo<T>();
-            }
             
             var tasks = new List<Task<AssetHandle<T>>>();
             var allHandles = new List<AssetHandle>();
@@ -284,39 +98,6 @@ namespace Core.AssetBundles.Management
             
             // 返回组合句柄
             return CreateCombineHandle<T>(combinedKey, allHandles);
-
-            #region MyRegion
-
-            // // 创建新Handle，并且是组合句柄，该句柄对应的定位对象不直接指向资源，该句柄存储所有持有资源的子句柄
-            // var newHandle = new AssetHandle
-            // {
-            //     HandleId = GenerateNewId(), Version = 0, IsCombine = true,
-            //     CombineHandles = new List<AssetHandle>(allHandles)
-            // };
-            //
-            // // 判断ID是否存在，存在就复用定位对象
-            // if (_assetIdToLocationsMap.TryGetValue(newHandle.HandleId, out var location))
-            // {
-            //     location.AssetKey = combinedKey;
-            //     ++location.Version;
-            //     // 同步定位对象的版本到句柄
-            //     newHandle.Version = location.Version;
-            //     // 缓存句柄
-            //     _keyToHandleMap.Add(combinedKey, newHandle);
-            //     _handleToKeyMap.Add(newHandle, combinedKey);
-            //     return newHandle.ConvertTo<IList<T>>();
-            // }
-            //
-            // // 创建新定位对象
-            // var newLocation = new AssetLocation { AssetKey = combinedKey, Version = newHandle.Version };
-            // // 缓存句柄
-            // _keyToHandleMap.Add(combinedKey, newHandle);
-            // _handleToKeyMap.Add(newHandle, combinedKey);
-            // // 缓存定位对象
-            // _assetIdToLocationsMap.Add(newHandle.HandleId, newLocation);
-            // return newHandle.ConvertTo<IList<T>>();
-
-            #endregion
         }
 
         /// <summary>
@@ -329,91 +110,19 @@ namespace Core.AssetBundles.Management
         {
             // 包名加类型名作为Key
             var bundleKey = $"{bundleName}_{typeof(T)}";
-            if (_keyToHandleMap.TryGetValue(bundleKey, out var cacheHandle))
-            {
-                return !_assetIdToLocationsMap.ContainsKey(cacheHandle.HandleId) ? 
-                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error") : cacheHandle.ConvertTo<T>();
-            }
-            
             // 异步加载包所有资源
             var assetWrappers = await _assetManager.LoadAllAssetAsync<T>(bundleName);
-            
-            // 避免逻辑上重复添加
-            if (_keyToHandleMap.TryGetValue(bundleKey, out var handle))
-            {
-                return !_assetIdToLocationsMap.ContainsKey(handle.HandleId) ? 
-                    throw new Exception($"{nameof(GameAsset)}:Resource management logic error") : handle.ConvertTo<T>();
-            }
-            
+
             var allHandles = new List<AssetHandle>();
             // 遍历所有资源包装，创建每个资源的句柄
             foreach (var assetWrapper in assetWrappers)
             {
                 var assetHandle = CreateSingleHandle<T>(assetWrapper.AssetKey);
                 allHandles.Add(assetHandle);
-                
-                #region Old
-                // // 创建新Handle
-                // var newHandle = new AssetHandle { HandleId = GenerateNewId(), Version = 0 };
-                // // 判断ID是否存在，存在就复用定位对象
-                // if (_assetIdToLocationsMap.TryGetValue(newHandle.HandleId, out var location))
-                // {
-                //     location.AssetKey = assetWrapper.AssetKey;
-                //     ++location.Version;
-                //     // 同步定位对象的版本
-                //     newHandle.Version = location.Version;
-                //     // 缓存句柄，通过AB包名作为句柄的Key
-                //     _keyToHandleMap.Add(bundleKey, newHandle);
-                //     _handleToKeyMap.Add(newHandle, bundleKey);
-                //     return newHandle.ConvertTo<IList<T>>();
-                // }
-                //
-                // // 创建新定位对象
-                // var newLocation = new AssetLocation { AssetKey = assetWrapper.AssetKey, Version = newHandle.Version };
-                // // 缓存句柄
-                // _keyToHandleMap.Add(bundleKey, newHandle);
-                // _handleToKeyMap.Add(newHandle, bundleKey);
-                // // 缓存定位对象
-                // _assetIdToLocationsMap.Add(newHandle.HandleId, newLocation);
-                // return newHandle.ConvertTo<IList<T>>();
-                #endregion
             }
             
             // 返回组合句柄
             return CreateCombineHandle<T>(bundleKey, allHandles);
-
-            #region MyRegion
-
-            // 创建新Handle，并且是组合句柄，该句柄对应的定位对象不直接指向资源，该句柄存储所有持有资源的子句柄
-            // var newHandle = new AssetHandle
-            // {
-            //     HandleId = GenerateNewId(), Version = 0, IsCombine = true,
-            //     CombineHandles = new List<AssetHandle>(allHandles)
-            // };
-            //
-            // // 判断ID是否存在，存在就复用定位对象
-            // if (_assetIdToLocationsMap.TryGetValue(newHandle.HandleId, out var location))
-            // {
-            //     location.AssetKey = bundleKey;
-            //     ++location.Version;
-            //     // 同步定位对象的版本到句柄
-            //     newHandle.Version = location.Version;
-            //     // 缓存句柄
-            //     _keyToHandleMap.Add(bundleKey, newHandle);
-            //     _handleToKeyMap.Add(newHandle, bundleKey);
-            //     return newHandle.ConvertTo<T>();
-            // }
-            //
-            // // 创建新定位对象
-            // var newLocation = new AssetLocation { AssetKey = bundleKey, Version = newHandle.Version };
-            // // 缓存句柄
-            // _keyToHandleMap.Add(bundleKey, newHandle);
-            // _handleToKeyMap.Add(newHandle, bundleKey);
-            // // 缓存定位对象
-            // _assetIdToLocationsMap.Add(newHandle.HandleId, newLocation);
-            // return newHandle.ConvertTo<T>();
-
-            #endregion
         }
 
         /// <summary>
@@ -433,17 +142,11 @@ namespace Core.AssetBundles.Management
                 ++location.Version;
                 // 同步定位对象的版本
                 newHandle.Version = location.Version;
-                // 缓存句柄，通过AB包名作为句柄的Key
-                _keyToHandleMap.Add(key, newHandle);
-                _handleToKeyMap.Add(newHandle, key);
                 return newHandle.ConvertTo<T>();
             }
             
             // 工厂创建新定位对象
             var newLocation = AssetLocationFactory.GetAssetLocation<T>(_assetManager.GetAssetEntry(key), newHandle.Version);
-            // 缓存句柄
-            _keyToHandleMap.Add(key, newHandle);
-            _handleToKeyMap.Add(newHandle, key);
             // 缓存定位对象
             _assetIdToLocationsMap.Add(newHandle.HandleId, newLocation);
             return newHandle.ConvertTo<T>();
@@ -465,17 +168,11 @@ namespace Core.AssetBundles.Management
                 ++location.Version;
                 // 同步定位对象的版本到句柄
                 newHandle.Version = location.Version;
-                // 缓存句柄
-                _keyToHandleMap.Add(combineKey, newHandle);
-                _handleToKeyMap.Add(newHandle, combineKey);
                 return newHandle.ConvertTo<T>();
             }
             
             // 工厂创建新定位对象
             var newLocation = AssetLocationFactory.GetAssetLocationCombine(combineKey, newHandle.Version);
-            // 缓存句柄
-            _keyToHandleMap.Add(combineKey, newHandle);
-            _handleToKeyMap.Add(newHandle, combineKey);
             // 缓存定位对象
             _assetIdToLocationsMap.Add(newHandle.HandleId, newLocation);
             return newHandle.ConvertTo<T>();
@@ -508,8 +205,6 @@ namespace Core.AssetBundles.Management
                 
                 // 需要主动移除该句柄本身，因为组合的句柄本身不直接指向某个资源，所以不会响应资源卸载的回调
                 _idPool.Enqueue(handle.HandleId);
-                _keyToHandleMap.Remove(_handleToKeyMap.GetValueOrDefault(handle));
-                _handleToKeyMap.Remove(handle);
             }
             else
             {
