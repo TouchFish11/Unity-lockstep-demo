@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Core.AssetBundles.Collection;
 using Core.AssetBundles.Management;
-using Core.AssetBundles.Update.Collection;
 using Core.Serialize.Json;
 using Core.Utility;
 using UnityEditor;

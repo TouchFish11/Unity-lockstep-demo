@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace Core.AssetBundles.Update.Collection
+namespace Core.AssetBundles.Collection
 {
     /// <summary>
     /// AssetBundle包信息实体类

@@ -63,12 +63,17 @@ namespace Core.AssetBundles.Management
         {
             // 异步加载资源
             var assetWrapper = await _assetManager.LoadAssetAsync<T>(key);
+            // 创建新句柄
             AssetHandle newAssetHandle = CreateSingleHandle<T>(key);
-            assetWrapper.OnUnload += () =>
+            // 资源包装不为空才去监听事件，否则直接返回句柄，外部通过句柄获取的资源就是null
+            if (assetWrapper != null)
             {
-                // 回收ID
-                _idPool.Enqueue(newAssetHandle.HandleId);
-            };
+                assetWrapper.OnUnload += () =>
+                {
+                    // 回收句柄ID
+                    _idPool.Enqueue(newAssetHandle.HandleId);
+                };
+            }
             return newAssetHandle.ConvertTo<T>();
         }
         

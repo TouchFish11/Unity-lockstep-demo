@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
-using Core.AssetBundles.Update.Collection;
 using Core.AssetBundles.Update.Core;
 using Core.DI;
 using Core.Pool;

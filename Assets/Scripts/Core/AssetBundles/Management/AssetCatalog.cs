@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.AssetBundles.Update.Collection;
+using Core.AssetBundles.Collection;
 using Newtonsoft.Json;
 
 namespace Core.AssetBundles.Management

@@ -108,8 +108,9 @@ namespace Core.AssetBundles.Management
             {
                 var wrapper = _nameToWrapperMap[dependency];
                 wrapper.IsActive = true;
+                wrapper.Retain();
                 wrapper.LoadFromFile();
-                Logger.Log($"{nameof(AssetBundleManager)}: {abName} package dependency {dependency} will be loaded");
+                Logger.Log($"{nameof(AssetBundleManager)}: '{abName}' assetBundle dependency '{dependency}' will be loaded");
             }
 
             // 加载目标包
@@ -133,11 +134,14 @@ namespace Core.AssetBundles.Management
                 var wrapper = _nameToWrapperMap[dependency];
                 wrapper.IsActive = true;
                 dependenciesTasks.Add(wrapper.LoadFromFileAsync(token));
-                Logger.Log($"{nameof(AssetBundleManager)}: {abName} package dependency {dependency} will be loaded");
+                Logger.Log($"{nameof(AssetBundleManager)}: '{abName}' assetBundle dependency '{dependency}' will be loaded");
             }
 
             // 等待所有依赖加载完毕
             await Task.WhenAll(dependenciesTasks);
+            // 增加所有依赖包的引用计数
+            foreach (var dependency in dependencies)
+                _nameToWrapperMap[dependency].Retain();
             // 加载目标包
             await _nameToWrapperMap[abName].LoadFromFileAsync(token);
         }
@@ -207,14 +211,31 @@ namespace Core.AssetBundles.Management
                 BundleWrapper unUseBundleWrapper = null;
                 foreach (var bundleWrapper in bundles)
                 {
-                    // 若没有被使用，且最久没使用
-                    if (unUseBundleWrapper == null || unUseBundleWrapper.LastAccessTime > bundleWrapper.LastAccessTime && !bundleWrapper.IsActive)
+                    // 跳过活跃包（正在被使用的）
+                    if (bundleWrapper.IsActive)
+                        continue;
+                    
+                    // 最久没使用
+                    if (unUseBundleWrapper == null || unUseBundleWrapper.LastAccessTime > bundleWrapper.LastAccessTime)
                     {
                         unUseBundleWrapper = bundleWrapper;
                     }
                 }
+
+                if (unUseBundleWrapper == null)
+                {
+                    // 降级处理
+                    // 选最久未访问的活跃包
+                    foreach (var bundleWrapper in bundles)
+                    {
+                        if (unUseBundleWrapper == null || unUseBundleWrapper.LastAccessTime > bundleWrapper.LastAccessTime)
+                        {
+                            unUseBundleWrapper = bundleWrapper;
+                        }
+                    }
+                }
                 
-                // 存在符合的包，卸载
+                // 卸载包
                 if (unUseBundleWrapper != null)
                 {
                     await unUseBundleWrapper.TryUnloadAsync(true);

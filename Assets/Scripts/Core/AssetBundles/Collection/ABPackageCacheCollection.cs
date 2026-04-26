@@ -1,7 +1,6 @@
-
 using Core.Collection;
 
-namespace Core.AssetBundles.Update.Collection
+namespace Core.AssetBundles.Collection
 {
     /// <summary>
     /// AB包缓存集合

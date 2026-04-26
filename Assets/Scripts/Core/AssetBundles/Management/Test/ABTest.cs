@@ -12,14 +12,16 @@ namespace Core.AssetBundles.Management.Test
     public class ABTest : MonoBehaviour
     {
         [SerializeField] private Image imgTest;
-        
-        private ObjectSpawner  _objectSpawner;
+
+        private ObjectSpawner _objectSpawner;
         
         // Start is called before the first frame update
         private async void Start()
         {
             await Registration.RegisterCore.InitCore();
 
+            _objectSpawner = DIContainer.Create<ObjectSpawner>();
+            
             //Test1();
 
             //Test2();
@@ -38,11 +40,11 @@ namespace Core.AssetBundles.Management.Test
 
             //Test9();
 
-            Test10();
+            //Test10();
 
             //Test11();
 
-            //Test12();
+            Test12();
 
             //Test13();
         }
@@ -50,9 +52,27 @@ namespace Core.AssetBundles.Management.Test
         // 加载单个资源
         private async void Test1()
         {
-            var handle = await GameAsset.LoadAssetAsync<GameObject>("Sphere");
-            EngineUtility.Instantiate(handle.Asset);
-            GameAsset.Release(handle);
+            var task1 = await _objectSpawner.SpawnAsync<GameObject>("Sphere");
+            var task2 = await _objectSpawner.SpawnAsync<GameObject>("Sphere");
+            
+            Debug.Log(task1.Obj);
+            Debug.Log(task2.Obj);
+            
+            task1.Collect();
+            task2.Collect();
+            
+            // var poolObjects = await Task.WhenAll(task1, task2);
+            //
+            // foreach (var poolObject in poolObjects)
+            // {
+            //     Debug.Log(poolObject.Obj);
+            //     poolObject.Collect();
+            // }
+            //
+            _objectSpawner.ClearCache();
+            // var handle = await GameAsset.LoadAssetAsync<GameObject>("Sphere");
+            // EngineUtility.Instantiate(handle.Asset);
+            // GameAsset.Release(handle);
         }
         
         // 串行加载同类同个资源

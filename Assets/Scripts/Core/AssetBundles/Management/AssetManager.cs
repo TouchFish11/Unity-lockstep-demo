@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.U2D;
+using Logger = Core.Log.Logger;
 using Object = UnityEngine.Object;
 
 namespace Core.AssetBundles.Management
@@ -15,6 +16,8 @@ namespace Core.AssetBundles.Management
         private readonly IAssetBundleManager _assetBundleManager;
         // 物理资源key到物理资源的缓存映射
         private readonly Dictionary<string, AssetWrapper> _assetWrappers = new();
+        // 正在加载中的任务字典，Key 为用户传入的原始资源 Key
+        private readonly Dictionary<string, Task<AssetWrapper>> _loadingTasks = new();
         // 精灵图片缓存
         private readonly Dictionary<(string atlasKey, string spriteKey), Sprite> _sprites = new();
 
@@ -42,28 +45,38 @@ namespace Core.AssetBundles.Management
         /// <exception cref="NullReferenceException"></exception>
         public AssetWrapper LoadAsset<T>(string key) where T : Object
         {
+            // 存在缓存，增加计数后返回
             if (_assetWrappers.TryGetValue(key, out var assetWrapper))
             {
+                assetWrapper.Retain();
                 return assetWrapper;
             }
+
+            try
+            {
+                // 从资源目录中查找指定的资源路径
+                var mapEntry = _assetBundleManager.Catalog.GetEntry(key);
+                if (mapEntry == null)
+                    throw new NullReferenceException($"{nameof(GameAsset)}: key({key}) found entry is null");
             
-            // 从资源目录中查找指定的资源路径
-            var mapEntry = _assetBundleManager.Catalog.GetEntry(key);
-            if (mapEntry == null)
-                throw new NullReferenceException($"{nameof(GameAsset)}: key({key}) found entry is null");
+                // 加载AB包
+                var bundleWrapper = _assetBundleManager.LoadBundle(mapEntry.bundleName);
+                if (bundleWrapper == null)
+                    throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.bundleName} AssetBundle failed");
             
-            // 加载AB包
-            var bundleWrapper = _assetBundleManager.LoadBundle(mapEntry.bundleName);
-            if (bundleWrapper == null)
-                throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.bundleName} AssetBundle failed");
+                // 加载资源
+                assetWrapper = bundleWrapper.LoadAsset<T>(key, mapEntry.assetName);
+                if (assetWrapper.IsNull)
+                    throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.assetName} failed, key({key})");
             
-            // 加载资源
-            assetWrapper = bundleWrapper.LoadAsset<T>(key, mapEntry.assetName);
-            if (assetWrapper.IsNull)
-                throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.assetName} failed, key({key})");
-            
-            _assetWrappers.Add(key, assetWrapper);
-            return assetWrapper;
+                _assetWrappers.Add(key, assetWrapper);
+                return assetWrapper;
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"[{nameof(AssetManager)}]: ({key})Asset load fail, {e.Message}");
+                return null;
+            }
         }
         
         /// <summary>
@@ -74,39 +87,110 @@ namespace Core.AssetBundles.Management
         /// <returns></returns>
         public async Task<AssetWrapper> LoadAssetAsync<T>(string key) where T : Object
         {
+            // 存在该资源缓存，直接返回
+            if (_assetWrappers.TryGetValue(key, out var assetWrapper))
+            {
+                assetWrapper.Retain();
+                return assetWrapper;
+            }
+            
+            // 查是否有正在进行的相同 Key 的加载任务
+            if (_loadingTasks.TryGetValue(key, out var existingTask))
+            {
+                var wrapper = await existingTask;
+                // 当前请求也需要持有引用
+                wrapper.Retain();
+                return wrapper;
+            }
+            
+            // 创建新的加载任务
+            var task = LoadAssetAsyncInternal<T>(key);
+            if (!_loadingTasks.TryAdd(key, task))
+            {
+                // 没加进去，说明已经有并发请求正在加载，直接 await 那个任务，此时，单线程下这里一定存在， _loadingTasks 中肯定已存在对应 Key 的任务
+                task = _loadingTasks[key];
+            }
+
+            try
+            {
+                var wrapper = await task;
+                // 第一个请求 Retain 后，后续等待同一 task 的请求会得到同一个 wrapper
+                // 注意：并发时可能 wrapper 已经存在于 _assetWrappers（由当前任务添加），
+                // 但应保证只 Retain 一次，这里 Retain 已经在 Internal 中完成
+                return wrapper;
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"[{nameof(AssetManager)}]: '{key}' asset load fail, {e.Message}");
+                return null;
+            }
+            finally
+            {
+                _loadingTasks.Remove(key);
+            }
+        }
+        
+        /// 异步加载单个资源（内部）
+        private async Task<AssetWrapper> LoadAssetAsyncInternal<T>(string key) where T : Object
+        {
             // 从资源目录中查找指定的资源路径
             var entry = _assetBundleManager.Catalog.GetEntry(key);
+            // 未找到抛出异常
             if (entry == null)
-                throw new NullReferenceException($"{nameof(GameAsset)}: key({key}) found entry is null");
+                throw new NullReferenceException($"{nameof(GameAsset)}: '{key}' key found entry is null");
             
+            // 若条目是图片资源
             if (entry is SpriteAssetEntry spriteAssetEntry)
             {
-                // 存在该资源缓存，直接返回
-                if (_assetWrappers.TryGetValue(spriteAssetEntry.atlasKey, out var assetWrapper))
+                // 图集路径处理
+                // 注意：这里应使用 atlasKey 作为物理缓存 Key，但 Retain 只针对当前 Sprite 请求
+                // 需确保图集 AB 包引用计数增加正确
+                var atlasKey = spriteAssetEntry.atlasKey;
+                
+                // 如果图集已缓存，直接创建 AssetWrapper（不重复加载图集）
+                if (_assetWrappers.TryGetValue(atlasKey, out var atlasWrapper))
                 {
-                    assetWrapper.Retain();
-                    return assetWrapper;
+                    // 因为新 Sprite 需要使用图集，引用+1
+                    atlasWrapper.Retain();
+                    // 注意：返回的 AssetKey 应是 atlasKey
+                    return atlasWrapper;
                 }
                 
-                // 异步加载指定资源AB包
-                var bundleWrapper = await _assetBundleManager.LoadBundleAsync(spriteAssetEntry.bundleName);
-                if (bundleWrapper.IsNull)
-                    throw new NullReferenceException($"{nameof(GameAsset)}: load {spriteAssetEntry.bundleName} AssetBundle failed");
-                
-                // 加载图集资源
-                assetWrapper = await bundleWrapper.LoadAssetAsync<SpriteAtlas>(spriteAssetEntry.atlasKey, spriteAssetEntry.spriteAssetName);
-                // 避免"并发"逻辑上重复添加
-                if (_assetWrappers.TryGetValue(spriteAssetEntry.atlasKey, out var cacheWrapper))
+                try
                 {
+                    // 创建新的加载任务，异步加载指定资源AB包，内部已经捕获了异常
+                    var bundleWrapper = await _assetBundleManager.LoadBundleAsync(spriteAssetEntry.bundleName);
+                    if (bundleWrapper.IsNull)
+                        throw new NullReferenceException($"{nameof(GameAsset)}: '{entry.bundleName}' assetBundle load failed");
+                
+                    // 加载图集资源，内部已经捕获了异常
+                    var assetWrapper = await bundleWrapper.LoadAssetAsync<SpriteAtlas>(atlasKey, spriteAssetEntry.spriteAssetName);
+                    // 避免"并发"逻辑上重复添加
+                    if (!_assetWrappers.TryGetValue(atlasKey, out var cacheWrapper))
+                    {
+                        // 存入缓存（使用 atlasKey），只对第一次加载 Retain
+                        _assetWrappers.Add(atlasKey, assetWrapper);
+                        // 初始引用
+                        assetWrapper.Retain();
+                        return assetWrapper;
+                    }
+                    
+                    // 存在加载的图集，说明并发加载，新增引用后返回
                     cacheWrapper.Retain();
                     return cacheWrapper;
                 }
-                
-                assetWrapper.Retain();
-                // 缓存资源包装
-                _assetWrappers.Add(spriteAssetEntry.atlasKey, assetWrapper);
-                return assetWrapper;
+                catch (Exception e)
+                {
+                    Logger.LogError($"[{nameof(AssetManager)}]: '{atlasKey}/{key}' asset load fail, {e.Message}");
+                    return null;
+                }
+                finally
+                {
+                    // 是否加载成功都要移除
+                    _loadingTasks.Remove(key);
+                }
             }
+            // 非图集资源
             else
             {
                 // 存在该资源缓存，直接返回
@@ -115,28 +199,41 @@ namespace Core.AssetBundles.Management
                     assetWrapper.Retain();
                     return assetWrapper;
                 }
-                
-                // 异步加载指定资源AB包
-                var bundleWrapper = await _assetBundleManager.LoadBundleAsync(entry.bundleName);
-                if (bundleWrapper.IsNull)
-                    throw new NullReferenceException($"{nameof(GameAsset)}: load {entry.bundleName} AssetBundle failed");
-                
-                // 加载资源
-                assetWrapper = await bundleWrapper.LoadAssetAsync<T>(key, entry.assetName);
-                // 避免"并发"逻辑上重复添加
-                if (_assetWrappers.TryGetValue(key, out var cacheWrapper))
+
+                try
                 {
+                    // 异步加载指定资源AB包
+                    var bundleWrapper = await _assetBundleManager.LoadBundleAsync(entry.bundleName);
+                    if (bundleWrapper.IsNull)
+                        throw new NullReferenceException($"{nameof(GameAsset)}: '{entry.bundleName}' assetBundle load failed");
+                
+                    // 加载资源
+                    assetWrapper = await bundleWrapper.LoadAssetAsync<T>(key, entry.assetName);
+                    // 避免"并发"逻辑上重复添加
+                    if (!_assetWrappers.TryGetValue(key, out var cacheWrapper))
+                    {
+                        // 存入缓存（使用 atlasKey），只对第一次加载 Retain
+                        _assetWrappers.Add(key, assetWrapper);
+                        assetWrapper.Retain();
+                        return assetWrapper;
+                    }
+                    
                     cacheWrapper.Retain();
                     return cacheWrapper;
                 }
-                
-                assetWrapper.Retain();
-                // 缓存资源包装
-                _assetWrappers.Add(key, assetWrapper);
-                return assetWrapper;
+                catch (Exception e)
+                {
+                    Logger.LogError($"[{nameof(AssetManager)}]: '{key}' asset load fail, {e.Message}");
+                    return null;
+                }
+                finally
+                {
+                    // 是否加载成功都要移除
+                    _loadingTasks.Remove(key);
+                }
             }
         }
-
+        
         /// <summary>
         /// 异步加载指定包的所有资源
         /// </summary>
@@ -145,6 +242,7 @@ namespace Core.AssetBundles.Management
         /// <returns></returns>
         public async Task<AssetWrapper[]> LoadAllAssetAsync<T>(string bundleName) where T : Object
         {
+            // 获取当前AB包的所有资源Key
             var allKeys = new List<string>(_assetBundleManager.Catalog.GetAssetKeysByBundle(bundleName));
             var assetToLoadKeys = new List<string>();
             foreach (var assetKey in allKeys)

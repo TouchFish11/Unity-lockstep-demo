@@ -2317,11 +2317,11 @@
     }
   },
   "abPackageCollection": {
-    "$type": "Core.AssetBundles.Update.Collection.ABPackageCollection, CoreModule",
+    "$type": "Core.AssetBundles.Collection.ABPackageCollection, CoreModule",
     "keyToValueMap": {
-      "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule]], mscorlib",
+      "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Core.AssetBundles.Collection.ABPackageInfo, CoreModule]], mscorlib",
       "animation": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "animation",
         "size": 186423,
         "hash": "1b4a9328657d96b86c3984eef3c25765959f6f93d257a216c1cb1641d6b783d4",
@@ -2333,7 +2333,7 @@
         }
       },
       "fonts": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "fonts",
         "size": 13644515,
         "hash": "de49c30971ca60a442404c3eacf5998f24e19f9ce79dbe66ad2b8c3352d0e9ee",
@@ -2343,7 +2343,7 @@
         }
       },
       "gameconfig": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "gameconfig",
         "size": 1547,
         "hash": "e0ad8305b6cac2e27eb0776cf92bc6bc5753f82d1dd79076c1f1676acd912ca4",
@@ -2353,7 +2353,7 @@
         }
       },
       "hotupdate": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate",
         "size": 31163,
         "hash": "b995ad93664f71b0cadec6a8d8606474c0efe9ee4395ab8e1b0440a9ea2f7443",
@@ -2363,7 +2363,7 @@
         }
       },
       "hotupdate_entry": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate_entry",
         "size": 2313,
         "hash": "a2b9e1095b057d121eb6efac24e0a60607dfb274d43133e730c9ab6a31d6a2af",
@@ -2373,7 +2373,7 @@
         }
       },
       "mask": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "mask",
         "size": 1291,
         "hash": "1f8d0e6cb509294c49ba449630a3deef3a7fcba6d3c87c7223ffad4aaed6e536",
@@ -2383,7 +2383,7 @@
         }
       },
       "material": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "material",
         "size": 41609,
         "hash": "677905e407e3e1b2e15e4a35781c3cf185dcccfab9628c66d19bf3a19dd9128f",
@@ -2393,20 +2393,20 @@
         }
       },
       "prefab": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "prefab",
-        "size": 46790,
-        "hash": "f28cc4f04abe3fd906749052c81dd14d4626e49d973b75064d7d7e7c9c232f07",
+        "size": 44705,
+        "hash": "7e6862d6f990377e7d7bf1e8d6ea610527e7742bb32018266525273453e2de32",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
         }
       },
       "scenes": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 12014863,
-        "hash": "e230c3c22f303e068e599a04ccf943408544647834b29427cfe9ca36612e2e10",
+        "size": 12021454,
+        "hash": "2904aaee1d2ce717905a99d162d169789124d3afb0ab3bc21fdbb49694fa730e",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
@@ -2420,7 +2420,7 @@
         }
       },
       "spriteatlas": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "spriteatlas",
         "size": 3302183,
         "hash": "2427fdb2305ecdeb6c2bbf6778a9ab32d26af723f6e1f135eca307d52c2b89d4",
@@ -2430,7 +2430,7 @@
         }
       },
       "tmpasset": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
         "size": 424636,
         "hash": "5d6b5a0fc47bcf3264ff21ea40877de2ec5adb3e50a7a31f131b3713e9ad6919",
@@ -2442,7 +2442,7 @@
         }
       },
       "ui": {
-        "$type": "Core.AssetBundles.Update.Collection.ABPackageInfo, CoreModule",
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
         "size": 190063,
         "hash": "1aac8f8de80b2f39c78630c1b2c3b9a985e7e3cc5553c9c2a287a205bb0119b8",

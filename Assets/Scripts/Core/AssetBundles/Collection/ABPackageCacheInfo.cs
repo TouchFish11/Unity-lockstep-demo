@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace Core.AssetBundles.Update.Collection
+namespace Core.AssetBundles.Collection
 {
     /// <summary>
     /// AB包缓存信息

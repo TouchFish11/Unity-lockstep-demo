@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Core.AssetBundles.Update.State;
 using Core.Log;
 using Core.Mono;
 using Core.Pool;

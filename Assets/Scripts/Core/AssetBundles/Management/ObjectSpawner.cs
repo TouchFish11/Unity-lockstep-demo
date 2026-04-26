@@ -17,7 +17,7 @@ namespace Core.AssetBundles.Management
     {
         [Inject] private IPoolManager _poolManager;
         // 资源key到资源句柄的映射
-        private readonly Dictionary<string, AssetHandle> _assetHandles = new();
+        private readonly List<AssetHandle> _assetHandles = new();
 
         /// <summary>
         /// 生成对象
@@ -37,11 +37,8 @@ namespace Core.AssetBundles.Management
                 return poolObject.Convert<T>();
             
             // 加载资源
-            if (!_assetHandles.TryGetValue(key, out var assetHandle))
-            {
-                assetHandle = GameAsset.LoadAsset<GameObject>(key);
-                _assetHandles.TryAdd(key, assetHandle);
-            }
+            var assetHandle = GameAsset.LoadAsset<GameObject>(key);
+            _assetHandles.Add(assetHandle);
             
             // 实例化资源
             var newObj = Instantiate<T>(assetHandle, key, parent, pos, rot, worldSpace);
@@ -67,11 +64,8 @@ namespace Core.AssetBundles.Management
                 return poolObject.Convert<T>();
 
             // 异步加载资源
-            if (!_assetHandles.TryGetValue(key, out var assetHandle))
-            {
-                assetHandle = await GameAsset.LoadAssetAsync<GameObject>(key);
-                _assetHandles.TryAdd(key, assetHandle);
-            }
+            var assetHandle = await GameAsset.LoadAssetAsync<GameObject>(key);
+            _assetHandles.Add(assetHandle);
 
             // 实例化资源
             var newObj = Instantiate<T>(assetHandle, key, parent, pos, rot, worldSpace);
@@ -218,7 +212,7 @@ namespace Core.AssetBundles.Management
         /// </summary>
         public void ClearCache()
         {
-            foreach (var handle in _assetHandles.Values)
+            foreach (var handle in _assetHandles)
             {
                 GameAsset.Release(handle);
             }

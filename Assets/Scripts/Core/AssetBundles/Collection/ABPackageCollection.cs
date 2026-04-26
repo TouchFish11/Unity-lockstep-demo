@@ -3,7 +3,7 @@ using Core.Collection;
 using Core.Utility;
 using UnityEngine;
 
-namespace Core.AssetBundles.Update.Collection
+namespace Core.AssetBundles.Collection
 {
     /// <summary>
     /// AssetBundle包集合类
