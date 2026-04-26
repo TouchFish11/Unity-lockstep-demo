@@ -9,6 +9,7 @@ using Core.Utility;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 using Object = UnityEngine.Object;
+using Task = System.Threading.Tasks.Task;
 
 namespace Core.AssetBundles.Management
 {
@@ -19,16 +20,19 @@ namespace Core.AssetBundles.Management
     {
         private class LoadState<T> where T : class
         {
-            public AssetBundleRequestTask<T> Task;
-            public bool Retained;
+            public TaskHandle<T> taskHandle;
+            public bool retained;
         }
         
         // AB包管理器
         private readonly IAssetBundleManager _assetBundleManager;
         // AB包加载任务
-        private AssetBundleCreateRequestTask _assetBundleCreateRequestTask;
+        //private FTask<AssetBundle> _assetBundleCreateRequestTask;
+        
+        private TaskHandle<AssetBundle> _assetBundleCreateRequestTaskHandle;
+        
         // AB包卸载任务
-        private AssetBundleUnloadOperationTask _assetBundleUnloadTask;
+        private TaskHandle _assetBundleUnloadTaskHandle;
         // 物理文件到加载任务的映射缓存
         private readonly Dictionary<string, object> _assetTasks =  new();
         // 批量加载资源任务缓存
@@ -120,24 +124,25 @@ namespace Core.AssetBundles.Management
                 }
         
                 // 正在异步加载，等待加载完成，引用计数增加，避免并发问题重复加载
-                if (_assetBundleCreateRequestTask != null)
+                if (_assetBundleCreateRequestTaskHandle.IsValid)
                 {
-                    AssetBundle ??= await _assetBundleCreateRequestTask;
+                    AssetBundle ??= await _assetBundleCreateRequestTaskHandle.Task;
+                    _assetBundleCreateRequestTaskHandle.Dispose();
                     IsActive = true;
                     return;
                 }
         
                 // 异步加载AB包
-                _assetBundleCreateRequestTask = AssetBundle.LoadFromFileAsync(LoadPath).ToTask(token);
-                AssetBundle ??= await _assetBundleCreateRequestTask;
-                _assetBundleCreateRequestTask = null;
+                _assetBundleCreateRequestTaskHandle = AssetBundle.LoadFromFileAsync(LoadPath).ToTask(token);
+                AssetBundle ??= await _assetBundleCreateRequestTaskHandle.Task;
+                _assetBundleCreateRequestTaskHandle.Dispose();
                 IsActive = true;
                 Logger.Log($"[BundleWrapper]: '{BundleName}' assetBundle is load");
             }
             catch (Exception e)
             {
                 Logger.LogError($"[BundleWrapper]: '{BundleName}' assetBundle Load fail, {e.Message}");
-                _assetBundleCreateRequestTask = null;
+                _assetBundleCreateRequestTaskHandle.Dispose();
             }
         }
         
@@ -193,17 +198,19 @@ namespace Core.AssetBundles.Management
         {
             if (!_assetTasks.TryGetValue(assetKey, out var state))
             {
+                // 创建新加载状态
+                var newState = new LoadState<T> { taskHandle = AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token) };
                 try
                 {
-                    var newTask = AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token);
-                    var newState = new LoadState<T> { Task = newTask };
                     // 先缓存加载状态
                     _assetTasks.Add(assetKey, newState);
-                    var asset = await newTask;
-                    if (!newState.Retained)
+                    // 等待任务结果
+                    var asset = await newState.taskHandle.Task;
+                    // 没有增加过计数，才去增加
+                    if (!newState.retained)
                     {
                         Retain();
-                        newState.Retained = true;
+                        newState.retained = true;
                     }
                     return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
                 }
@@ -213,21 +220,38 @@ namespace Core.AssetBundles.Management
                 }
                 finally
                 {
+                    newState.taskHandle.Dispose();
+                    _assetTasks.Remove(assetKey);
+                }
+            }
+            else
+            {
+                var cacheState = (LoadState<T>)state;
+                try
+                {
+                    // 等待同一加载任务结果
+                    var asset = await cacheState.taskHandle.Task;
+                    // 没有增加过计数，才去增加
+                    if (!cacheState.retained)
+                    {
+                        Retain();
+                        cacheState.retained = true;
+                    }
+
+                    return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError($"[BundleWrapper]: '{BundleName}' asset Load fail, {e.Message}");
+                }
+                finally
+                {
+                    cacheState.taskHandle.Dispose();
                     _assetTasks.Remove(assetKey);
                 }
             }
 
-            {
-                var cacheState = (LoadState<T>)state;
-                // 等待同一加载任务
-                var asset = await cacheState.Task;
-                if (!cacheState.Retained)
-                {
-                    Retain();
-                    cacheState.Retained = true;
-                }
-                return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
-            }
+            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { null, assetKey, this });
         }
         
         /// <summary>
@@ -251,11 +275,12 @@ namespace Core.AssetBundles.Management
         /// 异步加载所有资源（内部）
         private async Task<AssetWrapper[]> LoadAllAssetAsyncInternal<T>(CancellationToken token = default) where T : Object
         {
+            var handle = AssetBundle.LoadAllAssetsAsync<T>().ToTasks<T>(token);
             try
             {
-                var assets = await AssetBundle.LoadAllAssetsAsync<T>().ToTasks<T>(token);
-                var assetWrappers = new List<AssetWrapper>(assets.Count);
-                foreach (var asset in assets)
+                var readOnlyAssets = await handle.Task;
+                var assetWrappers = new List<AssetWrapper>(readOnlyAssets.Count);
+                foreach (var asset in readOnlyAssets)
                 {
                     assetWrappers.Add(DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, asset.name, this }));
                     Retain();
@@ -270,6 +295,7 @@ namespace Core.AssetBundles.Management
             }
             finally
             {
+                handle.Dispose();
                 // 无论成败都移除，允许后续重新加载
                 _assetBundleRequestsTasks.Remove(typeof(T));
             }
@@ -311,9 +337,10 @@ namespace Core.AssetBundles.Management
         public async Task TryUnloadAsync(bool unloadAllLoadedObjects)
         {
             // 正在异步卸载，等待卸载
-            if (_assetBundleUnloadTask != null)
+            if (_assetBundleUnloadTaskHandle.IsValid)
             {
-                await _assetBundleUnloadTask;
+                await _assetBundleUnloadTaskHandle.Task;
+                _assetBundleUnloadTaskHandle.Dispose();
             }
 
             // 卸载完成返回
@@ -323,11 +350,11 @@ namespace Core.AssetBundles.Management
             }
             
             // 异步卸载AB包
-            _assetBundleUnloadTask = AssetBundle.UnloadAsync(unloadAllLoadedObjects).ToTask();
-            await _assetBundleUnloadTask;
+            _assetBundleUnloadTaskHandle = AssetBundle.UnloadAsync(unloadAllLoadedObjects).ToTask();
+            await _assetBundleUnloadTaskHandle.Task;
             // 卸载完成后置空
             AssetBundle = null;
-            _assetBundleUnloadTask = null;
+            _assetBundleUnloadTaskHandle.Dispose();
             Logger.Log($"[BundleWrapper]: '{BundleName}' is unload, final refCount is {RefCount}");
         }
     }

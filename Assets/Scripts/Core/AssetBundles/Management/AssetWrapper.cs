@@ -18,7 +18,6 @@ namespace Core.AssetBundles.Management
         /// </summary>
         public string AssetKey { get; }
         
-        
         public AssetWrapper(object asset, string assetKey, BundleWrapper bundleWrapper)
         {
             _asset = asset;

@@ -81,13 +81,13 @@ namespace Core.AssetBundles.Update.Core
                 // 更新进度协程
                 _monoAdapter.StartCoroutine(UpdateDownloadProgress(asyncOperation));
                 // 发送网络请求
-                await asyncOperation.ToTask(_cancellationTokenSource.Token);
-                
+                using var handle = asyncOperation.ToTask(_cancellationTokenSource.Token);
+                await handle.Task;
                 // 下载结束后处理：分三种情况（超时、请求失败、请求成功）
                 if (_request?.result != UnityWebRequest.Result.Success)
                 {
                     // 请求失败：打印错误日志（包含错误信息、响应码），触发失败回调
-                    Logger.LogError($"{FileName}下载失败：错误信息={_request?.error}，结果={_request?.result}，响应码={_request?.responseCode}");
+                    Logger.LogError($"[{nameof(ABWebRequester)}]: {FileName} download fail, error={_request?.error}，result={_request?.result}, responseCode={_request?.responseCode}");
                     overCallback?.Invoke(false);
                 }
                 else
@@ -98,7 +98,7 @@ namespace Core.AssetBundles.Update.Core
             }
             catch (System.Exception e)
             {
-                Logger.LogError($"下载异常，{e.Message}，StackTrace：{e.StackTrace}");
+                Logger.LogError($"[{nameof(ABWebRequester)}]: Download error, {e.Message}");
                 overCallback?.Invoke(false);
             }
         }

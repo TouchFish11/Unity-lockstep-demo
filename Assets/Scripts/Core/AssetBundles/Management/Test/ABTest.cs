@@ -1,6 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using Core.DI;
 using Core.Mono;
+using Core.Tasks;
 using Core.Tasks.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,9 +36,9 @@ namespace Core.AssetBundles.Management.Test
 
             //Test8();
 
-            Test9();
+            //Test9();
 
-            //Test10();
+            Test10();
 
             //Test11();
 
@@ -195,9 +197,32 @@ namespace Core.AssetBundles.Management.Test
             GameAsset.Release(handle);
         }
 
-        // private async Task Test14()
-        // {
-        //     await AssetBundle.LoadFromFileAsync("").ToTask();
-        // }
+        private async void Test14()
+        {
+            // 1
+            using (var handle1 = new TaskHandle())
+            {
+                await handle1.Task;
+            }
+            
+            // 2
+            using var handle2 = new TaskHandle();
+            await handle2.Task;
+
+            // 3
+            var handle3 = new TaskHandle();
+            try
+            {
+                await handle3.Task;
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+            finally
+            {
+                handle3.Dispose();
+            }
+        }
     }
 }

@@ -80,8 +80,9 @@ namespace Core.AssetBundles.Update.State
         {
             // 创建UnityWebRequest请求读取文件
             var req = UnityWebRequest.Get(localFilePath);
+            using var handle = req.SendWebRequest().ToTask();
             // 等待请求完成
-            await req.SendWebRequest().ToTask();
+            await handle.Task;
             // 请求失败，抛出异常
             if (req.result != UnityWebRequest.Result.Success)
             {
