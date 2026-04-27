@@ -19,6 +19,8 @@ namespace Core.AssetBundles.Management
         private readonly IJsonManager _jsonManager;
         // 缓存包包装器，便于查找
         private readonly Dictionary<string, BundleWrapper> _nameToWrapperMap = new();
+        // 加载任务缓存，防并发
+        private readonly Dictionary<string, Task<BundleWrapper>> _bundleLoadingTasks = new();
         // 热包列表
         private readonly List<BundleWrapper> _hotBundles = new();
         // 冷包列表
@@ -62,25 +64,6 @@ namespace Core.AssetBundles.Management
             }
         }
         
-        public async Task<BundleWrapper> LoadBundleAsync(string abName, CancellationToken token = default)
-        {
-            if (!_nameToWrapperMap.TryGetValue(abName, out var wrapper))
-            {
-                throw new KeyNotFoundException($"{nameof(AssetBundleManager)}: {abName} key is not found");
-            }
-
-            // 加载依赖和目标AB包
-            await LoadDependenciesAndTargetAsync(abName, token);
-            // 返回指定AB包
-            return wrapper;
-        }
-
-        /// <summary>
-        /// 同步加载指定AB包
-        /// </summary>
-        /// <param name="abName">AB包名称（不含拓展名） </param>
-        /// <returns></returns>
-        /// <exception cref="KeyNotFoundException"></exception>
         public BundleWrapper LoadBundle(string abName)
         {
             if (!_nameToWrapperMap.TryGetValue(abName, out var wrapper))
@@ -93,7 +76,7 @@ namespace Core.AssetBundles.Management
             // 返回指定AB包
             return wrapper;
         }
-
+        
         /// <summary>
         /// 异步加载依赖包和目标包
         /// </summary>
@@ -108,13 +91,48 @@ namespace Core.AssetBundles.Management
             {
                 var wrapper = _nameToWrapperMap[dependency];
                 wrapper.IsActive = true;
-                wrapper.Retain();
                 wrapper.LoadFromFile();
+                wrapper.Retain();
                 Logger.Log($"{nameof(AssetBundleManager)}: '{abName}' assetBundle dependency '{dependency}' will be loaded");
             }
 
             // 加载目标包
             _nameToWrapperMap[abName].LoadFromFile();
+        }
+        
+        public async Task<BundleWrapper> LoadBundleAsync(string abName, CancellationToken token = default)
+        {
+            if (!_nameToWrapperMap.ContainsKey(abName))
+                throw new KeyNotFoundException($"[{nameof(AssetBundleManager)}]: {abName} assetBundle key is not found");
+
+            // 已存在同名加载任务，直接复用
+            if (_bundleLoadingTasks.TryGetValue(abName, out var existingTask))
+                return await existingTask;
+            
+            // 异步加载AB包及其依赖
+            var task = LoadBundleInternalAsync(abName, token);
+            // 缓存当前正在加载的任务
+            if (!_bundleLoadingTasks.TryAdd(abName, task))
+            {
+                // 并发极端情况，已添加，返回同一个任务
+                task = _bundleLoadingTasks[abName];
+            }
+            
+            try
+            {
+                return await task;
+            }
+            finally
+            {
+                _bundleLoadingTasks.Remove(abName);
+            }
+        }
+        
+        /// 异步加载AB包（内部）
+        private async Task<BundleWrapper> LoadBundleInternalAsync(string abName, CancellationToken token)
+        {
+            await LoadDependenciesAndTargetAsync(abName, token);
+            return _nameToWrapperMap[abName];
         }
         
         /// <summary>
@@ -127,23 +145,42 @@ namespace Core.AssetBundles.Management
         {
             // 获取该AB包的所有依赖
             var dependencies = Catalog.ABPackageCollection.GetAllDependencies(abName);
-            // 加载所有依赖包
-            var dependenciesTasks = new List<Task>(dependencies.Length);
+            // 并发加载依赖，并存储每个加载任务及其对应的依赖包名
+            var dependenciesTasks = new Dictionary<string, Task<bool>>(dependencies.Length);
             foreach (var dependency in dependencies)
             {
                 var wrapper = _nameToWrapperMap[dependency];
                 wrapper.IsActive = true;
-                dependenciesTasks.Add(wrapper.LoadFromFileAsync(token));
+                dependenciesTasks.Add(dependency, wrapper.LoadFromFileAsync(token));
                 Logger.Log($"{nameof(AssetBundleManager)}: '{abName}' assetBundle dependency '{dependency}' will be loaded");
             }
 
             // 等待所有依赖加载完毕
-            await Task.WhenAll(dependenciesTasks);
-            // 增加所有依赖包的引用计数
-            foreach (var dependency in dependencies)
-                _nameToWrapperMap[dependency].Retain();
+            await Task.WhenAll(dependenciesTasks.Values);
+            // 仅对加载成功的依赖增加引用计数
+            foreach (var (depName, task) in dependenciesTasks)
+            {
+                // 已完成直接取 Result 即可
+                if (task.Result)
+                {
+                    _nameToWrapperMap[depName].Retain();
+                }
+            }
+            
             // 加载目标包
-            await _nameToWrapperMap[abName].LoadFromFileAsync(token);
+            var isSuccess = await _nameToWrapperMap[abName].LoadFromFileAsync(token);
+            // 加载目标包失败
+            if (!isSuccess)
+            {
+                // 只回滚加载成功的依赖（它们的引用计数被增加了）
+                foreach (var (depName, task) in dependenciesTasks)
+                {
+                    if (task.Result)
+                    {
+                        _nameToWrapperMap[depName].Release();
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -20,33 +20,34 @@ namespace Core.AssetBundles.Management
         /// </summary>
         /// <returns>是否初始化成功</returns>
         Task Init();
-
-        /// <summary>
-        /// 异步加载指定AB包
-        /// </summary>
-        /// <param name="abName">AB包名称（不含拓展名）</param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        Task<BundleWrapper> LoadBundleAsync(string abName, CancellationToken token = default);
-
-        /// <summary>
-        /// 卸载所有已加载的AssetBundle
-        /// </summary>
-        /// <param name="unloadAllObjects"></param>
-        Task UnloadAllBundles(bool unloadAllObjects);
         
-        /// <summary>
-        /// 释放指定包的所有依赖包，用于减少依赖项的引用计数
-        /// </summary>
-        /// <param name="abName">AB包名称（不含拓展名）</param>
-        void ReleaseDependencies(string abName);
-
         /// <summary>
         /// 同步加载指定AB包
         /// </summary>
         /// <param name="abName">AB包名称（不含拓展名） </param>
         /// <returns></returns>
-        /// <exception cref="KeyNotFoundException"></exception>
+        /// <exception cref="KeyNotFoundException">abName 没有被找到时抛出</exception>
         BundleWrapper LoadBundle(string abName);
+
+        /// <summary>
+        /// 异步加载指定AB包
+        /// </summary>
+        /// <param name="abName">AB包名称（不含拓展名）</param>
+        /// <param name="token">取消令牌</param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException">abName 没有被找到时抛出</exception>
+        Task<BundleWrapper> LoadBundleAsync(string abName, CancellationToken token = default);
+
+        /// <summary>
+        /// 释放指定包的所有依赖包，用于减少依赖项的引用计数
+        /// </summary>
+        /// <param name="abName">AB包名称（不含拓展名）</param>
+        void ReleaseDependencies(string abName);
+        
+        /// <summary>
+        /// 卸载所有已加载的AssetBundle
+        /// </summary>
+        /// <param name="unloadAllObjects"></param>
+        Task UnloadAllBundles(bool unloadAllObjects);
     }
 }

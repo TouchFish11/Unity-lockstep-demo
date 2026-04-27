@@ -33,7 +33,7 @@ namespace Core.AssetBundles.Management
         {
             if (typeof(Sprite) == typeof(T) && entry is SpriteAssetEntry spriteAssetEntry)
             {
-                var spriteLocation = DIContainer.Create<spriteLocation>();
+                var spriteLocation = DIContainer.Create<SpriteLocation>();
                 spriteLocation.AssetKey = spriteAssetEntry.atlasKey;
                 spriteLocation.Version = version;
                 spriteLocation.SpriteKey = spriteAssetEntry.key;

@@ -18,6 +18,8 @@ namespace Core.AssetBundles.Management
         private readonly Dictionary<string, AssetWrapper> _assetWrappers = new();
         // 正在加载中的任务字典，Key 为用户传入的原始资源 Key
         private readonly Dictionary<string, Task<AssetWrapper>> _loadingTasks = new();
+        // 批量加载资源任务缓存
+        private readonly Dictionary<string, Task<AssetWrapper[]>> _assetsLoadingTasks = new();
         // 精灵图片缓存
         private readonly Dictionary<(string atlasKey, string spriteKey), Sprite> _sprites = new();
 
@@ -124,10 +126,6 @@ namespace Core.AssetBundles.Management
                 Logger.LogError($"[{nameof(AssetManager)}]: '{key}' asset load fail, {e.Message}");
                 return null;
             }
-            finally
-            {
-                _loadingTasks.Remove(key);
-            }
         }
         
         /// 异步加载单个资源（内部）
@@ -165,19 +163,19 @@ namespace Core.AssetBundles.Management
                 
                     // 加载图集资源，内部已经捕获了异常
                     var assetWrapper = await bundleWrapper.LoadAssetAsync<SpriteAtlas>(atlasKey, spriteAssetEntry.spriteAssetName);
-                    // 避免"并发"逻辑上重复添加
-                    if (!_assetWrappers.TryGetValue(atlasKey, out var cacheWrapper))
-                    {
-                        // 存入缓存（使用 atlasKey），只对第一次加载 Retain
-                        _assetWrappers.Add(atlasKey, assetWrapper);
-                        // 初始引用
-                        assetWrapper.Retain();
-                        return assetWrapper;
-                    }
+                    // // 避免"并发"逻辑上重复添加
+                    // if (_assetWrappers.TryGetValue(atlasKey, out var cacheWrapper))
+                    // {
+                    //     // 存在加载的图集，说明并发加载，新增引用后返回
+                    //     cacheWrapper.Retain();
+                    //     return cacheWrapper;
+                    // }
                     
-                    // 存在加载的图集，说明并发加载，新增引用后返回
-                    cacheWrapper.Retain();
-                    return cacheWrapper;
+                    // 存入缓存（使用 atlasKey），只对第一次加载 Retain
+                    _assetWrappers.Add(atlasKey, assetWrapper);
+                    // 初始引用
+                    assetWrapper.Retain();
+                    return assetWrapper;
                 }
                 catch (Exception e)
                 {
@@ -209,17 +207,17 @@ namespace Core.AssetBundles.Management
                 
                     // 加载资源
                     assetWrapper = await bundleWrapper.LoadAssetAsync<T>(key, entry.assetName);
-                    // 避免"并发"逻辑上重复添加
-                    if (!_assetWrappers.TryGetValue(key, out var cacheWrapper))
-                    {
-                        // 存入缓存（使用 atlasKey），只对第一次加载 Retain
-                        _assetWrappers.Add(key, assetWrapper);
-                        assetWrapper.Retain();
-                        return assetWrapper;
-                    }
+                    // // 避免"并发"逻辑上重复添加
+                    // if (_assetWrappers.TryGetValue(key, out var cacheWrapper))
+                    // {
+                    //     cacheWrapper.Retain();
+                    //     return cacheWrapper;
+                    // }
                     
-                    cacheWrapper.Retain();
-                    return cacheWrapper;
+                    // 存入缓存（使用 atlasKey），只对第一次加载 Retain
+                    _assetWrappers.Add(key, assetWrapper);
+                    assetWrapper.Retain();
+                    return assetWrapper;
                 }
                 catch (Exception e)
                 {
@@ -244,17 +242,15 @@ namespace Core.AssetBundles.Management
         {
             // 获取当前AB包的所有资源Key
             var allKeys = new List<string>(_assetBundleManager.Catalog.GetAssetKeysByBundle(bundleName));
+            // 添加待加载的资源key
             var assetToLoadKeys = new List<string>();
             foreach (var assetKey in allKeys)
             {
-                // 添加待加载的资源key
                 if (!_assetWrappers.ContainsKey(assetKey))
-                {
                     assetToLoadKeys.Add(assetKey);
-                }
             }
             
-            var assetWrappers = new List<AssetWrapper>(allKeys.Count);
+            var newAssetWrappers = new List<AssetWrapper>(assetToLoadKeys.Count);
             // 说明这个包的全部资源都加载过了，直接返回全部缓存即可
             if(assetToLoadKeys.Count == 0)
             {
@@ -262,9 +258,21 @@ namespace Core.AssetBundles.Management
                 {
                     var assetWrapper = _assetWrappers[cacheKey];
                     assetWrapper.Retain();
-                    assetWrappers.Add(assetWrapper);
+                    newAssetWrappers.Add(assetWrapper);
                 }
-                return assetWrappers.ToArray();
+                return newAssetWrappers.ToArray();
+            }
+            
+            var cacheBundleKey = $"{bundleName}_{typeof(T)}";
+            // 正在批量加载资源，返回同一个任务，同时增加引用计数
+            if (_assetsLoadingTasks.TryGetValue(cacheBundleKey, out var cacheTask))
+            {
+                var assetWrappers = await cacheTask;
+                foreach (var assetWrapper in assetWrappers)
+                {
+                    assetWrapper.Retain();
+                }
+                return assetWrappers;
             }
             
             // 说明这个包加载过资源，有缓存，加载剩余资源
@@ -277,20 +285,46 @@ namespace Core.AssetBundles.Management
                 }
                 
                 // 等待所有资源加载完成
-                assetWrappers.AddRange(await Task.WhenAll(assetTasks));
-                return assetWrappers.ToArray();
+                newAssetWrappers.AddRange(await Task.WhenAll(assetTasks));
+                return newAssetWrappers.ToArray();
             }
             
             // 否则全量加载
-            var bundleWrapper = await _assetBundleManager.LoadBundleAsync(bundleName);
-            // 等待所有资源加载完成
-            assetWrappers.AddRange(await bundleWrapper.LoadAllAssetAsync<T>());
-            foreach (var assetWrapper in assetWrappers)
+            var task = LoadAllAssetAsyncInternal<T>(bundleName);
+            if (!_assetsLoadingTasks.TryAdd(cacheBundleKey, task))
             {
-                assetWrapper.Retain();
-                _assetWrappers.TryAdd(assetWrapper.AssetKey, assetWrapper);
+                task = _assetsLoadingTasks[cacheBundleKey];
             }
-            return assetWrappers.ToArray();
+
+            return await task;
+        }
+
+        /// 异步批量加载包所有资源（内部）
+        private async Task<AssetWrapper[]> LoadAllAssetAsyncInternal<T>(string bundleName) where T : Object
+        {
+            var cacheBundleKey = $"{bundleName}_{typeof(T)}";
+            try
+            {
+                var assetWrappers = new List<AssetWrapper>();
+                var bundleWrapper = await _assetBundleManager.LoadBundleAsync(bundleName);
+                // 等待所有资源加载完成
+                assetWrappers.AddRange(await bundleWrapper.LoadAllAssetAsync<T>());
+                foreach (var assetWrapper in assetWrappers)
+                {
+                    assetWrapper.Retain();
+                    _assetWrappers.TryAdd(assetWrapper.AssetKey, assetWrapper);
+                }
+                return assetWrappers.ToArray();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"[{nameof(AssetManager)}]: '{bundleName}' assetBundle Load all asset fail, {e.Message}");
+                return Array.Empty<AssetWrapper>();
+            }
+            finally
+            {
+                _assetsLoadingTasks.Remove(cacheBundleKey);
+            }
         }
 
         /// <summary>
@@ -349,10 +383,15 @@ namespace Core.AssetBundles.Management
             if (!_assetWrappers.TryGetValue(atlasKey, out var wrapper)) 
                 return null;
             
-            // 加载图片并缓存
-            if (_sprites.TryGetValue((atlasKey, spriteKey), out var sprite)) 
+            // 获取缓存的图片，资源引用计数不需要增加；但是包热度需要增加
+            if (_sprites.TryGetValue((atlasKey, spriteKey), out var sprite))
+            {
+                // 增加包热度
+                wrapper.RecordAccess();
                 return sprite;
+            }
             
+            // 加载图片并缓存
             sprite = ((SpriteAtlas)wrapper.Asset).GetSprite(spriteKey);
             _sprites.Add((atlasKey, spriteKey), sprite);
             return sprite;

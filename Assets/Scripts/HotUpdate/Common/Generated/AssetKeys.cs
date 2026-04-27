@@ -15,11 +15,11 @@ public static class AssetKeys
     public const string Bot_Mask = "Bot_Mask";
     public const string Gray = "Gray";
     public const string Sphere = "Sphere";
-    public const string ABTestScene = "ABTestScene";
-    public const string GameScene = "GameScene";
-    public const string InventoryMainTestScene = "InventoryMainTestScene";
-    public const string InventoryTestScene = "InventoryTestScene";
     public const string MainScene = "MainScene";
+    public const string InventoryTestScene = "InventoryTestScene";
+    public const string InventoryMainTestScene = "InventoryMainTestScene";
+    public const string GameScene = "GameScene";
+    public const string ABTestScene = "ABTestScene";
     public const string Atlas_Item = "Atlas_Item";
     public const string arrow_basic = "arrow_basic";
     public const string bone_skull = "bone_skull";

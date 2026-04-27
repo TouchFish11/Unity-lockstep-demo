@@ -18,23 +18,16 @@ namespace Core.AssetBundles.Management
     /// </summary>
     internal class BundleWrapper
     {
-        private class LoadState<T> where T : class
-        {
-            public TaskHandle<T> taskHandle;
-            public bool retained;
-        }
-        
         // AB包管理器
         private readonly IAssetBundleManager _assetBundleManager;
-        // AB包加载任务句柄
-        private TaskHandle<AssetBundle> _assetBundleCreateRequestTaskHandle;
-        
-        // AB包卸载任务
+        // AB包异步加载任务(内部)
+        private Task<bool> _assetBundleCreateRequestInternalTask;
+        // AB包卸载任务句柄
         private TaskHandle _assetBundleUnloadTaskHandle;
-        // 物理文件到加载任务的映射缓存
-        private readonly Dictionary<string, object> _assetTasks =  new();
+        // 资源物理文件到加载任务的映射缓存
+        private readonly Dictionary<string, Task<AssetWrapper>> _assetLoadingTasks =  new();
         // 批量加载资源任务缓存
-        private readonly Dictionary<Type, object> _assetBundleRequestsTasks = new();
+        private readonly Dictionary<Type, Task<AssetWrapper[]>> _assetsLoadingTasks = new();
         // LFU滑动窗口
         private readonly LFUSlidingWindow _window;
         
@@ -135,60 +128,6 @@ namespace Core.AssetBundles.Management
         }
         
         /// <summary>
-        /// 从文件异步加载AssetBundle
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public async Task LoadFromFileAsync(CancellationToken token = default)
-        {
-            // 已加载完成，直接返回，避免重复加载
-            if (AssetBundle)
-            {
-                IsActive = true;
-                return;
-            }
-
-            // 正在异步加载
-            if (_assetBundleCreateRequestTaskHandle.IsValid)
-            {
-                try
-                {
-                    // 等待同一个任务加载
-                    AssetBundle ??= await _assetBundleCreateRequestTaskHandle.Task;
-                    IsActive = true;
-                    return;
-                }
-                catch (Exception e)
-                {
-                    Logger.LogError($"[BundleWrapper]: '{BundleName}' assetBundle Load fail, {e.Message}");
-                }
-                finally
-                {
-                    _assetBundleCreateRequestTaskHandle.Dispose();
-                }
-            }
-            else
-            {
-                try
-                {
-                    // 异步加载AB包
-                    _assetBundleCreateRequestTaskHandle = AssetBundle.LoadFromFileAsync(LoadPath).ToTask(token);
-                    AssetBundle ??= await _assetBundleCreateRequestTaskHandle.Task;
-                    IsActive = true;
-                    Logger.Log($"[BundleWrapper]: '{BundleName}' assetBundle is load");
-                }
-                catch (Exception e)
-                {
-                    Logger.LogError($"[BundleWrapper]: '{BundleName}' assetBundle Load fail, {e.Message}");
-                }
-                finally
-                {
-                    _assetBundleCreateRequestTaskHandle.Dispose();
-                }
-            }
-        }
-        
-        /// <summary>
         /// 同步加载资源
         /// </summary>
         /// <param name="assetKey"></param>
@@ -202,6 +141,53 @@ namespace Core.AssetBundles.Management
         }
         
         /// <summary>
+        /// 从文件异步加载AssetBundle
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<bool> LoadFromFileAsync(CancellationToken token = default)
+        {
+            // 已加载完成，直接返回，避免重复加载
+            if (AssetBundle)
+            {
+                IsActive = true;
+                return Task.FromResult(true);
+            }
+
+            // 正在加载相同的AB包，直接返回任务
+            if (_assetBundleCreateRequestInternalTask != null)
+                return _assetBundleCreateRequestInternalTask;
+            
+            // 异步加载AB包
+            _assetBundleCreateRequestInternalTask = LoadFromFileAsyncInternal(token);
+            return _assetBundleCreateRequestInternalTask;
+        }
+
+        /// 异步加载AB包（内部）
+        private async Task<bool> LoadFromFileAsyncInternal(CancellationToken token = default)
+        {
+            // 异步加载AB包
+            var assetBundleCreateRequestTaskHandle = AssetBundle.LoadFromFileAsync(LoadPath).ToTask(token);
+            try
+            {
+                AssetBundle = await assetBundleCreateRequestTaskHandle.Task;
+                IsActive = true;
+                Logger.Log($"[BundleWrapper]: '{BundleName}' assetBundle is load");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"[BundleWrapper]: '{BundleName}' assetBundle Load fail, {e.Message}");
+                return false;
+            }
+            finally
+            {
+                _assetBundleCreateRequestInternalTask = null;
+                assetBundleCreateRequestTaskHandle.Dispose();
+            }
+        }
+        
+        /// <summary>
         /// 异步加载资源
         /// </summary>
         /// <param name="assetKey"></param>
@@ -209,64 +195,44 @@ namespace Core.AssetBundles.Management
         /// <param name="token"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public async Task<AssetWrapper> LoadAssetAsync<T>(string assetKey, string assetName, CancellationToken token = default) where T : class
+        public Task<AssetWrapper> LoadAssetAsync<T>(string assetKey, string assetName, CancellationToken token = default) where T : class
         {
-            if (!_assetTasks.TryGetValue(assetKey, out var state))
-            {
-                // 创建新加载状态
-                var newState = new LoadState<T> { taskHandle = AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token) };
-                try
-                {
-                    // 先缓存加载状态
-                    _assetTasks.Add(assetKey, newState);
-                    // 等待任务结果
-                    var asset = await newState.taskHandle.Task;
-                    // 没有增加过计数，才去增加
-                    if (!newState.retained)
-                    {
-                        Retain();
-                        newState.retained = true;
-                    }
-                    return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
-                }
-                catch(Exception e)
-                {
-                    Logger.LogError($"[BundleWrapper]: '{BundleName}/{assetKey}' asset Load fail, {e.Message}");
-                }
-                finally
-                {
-                    newState.taskHandle.Dispose();
-                    _assetTasks.Remove(assetKey);
-                }
-            }
-            else
-            {
-                var cacheState = (LoadState<T>)state;
-                try
-                {
-                    // 等待同一加载任务结果
-                    var asset = await cacheState.taskHandle.Task;
-                    // 没有增加过计数，才去增加
-                    if (!cacheState.retained)
-                    {
-                        Retain();
-                        cacheState.retained = true;
-                    }
+            // 正在加载资源，存在缓存任务，返回同一个任务
+            if (_assetLoadingTasks.TryGetValue(assetKey, out var cacheTask))
+                return cacheTask;
 
-                    return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
-                }
-                catch (Exception e)
-                {
-                    Logger.LogError($"[BundleWrapper]: '{BundleName}/{assetKey}' asset Load fail, {e.Message}");
-                }
-                finally
-                {
-                    cacheState.taskHandle.Dispose();
-                    _assetTasks.Remove(assetKey);
-                }
+            // 异步加载资源
+            var loadingTask = LoadAssetAsyncInternal<T>(assetKey, assetName, token);
+            // 缓存正在加载的任务
+            if (!_assetLoadingTasks.TryAdd(assetKey, loadingTask))
+            {
+                // 理论上不会进到这里
+                loadingTask = _assetLoadingTasks[assetKey];
             }
 
-            return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { null, assetKey, this });
+            return loadingTask;
+        }
+
+        /// 异步加载资源（内部）
+        private async Task<AssetWrapper> LoadAssetAsyncInternal<T>(string assetKey, string assetName, CancellationToken token = default) where T : class
+        {
+            var taskHandle = AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token);
+            try
+            {
+                var asset = await taskHandle.Task;
+                Retain();
+                return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"[BundleWrapper]: '{BundleName}/{assetKey}' asset Load fail, {e.Message}");
+                return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { null, assetKey, this });
+            }
+            finally
+            {
+                taskHandle.Dispose();
+                _assetLoadingTasks.Remove(assetKey);
+            }
         }
         
         /// <summary>
@@ -275,16 +241,21 @@ namespace Core.AssetBundles.Management
         /// <param name="token"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public async Task<AssetWrapper[]> LoadAllAssetAsync<T>(CancellationToken token = default) where T : Object
+        public Task<AssetWrapper[]> LoadAllAssetAsync<T>(CancellationToken token = default) where T : Object
         {
-            if (!_assetBundleRequestsTasks.TryGetValue(typeof(T), out var obj))
+            // 当前包存在该类型的批量加载任务，返回任务
+            if (_assetsLoadingTasks.TryGetValue(typeof(T), out var cacheTask))
+                return cacheTask;
+            
+            // 异步加载AB包中的所有资源
+            var task = LoadAllAssetAsyncInternal<T>(token);
+            if (!_assetsLoadingTasks.TryAdd(typeof(T), task))
             {
-                var task = LoadAllAssetAsyncInternal<T>(token);
-                _assetBundleRequestsTasks.Add(typeof(T), task);
-                return await task;
+                // 理论上不会进到这里
+                task = _assetsLoadingTasks[typeof(T)];
             }
             
-            return await (Task<AssetWrapper[]>)obj;
+            return task;
         }
 
         /// 异步加载所有资源（内部）
@@ -312,7 +283,7 @@ namespace Core.AssetBundles.Management
             {
                 handle.Dispose();
                 // 无论成败都移除，允许后续重新加载
-                _assetBundleRequestsTasks.Remove(typeof(T));
+                _assetsLoadingTasks.Remove(typeof(T));
             }
         }
         

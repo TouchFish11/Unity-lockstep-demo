@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 548095805
+CRC: 3136913234
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3ace452d208051973c52518ce4b2bd96
+    Hash: bfc7134fe57c7b2875d19cc9101e4fc8
   TypeTreeHash:
     serializedVersion: 2
     Hash: 00315716536d41c56198fb732da9d450
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 3ace452d208051973c52518ce4b2bd96
+    Hash: bfc7134fe57c7b2875d19cc9101e4fc8
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -141,7 +141,4 @@ Assets:
 - Assets/Editor/ArtRes/Scenes/GameScene.unity
 - Assets/Editor/ArtRes/Scenes/InventoryMainTestScene.unity
 - Assets/Editor/ArtRes/Scenes/ABTestScene.unity
-Dependencies:
-- D:/UnityProject/AnimationSystem/Assets/AssetBundles/StandaloneWindows64/animation
-- D:/UnityProject/AnimationSystem/Assets/AssetBundles/StandaloneWindows64/material
-- D:/UnityProject/AnimationSystem/Assets/AssetBundles/StandaloneWindows64/ui
+Dependencies: []

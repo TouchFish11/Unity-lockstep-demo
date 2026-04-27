@@ -264,7 +264,7 @@ namespace Editor.AssetBundle.Core
             {
                 hotfixDllBundleName = hotfixDllBundleName,
                 version = DateTime.Now.Ticks.ToString(),
-                hotfixObjKey = "hotupdateentry"
+                hotfixObjKey = "HotUpdateEntry"
             };
             
             var bootConfigJson = jsonManager.ToJson(bootConfig);
@@ -398,7 +398,7 @@ namespace Editor.AssetBundle.Core
                     {
                         assetType = EAssetType.SpiteAtlas;
                     }
-                    else if (type == typeof(SceneAsset))
+                    else if (type == typeof(SceneAsset) || assetBundle.isStreamedSceneAssetBundle)
                     {
                         assetType = EAssetType.Scene;
                     }
@@ -407,7 +407,7 @@ namespace Editor.AssetBundle.Core
                         assetType = EAssetType.Object;
                     }
 
-                    Log($"资源类型：{type.Name}");
+                    Log($"主资源类型：{type.Name}，实际资源类型：{assetType}");
                     // 遍历该包下的所有资源（直接来自发布配置）
                     foreach (var assetInfo in abInfo.assetInfos)
                     {

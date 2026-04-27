@@ -11,13 +11,25 @@ namespace Core.AssetBundles.Management
     {
         // 对象生成器
         private ObjectSpawner _spawner;
-        // 对象实例
+        
+        /// <summary>
+        /// 池化对象ID
+        /// </summary>
+        public int Id { get; private set; }
+        
+        /// <summary>
+        /// 对象实例
+        /// </summary>
         public Object Obj { get; }
-        // 对象实例列表
+        
+        /// <summary>
+        /// 对象实例列表
+        /// </summary>
         public List<Object> Objs { get; private set; }
 
-        public PoolObject(Object obj, ObjectSpawner spawner)
+        public PoolObject(int id, Object obj, ObjectSpawner spawner)
         {
+            Id = id;
             Obj = obj;
             _spawner = spawner;
             Objs = new List<Object>();

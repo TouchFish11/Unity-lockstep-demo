@@ -100,40 +100,40 @@
       "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Sphere.prefab",
       "assetType": 0
     },
-    "ABTestScene": {
+    "MainScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ABTestScene",
+      "key": "MainScene",
       "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
-      "assetType": 0
-    },
-    "GameScene": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "GameScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
-      "assetType": 0
-    },
-    "InventoryMainTestScene": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "InventoryMainTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
-      "assetType": 0
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\MainScene.unity",
+      "assetType": 1
     },
     "InventoryTestScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "InventoryTestScene",
       "bundleName": "scenes",
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryTestScene.unity",
-      "assetType": 0
+      "assetType": 1
     },
-    "MainScene": {
+    "InventoryMainTestScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MainScene",
+      "key": "InventoryMainTestScene",
       "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\MainScene.unity",
-      "assetType": 0
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
+      "assetType": 1
+    },
+    "GameScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "GameScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
+      "assetType": 1
+    },
+    "ABTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "ABTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
+      "assetType": 1
     },
     "Atlas_Item": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2405,18 +2405,11 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 12021454,
-        "hash": "2904aaee1d2ce717905a99d162d169789124d3afb0ab3bc21fdbb49694fa730e",
+        "size": 28002301,
+        "hash": "ad1292bc3e5f66a459025c8c7e5f20757341eb5d847d6f260e7b579d43c701bd",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": [
-            "animation",
-            "fonts",
-            "mask",
-            "material",
-            "tmpasset",
-            "ui"
-          ]
+          "$values": []
         }
       },
       "spriteatlas": {

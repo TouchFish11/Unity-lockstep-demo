@@ -1,46 +1,7 @@
 ManifestFileVersion: 0
-CRC: 2995723664
+CRC: 1010001802
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: animation
-      Dependencies:
-        Dependency_0: mask
-    Info_1:
-      Name: fonts
-      Dependencies: {}
-    Info_2:
-      Name: mask
-      Dependencies: {}
-    Info_3:
-      Name: material
-      Dependencies: {}
-    Info_4:
       Name: scenes
-      Dependencies:
-        Dependency_0: animation
-        Dependency_1: material
-        Dependency_2: ui
-    Info_5:
-      Name: tmpasset
-      Dependencies:
-        Dependency_0: fonts
-    Info_6:
-      Name: ui
-      Dependencies:
-        Dependency_0: tmpasset
-    Info_7:
-      Name: hotupdate
-      Dependencies: {}
-    Info_8:
-      Name: gameconfig
-      Dependencies: {}
-    Info_9:
-      Name: hotupdate_entry
-      Dependencies: {}
-    Info_10:
-      Name: spriteatlas
-      Dependencies: {}
-    Info_11:
-      Name: prefab
       Dependencies: {}

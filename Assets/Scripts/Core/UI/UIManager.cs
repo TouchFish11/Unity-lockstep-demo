@@ -151,7 +151,7 @@ namespace Core.UI
             
             // 清空缓存
             _panels.Clear();
-            _objectSpawner.ClearCache();
+            _objectSpawner.Dispose();
             return Task.WhenAll(list);
         }
 

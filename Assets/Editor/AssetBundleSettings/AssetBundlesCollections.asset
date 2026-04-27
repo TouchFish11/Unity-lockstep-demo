@@ -102,9 +102,9 @@ MonoBehaviour:
   - assetBundleName: scenes
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Scenes\ABTestScene.unity
-      size: 9401
+      size: 24890
       name: ABTestScene.unity
-      hash: db67fc3052b8f67e95b348ec75c243384e5aecbc6b8cd071c632319ef0a82df7
+      hash: a60656a4848c37f679cfe4a59e6adfc03abec243c1559b6a34e004c1e31379b5
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\GameScene.unity
       size: 131567

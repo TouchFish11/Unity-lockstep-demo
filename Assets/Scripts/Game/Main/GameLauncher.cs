@@ -31,7 +31,7 @@ namespace Game.Main
                 // 加载热更程序集
                 await LoadHotfixDll();
                 // 创建热更入口
-                var spawner = DIContainer.Create<ObjectSpawner>();
+                using var spawner = DIContainer.Create<ObjectSpawner>();
                 var entryObj = await spawner.SpawnAsync<GameObject>(bootConfig.hotfixObjKey);
                 DIContainer.InjectIntoInstance(entryObj.Obj);
             }

@@ -230,23 +230,27 @@ namespace Core.AssetBundles.Management
         /// <returns>若该句柄对应的资源是GameObject，则T返回该资源身上的组件；非GameObject直接返回该资源</returns>
         internal static T GetAsset<T>(int handleId, int version) where T : class
         {
+            // 无效的句柄访问，返回null
             if (!IsValidate(handleId, version)) 
                 return null;
             
+            // 找不到定位对象，抛出异常，实际上不会找不到，因为都是复用的
             var location = _assetIdToLocationsMap.GetValueOrDefault(handleId);
             if(location == null)
-                return null;
+                throw new NullReferenceException($"[{nameof(GameAsset)}]: Location does not exist");
             
-            if (location is spriteLocation spriteLocation)
+            // 若是图集图片资源的定位对象，则通过图集名和图片名访问对应的资源
+            if (location is SpriteLocation spriteLocation)
             {
                 return _assetManager.GetSprite(spriteLocation.AssetKey, spriteLocation.SpriteKey) as T;
             }
 
+            // 非图集资源的定位对象，只需直接访问资源即可
             var asset = _assetManager.GetAsset(location.AssetKey);
-            // 资源本身是GameObject，T要是组件类型，从资源中获取对应组件类型返回
+            // 若资源本身是GameObject，T要是组件类型，从资源中获取对应组件类型返回
             if (asset is GameObject objAsset && typeof(Component).IsAssignableFrom(typeof(T)))
                 return objAsset.GetComponent<T>();
-            // 否则直接转换为T返回，比如非实例化资源，List，纯GameObject
+            // 否则直接转换为T返回，比如非实例化资源，纯GameObject
             return asset as T;
         }
         

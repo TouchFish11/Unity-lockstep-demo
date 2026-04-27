@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.DI;
@@ -13,11 +14,13 @@ namespace Core.AssetBundles.Management
     /// <summary>
     /// 对象生成器
     /// </summary>
-    public class ObjectSpawner
+    public class ObjectSpawner : IDisposable, IPoolData
     {
         [Inject] private IPoolManager _poolManager;
-        // 资源key到资源句柄的映射
-        private readonly List<AssetHandle> _assetHandles = new();
+        // 池化对象ID到资源句柄的映射
+        private readonly Dictionary<int, AssetHandle> _assetHandles = new();
+        // 缓存加载过的资源Key
+        private readonly HashSet<string> _assetKeys = new();
 
         /// <summary>
         /// 生成对象
@@ -38,11 +41,13 @@ namespace Core.AssetBundles.Management
             
             // 加载资源
             var assetHandle = GameAsset.LoadAsset<GameObject>(key);
-            _assetHandles.Add(assetHandle);
-            
             // 实例化资源
             var newObj = Instantiate<T>(assetHandle, key, parent, pos, rot, worldSpace);
-            poolObject = new PoolObject(newObj, this);
+            poolObject = new PoolObject(ObjectIdPool.GetGlobalId(), newObj, this);
+            // 缓存Key
+            _assetKeys.Add(key);
+            // 缓存句柄
+            _assetHandles.Add(poolObject.Id, assetHandle);
             return poolObject.Convert<T>();
         }
         
@@ -65,11 +70,13 @@ namespace Core.AssetBundles.Management
 
             // 异步加载资源
             var assetHandle = await GameAsset.LoadAssetAsync<GameObject>(key);
-            _assetHandles.Add(assetHandle);
-
             // 实例化资源
             var newObj = Instantiate<T>(assetHandle, key, parent, pos, rot, worldSpace);
-            poolObject = new PoolObject(newObj, this);
+            poolObject = new PoolObject(ObjectIdPool.GetGlobalId(), newObj, this);
+            // 缓存Key
+            _assetKeys.Add(key);
+            // 缓存句柄
+            _assetHandles.Add(poolObject.Id, assetHandle);
             return poolObject.Convert<T>();
         }
         
@@ -89,7 +96,7 @@ namespace Core.AssetBundles.Management
             if (!instance) 
                 return default;
             
-            var poolObject = new PoolObject(instance, this);
+            var poolObject = new PoolObject(ObjectIdPool.GetGlobalId(), instance, this);
             switch (instance)
             {
                 case GameObject gameObject:
@@ -154,7 +161,7 @@ namespace Core.AssetBundles.Management
                 transform.localRotation = rot;
             }
             
-            // 修改对象名称为资源唯一路径
+            // 修改对象名称为资源唯一Key
             newObj.name = key;
             return newObj;
         }
@@ -162,12 +169,12 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 异步生成多个对象，只能获取同一类型的多个资源，不支持混合类型
         /// </summary>
-        /// <param name="keys"></param>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="keys">同一类型的不同资源key</param>
+        /// <typeparam name="T">类型</typeparam>
         /// <returns></returns>
         public async Task<PoolObject<T>> SpawnsAsync<T>(params string[] keys) where T : Object
         {
-            var poolObject = new PoolObject(null, this);
+            var poolObject = new PoolObject(ObjectIdPool.GetGlobalId(), null, this);
             // 保存所有生成任务
             var loadTasks = new List<Task<PoolObject<T>>>();
             foreach (var key in keys)
@@ -196,27 +203,49 @@ namespace Core.AssetBundles.Management
         {
             if (!poolObject.Obj)
             {
-                Logger.LogError($"{nameof(ObjectSpawner)}:Manually destroying object is not allowed");
+                Logger.LogError($"{nameof(ObjectSpawner)}: Manually destroying object is not allowed");
             }
             else
             {
-                if(destroy)
+                if (destroy)
+                {
                     EngineUtility.Destroy(poolObject.Obj);
+                    // 尝试移除该池化对象对应句柄的缓存，若是复用对象没有加载资源，则不存在句柄缓存，否则释放句柄并移除缓存
+                    if (_assetHandles.TryGetValue(poolObject.Id, out var handle))
+                    {
+                        GameAsset.Release(handle);
+                        _assetHandles.Remove(poolObject.Id);
+                    }
+                }
                 else
                     _poolManager.PushObj(poolObject.Obj);
             }
         }
         
         /// <summary>
-        /// 清理所有句柄缓存，当不在使用该生成器时调用此方法，释放缓存的句柄
+        /// 销毁生成器，当不在使用该生成器时调用此方法，释放缓存的剩余句柄
         /// </summary>
-        public void ClearCache()
+        public void Dispose()
         {
-            foreach (var handle in _assetHandles)
+            _poolManager.PushData(this);
+        }
+
+        void IPoolData.ResetData()
+        {
+            // 释放剩余的句柄，若是回收到对象池，则再次复用时池化对象的ID就找不到原来句柄ID
+            // 为了避免引用泄露，需要在不使用该生成器时统一释放剩余的句柄
+            foreach (var handle in _assetHandles.Values)
             {
                 GameAsset.Release(handle);
             }
             _assetHandles.Clear();
+            
+            // 清空对象池的这些资源Key的缓存对象
+            foreach (var assetKey in _assetKeys)
+            {
+                _poolManager.ClearCache(assetKey);
+            }
+            _assetKeys.Clear();
         }
     }
 }

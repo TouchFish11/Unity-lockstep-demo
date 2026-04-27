@@ -38,13 +38,13 @@ namespace Core.AssetBundles.Management.Test
 
             //Test8();
 
-            //Test9();
+            Test9();
 
             //Test10();
 
             //Test11();
 
-            Test12();
+            //Test12();
 
             //Test13();
         }
@@ -69,7 +69,7 @@ namespace Core.AssetBundles.Management.Test
             //     poolObject.Collect();
             // }
             //
-            _objectSpawner.ClearCache();
+            _objectSpawner.Dispose();
             // var handle = await GameAsset.LoadAssetAsync<GameObject>("Sphere");
             // EngineUtility.Instantiate(handle.Asset);
             // GameAsset.Release(handle);
@@ -158,8 +158,8 @@ namespace Core.AssetBundles.Management.Test
         {
             var task1 = GameAsset.LoadAllAssetAsync<TextAsset>("hotupdate");
             var task2 = GameAsset.LoadAllAssetAsync<TextAsset>("hotupdate");
-            
-            var handles = await Task.WhenAll(task1, task2);
+            var task3 = GameAsset.LoadAllAssetAsync<TextAsset>("hotupdate");
+            var handles = await Task.WhenAll(task1, task2, task3);
             
             foreach (var assetHandle in handles)
             {

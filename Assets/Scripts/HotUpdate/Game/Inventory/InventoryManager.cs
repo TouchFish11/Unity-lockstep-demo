@@ -1,15 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
-using Core.Log;
 using Core.Pool;
-using Core.Serialize.Json;
 using HotUpdate.Base;
 using HotUpdate.Common.Config.Item;
 using HotUpdate.Common.Data.Inventory;
 using HotUpdate.Game.Data;
-using UnityEngine.U2D;
+using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace HotUpdate.Game.Inventory
 {
@@ -132,9 +130,8 @@ namespace HotUpdate.Game.Inventory
                 ? itemData.itemNum
                 : itemData is HolyRelicData holyRelicData ? holyRelicData.level : -1;
             
-            // using var handle = await GameAsset.LoadAssetAsync<SpriteAtlas>(itemConfig.atlasName);
-            // var sprite = handle.Asset?.GetSprite(itemConfig.icon);
-            itemDto.icon = null;
+            var handle = await GameAsset.LoadAssetAsync<Sprite>(itemConfig.icon);
+            itemDto.icon = handle.Asset;
             itemDto.qualityBk = InventoryUtil.GetBkQualityColor(itemConfig.itemQuality);
             itemDto.instanceId = instanceId;
             

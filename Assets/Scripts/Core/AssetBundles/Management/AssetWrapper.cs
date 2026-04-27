@@ -31,13 +31,13 @@ namespace Core.AssetBundles.Management
         public uint RefCount { get; private set; }
         
         /// <summary>
-        /// 获取资源，同时更新AB包的访问次数
+        /// 获取资源，同时更新AB包的访问次数(热度)
         /// </summary>
         public object Asset
         {
             get
             {
-                _bundleWrapper.RecordAccess();
+                RecordAccess();
                 return _asset;
             }
         }
@@ -47,6 +47,14 @@ namespace Core.AssetBundles.Management
         /// </summary>
         public event Action OnUnload;
 
+        /// <summary>
+        /// 增加包访问次数(热度)，对包热度增加方法的封装
+        /// </summary>
+        public void RecordAccess()
+        {
+            _bundleWrapper.RecordAccess();
+        }
+        
         /// <summary>
         /// 增加引用计数
         /// </summary>

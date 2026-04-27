@@ -80,6 +80,7 @@ namespace Editor.AssetBundle
             /// <param name="assetBundleSize">资源大小（字节）</param>
             /// <param name="name">资源名称</param>
             /// <param name="hash"></param>
+            /// <param name="assetType"></param>
             public AssetInfo(string assetPath, long assetBundleSize, string name, string hash, EAssetType assetType)
             {
                 this.assetPath = assetPath;
