@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
@@ -25,6 +26,9 @@ namespace HotUpdate.Game.Inventory
         private readonly Dictionary<int, ItemConfig> _itemConfigs = new();
         // 物品DTO映射
         private readonly Dictionary<int, ItemDTO> _instanceIdToDTOs =  new();
+        // 精灵图片资源句柄缓存，唯一资源key映射句柄列表
+        private readonly Dictionary<string, AssetHandle<Sprite>> _spriteToHandleMap = new();
+        private readonly Dictionary<string, Task<AssetHandle<Sprite>>> _spriteToHandleTaskMap = new();
         // 物品运行时实例ID，只表示当前显示的物品实例ID，不同显示物品可复用
         private static int _instanceId;
         // 实例ID池
@@ -83,6 +87,14 @@ namespace HotUpdate.Game.Inventory
             foreach (var instanceId in _instanceIdToDTOs.Keys) PushId(instanceId);
             // 清空DTO缓存
             _instanceIdToDTOs.Clear();
+            // 释放并清理显示的图标的所有句柄
+            foreach (var assetHandle in _spriteToHandleMap.Values)
+            {
+                GameAsset.Release(assetHandle);
+            }
+            _spriteToHandleMap.Clear();
+            // 清理正在加载的任务缓存，正常来说这里不会有遗留
+            _spriteToHandleTaskMap.Clear();
             
             foreach (var itemData in _gameDataManager.ItemDataCollection.GetItems())
             {
@@ -129,15 +141,57 @@ namespace HotUpdate.Game.Inventory
             itemDto.itemNumOrLv = itemConfig.itemType != EItemType.HolyRelic
                 ? itemData.itemNum
                 : itemData is HolyRelicData holyRelicData ? holyRelicData.level : -1;
-            
-            var handle = await GameAsset.LoadAssetAsync<Sprite>(itemConfig.icon);
-            itemDto.icon = handle.Asset;
+            // 设置背景
             itemDto.qualityBk = InventoryUtil.GetBkQualityColor(itemConfig.itemQuality);
+            // 设置实例ID
             itemDto.instanceId = instanceId;
-            
             // 缓存DTO
             _instanceIdToDTOs.Add(instanceId, itemDto);
-            return itemDto;
+            
+            // 查找句柄缓存
+            if (_spriteToHandleMap.TryGetValue(itemConfig.icon, out var assetHandle))
+            {
+                itemDto.icon = assetHandle.Asset;
+                return itemDto;
+            }
+            
+            // 正在加载，返回同一个加载任务
+            if (_spriteToHandleTaskMap.TryGetValue(itemConfig.icon, out var cacheTask))
+            {
+                var handle = await cacheTask;
+                itemDto.icon = handle.Asset;
+                return itemDto;
+            }
+
+            // 首次加载资源
+            var newTask = GameAsset.LoadAssetAsync<Sprite>(itemConfig.icon);
+            // 缓存正在加载的资源任务
+            if (!_spriteToHandleTaskMap.TryAdd(itemConfig.icon, newTask))
+            {
+                newTask = _spriteToHandleTaskMap[itemConfig.icon];
+            }
+
+            try
+            {
+                var newHandle = await newTask;
+                // 设置图标
+                itemDto.icon = newHandle.Asset;
+                // 缓存句柄
+                _spriteToHandleMap.Add(itemConfig.icon, newHandle);
+                return itemDto;
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"[{nameof(InventoryManager)}]: '{itemConfig.icon}' asset load fail, {e.Message}");
+                // 加载失败，使用默认资源替代
+                // itemDto.icon = iconSprite;
+                return itemDto;
+            }
+            finally
+            {
+                // 移除正在加载的任务
+                _spriteToHandleTaskMap.Remove(itemConfig.icon);
+            }
         }
 
         public IEnumerable<ItemData> GetItems() => _gameDataManager.ItemDataCollection.GetItems();

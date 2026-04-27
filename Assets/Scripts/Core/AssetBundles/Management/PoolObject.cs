@@ -41,21 +41,9 @@ namespace Core.AssetBundles.Management
         /// <param name="isDestroy">是否销毁，不回收到对象池中</param>
         public void Collect(bool isDestroy = false)
         {
-            if (Obj)
-            {
-                _spawner.Release(this, isDestroy);
-            }
-            else
-            {
-                foreach (var obj in Objs)
-                {
-                    _spawner.Release(this, isDestroy);
-                }
-                
-                Objs.Clear();
-                Objs = null;
-            }
-            
+            _spawner.Release(this, isDestroy);
+            Objs.Clear();
+            Objs = null;
             _spawner = null;
         }
         

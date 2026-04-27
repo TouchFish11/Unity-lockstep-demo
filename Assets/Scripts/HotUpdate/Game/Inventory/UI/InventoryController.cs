@@ -163,6 +163,8 @@ namespace HotUpdate.Game.Inventory.UI
             {
                 // 关闭背包界面
                 uiManager.DestroyView(panelId);
+                // 清理资源缓存
+                
             }
         }
 

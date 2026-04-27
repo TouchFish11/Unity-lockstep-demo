@@ -163,15 +163,6 @@ namespace Core.AssetBundles.Management
                 
                     // 加载图集资源，内部已经捕获了异常
                     var assetWrapper = await bundleWrapper.LoadAssetAsync<SpriteAtlas>(atlasKey, spriteAssetEntry.spriteAssetName);
-                    // // 避免"并发"逻辑上重复添加
-                    // if (_assetWrappers.TryGetValue(atlasKey, out var cacheWrapper))
-                    // {
-                    //     // 存在加载的图集，说明并发加载，新增引用后返回
-                    //     cacheWrapper.Retain();
-                    //     return cacheWrapper;
-                    // }
-                    
-                    // 存入缓存（使用 atlasKey），只对第一次加载 Retain
                     _assetWrappers.Add(atlasKey, assetWrapper);
                     // 初始引用
                     assetWrapper.Retain();
@@ -207,13 +198,6 @@ namespace Core.AssetBundles.Management
                 
                     // 加载资源
                     assetWrapper = await bundleWrapper.LoadAssetAsync<T>(key, entry.assetName);
-                    // // 避免"并发"逻辑上重复添加
-                    // if (_assetWrappers.TryGetValue(key, out var cacheWrapper))
-                    // {
-                    //     cacheWrapper.Retain();
-                    //     return cacheWrapper;
-                    // }
-                    
                     // 存入缓存（使用 atlasKey），只对第一次加载 Retain
                     _assetWrappers.Add(key, assetWrapper);
                     assetWrapper.Retain();

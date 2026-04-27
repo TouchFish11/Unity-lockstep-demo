@@ -17,8 +17,10 @@ namespace Core.AssetBundles.Management
     public class ObjectSpawner : IDisposable, IPoolData
     {
         [Inject] private IPoolManager _poolManager;
-        // 池化对象ID到资源句柄的映射
-        private readonly Dictionary<int, AssetHandle> _assetHandles = new();
+        // 资源Key到资源句柄的映射
+        private readonly Dictionary<string, AssetHandle> _keyToHandleMap = new();
+        // 资源Key到资源加载任务的映射
+        private readonly Dictionary<string, Task<AssetHandle<GameObject>>> _keyToHandleTaskMap = new();
         // 缓存加载过的资源Key
         private readonly HashSet<string> _assetKeys = new();
 
@@ -38,17 +40,21 @@ namespace Core.AssetBundles.Management
             var poolObject = GetPoolObject<T>(key, parent, pos, rot, worldSpace);
             if(poolObject.Obj)
                 return poolObject.Convert<T>();
+
+            // 复用句柄资源实例化
+            if (_keyToHandleMap.TryGetValue(key, out var handle))
+            {
+                return Instantiate<T>(handle, key, parent, pos, rot, worldSpace);
+            }
             
             // 加载资源
             var assetHandle = GameAsset.LoadAsset<GameObject>(key);
-            // 实例化资源
-            var newObj = Instantiate<T>(assetHandle, key, parent, pos, rot, worldSpace);
-            poolObject = new PoolObject(ObjectIdPool.GetGlobalId(), newObj, this);
             // 缓存Key
             _assetKeys.Add(key);
             // 缓存句柄
-            _assetHandles.Add(poolObject.Id, assetHandle);
-            return poolObject.Convert<T>();
+            _keyToHandleMap.Add(key, assetHandle);
+            // 实例化
+            return Instantiate<T>(assetHandle, key, parent, pos, rot, worldSpace);
         }
         
         /// <summary>
@@ -68,29 +74,54 @@ namespace Core.AssetBundles.Management
             if(poolObject.Obj)
                 return poolObject.Convert<T>();
 
+            // 先从缓存句柄中获取
+            if (_keyToHandleMap.TryGetValue(key, out var assetHandle))
+            {
+                // 实例化资源
+                return Instantiate<T>(assetHandle, key, parent, pos, rot, worldSpace);
+            }
+            
+            // 返回正在加载的任务
+            if (_keyToHandleTaskMap.TryGetValue(key, out var cacheTask))
+            {
+                var handle = await cacheTask;
+                return Instantiate<T>(handle, key, parent, pos, rot, worldSpace);
+            }
+
             // 异步加载资源
-            var assetHandle = await GameAsset.LoadAssetAsync<GameObject>(key);
-            // 实例化资源
-            var newObj = Instantiate<T>(assetHandle, key, parent, pos, rot, worldSpace);
-            poolObject = new PoolObject(ObjectIdPool.GetGlobalId(), newObj, this);
-            // 缓存Key
-            _assetKeys.Add(key);
-            // 缓存句柄
-            _assetHandles.Add(poolObject.Id, assetHandle);
-            return poolObject.Convert<T>();
+            var handleTask = GameAsset.LoadAssetAsync<GameObject>(key);
+            if (!_keyToHandleTaskMap.TryAdd(key, handleTask))
+            {
+                handleTask = _keyToHandleTaskMap[key];
+            }
+
+            try
+            {
+                // 等待资源加载
+                var newHandle = await handleTask;
+                // 缓存Key
+                _assetKeys.Add(key);
+                // 缓存句柄
+                _keyToHandleMap.Add(key, newHandle);
+                // 实例化资源
+                return Instantiate<T>(newHandle, key, parent, pos, rot, worldSpace);
+            }
+            catch (Exception e)
+            {
+                _assetKeys.Remove(key);
+                _keyToHandleMap.Remove(key);
+                Logger.LogError($"[{nameof(ObjectSpawner)}]: {e.Message}");
+                return default;
+            }
+            finally
+            {
+                _keyToHandleTaskMap.Remove(key);
+            }
         }
         
-        /// <summary>
-        /// 从对象池复用对象
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="parent"></param>
-        /// <param name="pos"></param>
-        /// <param name="rot"></param>
-        /// <param name="worldSpace"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        private PoolObject GetPoolObject<T>(string key, Transform parent = null, Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
+        /// 从对象池复用对象为池化对象
+        private PoolObject GetPoolObject<T>(string key, Transform parent = null, 
+            Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
         {
             var instance = _poolManager.Get<T>(key);
             if (!instance) 
@@ -135,18 +166,19 @@ namespace Core.AssetBundles.Management
             return poolObject.Convert<T>();
         }
 
-        /// <summary>
-        /// 实例化资源
-        /// </summary>
-        /// <param name="assetHandle"></param>
-        /// <param name="key"></param>
-        /// <param name="parent"></param>
-        /// <param name="pos"></param>
-        /// <param name="rot"></param>
-        /// <param name="worldSpace"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        private static T Instantiate<T>(AssetHandle assetHandle, string key, Transform parent = null, Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
+        /// 实例化资源并封装为池化对象返回
+        private PoolObject<T> Instantiate<T>(AssetHandle assetHandle, string key, Transform parent = null, 
+            Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
+        {
+            // 实例化资源
+            var newObj = InstantiateInternal<T>(assetHandle, key, parent, pos, rot, worldSpace);
+            var poolObject = new PoolObject(ObjectIdPool.GetGlobalId(), newObj, this);
+            return poolObject.Convert<T>();
+        }
+
+        /// 实例化资源（内部）
+        private static T InstantiateInternal<T>(AssetHandle assetHandle, string key, Transform parent = null, 
+            Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
         {
             T newObj;
             if (!parent)
@@ -201,25 +233,41 @@ namespace Core.AssetBundles.Management
         /// <param name="destroy">是否销毁不放入对象池</param>
         internal void Release(PoolObject poolObject, bool destroy)
         {
-            if (!poolObject.Obj)
+            if (poolObject.Objs.Count > 0)
             {
-                Logger.LogError($"{nameof(ObjectSpawner)}: Manually destroying object is not allowed");
+                foreach (var poolObjectObj in poolObject.Objs)
+                {
+                    ReleaseInternal(poolObjectObj, destroy);
+                }
             }
             else
             {
-                if (destroy)
-                {
-                    EngineUtility.Destroy(poolObject.Obj);
-                    // 尝试移除该池化对象对应句柄的缓存，若是复用对象没有加载资源，则不存在句柄缓存，否则释放句柄并移除缓存
-                    if (_assetHandles.TryGetValue(poolObject.Id, out var handle))
-                    {
-                        GameAsset.Release(handle);
-                        _assetHandles.Remove(poolObject.Id);
-                    }
-                }
-                else
-                    _poolManager.PushObj(poolObject.Obj);
+                ReleaseInternal(poolObject.Obj, destroy);
             }
+        }
+
+        /// 释放对象（内部）
+        private void ReleaseInternal(Object obj, bool destroy)
+        {
+            if (!obj)
+            {
+                Logger.LogError($"{nameof(ObjectSpawner)}: Manually destroying object is not allowed");
+                return;
+            }
+            
+            if (destroy)
+            {
+                EngineUtility.Destroy(obj);
+                var key = obj.name;
+                // 尝试移除该池化对象对应句柄的缓存，若是复用对象没有加载资源，则不存在句柄缓存，否则释放句柄并移除缓存
+                if (_keyToHandleMap.TryGetValue(key, out var handle))
+                {
+                    GameAsset.Release(handle);
+                    _keyToHandleMap.Remove(key);
+                }
+            }
+            else
+                _poolManager.PushObj(obj);
         }
         
         /// <summary>
@@ -234,11 +282,11 @@ namespace Core.AssetBundles.Management
         {
             // 释放剩余的句柄，若是回收到对象池，则再次复用时池化对象的ID就找不到原来句柄ID
             // 为了避免引用泄露，需要在不使用该生成器时统一释放剩余的句柄
-            foreach (var handle in _assetHandles.Values)
+            foreach (var handle in _keyToHandleMap.Values)
             {
                 GameAsset.Release(handle);
             }
-            _assetHandles.Clear();
+            _keyToHandleMap.Clear();
             
             // 清空对象池的这些资源Key的缓存对象
             foreach (var assetKey in _assetKeys)

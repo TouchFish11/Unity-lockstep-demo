@@ -140,18 +140,39 @@ namespace Core.AssetBundles.Management
         {
             // 创建新Handle
             var newHandle = new AssetHandle { HandleId = GenerateNewId(), Version = 0 };
+            // 获取资源条目
+            var entry = _assetManager.GetAssetEntry(key);
+
+            string assetKey;
+            string spriteKey;
+            AssetLocation.ELocationType locationType;
+            if (entry is SpriteAssetEntry spriteAssetEntry)
+            {
+                assetKey = spriteAssetEntry.atlasKey;
+                spriteKey = spriteAssetEntry.key;
+                locationType = AssetLocation.ELocationType.Sprite;
+            }
+            else
+            {
+                assetKey = entry.key;
+                spriteKey = string.Empty;
+                locationType = AssetLocation.ELocationType.NonSprite;
+            }
+            
             // 判断ID是否存在，存在就复用定位对象
             if (_assetIdToLocationsMap.TryGetValue(newHandle.HandleId, out var location))
             {
-                location.AssetKey = key;
+                location.AssetKey = assetKey;
+                location.SpriteKey = spriteKey;
+                location.LocationType = locationType;
                 ++location.Version;
-                // 同步定位对象的版本
+                // 同步新句柄的版本和定位对象的版本一致
                 newHandle.Version = location.Version;
                 return newHandle.ConvertTo<T>();
             }
             
             // 工厂创建新定位对象
-            var newLocation = AssetLocationFactory.GetAssetLocation<T>(_assetManager.GetAssetEntry(key), newHandle.Version);
+            var newLocation = AssetLocationFactory.GetAssetLocation<T>(entry);
             // 缓存定位对象
             _assetIdToLocationsMap.Add(newHandle.HandleId, newLocation);
             return newHandle.ConvertTo<T>();
@@ -177,7 +198,7 @@ namespace Core.AssetBundles.Management
             }
             
             // 工厂创建新定位对象
-            var newLocation = AssetLocationFactory.GetAssetLocationCombine(combineKey, newHandle.Version);
+            var newLocation = AssetLocationFactory.GetAssetLocationCombine(combineKey);
             // 缓存定位对象
             _assetIdToLocationsMap.Add(newHandle.HandleId, newLocation);
             return newHandle.ConvertTo<T>();
@@ -240,9 +261,9 @@ namespace Core.AssetBundles.Management
                 throw new NullReferenceException($"[{nameof(GameAsset)}]: Location does not exist");
             
             // 若是图集图片资源的定位对象，则通过图集名和图片名访问对应的资源
-            if (location is SpriteLocation spriteLocation)
+            if (location.LocationType == AssetLocation.ELocationType.Sprite)
             {
-                return _assetManager.GetSprite(spriteLocation.AssetKey, spriteLocation.SpriteKey) as T;
+                return _assetManager.GetSprite(location.AssetKey, location.SpriteKey) as T;
             }
 
             // 非图集资源的定位对象，只需直接访问资源即可

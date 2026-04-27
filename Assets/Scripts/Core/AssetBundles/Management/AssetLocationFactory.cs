@@ -12,38 +12,47 @@ namespace Core.AssetBundles.Management
         /// 获取组合键的资源定位对象
         /// </summary>
         /// <param name="combineKey"></param>
-        /// <param name="version"></param>
         /// <returns></returns>
-        public static AssetLocation GetAssetLocationCombine(string combineKey, int version)
+        public static AssetLocation GetAssetLocationCombine(string combineKey)
         {
             var assetLocation = DIContainer.Create<AssetLocation>();
             assetLocation.AssetKey = combineKey;
-            assetLocation.Version = version;
+            assetLocation.Version = 0;
             return assetLocation;
         }
-        
+
         /// <summary>
         /// 获取资源定位对象
         /// </summary>
         /// <param name="entry"></param>
-        /// <param name="version"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static AssetLocation GetAssetLocation<T>(AssetEntry entry, int version) where T : class
+        public static AssetLocation GetAssetLocation<T>(AssetEntry entry) where T : class
         {
-            if (typeof(Sprite) == typeof(T) && entry is SpriteAssetEntry spriteAssetEntry)
+            string assetKey;
+            string spriteKey;
+            AssetLocation.ELocationType locationType;
+            
+            if (entry is SpriteAssetEntry spriteAssetEntry)
             {
-                var spriteLocation = DIContainer.Create<SpriteLocation>();
-                spriteLocation.AssetKey = spriteAssetEntry.atlasKey;
-                spriteLocation.Version = version;
-                spriteLocation.SpriteKey = spriteAssetEntry.key;
-                return spriteLocation;
+                assetKey = spriteAssetEntry.atlasKey;
+                spriteKey = spriteAssetEntry.key;
+                locationType = AssetLocation.ELocationType.Sprite;
+            }
+            else
+            {
+                assetKey = entry.key;
+                spriteKey = string.Empty;
+                locationType = AssetLocation.ELocationType.NonSprite;
             }
             
-            var assetLocation = DIContainer.Create<AssetLocation>();
-            assetLocation.AssetKey = entry.key;
-            assetLocation.Version = version;
-            return assetLocation;
+            // 创建资源对象
+            var location = DIContainer.Create<AssetLocation>();
+            location.AssetKey = assetKey;
+            location.SpriteKey = spriteKey;
+            location.LocationType = locationType;
+            location.Version = 0;
+            return location;
         }
     }
 }
