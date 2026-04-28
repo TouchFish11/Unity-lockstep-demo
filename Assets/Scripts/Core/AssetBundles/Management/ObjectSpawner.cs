@@ -48,13 +48,14 @@ namespace Core.AssetBundles.Management
             }
             
             // 加载资源
-            var assetHandle = GameAsset.LoadAsset<GameObject>(key);
+            handle = GameAsset.LoadAsset<GameObject>(key);
             // 缓存Key
             _assetKeys.Add(key);
             // 缓存句柄
-            _keyToHandleMap.Add(key, assetHandle);
+            _keyToHandleMap.Add(key, handle);
+            Logger.Log($"[{nameof(ObjectSpawner)}]: Cache asset({key}), Cache handle id({handle.HandleId})");
             // 实例化
-            return Instantiate<T>(assetHandle, key, parent, pos, rot, worldSpace);
+            return Instantiate<T>(handle, key, parent, pos, rot, worldSpace);
         }
         
         /// <summary>
@@ -108,6 +109,7 @@ namespace Core.AssetBundles.Management
             }
             catch (Exception e)
             {
+                GameAsset.Release(_keyToHandleMap[key]);
                 _assetKeys.Remove(key);
                 _keyToHandleMap.Remove(key);
                 Logger.LogError($"[{nameof(ObjectSpawner)}]: {e.Message}");
@@ -162,7 +164,6 @@ namespace Core.AssetBundles.Management
                 }
             }
             
-            Logger.Log($"Spawning {key}");
             return poolObject.Convert<T>();
         }
 
@@ -256,18 +257,12 @@ namespace Core.AssetBundles.Management
             }
             
             if (destroy)
-            {
                 EngineUtility.Destroy(obj);
-                var key = obj.name;
-                // 尝试移除该池化对象对应句柄的缓存，若是复用对象没有加载资源，则不存在句柄缓存，否则释放句柄并移除缓存
-                if (_keyToHandleMap.TryGetValue(key, out var handle))
-                {
-                    GameAsset.Release(handle);
-                    _keyToHandleMap.Remove(key);
-                }
-            }
             else
+            {
+                Logger.Log($"[{nameof(ObjectSpawner)}]: {obj.name} collect pool");
                 _poolManager.PushObj(obj);
+            }
         }
         
         /// <summary>
@@ -280,7 +275,6 @@ namespace Core.AssetBundles.Management
 
         void IPoolData.ResetData()
         {
-            // 释放剩余的句柄，若是回收到对象池，则再次复用时池化对象的ID就找不到原来句柄ID
             // 为了避免引用泄露，需要在不使用该生成器时统一释放剩余的句柄
             foreach (var handle in _keyToHandleMap.Values)
             {

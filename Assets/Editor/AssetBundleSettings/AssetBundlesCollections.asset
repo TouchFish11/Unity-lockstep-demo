@@ -112,9 +112,9 @@ MonoBehaviour:
       hash: 39e2e7c79f0e333d3795ae1a1c93154d80bde4f3ef46a93f8ec479f1576474b8
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryMainTestScene.unity
-      size: 24629
+      size: 24793
       name: InventoryMainTestScene.unity
-      hash: 741d089c95ce87a3c3fa5f8db6d6c9e99cd37a96d4b946d9defa3cbf49cedd12
+      hash: e9bc1676e0af7cae3ff3489007a22e9056e42bbf4efc5bfe43d6192e5363b637
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryTestScene.unity
       size: 8115
@@ -163,9 +163,9 @@ MonoBehaviour:
       hash: 8c6d374278397a3786e916d560caeb8dc7aea4003b7e320d2c79c2281a490676
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\InventoryPanel.prefab
-      size: 70167
+      size: 70193
       name: InventoryPanel.prefab
-      hash: 3cd56077865cab471b83b26245a2d5ffd491d06d119773a8c1ca18920fbc28ef
+      hash: dcbba33c7af58d79f873fb6353db390d029397cd419dc2a9d3b8a2d7763f5e79
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemCell.prefab
       size: 15689

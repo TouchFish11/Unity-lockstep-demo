@@ -14,7 +14,49 @@ namespace HotUpdate.Common.Data.Inventory
     {
         [JsonProperty] private List<ItemData> items = new();
 
-        public void AddItemData(ItemData itemData)
+        /// <summary>
+        /// 在原有物品上添加数量
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="deltaNum"></param>
+        public void AddItemData(int itemId, int deltaNum)
+        {
+            var itemData = items.Find(item => item.itemId == itemId);
+            if (itemData == null)
+            {
+                Logger.Log($"{nameof(ItemDataCollection)}: ItemData {itemId} id not found");
+                return;
+            }
+            
+            itemData.itemNum += deltaNum;
+        }
+
+        /// <summary>
+        /// 在原有物品上删除物品
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="deltaNum"></param>
+        public void DeleteData(int itemId, int deltaNum)
+        {
+            var itemData = items.Find(item => item.itemId == itemId);
+            if (itemData == null)
+            {
+                Logger.Log($"{nameof(ItemDataCollection)}: ItemData {itemId} id not found");
+                return;
+            }
+
+            itemData.itemNum -= deltaNum;
+            if (itemData.itemNum <= 0)
+            {
+                items.Remove(itemData);
+            }
+        }
+        
+        /// <summary>
+        /// 新增新物品
+        /// </summary>
+        /// <param name="itemData"></param>
+        public void AddData(ItemData itemData)
         {
             if (itemData == null)
                 return;

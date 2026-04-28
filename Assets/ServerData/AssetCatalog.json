@@ -100,40 +100,40 @@
       "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Sphere.prefab",
       "assetType": 0
     },
-    "MainScene": {
+    "UpdateTipView": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MainScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\MainScene.unity",
-      "assetType": 1
+      "key": "UpdateTipView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\UpdateTipView.prefab",
+      "assetType": 0
     },
-    "InventoryTestScene": {
+    "BaseTipView": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "InventoryTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryTestScene.unity",
-      "assetType": 1
+      "key": "BaseTipView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\BaseTipView.prefab",
+      "assetType": 0
     },
-    "InventoryMainTestScene": {
+    "Friend_UI": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "InventoryMainTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
-      "assetType": 1
+      "key": "Friend_UI",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Friend_UI.prefab",
+      "assetType": 0
     },
-    "GameScene": {
+    "Chat_UI": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "GameScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
-      "assetType": 1
+      "key": "Chat_UI",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Chat_UI.prefab",
+      "assetType": 0
     },
-    "ABTestScene": {
+    "Main_Panel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ABTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
-      "assetType": 1
+      "key": "Main_Panel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Panel.prefab",
+      "assetType": 0
     },
     "Atlas_Item": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2217,53 +2217,11 @@
       "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
       "assetType": 0
     },
-    "UIRoot": {
+    "Main_Chat_Panel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "UIRoot",
+      "key": "Main_Chat_Panel",
       "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\UIRoot.prefab",
-      "assetType": 0
-    },
-    "Battle_Panel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Battle_Panel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Battle\\Battle_Panel.prefab",
-      "assetType": 0
-    },
-    "BeginView": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "BeginView",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Begin\\BeginView.prefab",
-      "assetType": 0
-    },
-    "InventoryPanel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "InventoryPanel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\InventoryPanel.prefab",
-      "assetType": 0
-    },
-    "ItemCell": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ItemCell",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemCell.prefab",
-      "assetType": 0
-    },
-    "ItemDetailPanelBase": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ItemDetailPanelBase",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemDetailPanelBase.prefab",
-      "assetType": 0
-    },
-    "ItemTypeOpt": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ItemTypeOpt",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemTypeOpt.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Chat_Panel.prefab",
       "assetType": 0
     },
     "MaterialDetailPanel": {
@@ -2273,47 +2231,89 @@
       "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\DetailPanel\\MaterialDetailPanel.prefab",
       "assetType": 0
     },
-    "Main_Chat_Panel": {
+    "ItemTypeOpt": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Main_Chat_Panel",
+      "key": "ItemTypeOpt",
       "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Chat_Panel.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemTypeOpt.prefab",
       "assetType": 0
     },
-    "Main_Panel": {
+    "ItemDetailPanelBase": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Main_Panel",
+      "key": "ItemDetailPanelBase",
       "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Panel.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemDetailPanelBase.prefab",
       "assetType": 0
     },
-    "Chat_UI": {
+    "ItemCell": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Chat_UI",
+      "key": "ItemCell",
       "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Chat_UI.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemCell.prefab",
       "assetType": 0
     },
-    "Friend_UI": {
+    "InventoryPanel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Friend_UI",
+      "key": "InventoryPanel",
       "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Friend_UI.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\InventoryPanel.prefab",
       "assetType": 0
     },
-    "BaseTipView": {
+    "BeginView": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "BaseTipView",
+      "key": "BeginView",
       "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\BaseTipView.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Begin\\BeginView.prefab",
       "assetType": 0
     },
-    "UpdateTipView": {
+    "Battle_Panel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "UpdateTipView",
+      "key": "Battle_Panel",
       "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\UpdateTipView.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Battle\\Battle_Panel.prefab",
       "assetType": 0
+    },
+    "UIRoot": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "UIRoot",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\UIRoot.prefab",
+      "assetType": 0
+    },
+    "MainScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MainScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\MainScene.unity",
+      "assetType": 1
+    },
+    "InventoryTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "InventoryTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryTestScene.unity",
+      "assetType": 1
+    },
+    "InventoryMainTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "InventoryMainTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
+      "assetType": 1
+    },
+    "GameScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "GameScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
+      "assetType": 1
+    },
+    "ABTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "ABTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
+      "assetType": 1
     }
   },
   "abPackageCollection": {
@@ -2405,11 +2405,13 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 28002301,
-        "hash": "ad1292bc3e5f66a459025c8c7e5f20757341eb5d847d6f260e7b579d43c701bd",
+        "size": 28002298,
+        "hash": "de59dc1dffe71059c223dfeea73a5cf4b4505170f1f9c2a8cd7df8ff20c1f69f",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": []
+          "$values": [
+            "ui"
+          ]
         }
       },
       "spriteatlas": {
@@ -2437,14 +2439,11 @@
       "ui": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
-        "size": 190063,
-        "hash": "1aac8f8de80b2f39c78630c1b2c3b9a985e7e3cc5553c9c2a287a205bb0119b8",
+        "size": 16052881,
+        "hash": "9c400d925f21b6374f71d2085db0a1656b4e489bd6be4e4fb6ed7e80a7dd407c",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": [
-            "fonts",
-            "tmpasset"
-          ]
+          "$values": []
         }
       }
     }

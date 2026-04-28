@@ -14,10 +14,10 @@ namespace HotUpdate.Common.Config.Item
         public string name;
         // 物品描述
         public string description;
-        // 图标图集
-        public string atlasName;
         // 物品图标
         public string icon;
+        // 是否可堆叠
+        public bool isPile;
         // 物品品质
         public EItemQuality itemQuality;
         // 物品类型

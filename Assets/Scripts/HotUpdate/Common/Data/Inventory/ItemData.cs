@@ -14,5 +14,7 @@ namespace HotUpdate.Common.Data.Inventory
         [JsonProperty] public int itemId;
         // 物品数量
         [JsonProperty] public int itemNum;
+        // 是否是新获取
+        [JsonProperty] public bool isNew;
     }
 }

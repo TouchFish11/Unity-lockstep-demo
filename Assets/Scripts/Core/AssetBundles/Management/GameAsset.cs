@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.DI;
 using UnityEngine;
+using Logger = Core.Log.Logger;
 using Object = UnityEngine.Object;
 
 namespace Core.AssetBundles.Management
@@ -46,6 +47,7 @@ namespace Core.AssetBundles.Management
             {
                 // 回收ID
                 _idPool.Enqueue(newAssetHandle.HandleId);
+                Logger.Log($"[{nameof(GameAsset)}]: Recycle handle id {newAssetHandle.HandleId}");
             };
 
             return newAssetHandle.ConvertTo<T>();
@@ -54,7 +56,7 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 异步加载资源
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">资源Key</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
@@ -72,6 +74,7 @@ namespace Core.AssetBundles.Management
                 {
                     // 回收句柄ID
                     _idPool.Enqueue(newAssetHandle.HandleId);
+                    Logger.Log($"[{nameof(GameAsset)}]: Recycle handle id {newAssetHandle.HandleId}");
                 };
             }
             return newAssetHandle.ConvertTo<T>();
@@ -237,8 +240,11 @@ namespace Core.AssetBundles.Management
                 var location = _assetIdToLocationsMap.GetValueOrDefault(handle.HandleId);
                 if (location == null)
                     return;
+                // 因为资源管理器是按照资源Key到资源包装的映射缓存
+                // 若资源是图集，则资源包装映射的是图集资源Key，所以要使用图集Key，而不是图片Key
+                var assetKey = location.AssetKey;
                 // 减少引用计数
-                _assetManager.ReleaseWrapper(location.AssetKey);
+                _assetManager.ReleaseWrapper(assetKey);
             }
         }
 
@@ -252,8 +258,11 @@ namespace Core.AssetBundles.Management
         internal static T GetAsset<T>(int handleId, int version) where T : class
         {
             // 无效的句柄访问，返回null
-            if (!IsValidate(handleId, version)) 
+            if (!IsValidate(handleId, version))
+            {
+                Logger.LogError($"[{nameof(GameAsset)}]: Asset handle(id = {handleId}, version = {version} ) not valid.");
                 return null;
+            }
             
             // 找不到定位对象，抛出异常，实际上不会找不到，因为都是复用的
             var location = _assetIdToLocationsMap.GetValueOrDefault(handleId);
@@ -281,11 +290,18 @@ namespace Core.AssetBundles.Management
         /// <returns></returns>
         private static int GenerateNewId()
         {
-            while (_idPool.Count > 0)
+            int reusedId;
+            if (_idPool.Count > 0)
             {
-                return _idPool.Dequeue();
+                reusedId = _idPool.Dequeue();
             }
-            return ++_nextId;
+            else
+            {
+                reusedId = ++_nextId;
+            }
+
+            Logger.Log($"[{nameof(GameAsset)}]: Generate new id: {reusedId}]");
+            return reusedId;
         }
 
         /// <summary>

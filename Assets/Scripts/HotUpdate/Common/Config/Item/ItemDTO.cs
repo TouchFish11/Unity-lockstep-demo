@@ -11,7 +11,7 @@ namespace HotUpdate.Common.Config.Item
     {
         // 配置数据
         public int itemId;
-        public string iconPath;
+        public string iconKey;
         public EItemQuality qualityType;
         public EItemType itemType;
         

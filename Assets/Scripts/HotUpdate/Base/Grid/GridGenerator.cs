@@ -36,19 +36,22 @@ namespace HotUpdate.Base.Grid
         private Action<T> _callback;
         // 当前选中的数据索引，-1 表示无选中
         private int _selectedIndex = -1;
-        /// 格子创建间隔
-        private const float CreateGridInterval = 0.002f;
+        /// 每帧创建格子数
+        private const int CreateGridPerFrame = 25;
         // 当前布局类型
         internal GridLayout gridLayout;
-        // 正在逐个创建格子
+        // 正在逐个创建格子，不允许滑动
         private bool _queueCreateGrid = true;
+        // 渐变创建协程
+        private Coroutine _fadeCreateCor;
         
         /// <summary>
         /// 渐变创建格子，仅在第一次打开或切换类型时使用，只是为了呈现一个好的动画效果
         /// </summary>
         public void FadeUpdateGrid()
         {
-            _monoAdapter.StartCoroutine(FadeCreate_Cor());
+            StopFadeCreateGrid();
+            _fadeCreateCor = _monoAdapter.StartCoroutine(FadeCreate_Cor());
         }
         
         /// <summary>
@@ -57,8 +60,8 @@ namespace HotUpdate.Base.Grid
         /// </summary>
         public void UpdateGrid()
         {
-            // 正在排队创建格子，不执行逻辑，避免出问题
-            if(_queueCreateGrid)
+            // 检查能否更新格子
+            if(!CanUpdateGrid())
                 return;
             
             // 计算索引
@@ -103,7 +106,7 @@ namespace HotUpdate.Base.Grid
                     continue;
 
                 // 异步创建格子（字典中已占位 null，回调成功后会替换为实际对象）
-                CreateGrid(i);
+                CreateGridAsync(i);
             }
         }
 
@@ -165,7 +168,7 @@ namespace HotUpdate.Base.Grid
         /// 异步创建指定索引的格子
         /// </summary>
         /// <param name="index">数据索引</param>
-        private async void CreateGrid(int index)
+        private async void CreateGridAsync(int index)
         {
             try
             {
@@ -198,6 +201,19 @@ namespace HotUpdate.Base.Grid
             {
                 Logger.LogError($"{nameof(GridGenerator<T, K>)}: {e.Message}");
             }
+        }
+
+        /// <summary>
+        /// 能否更新格子
+        /// </summary>
+        /// <returns></returns>
+        private bool CanUpdateGrid()
+        {
+            /*
+             * 正在逐个创建格子的时不能滑动，也就不能执行UpdateGrid更新格子，但是协程中可能会改变Content的位置，
+             * 导致进入UpdateGrid，意外更新格子，所以需要这个标识来防御
+             */
+            return !_queueCreateGrid;
         }
         
         /// <summary>
@@ -236,13 +252,27 @@ namespace HotUpdate.Base.Grid
                     poolObj.Obj.TriggerClick();
                     _selectedIndex = -1;
                 }
-                
-                yield return new WaitForSeconds(CreateGridInterval);
+
+                // 每帧创建数
+                if ((i + 1) / CreateGridPerFrame != 0)
+                    yield return null;
             }
             
             // 格子创建完成，启用对应方向的滑动，重置标识
             SetSlide(true);
             _queueCreateGrid = false;
+        }
+
+        /// <summary>
+        /// 停止协程
+        /// </summary>
+        private void StopFadeCreateGrid()
+        {
+            if (_fadeCreateCor != null)
+            {
+                _monoAdapter.StopCoroutine(_fadeCreateCor);
+                ClearGrids();
+            }
         }
         
         /// <summary>
@@ -262,7 +292,15 @@ namespace HotUpdate.Base.Grid
         /// </summary>
         void IPoolData.ResetData()
         {
+            StopFadeCreateGrid();
+            oldMinIndex = -1;
+            oldMaxIndex = -1;
+            _dataList.Clear();
+            _monoAdapter = null;
+            _fadeCreateCor = null;
             ClearGrids();
+            _objectSpawner.Dispose();
+            _objectSpawner = null;
         }
     }
 }

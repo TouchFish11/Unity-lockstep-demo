@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3136913234
+CRC: 661818216
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: bfc7134fe57c7b2875d19cc9101e4fc8
+    Hash: 9f28e63f30c4f497c3293e905871478a
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 00315716536d41c56198fb732da9d450
+    Hash: b65fff37361fffeb039793f9d7bc09d2
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: bfc7134fe57c7b2875d19cc9101e4fc8
+    Hash: 9f28e63f30c4f497c3293e905871478a
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -53,8 +53,6 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
@@ -84,6 +82,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: f200d3291a3383e4c9c191da6bce989a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
 - Class: 114
@@ -141,4 +141,5 @@ Assets:
 - Assets/Editor/ArtRes/Scenes/GameScene.unity
 - Assets/Editor/ArtRes/Scenes/InventoryMainTestScene.unity
 - Assets/Editor/ArtRes/Scenes/ABTestScene.unity
-Dependencies: []
+Dependencies:
+- D:/UnityProject/AnimationSystem/Assets/AssetBundles/StandaloneWindows64/ui

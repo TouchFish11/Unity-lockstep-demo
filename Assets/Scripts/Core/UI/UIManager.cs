@@ -115,11 +115,11 @@ namespace Core.UI
             {
                 if (!isActive)
                 {
-                    await panelInfo.Controller.Hide();
+                    await panelInfo.Controller.InActivate();
                 }
                 else
                 {
-                    await panelInfo.Controller.Show();
+                    await panelInfo.Controller.Activate();
                 }
             }
         }

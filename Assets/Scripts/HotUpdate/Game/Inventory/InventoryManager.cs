@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.Pool;
 using HotUpdate.Base;
+using HotUpdate.Base.Items;
 using HotUpdate.Common.Config.Item;
 using HotUpdate.Common.Data.Inventory;
 using HotUpdate.Game.Data;
@@ -20,8 +21,12 @@ namespace HotUpdate.Game.Inventory
         private readonly GameDataManager _gameDataManager;
         private readonly IPoolManager _poolManager;
         
+        // 物品ID到物品对象列表的映射
+        private readonly Dictionary<int, List<Item>> _items = new();
+        
+        
         // 实例ID映射运行时物品数据字典
-        private readonly Dictionary<int, ItemData> _instanceIdToDatas =  new();
+        private readonly Dictionary<int, ItemData> _instanceIdToDatas = new();
         // 物品ID到物品配置的映射
         private readonly Dictionary<int, ItemConfig> _itemConfigs = new();
         // 物品DTO映射
@@ -64,15 +69,40 @@ namespace HotUpdate.Game.Inventory
         /// </summary>
         /// <param name="id"></param>
         /// <param name="num"></param>
-        public void AddItemData(int id, int num)
+        public void AddData(int id, int num)
         {
-            var itemData = new ItemData
+            // 获取该ID的物品配置
+            if (!_itemConfigs.TryGetValue(id, out var itemConfig))
             {
-                itemId = id,
-                itemNum = num,
-            };
-            
-            _gameDataManager.ItemDataCollection.AddItemData(itemData);
+                Logger.LogError($"[{nameof(InventoryManager)}]: Item {id} id not found");
+                return;
+            }
+
+            // 可堆叠
+            if (itemConfig.isPile)
+            {
+                _gameDataManager.ItemDataCollection.AddItemData(id, num);
+            }
+            // 不可堆叠
+            else
+            {
+                var itemData = new ItemData
+                {
+                    itemId = id,
+                    itemNum = num,
+                };
+                _gameDataManager.ItemDataCollection.AddData(itemData);
+            }
+        }
+
+        /// <summary>
+        /// 删除物品数据
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="num"></param>
+        public void DeleteData(int itemId, int num)
+        {
+            _gameDataManager.ItemDataCollection.DeleteData(itemId, num);
         }
         
         /// <summary>
@@ -132,15 +162,18 @@ namespace HotUpdate.Game.Inventory
         
         public async Task<ItemDTO> CreateItemDTO(int instanceId, ItemConfig itemConfig, ItemData itemData)
         {
+            // 对象池复用DTO
             var itemDto = _poolManager.GetData<ItemDTO>();
+            // 设置物品ID
             itemDto.itemId = itemData.itemId;
+            // 设置物品类型
             itemDto.itemType = itemConfig.itemType;
-            itemDto.iconPath = itemConfig.icon;
+            // 设置物品资源Key
+            itemDto.iconKey = itemConfig.icon;
+            // 设置物品品质类型
             itemDto.qualityType = itemConfig.itemQuality;
-            // 根据是否是圣遗物决定显示数量还是等级，TODO：这里可以抽象为物品类型解析类，不同物品使用不同的解析逻辑
-            itemDto.itemNumOrLv = itemConfig.itemType != EItemType.HolyRelic
-                ? itemData.itemNum
-                : itemData is HolyRelicData holyRelicData ? holyRelicData.level : -1;
+            // 根据物品类型决定显示数量还是等级
+            itemDto.itemNumOrLv = InventoryUtil.GetItemNumOrLevel(itemData, itemConfig.itemType);
             // 设置背景
             itemDto.qualityBk = InventoryUtil.GetBkQualityColor(itemConfig.itemQuality);
             // 设置实例ID
@@ -194,6 +227,10 @@ namespace HotUpdate.Game.Inventory
             }
         }
 
+        /// <summary>
+        /// 获取玩家所有物品数据
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<ItemData> GetItems() => _gameDataManager.ItemDataCollection.GetItems();
         
         /// <summary>

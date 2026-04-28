@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace HotUpdate.Base.Grid
 {
+    /// <summary>
+    /// 格子布局对象
+    /// </summary>
     internal abstract class GridLayout
     {
         [Inject] protected ObjectSpawner objectSpawner;

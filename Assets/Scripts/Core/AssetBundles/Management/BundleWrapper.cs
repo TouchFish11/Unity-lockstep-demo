@@ -137,6 +137,7 @@ namespace Core.AssetBundles.Management
         public AssetWrapper LoadAsset<T>(string assetKey, string assetName) where T : Object
         {
             var asset = AssetBundle.LoadAsset<T>(assetName);
+            Retain();
             return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
         }
         
@@ -293,7 +294,7 @@ namespace Core.AssetBundles.Management
         public void Retain()
         {
             ++RefCount;
-            Logger.Log($"[BundleWrapper]: '{BundleName}' assetBundle is referenced, refCount updated to {RefCount}");
+            Logger.Log($"[{nameof(BundleWrapper)}]: '{BundleName}' assetBundle is referenced, refCount updated to {RefCount}");
         }
 
         /// <summary>
@@ -304,16 +305,19 @@ namespace Core.AssetBundles.Management
         {
             if (RefCount > 0)
             {
-                RefCount -= 1;
-            }
-
-            if (RefCount == 0)
-            {
+                --RefCount;
+                Logger.Log($"[BundleWrapper]: '{BundleName}' assetBundle is released, refCount updated to {RefCount}");
+                
+                if (RefCount != 0) 
+                    return;
+            
+                // 释放包引用计数
                 IsActive = false;
                 _assetBundleManager.ReleaseDependencies(BundleName);
+                return;
             }
-            
-            Logger.Log($"[BundleWrapper]: '{BundleName}' assetBundle is released, refCount updated to {RefCount}");
+
+            Logger.LogWarning($"[{nameof(BundleWrapper)}]: '{BundleName}' assetBundle refCount repeated release");
         }
 
         /// <summary>

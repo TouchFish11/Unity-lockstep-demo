@@ -28,7 +28,7 @@ namespace Core.Pool
         void PushData<T>(T data) where T : class, IPoolData, new();
 
         /// <summary>
-        /// 获取纯C#的对象
+        /// 获取纯C#的对象，自动注入[Inject]依赖，由于复用对象不会触发构造函数，所以无法通过构造注入
         /// </summary>
         /// <typeparam name="T">类名</typeparam>
         /// <returns></returns>

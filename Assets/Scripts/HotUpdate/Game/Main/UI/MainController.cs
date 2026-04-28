@@ -13,12 +13,12 @@ namespace HotUpdate.Game.Main.UI
     {
         [Inject] private IInventoryManager _inventoryManager;
         
-        protected override Task OnShow()
+        protected override Task OnActive()
         {
             return Task.CompletedTask;
         }
 
-        protected override Task OnHide()
+        protected override Task OnInactivate()
         {
             return Task.CompletedTask;
         }
@@ -28,7 +28,7 @@ namespace HotUpdate.Game.Main.UI
             return Task.CompletedTask;
         }
 
-        protected override async void ButtonOnClick(string btnName)
+        protected override async void OnButtonClick(string btnName)
         {
             try
             {
@@ -39,14 +39,14 @@ namespace HotUpdate.Game.Main.UI
                 else if (btnName == nameof(view.btnAddItem))
                 {
                     // Test
-                    _inventoryManager.AddItemData(1, 1);
-                    _inventoryManager.AddItemData(2, 2);
-                    _inventoryManager.AddItemData(3, 3);
+                    _inventoryManager.AddData(1, 1);
+                    _inventoryManager.AddData(2, 2);
+                    _inventoryManager.AddData(3, 3);
                 }
             }
             catch (Exception e)
             {
-                Logger.LogError($"{nameof(MainController)}: :{nameof(ButtonOnClick)} error:{e.Message}");
+                Logger.LogError($"{nameof(MainController)}: :{nameof(OnButtonClick)} error:{e.Message}");
             }
         }
     }

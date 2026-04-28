@@ -3,10 +3,8 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.UI.MVC;
-using HotUpdate.Base.Factory;
 using HotUpdate.Base.Grid;
 using HotUpdate.Common.Config.Item;
-using HotUpdate.Game.Inventory.UI.Detail;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -18,22 +16,26 @@ namespace HotUpdate.Game.Inventory.UI
     public class InventoryController : UIController<InventoryPanel, InventoryModel>
     {
         [Inject] private InventoryManager _inventoryManager;
-        [Inject] private ObjectSpawner _objectSpawner;
+        [Inject] private ObjectSpawner _objectSpawner;  // 生成器不在这里写
+
+        private bool isInit;
         
         protected override Task OnInit()
         {
             return Task.CompletedTask;
         }
         
-        protected override async Task OnShow()
+        protected override async Task OnActive()
         {
+            // 初始化工厂
+            model.InitDetailPanelFactory();
             // 初始化格子生成器
-            await InitGridGenerator();
+            InitGridGenerator();
             // 创建选项
             await InitTypeOpt();
         }
 
-        protected override Task OnHide()
+        protected override Task OnInactivate()
         {
             return Task.CompletedTask;
         }
@@ -56,16 +58,13 @@ namespace HotUpdate.Game.Inventory.UI
             view.OptGroup.allowSwitchOff = false;
         }
 
-        private async Task InitGridGenerator()
+        private void InitGridGenerator()
         {
-            using var handle = await GameAsset.LoadAssetAsync<GameObject>(AssetKeys.ItemCell);
-            var rectTransform = handle.Asset.GetComponent<RectTransform>();
-            
             // 创建格子生成器
             var builder = GridGeneratorBuilder<ItemDTO, ItemCell>.Create();
             var generator = builder.CreateGenerator(EGridLayout.Vertical)
                 .SetParent(view.svItems)
-                .SetGridSize(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y)
+                .SetGridSize(100, 100)
                 .SetGridSpace(15, 15)
                 .SetColumn(8)
                 .Build();
@@ -80,10 +79,14 @@ namespace HotUpdate.Game.Inventory.UI
         /// <param name="itemType"></param>
         private async Task UpdateItemsByType(EItemType itemType)
         {
-            // 清空上次显示的格子
-            model.GridGenerator.ClearGrids();
-            // 根据当前数据创建DTO
+            // 根据当前数据创建DTO，先 await，避免惯性滚动触发创建
             var itemDTOs = await _inventoryManager.CreateItemDTOsAsync(itemType);
+            /*
+             * 清空上次显示的格子，清空格子一定要在await后执行，因为当调用UpdateItemsByType方法时，若先清空，但是界面可能还在因为惯性在滚动
+             * 导致又触发ScrollRectValueChanged事件创建新的格子，导致清空后又有格子，会出现显示异常和重复创建格子的问题
+             * 因为这个异步方法会被挂起的副作用，所以等待await后再执行清理格子，就能避免这个问题
+            */
+            model.GridGenerator.ClearGrids();
             // 排序物品数据DTO，默认按照品质类型排序    
             itemDTOs.Sort(model.sortComparison);
             // 初始化生成器
@@ -104,39 +107,28 @@ namespace HotUpdate.Game.Inventory.UI
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         private async void UpdateDetail(ItemDTO itemDTO)
         {
+            PoolObject poolObject = default;
             try
             {
                 var itemConfig = _inventoryManager.GetItemConfig(itemDTO.itemId);
                 var itemData = _inventoryManager.GetData(itemDTO);
-            
-                switch (itemDTO.itemType)
+
+                if (!model.DetailPanelPoolObject.Obj || model.CurrentItemType != itemConfig.itemType)
                 {
-                    case EItemType.Material:
-                        if (model.InventoryDetailPanel == null)
-                        {
-                            var poolObject = await _objectSpawner.SpawnAsync<MaterialDetailPanel>(AssetKeys.MaterialDetailPanel, view.DetailArea);
-                            poolObject.Obj.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                            model.InventoryDetailPanel = poolObject.Obj;
-                            model.DetailPanelPoolObject = poolObject;
-                        }
-                        model.InventoryDetailPanel.UpdateInfo(itemConfig, itemData);
-                        break;
-                    case EItemType.Weapon:
-                        await _objectSpawner.SpawnAsync<MaterialDetailPanel>("Weapon", view.DetailArea);
-                        break;
-                    case EItemType.HolyRelic:
-                        await _objectSpawner.SpawnAsync<MaterialDetailPanel>("HolyRelic", view.DetailArea);
-                        break;
-                    case EItemType.precious:
-                        await _objectSpawner.SpawnAsync<MaterialDetailPanel>("precious", view.DetailArea);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    if(model.DetailPanelPoolObject.Obj)
+                        model.DetailPanelPoolObject.Collect();
+                    // 工厂创建详细界面
+                    poolObject = await model.DetailPanelFactory.CreateDetailPanel(itemConfig.itemType, view.DetailArea);
+                    model.DetailPanelPoolObject = poolObject.Convert<InventoryDetailPanel>();
                 }
+
+                // 初始化详细界面
+                model.DetailPanelPoolObject.Obj.UpdateInfo(itemConfig, itemData);
             }
             catch (Exception e)
             {
-                Logger.LogError($"{nameof(InventoryController)}.{nameof(UpdateDetail)}: {e.Message}");
+                poolObject.Collect(true);
+                Logger.LogError($"{nameof(InventoryController)}: Create detail panel fail, {e.Message}");
             }
         }
 
@@ -157,26 +149,26 @@ namespace HotUpdate.Game.Inventory.UI
         }
         
         // 按钮点击事件回调
-        protected override void ButtonOnClick(string btnName)
+        protected override void OnButtonClick(string btnName)
         {
             if (btnName == nameof(view.btnClose))
             {
                 // 关闭背包界面
                 uiManager.DestroyView(panelId);
-                // 清理资源缓存
-                
+                _objectSpawner.Dispose();
+                _objectSpawner = null;
             }
         }
 
-        protected override void ScrollRectValueChanged(string scrollViewName, Vector2 pos)
+        protected override void OnScrollRectValueChanged(string scrollViewName, Vector2 pos)
         {
             if (scrollViewName == nameof(view.svItems))
             {
-                model.GridGenerator.UpdateGrid();
+                model.GridGenerator?.UpdateGrid();
             }
         }
 
-        protected override async void DropdownValueChanged(string dropdownName, int index)
+        protected override async void OnDropdownValueChanged(string dropdownName, int index)
         {
             try
             {
@@ -195,7 +187,7 @@ namespace HotUpdate.Game.Inventory.UI
             }
             catch (Exception e)
             {
-                Logger.LogError($"{nameof(InventoryController)}.{nameof(DropdownValueChanged)}: {e.Message}");
+                Logger.LogError($"{nameof(InventoryController)}: {e.Message}");
             }
         }
     }

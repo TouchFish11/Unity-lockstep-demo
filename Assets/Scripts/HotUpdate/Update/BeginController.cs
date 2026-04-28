@@ -25,13 +25,13 @@ namespace HotUpdate.Update
         /// </summary>
         public event Func<Task> OnClickEnterGame;
 
-        protected override Task OnShow()
+        protected override Task OnActive()
         {
             RegisterUpdateEvent();
             return Task.CompletedTask;
         }
 
-        protected override Task OnHide()
+        protected override Task OnInactivate()
         {
             UnRegisterUpdateEvent();
             return Task.CompletedTask;
@@ -266,7 +266,7 @@ namespace HotUpdate.Update
             }
         }
         
-        protected override async void ButtonOnClick(string btnName)
+        protected override async void OnButtonClick(string btnName)
         {
             try
             {

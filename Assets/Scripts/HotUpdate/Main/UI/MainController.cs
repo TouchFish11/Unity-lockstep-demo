@@ -9,12 +9,12 @@ namespace HotUpdate.Main.UI
 {
     public class MainController : UIController<MainPanel, MainModel>
     {
-        protected override Task OnShow()
+        protected override Task OnActive()
         {
             return Task.CompletedTask;
         }
 
-        protected override Task OnHide()
+        protected override Task OnInactivate()
         {
             return Task.CompletedTask;
         }
@@ -34,15 +34,15 @@ namespace HotUpdate.Main.UI
             //model.Cache(chatUI);
         }
 
-        protected override void InputFieldValueChanged(string fieldName, string inputStr)
+        protected override void OnInputFieldValueChanged(string fieldName, string inputStr)
         {
             if (fieldName == nameof(view.inputField))
             {
                 model.InputStr(inputStr);
             }
         }
-
-        protected override void ButtonOnClick(string btnName)
+        
+        protected override void OnButtonClick(string btnName)
         {
             if (btnName == nameof(view.btnMatch))
             {

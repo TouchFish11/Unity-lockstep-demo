@@ -11,12 +11,12 @@ namespace HotUpdate.UI.Tip.Update
         /// </summary>
         public event Action OnSure;
 
-        protected override Task OnShow()
+        protected override Task OnActive()
         {
             return Task.CompletedTask;
         }
 
-        protected override Task OnHide()
+        protected override Task OnInactivate()
         {
             return Task.CompletedTask;
         }
@@ -41,7 +41,7 @@ namespace HotUpdate.UI.Tip.Update
             view.SetTipActive(isActive, tip);
         }
 
-        protected override void ButtonOnClick(string btnName)
+        protected override void OnButtonClick(string btnName)
         {
             if (btnName == nameof(view.btnSure))
             {

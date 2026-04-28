@@ -16,7 +16,7 @@ namespace HotUpdate.Base
         /// </summary>
         /// <param name="id"></param>
         /// <param name="num"></param>
-        void AddItemData(int id, int num);
+        void AddData(int id, int num);
 
         Task<List<ItemDTO>> CreateItemDTOsAsync(EItemType itemType);
         void InitItemConfigs();

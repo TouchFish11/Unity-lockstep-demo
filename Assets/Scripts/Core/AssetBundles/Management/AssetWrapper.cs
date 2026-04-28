@@ -69,15 +69,22 @@ namespace Core.AssetBundles.Management
         /// </summary>
         public void Release()
         {
-            --RefCount;
-            Logger.Log($"[AssetWrapper]: '{AssetKey}' asset refCount Reduce to: {RefCount}");
-            if (RefCount != 0) 
-                return;
+            if (RefCount > 0)
+            {
+                --RefCount;
+                Logger.Log($"[AssetWrapper]: '{AssetKey}' asset refCount Reduce to: {RefCount}");
+                
+                if (RefCount != 0) 
+                    return;
             
-            // 释放包引用计数
-            _bundleWrapper.Release();
-            OnUnload?.Invoke();
-            OnUnload = null;
+                // 释放包引用计数
+                _bundleWrapper.Release();
+                OnUnload?.Invoke();
+                OnUnload = null;
+                return;
+            }
+
+            Logger.LogWarning($"[AssetWrapper]: '{AssetKey}' asset refCount repeated release");
         }
         
         /// <summary>

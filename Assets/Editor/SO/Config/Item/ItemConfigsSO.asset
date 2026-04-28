@@ -17,21 +17,21 @@ MonoBehaviour:
     - itemId: 1
       name: "\u6D4B\u8BD5\u540D\u79F01"
       description: "\u6D4B\u8BD5\u540D\u79F01\u63CF\u8FF0"
-      atlasName: Atlas_Item
       icon: bottle_standard_empty
+      isPine: 1
       itemQuality: 0
       itemType: 0
     - itemId: 2
       name: "\u6D4B\u8BD5\u540D\u79F02"
       description: "\u6D4B\u8BD5\u540D\u79F02\u63CF\u8FF0"
-      atlasName: Atlas_Item
       icon: bottle_standard_blue
+      isPine: 1
       itemQuality: 1
       itemType: 0
     - itemId: 3
       name: "\u6D4B\u8BD5\u540D\u79F03"
       description: "\u6D4B\u8BD5\u540D\u79F03\u63CF\u8FF0"
-      atlasName: Atlas_Item
       icon: bottle_standard_green
+      isPine: 1
       itemQuality: 2
       itemType: 0

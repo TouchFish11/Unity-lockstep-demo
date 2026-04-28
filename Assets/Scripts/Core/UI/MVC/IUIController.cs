@@ -18,14 +18,14 @@ namespace Core.UI.MVC
         /// 处理业务逻辑
         /// </summary>
         /// <returns></returns>
-        Task Show();
+        Task Activate();
         
         /// <summary>
         /// 隐藏
         /// 处理业务逻辑
         /// </summary>
         /// <returns></returns>
-        Task Hide();
+        Task InActivate();
         
         /// <summary>
         /// 销毁

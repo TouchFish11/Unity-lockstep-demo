@@ -9,14 +9,12 @@ namespace HotUpdate.Game.Inventory.UI.Detail
     /// <summary>
     /// 材料类型详细界面
     /// </summary>
-    public class MaterialDetailPanel : UIBehaviourBase, IInventoryDetailPanel
+    public class MaterialDetailPanel : InventoryDetailPanel
     {
         [InjectUI] private TextMeshProUGUI txtMaterialName;
         [InjectUI] private TextMeshProUGUI txtMaterialDescription;
-
-        public GameObject DetailPanel => this.gameObject;
-
-        public void UpdateInfo(ItemConfig itemConfig, ItemData itemData)
+        
+        protected override void OnUpdateInfo()
         {
             txtMaterialName.text = itemConfig.name;
             txtMaterialDescription.text = itemConfig.description;

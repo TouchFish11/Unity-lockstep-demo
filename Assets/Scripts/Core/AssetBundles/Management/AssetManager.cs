@@ -16,13 +16,13 @@ namespace Core.AssetBundles.Management
         private readonly IAssetBundleManager _assetBundleManager;
         // 物理资源key到物理资源的缓存映射
         private readonly Dictionary<string, AssetWrapper> _assetWrappers = new();
+        // 精灵图片缓存，图集到其所有子图片的映射
+        private readonly Dictionary<string, Dictionary<string, Sprite>> _sprites = new();
         // 正在加载中的任务字典，Key 为用户传入的原始资源 Key
         private readonly Dictionary<string, Task<AssetWrapper>> _loadingTasks = new();
         // 批量加载资源任务缓存
         private readonly Dictionary<string, Task<AssetWrapper[]>> _assetsLoadingTasks = new();
-        // 精灵图片缓存
-        private readonly Dictionary<(string atlasKey, string spriteKey), Sprite> _sprites = new();
-
+        
         public AssetManager(IAssetBundleManager assetBundleManager)
         {
             _assetBundleManager = assetBundleManager;
@@ -71,6 +71,8 @@ namespace Core.AssetBundles.Management
                 if (assetWrapper.IsNull)
                     throw new NullReferenceException($"{nameof(GameAsset)}: load {mapEntry.assetName} failed, key({key})");
             
+                // 初始引用
+                assetWrapper.Retain();
                 _assetWrappers.Add(key, assetWrapper);
                 return assetWrapper;
             }
@@ -84,7 +86,7 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 异步加载资源
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">资源Key</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public async Task<AssetWrapper> LoadAssetAsync<T>(string key) where T : Object
@@ -198,7 +200,7 @@ namespace Core.AssetBundles.Management
                 
                     // 加载资源
                     assetWrapper = await bundleWrapper.LoadAssetAsync<T>(key, entry.assetName);
-                    // 存入缓存（使用 atlasKey），只对第一次加载 Retain
+                    // 存入缓存
                     _assetWrappers.Add(key, assetWrapper);
                     assetWrapper.Retain();
                     return assetWrapper;
@@ -342,6 +344,7 @@ namespace Core.AssetBundles.Management
             if(assetWrapper.RefCount == 0)
             {
                 _assetWrappers.Remove(key);
+                _sprites.Remove(key);
             }
         }
         
@@ -368,16 +371,21 @@ namespace Core.AssetBundles.Management
                 return null;
             
             // 获取缓存的图片，资源引用计数不需要增加；但是包热度需要增加
-            if (_sprites.TryGetValue((atlasKey, spriteKey), out var sprite))
+            if (_sprites.TryGetValue(atlasKey, out var spriteMap))
             {
                 // 增加包热度
                 wrapper.RecordAccess();
-                return sprite;
+                return spriteMap.GetValueOrDefault(spriteKey);
             }
             
             // 加载图片并缓存
-            sprite = ((SpriteAtlas)wrapper.Asset).GetSprite(spriteKey);
-            _sprites.Add((atlasKey, spriteKey), sprite);
+            var sprite = ((SpriteAtlas)wrapper.Asset).GetSprite(spriteKey);
+            // 首次加载该图集，新增缓存
+            if(!_sprites.TryGetValue(atlasKey, out var newSpriteMap))
+                _sprites.Add(atlasKey, new Dictionary<string, Sprite> { { spriteKey, sprite } });
+            // 复用相同图集的缓存
+            else
+                newSpriteMap.Add(spriteKey, sprite);
             return sprite;
         }
     }

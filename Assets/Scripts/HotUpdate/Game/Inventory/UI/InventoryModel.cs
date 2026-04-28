@@ -29,16 +29,21 @@ namespace HotUpdate.Game.Inventory.UI
         /// 格子生成器
         /// </summary>
         public GridGenerator<ItemDTO, ItemCell> GridGenerator { get; set; }
-
+        
         /// <summary>
-        /// 详细界面
+        /// 详细界面工厂
         /// </summary>
-        public IInventoryDetailPanel InventoryDetailPanel { get; set; }
+        public InventoryDetailViewCreateFactory DetailPanelFactory { get; set; }
 
         /// <summary>
         /// 详细界面池化对象
         /// </summary>
-        public PoolObject DetailPanelPoolObject { get; set; }
+        public PoolObject<InventoryDetailPanel> DetailPanelPoolObject { get; set; }
+
+        public void InitDetailPanelFactory()
+        {
+            DetailPanelFactory = _poolManager.GetData<InventoryDetailViewCreateFactory>();
+        }
         
         public ItemTypeOpt GetFirstItemTypeOpt()
         {
@@ -66,8 +71,9 @@ namespace HotUpdate.Game.Inventory.UI
         {
             ClearOpt();
             _poolManager.PushData(GridGenerator);
+            _poolManager.PushData(DetailPanelFactory);
             GridGenerator = null;
-            InventoryDetailPanel = null;
+            DetailPanelFactory = null;
             sortComparison = null;
             DetailPanelPoolObject.Collect();
         }
