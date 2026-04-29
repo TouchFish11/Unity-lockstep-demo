@@ -16,6 +16,9 @@ namespace HotUpdate.Game.Inventory.UI
         [InjectUI] private Image imgIcon;
         [InjectUI] private Toggle togOpt;
         
+        /// <summary>
+        /// 选项类型切换事件
+        /// </summary>
         public event Func<EItemType, Task> OnItemTypeOptChange;
         
         public EItemType ItemType { get; private set; }
@@ -39,12 +42,17 @@ namespace HotUpdate.Game.Inventory.UI
             {
                 if (togName == nameof(togOpt) && isOn)
                 {
-                    await OnItemTypeOptChange?.Invoke(ItemType);
+                    if (OnItemTypeOptChange != null)
+                        await OnItemTypeOptChange?.Invoke(ItemType);
                 }
+            }
+            catch (OperationCanceledException canceledException)
+            {
+                Logger.Log($"[{nameof(ItemTypeOpt)}]: Item type switch operator cancel, {canceledException.Message}");
             }
             catch (Exception e)
             {
-                Logger.LogError($"{nameof(ItemTypeOpt)}: {e.Message}");
+                Logger.LogError($"[{nameof(ItemTypeOpt)}]: Item type switch fail, {e.Message}");
             }
         }
 

@@ -8,6 +8,8 @@ using Core.Scene;
 using Core.UI;
 using Core.Utility;
 using HotUpdate.Base;
+using HotUpdate.Base.Icon;
+using HotUpdate.Base.Inventory;
 using HotUpdate.Game.Data;
 using HotUpdate.Game.Inventory;
 using HotUpdate.Game.Main.UI;
@@ -79,7 +81,7 @@ namespace HotUpdate.Update
                 var tasks = new List<Task>
                 {
                     // 初始化管理器
-                    InitManagers(),
+                    InitServices(),
                     // 切换场景
                     LoadSceneAsync(),
                     // 初始化输入系统
@@ -99,10 +101,16 @@ namespace HotUpdate.Update
             }
         }
 
-        public static Task InitManagers()
+        /// <summary>
+        /// 初始化运行时游戏服务
+        /// </summary>
+        /// <returns></returns>
+        public static Task InitServices()
         {
             // 绑定背包管理器类型
             DIContainer.BindSingleton<IInventoryManager, InventoryManager>();
+            // 绑定图标提供器
+            DIContainer.BindSingleton<IIconProvider, IconProvider>();
             //...
             
             return Task.CompletedTask;

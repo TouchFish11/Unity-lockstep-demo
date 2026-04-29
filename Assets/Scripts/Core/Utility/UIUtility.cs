@@ -11,7 +11,6 @@ namespace Core.Utility
     /// </summary>
     public static class UIUtility
     {
-
         /// <summary>
         /// 添加自定义事件监听
         /// </summary>

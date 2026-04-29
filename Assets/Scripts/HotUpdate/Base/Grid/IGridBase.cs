@@ -1,3 +1,5 @@
+using HotUpdate.Base.Icon;
+
 namespace HotUpdate.Base.Grid
 {
     /// <summary>
@@ -11,6 +13,7 @@ namespace HotUpdate.Base.Grid
         /// 初始化格子数据
         /// </summary>
         /// <param name="data">数据类型</param>
-        void InitGrid(T data);
+        /// <param name="iconProvider"></param>
+        void InitGrid(T data, IIconProvider iconProvider);
     }
 }

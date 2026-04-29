@@ -40,8 +40,8 @@ namespace HotUpdate.Base.Grid
             // Y = 负的 行索引 * (格子高度 + 垂直间距)
             // 取负是因为 Content 坐标系中 Y 轴向上为正，第一行需位于顶部（Y=0 附近）
             return new Vector3(
-                (index % maxCol) * (_gridWidth + _gridXSpace),
-                -index / maxCol * (_gridHeight + _gridYSpace),
+                (index % maxCol) * (_gridWidth + _gridXSpace) + originOffset.x,
+                -index / maxCol * (_gridHeight + _gridYSpace) + originOffset.y,
                 0);
         }
 

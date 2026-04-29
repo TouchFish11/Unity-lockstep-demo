@@ -1,5 +1,4 @@
 using Core.DI;
-using UnityEngine;
 
 namespace Core.AssetBundles.Management
 {

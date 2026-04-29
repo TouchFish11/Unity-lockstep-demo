@@ -4,7 +4,7 @@ using Core.DI;
 using Core.Log;
 using Core.UI;
 using Core.UI.MVC;
-using HotUpdate.Base;
+using HotUpdate.Base.Inventory;
 using HotUpdate.Game.Inventory.UI;
 
 namespace HotUpdate.Game.Main.UI
@@ -42,6 +42,7 @@ namespace HotUpdate.Game.Main.UI
                     _inventoryManager.AddData(1, 1);
                     _inventoryManager.AddData(2, 2);
                     _inventoryManager.AddData(3, 3);
+                    _inventoryManager.AddData(4, 1);
                 }
             }
             catch (Exception e)

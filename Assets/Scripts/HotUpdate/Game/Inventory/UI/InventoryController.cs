@@ -4,6 +4,7 @@ using Core.AssetBundles.Management;
 using Core.DI;
 using Core.UI.MVC;
 using HotUpdate.Base.Grid;
+using HotUpdate.Base.Inventory;
 using HotUpdate.Common.Config.Item;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -15,10 +16,8 @@ namespace HotUpdate.Game.Inventory.UI
     /// </summary>
     public class InventoryController : UIController<InventoryPanel, InventoryModel>
     {
-        [Inject] private InventoryManager _inventoryManager;
+        [Inject] private IInventoryManager _inventoryManager;
         [Inject] private ObjectSpawner _objectSpawner;  // 生成器不在这里写
-
-        private bool isInit;
         
         protected override Task OnInit()
         {
@@ -37,6 +36,10 @@ namespace HotUpdate.Game.Inventory.UI
 
         protected override Task OnInactivate()
         {
+            // 先回收，再销毁，否则对象池会无法清理
+            model.ClearOpt();
+            _objectSpawner.Dispose();
+            _objectSpawner = null;
             return Task.CompletedTask;
         }
 
@@ -61,9 +64,10 @@ namespace HotUpdate.Game.Inventory.UI
         private void InitGridGenerator()
         {
             // 创建格子生成器
-            var builder = GridGeneratorBuilder<ItemDTO, ItemCell>.Create();
+            var builder = GridGeneratorBuilder<Item, ItemCell>.Create();
             var generator = builder.CreateGenerator(EGridLayout.Vertical)
                 .SetParent(view.svItems)
+                .SetOriginOffset(15, -15)
                 .SetGridSize(100, 100)
                 .SetGridSpace(15, 15)
                 .SetColumn(8)
@@ -80,7 +84,7 @@ namespace HotUpdate.Game.Inventory.UI
         private async Task UpdateItemsByType(EItemType itemType)
         {
             // 根据当前数据创建DTO，先 await，避免惯性滚动触发创建
-            var itemDTOs = await _inventoryManager.CreateItemDTOsAsync(itemType);
+            var items = await _inventoryManager.CreateItemsAsync(itemType);
             /*
              * 清空上次显示的格子，清空格子一定要在await后执行，因为当调用UpdateItemsByType方法时，若先清空，但是界面可能还在因为惯性在滚动
              * 导致又触发ScrollRectValueChanged事件创建新的格子，导致清空后又有格子，会出现显示异常和重复创建格子的问题
@@ -88,11 +92,11 @@ namespace HotUpdate.Game.Inventory.UI
             */
             model.GridGenerator.ClearGrids();
             // 排序物品数据DTO，默认按照品质类型排序    
-            itemDTOs.Sort(model.sortComparison);
+            items.Sort(model.sortComparison);
             // 初始化生成器
             model.GridGenerator.SetClick(UpdateDetail);
             model.GridGenerator.SetSelectIndex(0);
-            model.GridGenerator.SetDatas(itemDTOs);
+            model.GridGenerator.SetDatas(items);
             // 手动更新一次
             model.GridGenerator.FadeUpdateGrid();
             // 记录当前选择的物品类型
@@ -102,16 +106,16 @@ namespace HotUpdate.Game.Inventory.UI
         /// <summary>
         /// 更新详细界面
         /// </summary>
-        /// <param name="itemDTO"></param>
+        /// <param name="item"></param>
         /// <exception cref="Exception"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private async void UpdateDetail(ItemDTO itemDTO)
+        private async void UpdateDetail(Item item)
         {
             PoolObject poolObject = default;
             try
             {
-                var itemConfig = _inventoryManager.GetItemConfig(itemDTO.itemId);
-                var itemData = _inventoryManager.GetData(itemDTO);
+                var itemConfig = item.itemConfig;
+                var itemData = _inventoryManager.GetData(item.instanceId);
 
                 if (!model.DetailPanelPoolObject.Obj || model.CurrentItemType != itemConfig.itemType)
                 {
@@ -155,8 +159,7 @@ namespace HotUpdate.Game.Inventory.UI
             {
                 // 关闭背包界面
                 uiManager.DestroyView(panelId);
-                _objectSpawner.Dispose();
-                _objectSpawner = null;
+                Logger.Log($"{nameof(InventoryController)}: {view.name} closed");
             }
         }
 
@@ -172,9 +175,9 @@ namespace HotUpdate.Game.Inventory.UI
         {
             try
             {
-                if (dropdownName != nameof(view.dpSorts)) 
+                if (dropdownName != nameof(view.dpSorts))
                     return;
-                
+
                 switch (index)
                 {
                     case 0:
@@ -185,9 +188,13 @@ namespace HotUpdate.Game.Inventory.UI
                         break;
                 }
             }
+            catch (OperationCanceledException canceledException)
+            {
+                Logger.Log($"[{nameof(InventoryController)}]: operator cancel, {canceledException.Message}");
+            }
             catch (Exception e)
             {
-                Logger.LogError($"{nameof(InventoryController)}: {e.Message}");
+                Logger.LogError($"[{nameof(InventoryController)}]: {e.Message}");
             }
         }
     }

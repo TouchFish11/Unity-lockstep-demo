@@ -103,17 +103,18 @@ namespace Core.UI.MVC
 
         /// <summary>
         /// 初始化逻辑，仅当界面被创建时执行一次
+        /// 可执行界面首次创建初始化操作
         /// </summary>
         protected abstract Task OnInit();
         
         /// <summary>
-        /// 当界面被激活（显示）时执行
+        /// 当界面被激活（显示）时执行，在这里执行界面初始化操作，每次显示时都会执行（若未被销毁）
         /// </summary>
         /// <returns></returns>
         protected abstract Task OnActive();
 
         /// <summary>
-        /// 当界面被失活（隐藏）时执行
+        /// 当界面被失活（隐藏）时执行，可以在此执行界面清理操作
         /// </summary>
         /// <returns></returns>
         protected abstract Task OnInactivate();

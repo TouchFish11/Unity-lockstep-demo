@@ -253,6 +253,7 @@ public static class AssetKeys
     public const string zselect_icon = "zselect-icon";
     public const string MSYH_SDF = "MSYH_SDF";
     public const string Main_Chat_Panel = "Main_Chat_Panel";
+    public const string WeaponDetailPanel = "WeaponDetailPanel";
     public const string MaterialDetailPanel = "MaterialDetailPanel";
     public const string ItemTypeOpt = "ItemTypeOpt";
     public const string ItemDetailPanelBase = "ItemDetailPanelBase";

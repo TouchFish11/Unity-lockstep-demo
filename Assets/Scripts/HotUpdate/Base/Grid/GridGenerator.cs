@@ -5,6 +5,7 @@ using Core.AssetBundles.Management;
 using Core.DI;
 using Core.Mono;
 using Core.Pool;
+using HotUpdate.Base.Icon;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 using Object = UnityEngine.Object;
@@ -22,6 +23,7 @@ namespace HotUpdate.Base.Grid
         // 对象生成器（支持异步实例化与对象池）
         [Inject] private ObjectSpawner _objectSpawner;
         [Inject] private IMonoAdapter _monoAdapter;
+        [Inject] private IIconProvider _iconProvider;
         
         // 当前显示的格子字典，Key：数据索引，Value：对象池包装对象
         private readonly Dictionary<int, PoolObject> _nowShowGridDic = new();
@@ -176,7 +178,7 @@ namespace HotUpdate.Base.Grid
                 var pos = gridLayout.CalcPosition(index);
                 var poolObj = await _objectSpawner.SpawnAsync<K>(AssetKeys.ItemCell, gridLayout._content, pos, Quaternion.identity);
                 // 初始化格子数据
-                poolObj.Obj.InitGrid(_dataList[index]);
+                poolObj.Obj.InitGrid(_dataList[index], _iconProvider);
                 // 二次确认：异步加载期间该索引是否仍有效（未被回收）
                 if (_nowShowGridDic.ContainsKey(index))
                 {
@@ -241,7 +243,7 @@ namespace HotUpdate.Base.Grid
                 var pos = gridLayout.CalcPosition(i);
                 var poolObj = _objectSpawner.Spawn<K>(AssetKeys.ItemCell, gridLayout._content, pos, Quaternion.identity);
                 // 初始化格子数据
-                poolObj.Obj.InitGrid(_dataList[i]);
+                poolObj.Obj.InitGrid(_dataList[i], _iconProvider);
                 // 有效：将实际对象替换占位
                 _nowShowGridDic[i] = poolObj;
                 // 注册交互事件

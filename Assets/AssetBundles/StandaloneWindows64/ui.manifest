@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 705397032
+CRC: 957153991
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e171523f4405e1673307b411e62bcb58
+    Hash: ea3e1b6d518ce451bae4dd506da398ea
   TypeTreeHash:
     serializedVersion: 2
-    Hash: d7941af7dba94e8fc65a95d53a2c4e43
+    Hash: cd28d45de2317acf1f9e0357854cc25a
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: e171523f4405e1673307b411e62bcb58
+    Hash: ea3e1b6d518ce451bae4dd506da398ea
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -90,6 +90,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 6aedfa7fdf6019f4fbf04ae8bf97c7b3, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: a9f20106dbbb8ab47afbeee617b8703d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 18396f4cc05d04041b27277259f25d18, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -195,6 +197,7 @@ Assets:
 - Assets/Editor/ArtRes/UI/Inventory/DetailPanel/MaterialDetailPanel.prefab
 - Assets/Editor/ArtRes/UI/Inventory/ItemCell.prefab
 - Assets/Editor/ArtRes/UI/Main/Main_Chat_Panel.prefab
+- Assets/Editor/ArtRes/UI/Inventory/DetailPanel/WeaponDetailPanel.prefab
 - Assets/Editor/ArtRes/UI/Main/Chat/Chat_UI.prefab
 - Assets/Editor/ArtRes/UI/Tip/UpdateTipView.prefab
 - Assets/Editor/ArtRes/UI/Main/Main_Panel.prefab

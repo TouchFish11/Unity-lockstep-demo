@@ -6,6 +6,7 @@ using Core.Mono;
 using Core.Pool;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Logger = Core.Log.Logger;
 using Object = UnityEngine.Object;
 
@@ -27,13 +28,13 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 生成对象
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="parent"></param>
-        /// <param name="pos"></param>
-        /// <param name="rot"></param>
-        /// <param name="worldSpace"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <param name="key">资源Key</param>
+        /// <param name="parent">对象的父对象</param>
+        /// <param name="pos">若是UI对象，则为锚点坐标；否则根据父对象是否存在来设置本地/世界坐标</param>
+        /// <param name="rot">若是UI对象，则为本地旋转；否则根据父对象是否存在来设置本地/世界旋转</param>
+        /// <param name="worldSpace">是否保留世界坐标</param>
+        /// <typeparam name="T">游戏对象上的组件类型</typeparam>
+        /// <returns>返回该游戏对象上的特定组件</returns>
         public PoolObject<T> Spawn<T>(string key, Transform parent = null, Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
         {
             // 尝试从对象池获取
@@ -61,11 +62,11 @@ namespace Core.AssetBundles.Management
         /// <summary>
         /// 异步生成对象
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="parent"></param>
-        /// <param name="pos"></param>
-        /// <param name="rot"></param>
-        /// <param name="worldSpace"></param>
+        /// <param name="key">资源Key</param>
+        /// <param name="parent">对象的父对象</param>
+        /// <param name="pos">若是UI对象，则为锚点坐标；否则根据父对象是否存在来设置本地/世界坐标</param>
+        /// <param name="rot">若是UI对象，则为本地旋转；否则根据父对象是否存在来设置本地/世界旋转</param>
+        /// <param name="worldSpace">是否保留世界坐标</param>
         /// <typeparam name="T">游戏对象上的组件类型</typeparam>
         /// <returns>返回该游戏对象上的特定组件</returns>
         public async Task<PoolObject<T>> SpawnAsync<T>(string key, Transform parent = null, Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
@@ -132,33 +133,32 @@ namespace Core.AssetBundles.Management
             var poolObject = new PoolObject(ObjectIdPool.GetGlobalId(), instance, this);
             switch (instance)
             {
-                case GameObject gameObject:
+                // UI
+                case UIBehaviour uiBehaviour:
                 {
-                    if (parent)
-                    {
-                        gameObject.transform.SetParent(parent, worldSpace);
-                        gameObject.transform.localPosition = pos;
-                        gameObject.transform.localRotation = rot;
-                    }
-                    else
-                    {
-                        gameObject.transform.position = pos;
-                        gameObject.transform.rotation = rot;
-                    }
+                    var rectTransform = uiBehaviour.GetComponent<RectTransform>();
+                    // 默认设置锚点坐标和本地旋转
+                    rectTransform.SetParent(parent, worldSpace);
+                    rectTransform.anchoredPosition = pos;
+                    rectTransform.localRotation = rot;
                     break;
                 }
-                case Component component:
+                // 非UI：组件、GameObject
+                default:
                 {
-                    if (parent)
+                    var transform = instance.GetComponent<Transform>();
+                    // 没有父对象，设置为世界坐标
+                    if (!parent)
                     {
-                        component.transform.SetParent(parent, worldSpace);
-                        component.transform.localPosition = pos;
-                        component.transform.localRotation = rot;
+                        transform.position = pos;
+                        transform.rotation = rot;
                     }
+                    // 有父对象，设置为本地坐标
                     else
                     {
-                        component.transform.position = pos;
-                        component.transform.rotation = rot;
+                        transform.SetParent(parent, worldSpace);
+                        transform.localPosition = pos;
+                        transform.localRotation = rot;
                     }
                     break;
                 }
@@ -181,17 +181,34 @@ namespace Core.AssetBundles.Management
         private static T InstantiateInternal<T>(AssetHandle assetHandle, string key, Transform parent = null, 
             Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
         {
-            T newObj;
-            if (!parent)
+            // 实例化对象
+            var newObj = Object.Instantiate(assetHandle.ConvertTo<T>().Asset);
+            // 不是UI对象
+            if (newObj is not UIBehaviour uiBehaviour)
             {
-                newObj = Object.Instantiate(assetHandle.ConvertTo<T>().Asset, pos, rot);
+                // 没有父对象，设置为世界坐标
+                if (!parent)
+                {
+                    var transform = newObj.GetComponent<Transform>();
+                    transform.position = pos;
+                    transform.rotation = rot;
+                }
+                // 有父对象，设置为本地坐标
+                else
+                {
+                    var transform = newObj.GetComponent<Transform>();
+                    transform.SetParent(parent, worldSpace);
+                    transform.localPosition = pos;
+                    transform.localRotation = rot;
+                }
             }
+            // UI对象
             else
             {
-                newObj = Object.Instantiate(assetHandle.ConvertTo<T>().Asset, parent, worldSpace);
-                var transform = newObj.GetComponent<Transform>();
-                transform.localPosition = pos;
-                transform.localRotation = rot;
+                // 默认设置锚点坐标和本地旋转
+                uiBehaviour.transform.SetParent(parent, worldSpace);
+                uiBehaviour.GetComponent<RectTransform>().anchoredPosition = pos;
+                uiBehaviour.GetComponent<RectTransform>().localRotation = rot;
             }
             
             // 修改对象名称为资源唯一Key
@@ -267,6 +284,8 @@ namespace Core.AssetBundles.Management
         
         /// <summary>
         /// 销毁生成器，当不在使用该生成器时调用此方法，释放缓存的剩余句柄
+        /// 要先确保生成器创建出的池化对象都执行回收后才能调用此方法销毁
+        /// 否则对象池会有残留
         /// </summary>
         public void Dispose()
         {

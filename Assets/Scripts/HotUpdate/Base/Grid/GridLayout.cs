@@ -25,6 +25,8 @@ namespace HotUpdate.Base.Grid
         internal float _gridYSpace;
         // 格子总数
         internal int dataCount;
+        // 格子起始偏移
+        internal Vector2 originOffset;
         
         /// <summary>
         /// 计算格子索引起始索引和结束索引

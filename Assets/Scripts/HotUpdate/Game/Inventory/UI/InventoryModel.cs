@@ -18,7 +18,7 @@ namespace HotUpdate.Game.Inventory.UI
         /// 缓存所有选项
         private readonly List<PoolObject> _itemTypeOpts = new();
         // 物品排序委托
-        public Comparison<ItemDTO> sortComparison = InventorySorterFactory.DefaultIDSorter(1);
+        public Comparison<Item> sortComparison = InventorySorterFactory.DefaultIDSorter(1);
         
         /// <summary>
         /// 当前显示的物品类型
@@ -28,7 +28,7 @@ namespace HotUpdate.Game.Inventory.UI
         /// <summary>
         /// 格子生成器
         /// </summary>
-        public GridGenerator<ItemDTO, ItemCell> GridGenerator { get; set; }
+        public GridGenerator<Item, ItemCell> GridGenerator { get; set; }
         
         /// <summary>
         /// 详细界面工厂
@@ -69,13 +69,13 @@ namespace HotUpdate.Game.Inventory.UI
         
         public override void ClearData()
         {
-            ClearOpt();
+            DetailPanelPoolObject.Collect();
             _poolManager.PushData(GridGenerator);
             _poolManager.PushData(DetailPanelFactory);
             GridGenerator = null;
             DetailPanelFactory = null;
             sortComparison = null;
-            DetailPanelPoolObject.Collect();
+            _poolManager = null;
         }
     }
 }

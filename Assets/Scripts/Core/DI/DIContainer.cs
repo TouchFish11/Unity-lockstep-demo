@@ -21,7 +21,7 @@ namespace Core.DI
         private static readonly ConcurrentDictionary<Type, object> _instanceMap = new();
         // 新增统一的注入成员缓存
         private static readonly ConcurrentDictionary<Type, List<MemberInfo>> _injectMemberCache = new();
-        // 存储接口类型与其默认实现类型的映射（由 BindSingleton 填充）
+        // 存储接口类型与其默认实现类型的映射（由 BindType 填充）
         private static readonly ConcurrentDictionary<Type, Type> _interfaceToImplTypeMap = new();
         // 记录类型是否为单例（默认为瞬态）,key为实例类型
         private static readonly ConcurrentDictionary<Type, bool> _lifetimes = new();

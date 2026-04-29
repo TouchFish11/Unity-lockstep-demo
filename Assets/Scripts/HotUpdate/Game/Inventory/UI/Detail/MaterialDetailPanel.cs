@@ -1,8 +1,5 @@
 using Core.UI;
-using HotUpdate.Common.Config.Item;
-using HotUpdate.Common.Data.Inventory;
 using TMPro;
-using UnityEngine;
 
 namespace HotUpdate.Game.Inventory.UI.Detail
 {

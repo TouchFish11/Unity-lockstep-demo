@@ -14,23 +14,32 @@ namespace HotUpdate.Common.Data.Inventory
     {
         [JsonProperty] private List<ItemData> items = new();
 
-        /// <summary>
-        /// 在原有物品上添加数量
-        /// </summary>
-        /// <param name="itemId"></param>
-        /// <param name="deltaNum"></param>
-        public void AddItemData(int itemId, int deltaNum)
+        public bool TryGetData(int itemId, out ItemData itemData)
         {
-            var itemData = items.Find(item => item.itemId == itemId);
-            if (itemData == null)
+            var data = items.Find(item => item.itemId == itemId);
+            if (data != null)
             {
-                Logger.Log($"{nameof(ItemDataCollection)}: ItemData {itemId} id not found");
-                return;
+                itemData = data;
+                return true;
             }
-            
-            itemData.itemNum += deltaNum;
-        }
 
+            itemData = null;
+            return false;
+        }
+        
+        /// <summary>
+        /// 新增新物品
+        /// </summary>
+        /// <param name="itemData"></param>
+        public void AddData(ItemData itemData)
+        {
+            if (itemData == null)
+                return;
+            
+            items.Add(itemData);
+            Logger.Log($"{nameof(ItemDataCollection)}: Item(id = {itemData.itemId}, num = {itemData.itemNum}) added");
+        }
+        
         /// <summary>
         /// 在原有物品上删除物品
         /// </summary>
@@ -50,19 +59,6 @@ namespace HotUpdate.Common.Data.Inventory
             {
                 items.Remove(itemData);
             }
-        }
-        
-        /// <summary>
-        /// 新增新物品
-        /// </summary>
-        /// <param name="itemData"></param>
-        public void AddData(ItemData itemData)
-        {
-            if (itemData == null)
-                return;
-            
-            items.Add(itemData);
-            Logger.Log($"{nameof(ItemDataCollection)}: Item(id = {itemData.itemId}, num = {itemData.itemNum}) added");
         }
         
         public IEnumerable<ItemData> GetItems() => items;

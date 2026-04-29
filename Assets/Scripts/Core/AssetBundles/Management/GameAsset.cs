@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.DI;
+using Core.Exceptions;
 using UnityEngine;
-using Logger = Core.Log.Logger;
 using Object = UnityEngine.Object;
 
 namespace Core.AssetBundles.Management
@@ -17,10 +17,6 @@ namespace Core.AssetBundles.Management
     {
         // 资源管理器
         private static AssetManager _assetManager;
-        // Key到句柄的映射
-        //private static readonly Dictionary<string, AssetHandle> _keyToHandleMap = new();
-        // 句柄到Key的映射
-        //private static readonly Dictionary<AssetHandle, string> _handleToKeyMap = new();
         // 句柄ID到资源定位对象的映射
         private static readonly Dictionary<int, AssetLocation> _assetIdToLocationsMap = new();
         // 全局句柄ID
@@ -47,7 +43,6 @@ namespace Core.AssetBundles.Management
             {
                 // 回收ID
                 _idPool.Enqueue(newAssetHandle.HandleId);
-                Logger.Log($"[{nameof(GameAsset)}]: Recycle handle id {newAssetHandle.HandleId}");
             };
 
             return newAssetHandle.ConvertTo<T>();
@@ -74,7 +69,6 @@ namespace Core.AssetBundles.Management
                 {
                     // 回收句柄ID
                     _idPool.Enqueue(newAssetHandle.HandleId);
-                    Logger.Log($"[{nameof(GameAsset)}]: Recycle handle id {newAssetHandle.HandleId}");
                 };
             }
             return newAssetHandle.ConvertTo<T>();
@@ -181,6 +175,13 @@ namespace Core.AssetBundles.Management
             return newHandle.ConvertTo<T>();
         }
 
+        /// <summary>
+        /// 创建组合句柄
+        /// </summary>
+        /// <param name="combineKey"></param>
+        /// <param name="subHandles"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         private static AssetHandle<T> CreateCombineHandle<T>(string combineKey, IEnumerable<AssetHandle> subHandles) where T : class
         {
             // 创建新Handle，并且是组合句柄，该句柄对应的定位对象不直接指向资源，该句柄存储所有持有资源的子句柄
@@ -257,17 +258,14 @@ namespace Core.AssetBundles.Management
         /// <returns>若该句柄对应的资源是GameObject，则T返回该资源身上的组件；非GameObject直接返回该资源</returns>
         internal static T GetAsset<T>(int handleId, int version) where T : class
         {
-            // 无效的句柄访问，返回null
+            // 无效的句柄访问，抛出异常
             if (!IsValidate(handleId, version))
-            {
-                Logger.LogError($"[{nameof(GameAsset)}]: Asset handle(id = {handleId}, version = {version} ) not valid.");
-                return null;
-            }
+                throw ExceptionFactory.ThrowInvalidHandleAccessException(handleId, version, null);
             
             // 找不到定位对象，抛出异常，实际上不会找不到，因为都是复用的
             var location = _assetIdToLocationsMap.GetValueOrDefault(handleId);
             if(location == null)
-                throw new NullReferenceException($"[{nameof(GameAsset)}]: Location does not exist");
+                throw new NullReferenceException($"[{nameof(GameAsset)}]: Location does not exist, handle(id {handleId}, version {version})");
             
             // 若是图集图片资源的定位对象，则通过图集名和图片名访问对应的资源
             if (location.LocationType == AssetLocation.ELocationType.Sprite)
@@ -299,8 +297,7 @@ namespace Core.AssetBundles.Management
             {
                 reusedId = ++_nextId;
             }
-
-            Logger.Log($"[{nameof(GameAsset)}]: Generate new id: {reusedId}]");
+            
             return reusedId;
         }
 

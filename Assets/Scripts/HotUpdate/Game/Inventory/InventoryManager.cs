@@ -1,14 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.AssetBundles.Management;
 using Core.Pool;
-using HotUpdate.Base;
-using HotUpdate.Base.Items;
+using HotUpdate.Base.Icon;
+using HotUpdate.Base.Inventory;
 using HotUpdate.Common.Config.Item;
 using HotUpdate.Common.Data.Inventory;
 using HotUpdate.Game.Data;
-using UnityEngine;
 using Logger = Core.Log.Logger;
 
 namespace HotUpdate.Game.Inventory
@@ -20,34 +17,35 @@ namespace HotUpdate.Game.Inventory
     {
         private readonly GameDataManager _gameDataManager;
         private readonly IPoolManager _poolManager;
+        private readonly IIconProvider _iconProvider;
         
-        // 物品ID到物品对象列表的映射
-        private readonly Dictionary<int, List<Item>> _items = new();
-        
-        
-        // 实例ID映射运行时物品数据字典
-        private readonly Dictionary<int, ItemData> _instanceIdToDatas = new();
         // 物品ID到物品配置的映射
         private readonly Dictionary<int, ItemConfig> _itemConfigs = new();
-        // 物品DTO映射
-        private readonly Dictionary<int, ItemDTO> _instanceIdToDTOs =  new();
-        // 精灵图片资源句柄缓存，唯一资源key映射句柄列表
-        private readonly Dictionary<string, AssetHandle<Sprite>> _spriteToHandleMap = new();
-        private readonly Dictionary<string, Task<AssetHandle<Sprite>>> _spriteToHandleTaskMap = new();
+        // 正在显示的物品实例ID映射运行时物品数据字典
+        private readonly Dictionary<int, ItemData> _instanceIdToDataMap = new();
+        // 物品运行时ID到物品对象的映射，不同运行时对象有唯一ID
+        private readonly Dictionary<int, Item> _instanceIdToItemMap =  new();
         // 物品运行时实例ID，只表示当前显示的物品实例ID，不同显示物品可复用
         private static int _instanceId;
         // 实例ID池
         private static readonly Queue<int> _instanceIds = new();
+        // 当前已经加载过的图标Key
+        private readonly HashSet<string> _iconKeys = new();
         
-        public InventoryManager(IPoolManager poolManager, GameDataManager gameDataManager)
+        public InventoryManager(IPoolManager poolManager, GameDataManager gameDataManager, IIconProvider iconProvider)
         {
             _poolManager = poolManager;
             _gameDataManager = gameDataManager;
-            InitItemConfigs();
+            _iconProvider = iconProvider;
+            InitItems();
         }
 
-        public void InitItemConfigs()
+        /// <summary>
+        /// 初始化物品
+        /// </summary>
+        private void InitItems()
         {
+            // 缓存所有物品配置数据
             foreach (var itemConfig in _gameDataManager.ItemConfigCollection.itemConfigs)
             {
                 _itemConfigs.Add(itemConfig.itemId, itemConfig);
@@ -59,17 +57,12 @@ namespace HotUpdate.Game.Inventory
             return _itemConfigs.GetValueOrDefault(itemId);
         }
 
-        public ItemData GetData(ItemDTO itemDto)
+        public ItemData GetData(int instanceId)
         {
-            return _instanceIdToDatas.GetValueOrDefault(itemDto.instanceId);
+            return _instanceIdToDataMap.GetValueOrDefault(instanceId);
         }
-
-        /// <summary>
-        /// 添加物品数据
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="num"></param>
-        public void AddData(int id, int num)
+        
+        public void AddData(int id, int deltaNum)
         {
             // 获取该ID的物品配置
             if (!_itemConfigs.TryGetValue(id, out var itemConfig))
@@ -78,31 +71,71 @@ namespace HotUpdate.Game.Inventory
                 return;
             }
 
-            // 可堆叠
-            if (itemConfig.isPile)
+            // 不存在数据，或不可堆叠，新增数据
+            if (!_gameDataManager.ItemDataCollection.TryGetData(id, out var itemData))
             {
-                _gameDataManager.ItemDataCollection.AddItemData(id, num);
-            }
-            // 不可堆叠
-            else
-            {
-                var itemData = new ItemData
+                if (itemConfig.isPile)
                 {
-                    itemId = id,
-                    itemNum = num,
-                };
+                    itemData = new ItemData
+                    {
+                        itemId = id,
+                        itemNum = deltaNum,
+                    };
+                }
+                else
+                {
+                    itemData = new ItemData
+                    {
+                        itemId = id,
+                        itemNum = 1,
+                    };
+                }
+
                 _gameDataManager.ItemDataCollection.AddData(itemData);
             }
+            // 存在数据且可堆叠，添加数量即可
+            else
+            {
+                itemData.itemNum += deltaNum;
+            }
         }
-
-        /// <summary>
-        /// 删除物品数据
-        /// </summary>
-        /// <param name="itemId"></param>
-        /// <param name="num"></param>
+        
         public void DeleteData(int itemId, int num)
         {
             _gameDataManager.ItemDataCollection.DeleteData(itemId, num);
+        }
+        
+        public async Task<List<Item>> CreateItemsAsync(EItemType itemType)
+        {
+            UpdateItemDataByType(itemType);
+            // 创建所有物品对象
+            var dtoTasks = new List<Task<Item>>();
+            foreach(var (instanceId, data) in _instanceIdToDataMap)
+            {
+                var itemConfig = _itemConfigs.GetValueOrDefault(data.itemId);
+                var itemData = _instanceIdToDataMap.GetValueOrDefault(instanceId);
+                dtoTasks.Add(CreateItem(instanceId, itemConfig, itemData));
+            }
+
+            var itemDTOs = await Task.WhenAll(dtoTasks);
+            // 等待所有对象创建完成
+            return new List<Item>(itemDTOs);
+        }
+
+        public void Clear()
+        {
+            // 释放已经加载过的图片资源句柄
+            foreach (var iconKey in _iconKeys)
+            {
+                // 释放显示的图标的句柄
+                _iconProvider.Release(iconKey);
+            }
+            _iconKeys.Clear();
+            
+            // 清理配置数据缓存
+            _itemConfigs.Clear();
+            _instanceIdToDataMap.Clear();
+            _instanceIdToItemMap.Clear();
         }
         
         /// <summary>
@@ -112,19 +145,15 @@ namespace HotUpdate.Game.Inventory
         private void UpdateItemDataByType(EItemType itemType)
         {
             // 清空上次显示的数据缓存
-            _instanceIdToDatas.Clear();
-            // 回收ID
-            foreach (var instanceId in _instanceIdToDTOs.Keys) PushId(instanceId);
-            // 清空DTO缓存
-            _instanceIdToDTOs.Clear();
-            // 释放并清理显示的图标的所有句柄
-            foreach (var assetHandle in _spriteToHandleMap.Values)
+            _instanceIdToDataMap.Clear();
+            // 回收ID和回收Item
+            foreach (var (instanceId, item) in _instanceIdToItemMap)
             {
-                GameAsset.Release(assetHandle);
+                PushId(instanceId);
+                _poolManager.PushData(item);
             }
-            _spriteToHandleMap.Clear();
-            // 清理正在加载的任务缓存，正常来说这里不会有遗留
-            _spriteToHandleTaskMap.Clear();
+            // 清空缓存
+            _instanceIdToItemMap.Clear();
             
             foreach (var itemData in _gameDataManager.ItemDataCollection.GetItems())
             {
@@ -138,95 +167,40 @@ namespace HotUpdate.Game.Inventory
                 
                 if (itemConfig.itemType == itemType)
                 {
-                    _instanceIdToDatas.Add(GenerateInstanceId(), itemData);
+                    _instanceIdToDataMap.Add(GenerateInstanceId(), itemData);
                 }
             }
         }
-
-        public async Task<List<ItemDTO>> CreateItemDTOsAsync(EItemType itemType)
+        
+        /// <summary>
+        /// 创建物品对象
+        /// </summary>
+        /// <param name="instanceId"></param>
+        /// <param name="itemConfig"></param>
+        /// <param name="itemData"></param>
+        /// <returns></returns>
+        private async Task<Item> CreateItem(int instanceId, ItemConfig itemConfig, ItemData itemData)
         {
-            UpdateItemDataByType(itemType);
-            // 创建所有DTO对象
-            var dtoTasks = new List<Task<ItemDTO>>();
-            foreach(var (instanceId, data) in _instanceIdToDatas)
-            {
-                var itemConfig = _itemConfigs.GetValueOrDefault(data.itemId);
-                var itemData = _instanceIdToDatas.GetValueOrDefault(instanceId);
-                dtoTasks.Add(CreateItemDTO(instanceId, itemConfig, itemData));
-            }
-
-            var itemDTOs = await Task.WhenAll(dtoTasks);
-            // 等待所有DTO对象创建完成
-            return new List<ItemDTO>(itemDTOs);
+            // 对象池复用对象
+            var item = _poolManager.GetData<Item>();
+            // 设置实例ID
+            item.instanceId = instanceId;
+            // 引用物品配置
+            item.itemConfig = itemConfig;
+            // 根据物品类型决定显示什么数值
+            item.auxValue = ItemResolver.ResolveAux(itemData);
+            // 是否是新物品
+            item.isNew = itemData.isNew;
+            // 缓存对象
+            _instanceIdToItemMap.Add(instanceId, item);
+            // 加载该物品的图标
+            var sprite = await _iconProvider.LoadIconAsync(itemConfig.icon);
+            // 缓存加载成功物品图标Key
+            if (sprite)
+                _iconKeys.Add(itemConfig.icon);
+            return item;
         }
         
-        public async Task<ItemDTO> CreateItemDTO(int instanceId, ItemConfig itemConfig, ItemData itemData)
-        {
-            // 对象池复用DTO
-            var itemDto = _poolManager.GetData<ItemDTO>();
-            // 设置物品ID
-            itemDto.itemId = itemData.itemId;
-            // 设置物品类型
-            itemDto.itemType = itemConfig.itemType;
-            // 设置物品资源Key
-            itemDto.iconKey = itemConfig.icon;
-            // 设置物品品质类型
-            itemDto.qualityType = itemConfig.itemQuality;
-            // 根据物品类型决定显示数量还是等级
-            itemDto.itemNumOrLv = InventoryUtil.GetItemNumOrLevel(itemData, itemConfig.itemType);
-            // 设置背景
-            itemDto.qualityBk = InventoryUtil.GetBkQualityColor(itemConfig.itemQuality);
-            // 设置实例ID
-            itemDto.instanceId = instanceId;
-            // 缓存DTO
-            _instanceIdToDTOs.Add(instanceId, itemDto);
-            
-            // 查找句柄缓存
-            if (_spriteToHandleMap.TryGetValue(itemConfig.icon, out var assetHandle))
-            {
-                itemDto.icon = assetHandle.Asset;
-                return itemDto;
-            }
-            
-            // 正在加载，返回同一个加载任务
-            if (_spriteToHandleTaskMap.TryGetValue(itemConfig.icon, out var cacheTask))
-            {
-                var handle = await cacheTask;
-                itemDto.icon = handle.Asset;
-                return itemDto;
-            }
-
-            // 首次加载资源
-            var newTask = GameAsset.LoadAssetAsync<Sprite>(itemConfig.icon);
-            // 缓存正在加载的资源任务
-            if (!_spriteToHandleTaskMap.TryAdd(itemConfig.icon, newTask))
-            {
-                newTask = _spriteToHandleTaskMap[itemConfig.icon];
-            }
-
-            try
-            {
-                var newHandle = await newTask;
-                // 设置图标
-                itemDto.icon = newHandle.Asset;
-                // 缓存句柄
-                _spriteToHandleMap.Add(itemConfig.icon, newHandle);
-                return itemDto;
-            }
-            catch (Exception e)
-            {
-                Logger.LogError($"[{nameof(InventoryManager)}]: '{itemConfig.icon}' asset load fail, {e.Message}");
-                // 加载失败，使用默认资源替代
-                // itemDto.icon = iconSprite;
-                return itemDto;
-            }
-            finally
-            {
-                // 移除正在加载的任务
-                _spriteToHandleTaskMap.Remove(itemConfig.icon);
-            }
-        }
-
         /// <summary>
         /// 获取玩家所有物品数据
         /// </summary>
@@ -243,7 +217,7 @@ namespace HotUpdate.Game.Inventory
         }
 
         /// <summary>
-        /// 缓存实例ID
+        /// 回收实例ID
         /// </summary>
         /// <param name="instanceId"></param>
         private static void PushId(int instanceId)

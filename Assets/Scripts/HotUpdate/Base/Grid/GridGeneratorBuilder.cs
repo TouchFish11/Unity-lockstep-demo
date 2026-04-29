@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Core.DI;
-using Core.Log;
 using Core.Pool;
+using UnityEngine;
 using UnityEngine.UI;
+using Logger = Core.Log.Logger;
 using Object = UnityEngine.Object;
 
 namespace HotUpdate.Base.Grid
@@ -37,6 +38,12 @@ namespace HotUpdate.Base.Grid
         {
             _gridGenerator.gridLayout._sv = scrollRect;
             _gridGenerator.gridLayout._content = scrollRect.content;
+            return this;
+        }
+        
+        public GridGeneratorBuilder<T, K> SetOriginOffset(float offsetX, float offsetY)
+        {
+            _gridGenerator.gridLayout.originOffset = new Vector2(offsetX, offsetY);
             return this;
         }
 

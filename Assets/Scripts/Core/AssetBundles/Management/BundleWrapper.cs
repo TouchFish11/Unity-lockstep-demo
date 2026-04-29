@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.DI;
-using Core.Tasks;
+using Core.Exceptions;
 using Core.Tasks.Extensions;
 using Core.Utility;
 using UnityEngine;
@@ -22,8 +22,8 @@ namespace Core.AssetBundles.Management
         private readonly IAssetBundleManager _assetBundleManager;
         // AB包异步加载任务(内部)
         private Task<bool> _assetBundleCreateRequestInternalTask;
-        // AB包卸载任务句柄
-        private TaskHandle _assetBundleUnloadTaskHandle;
+        // AB包卸载任务(内部)
+        private Task _assetBundleUnloadTask;
         // 资源物理文件到加载任务的映射缓存
         private readonly Dictionary<string, Task<AssetWrapper>> _assetLoadingTasks =  new();
         // 批量加载资源任务缓存
@@ -154,7 +154,7 @@ namespace Core.AssetBundles.Management
                 IsActive = true;
                 return Task.FromResult(true);
             }
-
+            
             // 正在加载相同的AB包，直接返回任务
             if (_assetBundleCreateRequestInternalTask != null)
                 return _assetBundleCreateRequestInternalTask;
@@ -164,7 +164,12 @@ namespace Core.AssetBundles.Management
             return _assetBundleCreateRequestInternalTask;
         }
 
-        /// 异步加载AB包（内部）
+        /// <summary>
+        ///  异步加载AB包（内部）
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="AssetBundleLoadException"></exception>
         private async Task<bool> LoadFromFileAsyncInternal(CancellationToken token = default)
         {
             // 异步加载AB包
@@ -173,13 +178,12 @@ namespace Core.AssetBundles.Management
             {
                 AssetBundle = await assetBundleCreateRequestTaskHandle.Task;
                 IsActive = true;
-                Logger.Log($"[BundleWrapper]: '{BundleName}' assetBundle is load");
+                Logger.Log($"[{nameof(BundleWrapper)}]: '{BundleName}' assetBundle is load");
                 return true;
             }
-            catch (Exception e)
+            catch (Exception e) when(e is not OperationCanceledException)
             {
-                Logger.LogError($"[BundleWrapper]: '{BundleName}' assetBundle Load fail, {e.Message}");
-                return false;
+                throw ExceptionFactory.ThrowAssetBundleLoadException(BundleName, e);
             }
             finally
             {
@@ -214,7 +218,15 @@ namespace Core.AssetBundles.Management
             return loadingTask;
         }
 
+        /// <summary>
         /// 异步加载资源（内部）
+        /// </summary>
+        /// <param name="assetKey"></param>
+        /// <param name="assetName"></param>
+        /// <param name="token"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="AssetLoadException"></exception>
         private async Task<AssetWrapper> LoadAssetAsyncInternal<T>(string assetKey, string assetName, CancellationToken token = default) where T : class
         {
             var taskHandle = AssetBundle.LoadAssetAsync<T>(assetName).ToTask<T>(token);
@@ -224,10 +236,10 @@ namespace Core.AssetBundles.Management
                 Retain();
                 return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, assetKey, this });
             }
-            catch (Exception e)
+            catch (Exception e) when(e is not OperationCanceledException)
             {
-                Logger.LogError($"[BundleWrapper]: '{BundleName}/{assetKey}' asset Load fail, {e.Message}");
-                return DIContainer.Create<AssetWrapper>(parameterValues: new object[] { null, assetKey, this });
+                // 转换异常类型
+                throw ExceptionFactory.ThrowAssetLoadException(assetName, e);
             }
             finally
             {
@@ -259,7 +271,13 @@ namespace Core.AssetBundles.Management
             return task;
         }
 
+        /// <summary>
         /// 异步加载所有资源（内部）
+        /// </summary>
+        /// <param name="token"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="AssetsLoadException"></exception>
         private async Task<AssetWrapper[]> LoadAllAssetAsyncInternal<T>(CancellationToken token = default) where T : Object
         {
             var handle = AssetBundle.LoadAllAssetsAsync<T>().ToTasks<T>(token);
@@ -269,16 +287,16 @@ namespace Core.AssetBundles.Management
                 var assetWrappers = new List<AssetWrapper>(readOnlyAssets.Count);
                 foreach (var asset in readOnlyAssets)
                 {
-                    assetWrappers.Add(DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, asset.name, this }));
+                    assetWrappers.Add(
+                        DIContainer.Create<AssetWrapper>(parameterValues: new object[] { asset, asset.name, this }));
                     Retain();
                 }
 
                 return assetWrappers.ToArray();
             }
-            catch (Exception e)
+            catch (Exception e) when(e is not OperationCanceledException)
             {
-                Logger.LogError($"[BundleWrapper]: '{BundleName}' assetBundle Load all asset fail, {e.Message}");
-                return Array.Empty<AssetWrapper>();
+                throw ExceptionFactory.ThrowAssetsLoadException(BundleName, typeof(T), e);
             }
             finally
             {
@@ -289,7 +307,7 @@ namespace Core.AssetBundles.Management
         }
         
         /// <summary>
-        /// 增加引用计数
+        /// 增加包引用计数
         /// </summary>
         public void Retain()
         {
@@ -324,49 +342,41 @@ namespace Core.AssetBundles.Management
         /// 尝试异步卸载AB包
         /// </summary>
         /// <param name="unloadAllLoadedObjects"></param>
-        public async Task TryUnloadAsync(bool unloadAllLoadedObjects)
+        public Task TryUnloadAsync(bool unloadAllLoadedObjects)
         {
             // 卸载完成返回
             if (!AssetBundle)
             {
-                return;
+                return Task.CompletedTask;
             }
+
+            if (_assetBundleUnloadTask != null)
+                return _assetBundleUnloadTask;
             
-            // 正在异步卸载，等待卸载
-            if (_assetBundleUnloadTaskHandle.IsValid)
+            // 异步卸载AB包
+            _assetBundleUnloadTask = TryUnloadAsyncInternal(unloadAllLoadedObjects);
+            return _assetBundleUnloadTask;
+        }
+
+        private async Task TryUnloadAsyncInternal(bool unloadAllLoadedObjects)
+        {
+            // 异步卸载AB包
+            var taskHandle = AssetBundle.UnloadAsync(unloadAllLoadedObjects).ToTask();
+            try
             {
-                try
-                {
-                    await _assetBundleUnloadTaskHandle.Task;
-                }
-                catch (Exception e)
-                {
-                    Logger.Log($"[BundleWrapper]: '{BundleName}' is unload fail, final refCount is {RefCount}, {e.Message}");
-                }
-                finally
-                {
-                    _assetBundleUnloadTaskHandle.Dispose();
-                }
+                await taskHandle.Task;
+                // 卸载完成后置空
+                AssetBundle = null;
+                Logger.Log($"[BundleWrapper]: '{BundleName}' is unload, final refCount is {RefCount}");
             }
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    // 异步卸载AB包
-                    _assetBundleUnloadTaskHandle = AssetBundle.UnloadAsync(unloadAllLoadedObjects).ToTask();
-                    await _assetBundleUnloadTaskHandle.Task;
-                    // 卸载完成后置空
-                    AssetBundle = null;
-                    Logger.Log($"[BundleWrapper]: '{BundleName}' is unload, final refCount is {RefCount}");
-                }
-                catch (Exception e)
-                {
-                    Logger.Log($"[BundleWrapper]: '{BundleName}' is unload fail, final refCount is {RefCount}, {e.Message}");
-                }
-                finally
-                {
-                    _assetBundleUnloadTaskHandle.Dispose();
-                }
+                throw ExceptionFactory.ThrowAssetBundleUnloadException(BundleName, RefCount, e);
+            }
+            finally
+            {
+                taskHandle.Dispose();
+                _assetBundleUnloadTask = null;
             }
         }
     }

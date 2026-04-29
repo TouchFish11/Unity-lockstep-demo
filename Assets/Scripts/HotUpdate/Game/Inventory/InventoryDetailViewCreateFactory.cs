@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace HotUpdate.Game.Inventory
 {
+    /// <summary>
+    /// 背包详细界面创建工厂
+    /// </summary>
     public class InventoryDetailViewCreateFactory : IPoolData
     {
         [Inject] private ObjectSpawner _objectSpawner;
@@ -17,12 +20,11 @@ namespace HotUpdate.Game.Inventory
             switch (itemType)
             {
                 case EItemType.Material:
-                    var poolObject = await _objectSpawner.SpawnAsync<MaterialDetailPanel>(AssetKeys.MaterialDetailPanel, detailArea);
-                    poolObject.Obj.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                    return poolObject;
+                    var MaterialObject = await _objectSpawner.SpawnAsync<MaterialDetailPanel>(AssetKeys.MaterialDetailPanel, detailArea, Vector2.zero);
+                    return MaterialObject;
                 case EItemType.Weapon:
-                    await _objectSpawner.SpawnAsync<MaterialDetailPanel>("Weapon", detailArea);
-                    return default;
+                    var WeaponObject = await _objectSpawner.SpawnAsync<WeaponDetailPanel>(AssetKeys.WeaponDetailPanel, detailArea, Vector2.zero);
+                    return WeaponObject;
                 case EItemType.HolyRelic:
                     await _objectSpawner.SpawnAsync<MaterialDetailPanel>("HolyRelic", detailArea);
                     return default;

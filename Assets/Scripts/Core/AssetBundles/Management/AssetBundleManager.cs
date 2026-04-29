@@ -128,7 +128,12 @@ namespace Core.AssetBundles.Management
             }
         }
         
+        /// <summary>
         /// 异步加载AB包（内部）
+        /// </summary>
+        /// <param name="abName"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
         private async Task<BundleWrapper> LoadBundleInternalAsync(string abName, CancellationToken token)
         {
             await LoadDependenciesAndTargetAsync(abName, token);
@@ -166,18 +171,25 @@ namespace Core.AssetBundles.Management
                     _nameToWrapperMap[depName].Retain();
                 }
             }
-            
-            // 加载目标包
-            var isSuccess = await _nameToWrapperMap[abName].LoadFromFileAsync(token);
-            // 加载目标包失败
-            if (!isSuccess)
+
+            var isSuccess = false;
+            try
             {
-                // 只回滚加载成功的依赖（它们的引用计数被增加了）
-                foreach (var (depName, task) in dependenciesTasks)
+                // 加载目标包
+                isSuccess = await _nameToWrapperMap[abName].LoadFromFileAsync(token);
+            }
+            finally
+            {
+                // 加载目标包失败
+                if (!isSuccess)
                 {
-                    if (task.Result)
+                    // 只回滚加载成功的依赖（它们的引用计数被增加了）
+                    foreach (var (depName, task) in dependenciesTasks)
                     {
-                        _nameToWrapperMap[depName].Release();
+                        if (task.Result)
+                        {
+                            _nameToWrapperMap[depName].Release();
+                        }
                     }
                 }
             }

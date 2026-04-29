@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Core.DI;
 using Core.Mono;
 using Core.Tasks;
-using Core.Tasks.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 

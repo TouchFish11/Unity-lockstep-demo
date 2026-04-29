@@ -13,14 +13,14 @@ namespace HotUpdate.Game.Inventory
         /// </summary>
         /// <param name="i">正数从低到高(升序)，负数从高到低(降序)，0则不处理</param>
         /// <returns></returns>
-        public static Comparison<ItemDTO> DefaultIDSorter(int i)
+        public static Comparison<Item> DefaultIDSorter(int i)
         {
             // 默认降序
             return i switch
             {
                 0 => null,
-                > 0 => (x, y) => x.itemId.CompareTo(y.itemId),    // 升序
-                _ => (x, y) => y.itemId.CompareTo(x.itemId)       // 降序
+                > 0 => (x, y) => x.itemConfig.itemId.CompareTo(y.itemConfig.itemId),    // 升序
+                _ => (x, y) => y.itemConfig.itemId.CompareTo(x.itemConfig.itemId)       // 降序
             };
         }
 
@@ -29,13 +29,13 @@ namespace HotUpdate.Game.Inventory
         /// </summary>
         /// <param name="i">正数从低到高(升序)，负数从高到低(降序)，0则不处理</param>
         /// <returns></returns>
-        public static Comparison<ItemDTO> QualitySorter(int i)
+        public static Comparison<Item> QualitySorter(int i)
         {
             return i switch
             {
                 0 => null,
-                > 0 => (x, y) => x.qualityType.CompareTo(y.qualityType),    // 升序
-                _ => (x, y) => y.qualityType.CompareTo(x.qualityType)       // 降序
+                > 0 => (x, y) => x.itemConfig.itemQuality.CompareTo(y.itemConfig.itemQuality),    // 升序
+                _ => (x, y) => y.itemConfig.itemQuality.CompareTo(x.itemConfig.itemQuality)       // 降序
             };
         }
     }

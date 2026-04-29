@@ -35,9 +35,9 @@ MonoBehaviour:
   - assetBundleName: gameconfig
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\GameConfig\ItemConfigs.json
-      size: 1245
+      size: 1663
       name: ItemConfigs.json
-      hash: 5dd43223b34c00fea4a4cc1d7bc75a8fa7996ca49a387316609af5263e8cafd6
+      hash: 8bf93e37025021a844489356257d105302d62bd19223537cf1c3062e363757f6
       assetType: 0
   - assetBundleName: hotupdate
     assetInfos:
@@ -112,9 +112,9 @@ MonoBehaviour:
       hash: 39e2e7c79f0e333d3795ae1a1c93154d80bde4f3ef46a93f8ec479f1576474b8
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryMainTestScene.unity
-      size: 24793
+      size: 25161
       name: InventoryMainTestScene.unity
-      hash: e9bc1676e0af7cae3ff3489007a22e9056e42bbf4efc5bfe43d6192e5363b637
+      hash: cdb4fe265d5eae4b1d806c6ef9d06d75e33f2b308a4031a24e6d98672602a058
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryTestScene.unity
       size: 8115
@@ -141,9 +141,9 @@ MonoBehaviour:
   - assetBundleName: tmpasset
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH_SDF.asset
-      size: 4269275
+      size: 4277784
       name: MSYH_SDF.asset
-      hash: c36fb51fb724d725fb3ff219eb1fee452bb640824f553dc9585b74b888839667
+      hash: 34ecb39bff60bb56e67f75e99d04638a37f0732ada650438f7700ccd55a14ed9
       assetType: 0
   - assetBundleName: ui
     assetInfos:
@@ -168,9 +168,9 @@ MonoBehaviour:
       hash: dcbba33c7af58d79f873fb6353db390d029397cd419dc2a9d3b8a2d7763f5e79
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemCell.prefab
-      size: 15689
+      size: 17947
       name: ItemCell.prefab
-      hash: 61a3d41a172d8937703e6efb19a823499d5537466d4c59c0fbd7606bfe4e89f0
+      hash: 99b5e8d4248b3c0a9f4d7579cdd1dfc621c6c6a6a917a3773cffc6bfea3cbff6
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemDetailPanelBase.prefab
       size: 3225
@@ -178,14 +178,19 @@ MonoBehaviour:
       hash: 7f1f10c39c319af4c6734a8873d0f70a16a99b70df9eb46fba50c702f8baf3b6
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemTypeOpt.prefab
-      size: 6912
+      size: 7745
       name: ItemTypeOpt.prefab
-      hash: 2a71a91e5dcbaae2900bf1b1590b89373722a031bdd6d8d3ba2ad370a66a7d33
+      hash: d8fb489315d00d10db01dc35c0c2d9d11fa28d7581e46d23c7a0003183d11b26
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\DetailPanel\MaterialDetailPanel.prefab
       size: 13500
       name: MaterialDetailPanel.prefab
       hash: 0104cb8d12e849a25964184dee5e5501db40f2b85995f1e413f4421ef6fd0bca
+      assetType: 0
+    - assetPath: Assets\Editor\ArtRes\UI\Inventory\DetailPanel\WeaponDetailPanel.prefab
+      size: 21821
+      name: WeaponDetailPanel.prefab
+      hash: 278b3a813fc47c27f471da3783a88c195bff1613f70150c369d932725369ef30
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Main\Main_Chat_Panel.prefab
       size: 72448
