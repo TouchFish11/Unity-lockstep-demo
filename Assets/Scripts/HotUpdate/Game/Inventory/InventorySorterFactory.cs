@@ -1,5 +1,5 @@
 using System;
-using HotUpdate.Common.Config.Item;
+using HotUpdate.Common.Items;
 
 namespace HotUpdate.Game.Inventory
 {

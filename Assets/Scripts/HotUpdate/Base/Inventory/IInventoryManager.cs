@@ -1,25 +1,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using HotUpdate.Common.Config.Item;
-using HotUpdate.Common.Data.Inventory;
+using HotUpdate.Common.Items;
+using HotUpdate.Common.Items.Data;
 
 namespace HotUpdate.Base.Inventory
 {
     public interface IInventoryManager
     {
-        /// <summary>
-        /// 获取所有物品对象
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<ItemData> GetItems();
-
-        /// <summary>
-        /// 添加物品数据
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="num"></param>
-        void AddData(int id, int num);
-
         /// <summary>
         /// 异步创建物品对象
         /// </summary>
@@ -30,20 +17,19 @@ namespace HotUpdate.Base.Inventory
         /// <summary>
         /// 通过物品实例ID获取物品数据
         /// </summary>
-        /// <param name="instanceId"></param>
+        /// <param name="item">物品对象</param>
         /// <returns></returns>
-        ItemData GetData(int instanceId);
-
-        /// <summary>
-        /// 删除物品数据
-        /// </summary>
-        /// <param name="itemId"></param>
-        /// <param name="num"></param>
-        void DeleteData(int itemId, int num);
+        ItemData GetData(Item item);
 
         /// <summary>
         /// 清理当前界面管理的数据
         /// </summary>
         void Clear();
+
+        /// <summary>
+        /// 更新格子数据的New状态
+        /// </summary>
+        /// <param name="item">物品对象</param>
+        void UpdateGridNewState(Item item);
     }
 }

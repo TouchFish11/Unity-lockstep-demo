@@ -1,6 +1,7 @@
-using HotUpdate.Common.Data.Inventory;
+using System;
+using HotUpdate.Common.Items.Data;
 
-namespace HotUpdate.Game.Inventory
+namespace HotUpdate.Base.Items
 {
     /// <summary>
     /// 物品类型解析器
@@ -12,12 +13,16 @@ namespace HotUpdate.Game.Inventory
         /// </summary>
         /// <param name="itemData"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static int ResolveAux(ItemData itemData)
         {
             return itemData switch
             {
+                MaterialData materialData => materialData.itemNum,
+                WeaponData weaponData => weaponData.level,
                 HolyRelicData holyRelicData => holyRelicData.level,
-                _ => itemData.itemNum
+                preciousData preciousData => preciousData.itemNum,
+                _ => throw new ArgumentOutOfRangeException(nameof(itemData), itemData, null)
             };
         }
     }

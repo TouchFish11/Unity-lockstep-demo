@@ -5,7 +5,7 @@ using Core.DI;
 using Core.UI.MVC;
 using HotUpdate.Base.Grid;
 using HotUpdate.Base.Inventory;
-using HotUpdate.Common.Config.Item;
+using HotUpdate.Common.Items;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -40,6 +40,7 @@ namespace HotUpdate.Game.Inventory.UI
             model.ClearOpt();
             _objectSpawner.Dispose();
             _objectSpawner = null;
+            _inventoryManager.Clear();
             return Task.CompletedTask;
         }
 
@@ -94,7 +95,7 @@ namespace HotUpdate.Game.Inventory.UI
             // 排序物品数据DTO，默认按照品质类型排序    
             items.Sort(model.sortComparison);
             // 初始化生成器
-            model.GridGenerator.SetClick(UpdateDetail);
+            model.GridGenerator.AddClickListener(UpdateDetail, UpdateGridState);
             model.GridGenerator.SetSelectIndex(0);
             model.GridGenerator.SetDatas(items);
             // 手动更新一次
@@ -115,7 +116,7 @@ namespace HotUpdate.Game.Inventory.UI
             try
             {
                 var itemConfig = item.itemConfig;
-                var itemData = _inventoryManager.GetData(item.instanceId);
+                var itemData = _inventoryManager.GetData(item);
 
                 if (!model.DetailPanelPoolObject.Obj || model.CurrentItemType != itemConfig.itemType)
                 {
@@ -136,6 +137,16 @@ namespace HotUpdate.Game.Inventory.UI
             }
         }
 
+        /// <summary>
+        /// 更新格子状态
+        /// </summary>
+        /// <param name="item"></param>
+        private void UpdateGridState(Item item)
+        {
+            // 是否点击了格子，移除new标识
+            _inventoryManager.UpdateGridNewState(item);
+        }
+        
         /// <summary>
         /// 切换排序
         /// </summary>

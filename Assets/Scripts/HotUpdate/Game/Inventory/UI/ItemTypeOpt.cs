@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Core.UI;
-using HotUpdate.Common.Config.Item;
+using HotUpdate.Common.Items;
 using UnityEngine;
 using UnityEngine.UI;
 using Logger = Core.Log.Logger;

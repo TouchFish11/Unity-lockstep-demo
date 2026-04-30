@@ -1,6 +1,6 @@
 using Core.UI;
-using HotUpdate.Common.Config.Item;
-using HotUpdate.Common.Data.Inventory;
+using HotUpdate.Common.Items.Config;
+using HotUpdate.Common.Items.Data;
 using UnityEngine;
 
 namespace HotUpdate.Game.Inventory.UI

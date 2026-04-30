@@ -1,12 +1,12 @@
 using System;
-using Core.Log;
 using Core.UI;
 using Core.Utility;
 using HotUpdate.Base.Grid;
 using HotUpdate.Base.Icon;
 using HotUpdate.Base.Items;
-using HotUpdate.Common.Config.Item;
+using HotUpdate.Common.Items;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -22,9 +22,10 @@ namespace HotUpdate.Game.Inventory.UI
         [InjectUI] private TextMeshProUGUI txtNumOrLv;
         [InjectUI] private Button btnCell;
         [InjectUI] private Image imgHighlight;
-        
         // 物品对象
         private Item _item;
+        
+        [InjectUI(1)] private RectTransform New { get; set; }
         
         /// <summary>
         /// 物品点击事件
@@ -36,6 +37,7 @@ namespace HotUpdate.Game.Inventory.UI
             base.Awake();
             // 默认隐藏
             imgHighlight.gameObject.SetActive(false);
+            New.gameObject.SetActive(false);
             // 为按钮添加鼠标进入/离开事件
             UIUtility.AddCustomEventListener(btnCell, EventTriggerType.PointerEnter, OnPointerEnter);
             UIUtility.AddCustomEventListener(btnCell, EventTriggerType.PointerExit, OnPointerExit);
@@ -46,6 +48,13 @@ namespace HotUpdate.Game.Inventory.UI
         /// </summary>
         public void TriggerClick()
         {
+            if (_item.isNew)
+            {
+                // 隐藏New标志
+                New.gameObject.SetActive(false);
+                _item.isNew = false;
+            }
+
             OnClick?.Invoke(_item);
         }
 
@@ -60,6 +69,8 @@ namespace HotUpdate.Game.Inventory.UI
             imgIcon.sprite = iconProvider.TryGetIcon(item.itemConfig.icon, out var icon) ? icon : null;
             // 根据物品的类型返回不同的数值格式化内容
             txtNumOrLv.text = ItemFormatter.GetItemNumOrLevel(item);
+            // 是否是新物品
+            New.gameObject.SetActive(item.isNew);
             _item = item;
         }
 

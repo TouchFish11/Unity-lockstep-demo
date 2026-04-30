@@ -4,14 +4,14 @@ using Core.DI;
 using Core.Log;
 using Core.UI;
 using Core.UI.MVC;
-using HotUpdate.Base.Inventory;
+using HotUpdate.Game.Data;
 using HotUpdate.Game.Inventory.UI;
 
 namespace HotUpdate.Game.Main.UI
 {
     public class MainController : UIController<MainPanel, MainModel>
     {
-        [Inject] private IInventoryManager _inventoryManager;
+        [Inject] private GameDataManager _dataManager;
         
         protected override Task OnActive()
         {
@@ -39,10 +39,11 @@ namespace HotUpdate.Game.Main.UI
                 else if (btnName == nameof(view.btnAddItem))
                 {
                     // Test
-                    _inventoryManager.AddData(1, 1);
-                    _inventoryManager.AddData(2, 2);
-                    _inventoryManager.AddData(3, 3);
-                    _inventoryManager.AddData(4, 1);
+                    _dataManager.ItemDataProvider.AddData(10001, 1);
+                    _dataManager.ItemDataProvider.AddData(10002, 2);
+                    _dataManager.ItemDataProvider.AddData(10003, 3);
+                    _dataManager.ItemDataProvider.AddData(20001, 1);
+                    _dataManager.ItemDataProvider.AddData(20002, 1);
                 }
             }
             catch (Exception e)

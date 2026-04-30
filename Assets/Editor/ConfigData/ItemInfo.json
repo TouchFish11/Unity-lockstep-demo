@@ -1,0 +1,37 @@
+{
+    "configName": "ItemInfo",
+    "columns": [
+        {
+            "fieldType": 1,
+            "fieldName": "Id",
+            "fieldDescription": "ID",
+            "key": true
+        },
+        {
+            "fieldType": 3,
+            "fieldName": "name",
+            "fieldDescription": "名称",
+            "key": false
+        },
+        {
+            "fieldType": 3,
+            "fieldName": "tip",
+            "fieldDescription": "描述",
+            "key": false
+        }
+    ],
+    "rows": [
+        {
+            "keys": [
+                "Id",
+                "name",
+                "tip"
+            ],
+            "values": [
+                "1001",
+                "物品",
+                "asdasdasdasd"
+            ]
+        }
+    ]
+}

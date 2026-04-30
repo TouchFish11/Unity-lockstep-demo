@@ -1,5 +1,5 @@
 using System;
-using HotUpdate.Common.Config.Item;
+using HotUpdate.Common.Items;
 using UnityEngine;
 
 namespace HotUpdate.Base.Items

@@ -35,9 +35,9 @@ MonoBehaviour:
   - assetBundleName: gameconfig
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\GameConfig\ItemConfigs.json
-      size: 1663
+      size: 2224
       name: ItemConfigs.json
-      hash: 8bf93e37025021a844489356257d105302d62bd19223537cf1c3062e363757f6
+      hash: b9a2b71349f1825c01bb29ce9eee9bdca190bd687648c0b1cfb6074834de6f8c
       assetType: 0
   - assetBundleName: hotupdate
     assetInfos:
@@ -114,7 +114,7 @@ MonoBehaviour:
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryMainTestScene.unity
       size: 25161
       name: InventoryMainTestScene.unity
-      hash: cdb4fe265d5eae4b1d806c6ef9d06d75e33f2b308a4031a24e6d98672602a058
+      hash: c783b7ff5b29c7eede52fc45746d3b8c19247780cd48164a7e087da4db9936df
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryTestScene.unity
       size: 8115
@@ -168,9 +168,9 @@ MonoBehaviour:
       hash: dcbba33c7af58d79f873fb6353db390d029397cd419dc2a9d3b8a2d7763f5e79
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemCell.prefab
-      size: 17947
+      size: 25182
       name: ItemCell.prefab
-      hash: 99b5e8d4248b3c0a9f4d7579cdd1dfc621c6c6a6a917a3773cffc6bfea3cbff6
+      hash: c62a56c1a3f9ab742d928c5c307d0bbe0fc3facfa66eeb9488517d035c0e69b0
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemDetailPanelBase.prefab
       size: 3225

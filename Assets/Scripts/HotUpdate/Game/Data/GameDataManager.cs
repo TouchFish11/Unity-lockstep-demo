@@ -1,12 +1,7 @@
 using System.Threading.Tasks;
-using Core.AssetBundles.Management;
+using Core.DI;
 using Core.Mono;
-using Core.Serialize.Json;
-using Core.Utility;
-using HotUpdate.Common.Config.Item;
-using HotUpdate.Common.Data.Inventory;
-using HotUpdate.Common.Utility;
-using UnityEngine;
+using HotUpdate.Base.Items;
 
 namespace HotUpdate.Game.Data
 {
@@ -17,41 +12,39 @@ namespace HotUpdate.Game.Data
     {
         public int QuitPriority => 2;
         
-        private readonly IJsonManager _jsonManager;
+        public ItemDataProvider ItemDataProvider { get; }
         
-        public ItemDataCollection ItemDataCollection { get; private set; }
-        
-        public ItemConfigCollection ItemConfigCollection { get; private set; }
-
-        public GameDataManager(IMonoAdapter monoAdapter, IJsonManager jsonManager)
+        public GameDataManager(IMonoAdapter monoAdapter)
         {
             monoAdapter.AddApplicationExitNotify(this);
-            _jsonManager = jsonManager;
-        }
-
-        public async Task LoadConfigAsync()
-        {
-            var handle = await GameAsset.LoadAssetAsync<TextAsset>(AssetKeys.ItemConfigs);
-            ItemConfigCollection = _jsonManager.FromJson<ItemConfigCollection>(handle.Asset.text, settings: NewtonsoftJsonUtility.SerializerSettings);
-            GameAsset.Release(handle);
+            ItemDataProvider = DIContainer.Create<ItemDataProvider>();
         }
         
         /// <summary>
-        /// 加载玩家数据和配置数据
+        /// 加载所有配置
+        /// </summary>
+        public async Task LoadConfigAsync()
+        {
+            await ItemDataProvider.LoadConfigAsync();
+            // ...
+        }
+        
+        /// <summary>
+        /// 加载所有玩家数据
         /// </summary>
         public async Task LoadDataAsync()
         {
-            ItemDataCollection = await _jsonManager.FromJsonAsync<ItemDataCollection>(PathUtility.GetUserDataLocalSavePath(GameFileUtil.PlayerItemDataFileName), settings: NewtonsoftJsonUtility.SerializerSettings);
+            await ItemDataProvider.LoadDataAsync();
         }
 
-        public void SaveData()
+        public void SaveDatas()
         {
-            _jsonManager.SaveToJson(ItemDataCollection, PathUtility.GetUserDataLocalSavePath(GameFileUtil.PlayerItemDataFileName), settings: NewtonsoftJsonUtility.SerializerSettings);
+            ItemDataProvider.SaveData();
         }
         
         public void OnAppQuit()
         {
-            SaveData();
+            SaveDatas();
         }
     }
 }

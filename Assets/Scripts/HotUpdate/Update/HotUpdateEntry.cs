@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.Input.ActionAsset;
-using Core.Scene;
 using Core.UI;
 using Core.Utility;
-using HotUpdate.Base;
 using HotUpdate.Base.Icon;
 using HotUpdate.Base.Inventory;
 using HotUpdate.Game.Data;
@@ -135,7 +133,10 @@ namespace HotUpdate.Update
         private static async Task LoadPlayerDataAsync()
         {
             var gameDataManager = DIContainer.Create<GameDataManager>(true);
-            await Task.WhenAll(gameDataManager.LoadConfigAsync(),  gameDataManager.LoadDataAsync());
+            // 先加载配置
+            await gameDataManager.LoadConfigAsync();
+            // 再加载数据，数据依赖配置
+            await gameDataManager.LoadDataAsync();
             Logger.Log($"{nameof(HotUpdateEntry)}:Initialization of the GameData is complete");
         }
 

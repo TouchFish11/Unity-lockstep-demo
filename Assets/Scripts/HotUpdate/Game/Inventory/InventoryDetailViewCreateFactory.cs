@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.Pool;
-using HotUpdate.Common.Config.Item;
+using HotUpdate.Common.Items;
 using HotUpdate.Game.Inventory.UI.Detail;
 using UnityEngine;
 
@@ -26,10 +26,10 @@ namespace HotUpdate.Game.Inventory
                     var WeaponObject = await _objectSpawner.SpawnAsync<WeaponDetailPanel>(AssetKeys.WeaponDetailPanel, detailArea, Vector2.zero);
                     return WeaponObject;
                 case EItemType.HolyRelic:
-                    await _objectSpawner.SpawnAsync<MaterialDetailPanel>("HolyRelic", detailArea);
+                    // TODO：await _objectSpawner.SpawnAsync<MaterialDetailPanel>("HolyRelic", detailArea);
                     return default;
                 case EItemType.precious:
-                    await _objectSpawner.SpawnAsync<MaterialDetailPanel>("precious", detailArea);
+                    // TODO：await _objectSpawner.SpawnAsync<MaterialDetailPanel>("precious", detailArea);
                     return default;
                 default:
                     return default;

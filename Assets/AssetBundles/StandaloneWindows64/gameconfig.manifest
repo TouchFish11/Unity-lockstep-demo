@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 1119287170
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 71211313a8d3305b0888a80bf4495da6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 71211313a8d3305b0888a80bf4495da6
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Editor/ArtRes/GameConfig/ItemConfigs.json
+Dependencies: []

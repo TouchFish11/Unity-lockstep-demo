@@ -34,8 +34,8 @@ namespace HotUpdate.Base.Grid
         private int oldMinIndex = -1;
         private int oldMaxIndex = -1;
         
-        // 事件注册
-        private Action<T> _callback;
+        // 点击事件注册
+        private event Action<T> _clickCallback;
         // 当前选中的数据索引，-1 表示无选中
         private int _selectedIndex = -1;
         /// 每帧创建格子数
@@ -126,14 +126,19 @@ namespace HotUpdate.Base.Grid
              */ 
             CalcContentSize();
         }
-        
+
         /// <summary>
-        /// 设置点击事件，让格子监听该事件
+        /// 添加点击事件，让格子监听该事件
         /// </summary>
-        /// <param name="callback"></param>
-        public void SetClick(Action<T> callback)
+        /// <param name="callbacks"></param>
+        public void AddClickListener(params Action<T>[] callbacks)
         {
-            _callback = callback;
+            // 每次添加事件前，都要先清空上次的事件，否则会重复添加多个事件
+            _clickCallback = null;
+            foreach (var callback in callbacks)
+            {
+                _clickCallback += callback;
+            }
         }
         
         /// <summary>
@@ -185,7 +190,7 @@ namespace HotUpdate.Base.Grid
                     // 有效：将实际对象替换占位
                     _nowShowGridDic[index] = poolObj;
                     // 注册交互事件
-                    poolObj.Obj.OnClick += _callback;
+                    poolObj.Obj.OnClick += _clickCallback;
                     // 判断是否需要默认选中该索引的格子
                     if(_selectedIndex != -1 &&  _selectedIndex == index)
                     {
@@ -247,7 +252,7 @@ namespace HotUpdate.Base.Grid
                 // 有效：将实际对象替换占位
                 _nowShowGridDic[i] = poolObj;
                 // 注册交互事件
-                poolObj.Obj.OnClick += _callback;
+                poolObj.Obj.OnClick += _clickCallback;
                 // 判断是否需要默认选中该索引的格子
                 if(_selectedIndex != -1 &&  _selectedIndex == i)
                 {
@@ -256,7 +261,7 @@ namespace HotUpdate.Base.Grid
                 }
 
                 // 每帧创建数
-                if ((i + 1) / CreateGridPerFrame != 0)
+                if ((i - minIndex + 1) % CreateGridPerFrame == 0)
                     yield return null;
             }
             

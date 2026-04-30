@@ -4,7 +4,7 @@ public static class AssetKeys
     public const string Bot = "Bot";
     public const string Role_Controller = "Role_Controller";
     public const string MSYH = "MSYH";
-    public const string ItemConfigs = "ItemConfigs";
+    public const string MainScene = "MainScene";
     public const string HotUpdate_Base = "HotUpdate.Base.dll";
     public const string HotUpdate_Common = "HotUpdate.Common.dll";
     public const string HotUpdate_Game = "HotUpdate.Game.dll";
@@ -262,9 +262,9 @@ public static class AssetKeys
     public const string BeginView = "BeginView";
     public const string Battle_Panel = "Battle_Panel";
     public const string UIRoot = "UIRoot";
-    public const string MainScene = "MainScene";
     public const string InventoryTestScene = "InventoryTestScene";
     public const string InventoryMainTestScene = "InventoryMainTestScene";
     public const string GameScene = "GameScene";
     public const string ABTestScene = "ABTestScene";
+    public const string ItemConfigs = "ItemConfigs";
 }

@@ -5,7 +5,7 @@ using Core.DI;
 using Core.Pool;
 using Core.UI.MVC;
 using HotUpdate.Base.Grid;
-using HotUpdate.Common.Config.Item;
+using HotUpdate.Common.Items;
 
 namespace HotUpdate.Game.Inventory.UI
 {

@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 386d4996460e9a0408d3ab5b7d0c8864, type: 3}
+  m_Name: ItemConfigsSO
+  m_EditorClassIdentifier: 
+  itemConfigCollection:
+    rid: 798032819359318174
+  references:
+    version: 2
+    RefIds:
+    - rid: 798032819359318174
+      type: {class: ItemConfigCollection, ns: HotUpdate.Common.Items, asm: HotUpdate.Common}
+      data:
+        itemConfigs:
+        - rid: 798032819359318176
+        - rid: 798032819359318178
+        - rid: 798032819359318180
+        - rid: 798032819359318182
+        - rid: 798032819359318183
+    - rid: 798032819359318176
+      type: {class: MaterialItemConfig, ns: HotUpdate.Common.Items.Config, asm: HotUpdate.Common}
+      data:
+        itemId: 0
+        name: 
+        description: 
+        icon: 
+        isPile: 0
+        itemQuality: 0
+        itemType: 0
+    - rid: 798032819359318178
+      type: {class: MaterialItemConfig, ns: HotUpdate.Common.Items.Config, asm: HotUpdate.Common}
+      data:
+        itemId: 0
+        name: 
+        description: 
+        icon: 
+        isPile: 0
+        itemQuality: 0
+        itemType: 0
+    - rid: 798032819359318180
+      type: {class: MaterialItemConfig, ns: HotUpdate.Common.Items.Config, asm: HotUpdate.Common}
+      data:
+        itemId: 0
+        name: 
+        description: 
+        icon: 
+        isPile: 0
+        itemQuality: 0
+        itemType: 0
+    - rid: 798032819359318182
+      type: {class: MaterialItemConfig, ns: HotUpdate.Common.Items.Config, asm: HotUpdate.Common}
+      data:
+        itemId: 0
+        name: 
+        description: 
+        icon: 
+        isPile: 0
+        itemQuality: 0
+        itemType: 0
+    - rid: 798032819359318183
+      type: {class: ItemConfig, ns: HotUpdate.Common.Items.Config, asm: HotUpdate.Common}
+      data:
+        itemId: 0
+        name: 
+        description: 
+        icon: 
+        isPile: 0
+        itemQuality: 0
+        itemType: 0
