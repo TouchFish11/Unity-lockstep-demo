@@ -7,7 +7,7 @@ namespace HotUpdate.Base.Grid
     /// 格子类必须继承该接口
     /// </summary>
     /// <typeparam name="T">数据类型</typeparam>
-    public interface IGridBase<T> : IGridInteractive<T>
+    public interface IGridBase<T> : IGridSelectable<T>
     {
         /// <summary>
         /// 初始化格子数据

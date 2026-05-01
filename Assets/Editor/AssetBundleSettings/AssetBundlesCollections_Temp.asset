@@ -37,7 +37,7 @@ MonoBehaviour:
     - assetPath: Assets\Editor\ArtRes\GameConfig\ItemConfigs.json
       size: 2224
       name: ItemConfigs.json
-      hash: b9a2b71349f1825c01bb29ce9eee9bdca190bd687648c0b1cfb6074834de6f8c
+      hash: fd8711db2cbfe53383482f279935d28383ed438046fd5daa7db48b51862e549a
       assetType: 0
   - assetBundleName: hotupdate
     assetInfos:
@@ -112,9 +112,9 @@ MonoBehaviour:
       hash: 39e2e7c79f0e333d3795ae1a1c93154d80bde4f3ef46a93f8ec479f1576474b8
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryMainTestScene.unity
-      size: 25161
+      size: 24912
       name: InventoryMainTestScene.unity
-      hash: c783b7ff5b29c7eede52fc45746d3b8c19247780cd48164a7e087da4db9936df
+      hash: ad47f84ba4a8cdd7f4bd798744ac6c7a82b563b3dd5b6141ed23e5bb42dd2bba
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryTestScene.unity
       size: 8115
@@ -141,9 +141,9 @@ MonoBehaviour:
   - assetBundleName: tmpasset
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH_SDF.asset
-      size: 4277784
+      size: 4293285
       name: MSYH_SDF.asset
-      hash: 34ecb39bff60bb56e67f75e99d04638a37f0732ada650438f7700ccd55a14ed9
+      hash: 2a7e9046f9d500d6b909e5b9694dcefb687fa15523a211bb5f077e0bc8470b5d
       assetType: 0
   - assetBundleName: ui
     assetInfos:
@@ -163,14 +163,14 @@ MonoBehaviour:
       hash: 8c6d374278397a3786e916d560caeb8dc7aea4003b7e320d2c79c2281a490676
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\InventoryPanel.prefab
-      size: 70193
+      size: 128148
       name: InventoryPanel.prefab
-      hash: dcbba33c7af58d79f873fb6353db390d029397cd419dc2a9d3b8a2d7763f5e79
+      hash: a2f8fe007b9302a4320ad02fd390aa4383f1ab4b1892e2de39665b733cb6dfb3
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemCell.prefab
-      size: 25182
+      size: 32813
       name: ItemCell.prefab
-      hash: c62a56c1a3f9ab742d928c5c307d0bbe0fc3facfa66eeb9488517d035c0e69b0
+      hash: 93993c3cbb7eed02f43f1e6109acc42a1731a9cf5dd57880b392de9d67e1e1d6
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemDetailPanelBase.prefab
       size: 3225

@@ -1,6 +1,5 @@
 using System;
 using Core.UI;
-using Core.Utility;
 using HotUpdate.Base.Grid;
 using HotUpdate.Base.Icon;
 using HotUpdate.Base.Items;
@@ -17,15 +16,29 @@ namespace HotUpdate.Game.Inventory.UI
     /// </summary>
     public class ItemCell : UIBehaviourBase, IGridBase<Item>
     {
+        public enum EGridAction
+        {
+            Normal,
+            Delete,
+        }
+        
         [InjectUI] private Image imgBkQuality;
         [InjectUI] private Image imgIcon;
         [InjectUI] private TextMeshProUGUI txtNumOrLv;
         [InjectUI] private Button btnCell;
         [InjectUI] private Image imgHighlight;
+        [InjectUI] private Button btnCancelDelete;
+        
         // 物品对象
         private Item _item;
+        // 物品格子当前行为
+        private EGridAction _gridAction = EGridAction.Normal;
+        // 是否将被删除
+        private bool isDelete;
         
         [InjectUI(1)] private RectTransform New { get; set; }
+        
+        public bool Selected { get; set; }
         
         /// <summary>
         /// 物品点击事件
@@ -37,10 +50,8 @@ namespace HotUpdate.Game.Inventory.UI
             base.Awake();
             // 默认隐藏
             imgHighlight.gameObject.SetActive(false);
+            btnCancelDelete.gameObject.SetActive(false);
             New.gameObject.SetActive(false);
-            // 为按钮添加鼠标进入/离开事件
-            UIUtility.AddCustomEventListener(btnCell, EventTriggerType.PointerEnter, OnPointerEnter);
-            UIUtility.AddCustomEventListener(btnCell, EventTriggerType.PointerExit, OnPointerExit);
         }
 
         /// <summary>
@@ -48,11 +59,22 @@ namespace HotUpdate.Game.Inventory.UI
         /// </summary>
         public void TriggerClick()
         {
-            if (_item.isNew)
+            switch (_gridAction)
             {
-                // 隐藏New标志
-                New.gameObject.SetActive(false);
-                _item.isNew = false;
+                case EGridAction.Normal:
+                {
+                    if (_item.isNew)
+                    {
+                        // 隐藏New标志
+                        New.gameObject.SetActive(false);
+                        _item.isNew = false;
+                    }
+                    break;
+                }
+                case EGridAction.Delete:
+                    Selected = !Selected;
+                    btnCancelDelete.gameObject.SetActive(Selected);
+                    break;
             }
 
             OnClick?.Invoke(_item);
@@ -71,7 +93,17 @@ namespace HotUpdate.Game.Inventory.UI
             txtNumOrLv.text = ItemFormatter.GetItemNumOrLevel(item);
             // 是否是新物品
             New.gameObject.SetActive(item.isNew);
+            _gridAction = EGridAction.Normal;
             _item = item;
+        }
+
+        /// <summary>
+        /// 切换格子行为
+        /// </summary>
+        /// <param name="gridAction"></param>
+        public void SwitchAction(EGridAction gridAction)
+        {
+            _gridAction = gridAction;
         }
 
         protected override void OnButtonClick(string btnName)
@@ -80,16 +112,10 @@ namespace HotUpdate.Game.Inventory.UI
             {
                 TriggerClick();
             }
-        }
-
-        private void OnPointerEnter(BaseEventData eventData)
-        {
-            imgHighlight?.gameObject.SetActive(true);
-        }
-
-        private void OnPointerExit(BaseEventData eventData)
-        {
-            imgHighlight?.gameObject.SetActive(false);
+            else if(btnName == nameof(btnCancelDelete))
+            {
+                
+            }
         }
 
         protected override void OnDisable()
@@ -97,6 +123,16 @@ namespace HotUpdate.Game.Inventory.UI
             imgHighlight?.gameObject.SetActive(false);
             OnClick = null;
             _item = null;
+        }
+        
+        protected override void OnPointerEnter(PointerEventData eventData)
+        {
+            imgHighlight?.gameObject.SetActive(true);
+        }
+
+        protected override void OnPointerExit(PointerEventData eventData)
+        {
+            imgHighlight?.gameObject.SetActive(false);
         }
     }
 }

@@ -1,5 +1,6 @@
 using Core.UI;
 using Core.UI.MVC;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +15,16 @@ namespace HotUpdate.Game.Inventory.UI
         [InjectUI] public ScrollRect svItems;
         [InjectUI] public Dropdown dpSorts;
         [InjectUI] public Button btnClose;
+        [InjectUI] public Button btnRequestDelete;
+        [InjectUI] public Button btnDelete;
+        [InjectUI] public Button btnCancelDelete;
+        [InjectUI] public TMP_InputField inputFieldDeleteNum;
+        [InjectUI] public Button btnSub;
+        [InjectUI] public Button btnAdd;
         
         [InjectUI(1)] public RectTransform DetailArea { get; private set; }
+        
+        [InjectUI(1)] public RectTransform DeleteArea { get; private set; }
         
         public ToggleGroup OptGroup {get; private set;}
 

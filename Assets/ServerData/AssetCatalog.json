@@ -23,12 +23,12 @@
       "assetName": "Assets\\Editor\\ArtRes\\Fonts\\MSYH.TTC",
       "assetType": "Object"
     },
-    "MainScene": {
+    "UpdateTipView": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MainScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\MainScene.unity",
-      "assetType": "Scene"
+      "key": "UpdateTipView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\UpdateTipView.prefab",
+      "assetType": "Object"
     },
     "HotUpdate.Base.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -100,13 +100,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Sphere.prefab",
       "assetType": "Object"
     },
-    "UpdateTipView": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "UpdateTipView",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\UpdateTipView.prefab",
-      "assetType": "Object"
-    },
     "BaseTipView": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "BaseTipView",
@@ -133,6 +126,13 @@
       "key": "Main_Panel",
       "bundleName": "ui",
       "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Panel.prefab",
+      "assetType": "Object"
+    },
+    "Main_Chat_Panel": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Main_Chat_Panel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Chat_Panel.prefab",
       "assetType": "Object"
     },
     "Atlas_Item": {
@@ -2210,20 +2210,6 @@
       "assetName": "Assets/Editor/ArtRes/Texture/Common/zselect-icon.png",
       "assetType": "Texture"
     },
-    "MSYH_SDF": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MSYH_SDF",
-      "bundleName": "tmpasset",
-      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
-      "assetType": "Object"
-    },
-    "Main_Chat_Panel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Main_Chat_Panel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Chat_Panel.prefab",
-      "assetType": "Object"
-    },
     "WeaponDetailPanel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "WeaponDetailPanel",
@@ -2286,6 +2272,20 @@
       "bundleName": "ui",
       "assetName": "Assets\\Editor\\ArtRes\\UI\\UIRoot.prefab",
       "assetType": "Object"
+    },
+    "MSYH_SDF": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MSYH_SDF",
+      "bundleName": "tmpasset",
+      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
+      "assetType": "Object"
+    },
+    "MainScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MainScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\MainScene.unity",
+      "assetType": "Scene"
     },
     "InventoryTestScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2352,8 +2352,8 @@
       "gameconfig": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "gameconfig",
-        "size": 2002,
-        "hash": "5fc1dd46fd47cd9f594d0c051472b542fb33bbf32b01ed069adf0005dabbfd1a",
+        "size": 1997,
+        "hash": "38e90308f90ea7f7b665a01f435ae00a703d9794043cea0899f309aa8e4d8c6d",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -2412,11 +2412,14 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 28039540,
-        "hash": "75989b6ba84ec73c8319bace1a80b5696b5a2ae0593fb9b3c7c8ee6e5b2b351f",
+        "size": 13950516,
+        "hash": "cb196bfd399231ac57a33564f58f99959a75d2f65c4d8a679fce51bc88a9d512",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": []
+          "$values": [
+            "tmpasset",
+            "ui"
+          ]
         }
       },
       "spriteatlas": {
@@ -2432,23 +2435,23 @@
       "tmpasset": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
-        "size": 462561,
-        "hash": "e764044affa0fc4659cfee1666a457985e6ddc38597c98c3ff83029cc57febda",
+        "size": 14122969,
+        "hash": "f5b4d8d182e40e7fb234594205c2af5c4ff49934837029ec6c446e655cc9c59d",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": [
-            "fonts"
-          ]
+          "$values": []
         }
       },
       "ui": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
-        "size": 16433337,
-        "hash": "8d4d5bab04e295492b73a29f49842246886add931762510deaef5c376d9b49a7",
+        "size": 2336581,
+        "hash": "b7d0da4e70e793ed28209318d23babc39d397bac62d9bb83c0968c8a7669077f",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": []
+          "$values": [
+            "tmpasset"
+          ]
         }
       }
     }

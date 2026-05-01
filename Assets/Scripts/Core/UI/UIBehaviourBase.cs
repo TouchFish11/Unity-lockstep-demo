@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using Core.DI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,13 +10,15 @@ namespace Core.UI
     /// UIBehaviour基类
     /// 对原生UIBehaviour的封装
     /// </summary>
-    public abstract class UIBehaviourBase : UIBehaviour, IUiBehaviour
+    public abstract class UIBehaviourBase : UIBehaviour, IUiBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerMoveHandler,
+        IPointerDownHandler, IPointerUpHandler
     {
+        // UI组件绑定器
         protected UIComponentBinder binder;
 
         protected override void Awake()
         {
-            binder = new UIComponentBinder(this);
+            binder = DIContainer.Create<UIComponentBinder>(parameterValues: this);
             binder.OnButtonClick += OnButtonClick;
             binder.OnSliderValueChanged += OnSliderValueChanged;
             binder.OnInputFieldValueChanged += OnInputFieldValueChanged;
@@ -34,6 +37,61 @@ namespace Core.UI
             return binder.GetControl<T>(controlName);
         }
 
+        protected virtual void OnButtonClick(string btnName) { }
+
+        protected virtual void OnSliderValueChanged(string sliderName, float value) { }
+
+        protected virtual void OnInputFieldValueChanged(string inputFieldName, string value) { }
+
+        protected virtual void OnToggleValueChanged(string togName, bool isOn) { }
+        
+        void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
+        {
+            OnPointerEnter(eventData);
+        }
+
+        protected virtual void OnPointerEnter(PointerEventData eventData){ }
+
+        void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
+        {
+            OnPointerExit(eventData);
+        }
+        
+        protected virtual void OnPointerExit(PointerEventData eventData){ }
+
+        void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
+        {
+            OnPointerClick(eventData);
+        }
+        
+        protected virtual void OnPointerClick(PointerEventData eventData){ }
+
+        void IPointerMoveHandler.OnPointerMove(PointerEventData eventData)
+        {
+            OnPointerMove(eventData);
+        }
+        
+        protected virtual void OnPointerMove(PointerEventData eventData){ }
+
+        void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+        {
+            OnPointerDown(eventData);
+        }
+        
+        protected virtual void OnPointerDown(PointerEventData eventData){ }
+
+        void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
+        {
+            OnPointerUp(eventData);
+        }
+        
+        protected virtual void OnPointerUp(PointerEventData eventData){ }
+        
+        protected override void OnDestroy()
+        {
+            binder.Clear();
+        }
+        
         /// <summary>
         /// 扫描该UI字段和属性实例
         /// </summary>
@@ -45,9 +103,7 @@ namespace Core.UI
             {
                 var attribute = memberInfo.GetCustomAttribute<InjectUIAttribute>();
                 if (attribute == null)
-                {
                     continue;
-                }
 
                 switch (memberInfo)
                 {
@@ -73,9 +129,7 @@ namespace Core.UI
             {
                 var attribute = memberInfo.GetCustomAttribute<InjectUIAttribute>();
                 if (attribute == null || attribute.RectTransformFlag == 0)
-                {
                     continue;
-                }
                 dic.Add(memberInfo.Name, memberInfo);
             }
 
@@ -83,9 +137,7 @@ namespace Core.UI
             foreach (var rectTransform in rectTransforms)
             {
                 if (!dic.TryGetValue(rectTransform.name, out var info))
-                {
                     continue;
-                }
 
                 switch (info)
                 {
@@ -97,19 +149,6 @@ namespace Core.UI
                         break;
                 }
             }
-        }
-
-        protected virtual void OnButtonClick(string btnName) { }
-
-        protected virtual void OnSliderValueChanged(string sliderName, float value) { }
-
-        protected virtual void OnInputFieldValueChanged(string inputFieldName, string value) { }
-
-        protected virtual void OnToggleValueChanged(string togName, bool isOn) { }
-
-        protected override void OnDestroy()
-        {
-            binder.Clear();
         }
     }
 }

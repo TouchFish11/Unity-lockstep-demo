@@ -36,8 +36,6 @@ namespace HotUpdate.Base.Grid
         
         // 点击事件注册
         private event Action<T> _clickCallback;
-        // 当前选中的数据索引，-1 表示无选中
-        private int _selectedIndex = -1;
         /// 每帧创建格子数
         private const int CreateGridPerFrame = 25;
         // 当前布局类型
@@ -46,6 +44,14 @@ namespace HotUpdate.Base.Grid
         private bool _queueCreateGrid = true;
         // 渐变创建协程
         private Coroutine _fadeCreateCor;
+
+        public IEnumerable<K> GetAllCell()
+        {
+            foreach (var poolObject in _nowShowGridDic.Values)
+            {
+                yield return poolObject.Convert<K>().Obj;
+            }
+        }
         
         /// <summary>
         /// 渐变创建格子，仅在第一次打开或切换类型时使用，只是为了呈现一个好的动画效果
@@ -142,16 +148,6 @@ namespace HotUpdate.Base.Grid
         }
         
         /// <summary>
-        /// 设置选中的格子索引，当对应索引的格子创建完毕后会自动执行其点击事件
-        /// 执行完后索引重置，需重新调用方法设置
-        /// </summary>
-        /// <param name="index"></param>
-        public void SetSelectIndex(int index)
-        {
-            _selectedIndex = index;
-        }
-        
-        /// <summary>
         /// 清空所有格子
         /// </summary>
         public void ClearGrids()
@@ -191,12 +187,6 @@ namespace HotUpdate.Base.Grid
                     _nowShowGridDic[index] = poolObj;
                     // 注册交互事件
                     poolObj.Obj.OnClick += _clickCallback;
-                    // 判断是否需要默认选中该索引的格子
-                    if(_selectedIndex != -1 &&  _selectedIndex == index)
-                    {
-                        poolObj.Obj.TriggerClick();
-                        _selectedIndex = -1;
-                    }
                 }
                 else
                 {
@@ -253,13 +243,6 @@ namespace HotUpdate.Base.Grid
                 _nowShowGridDic[i] = poolObj;
                 // 注册交互事件
                 poolObj.Obj.OnClick += _clickCallback;
-                // 判断是否需要默认选中该索引的格子
-                if(_selectedIndex != -1 &&  _selectedIndex == i)
-                {
-                    poolObj.Obj.TriggerClick();
-                    _selectedIndex = -1;
-                }
-
                 // 每帧创建数
                 if ((i - minIndex + 1) % CreateGridPerFrame == 0)
                     yield return null;

@@ -15,9 +15,9 @@ namespace Core.UI
     {
         private readonly UIBehaviour _componentBehaviour;
         // 存储所有找到的满足条件的UI控件
-        private Dictionary<string, List<UIBehaviour>> controlDic = new Dictionary<string, List<UIBehaviour>>();
+        private Dictionary<string, List<UIBehaviour>> controlDic = new();
         // 存储默认的控件名列表
-        private readonly List<string> _defaultControlNameList = new List<string>()
+        private readonly List<string> _defaultControlNameList = new()
         {
             "Image", "Text (TMP)", "RawImage", "View", "Toggle", "Slider", "Scrollbar",
             "Scroll View", "Button", "Dropdown", "InputField (TMP)", "Background", "Checkmark",

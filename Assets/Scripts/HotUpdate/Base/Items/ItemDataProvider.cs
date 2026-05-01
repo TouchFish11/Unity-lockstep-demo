@@ -20,8 +20,10 @@ namespace HotUpdate.Base.Items
     public class ItemDataProvider
     {
         [Inject] private readonly IJsonManager _jsonManager;
-        private ItemPersistentIdGenerator _idGenerator;
         
+        // 物品持久化ID生成器
+        private ItemPersistentIdGenerator _idGenerator;
+        // 玩家物品数据集合
         private ItemDataCollection _itemDataCollection;
         // 用于可堆叠物品：itemId -> list索引
         private readonly Dictionary<int, int> _stackIndexByItemId =  new();

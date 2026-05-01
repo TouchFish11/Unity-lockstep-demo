@@ -18,7 +18,7 @@ namespace Core.UI.MVC
         // 控制器界面状态
         private EControllerState _controllerState;
         // 控制器（界面）唯一ID
-        protected int panelId;
+        public int panelId;
         protected TView view;
         protected TModel model;
         
@@ -234,6 +234,12 @@ namespace Core.UI.MVC
             await InActivate();
             // 界面被销毁
             _controllerState = EControllerState.Destroyed;
+            await OnDestroy();
+        }
+        
+        protected virtual Task OnDestroy()
+        {
+            return Task.CompletedTask;
         }
     }
 }
