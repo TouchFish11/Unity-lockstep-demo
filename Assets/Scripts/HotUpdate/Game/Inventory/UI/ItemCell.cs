@@ -27,31 +27,36 @@ namespace HotUpdate.Game.Inventory.UI
         [InjectUI] private TextMeshProUGUI txtNumOrLv;
         [InjectUI] private Button btnCell;
         [InjectUI] private Image imgHighlight;
-        [InjectUI] private Button btnCancelDelete;
+        [InjectUI] private Image imgDeleteFlag;
         
         // 物品对象
         private Item _item;
         // 物品格子当前行为
         private EGridAction _gridAction = EGridAction.Normal;
-        // 是否将被删除
-        private bool isDelete;
         
         [InjectUI(1)] private RectTransform New { get; set; }
+        
+        private bool _isDelete;
         
         public bool Selected { get; set; }
         
         /// <summary>
         /// 物品点击事件
         /// </summary>
-        public event Action<Item> OnClick;
+        private Action<Item> _onClick;
 
         protected override void Awake()
         {
             base.Awake();
             // 默认隐藏
             imgHighlight.gameObject.SetActive(false);
-            btnCancelDelete.gameObject.SetActive(false);
+            imgDeleteFlag.gameObject.SetActive(false);
             New.gameObject.SetActive(false);
+        }
+
+        public void SetClick(Action<Item> OnClick)
+        {
+            _onClick = OnClick;
         }
 
         /// <summary>
@@ -59,25 +64,20 @@ namespace HotUpdate.Game.Inventory.UI
         /// </summary>
         public void TriggerClick()
         {
-            switch (_gridAction)
+            if (_item.isNew)
             {
-                case EGridAction.Normal:
-                {
-                    if (_item.isNew)
-                    {
-                        // 隐藏New标志
-                        New.gameObject.SetActive(false);
-                        _item.isNew = false;
-                    }
-                    break;
-                }
-                case EGridAction.Delete:
-                    Selected = !Selected;
-                    btnCancelDelete.gameObject.SetActive(Selected);
-                    break;
+                // 隐藏New标志
+                New.gameObject.SetActive(false);
+                _item.isNew = false;
             }
 
-            OnClick?.Invoke(_item);
+            _isDelete = !_isDelete;
+            if (_gridAction == EGridAction.Delete)
+            {
+                imgDeleteFlag.gameObject.SetActive(_isDelete);
+            }
+            
+            _onClick?.Invoke(_item);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace HotUpdate.Game.Inventory.UI
             _gridAction = EGridAction.Normal;
             _item = item;
         }
-
+        
         /// <summary>
         /// 切换格子行为
         /// </summary>
@@ -104,6 +104,12 @@ namespace HotUpdate.Game.Inventory.UI
         public void SwitchAction(EGridAction gridAction)
         {
             _gridAction = gridAction;
+            // 清理删除标志
+            if (_isDelete)
+            {
+                _isDelete = false;
+                imgDeleteFlag.gameObject.SetActive(false);
+            }
         }
 
         protected override void OnButtonClick(string btnName)
@@ -112,16 +118,12 @@ namespace HotUpdate.Game.Inventory.UI
             {
                 TriggerClick();
             }
-            else if(btnName == nameof(btnCancelDelete))
-            {
-                
-            }
         }
 
         protected override void OnDisable()
         {
             imgHighlight?.gameObject.SetActive(false);
-            OnClick = null;
+            _onClick = null;
             _item = null;
         }
         

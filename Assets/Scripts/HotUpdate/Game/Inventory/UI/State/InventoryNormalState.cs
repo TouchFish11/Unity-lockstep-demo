@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Core.AssetBundles.Management;
 using HotUpdate.Base.Grid;
 using HotUpdate.Common.Items;
 using Logger = Core.Log.Logger;
@@ -21,7 +20,12 @@ namespace HotUpdate.Game.Inventory.UI.State
         protected override Task OnEnter()
         {
             inventoryController.OnDropdownValueChangedEvent += OnDropdownValueChangedEvent;
-            inventoryController.OnButtonClickEvent += OnOnButtonClickEvent;
+            inventoryController.OnButtonClickEvent += OnButtonClickEvent;
+            foreach (var itemCell in model.GridGenerator.GetAllCell())
+            {
+                itemCell.SwitchAction(ItemCell.EGridAction.Normal);
+                itemCell.SetClick(ItemClick);
+            }
             return Task.CompletedTask;
         }
         
@@ -59,55 +63,6 @@ namespace HotUpdate.Game.Inventory.UI.State
             view.OptGroup.allowSwitchOff = false;
         }
         
-        protected override async Task OnItemClick(Item item)
-        {
-            await UpdateDetail(item);
-            UpdateGridState(item);
-        }
-        
-        /// <summary>
-        /// 更新详细界面
-        /// </summary>
-        /// <param name="item"></param>
-        /// <exception cref="Exception"></exception>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public async Task UpdateDetail(Item item)
-        {
-            PoolObject poolObject = default;
-            try
-            {
-                var itemConfig = item.itemConfig;
-                var itemData = _inventoryManager.GetData(item);
-
-                if (!model.DetailPanelPoolObject.Obj || model.CurrentItemType != itemConfig.itemType)
-                {
-                    if(model.DetailPanelPoolObject.Obj)
-                        model.DetailPanelPoolObject.Collect();
-                    // 工厂创建详细界面
-                    poolObject = await model.DetailPanelFactory.CreateDetailPanel(itemConfig.itemType, view.DetailArea);
-                    model.DetailPanelPoolObject = poolObject.Convert<InventoryDetailPanel>();
-                }
-
-                // 初始化详细界面
-                model.DetailPanelPoolObject.Obj.UpdateInfo(itemConfig, itemData);
-            }
-            catch (Exception e)
-            {
-                poolObject.Collect(true);
-                Logger.LogError($"{nameof(InventoryController)}: Create detail panel fail, {e.Message}");
-            }
-        }
-        
-        /// <summary>
-        /// 更新格子状态
-        /// </summary>
-        /// <param name="item"></param>
-        public void UpdateGridState(Item item)
-        {
-            // 是否点击了格子，移除new标识
-            _inventoryManager.UpdateGridNewState(item);
-        }
-        
         /// <summary>
         /// 切换排序
         /// </summary>
@@ -124,7 +79,12 @@ namespace HotUpdate.Game.Inventory.UI.State
             return UpdateItemsByType(model.CurrentItemType);
         }
 
-        private async void OnOnButtonClickEvent(string btnName)
+        protected override Task OnItemClick(Item item)
+        {
+            return Task.CompletedTask;
+        }
+
+        private async void OnButtonClickEvent(string btnName)
         {
             try
             {
@@ -170,7 +130,7 @@ namespace HotUpdate.Game.Inventory.UI.State
         protected override Task OnExit()
         {
             inventoryController.OnDropdownValueChangedEvent -= OnDropdownValueChangedEvent;
-            inventoryController.OnButtonClickEvent -= OnOnButtonClickEvent;
+            inventoryController.OnButtonClickEvent -= OnButtonClickEvent;
             return Task.CompletedTask;
         }
     }

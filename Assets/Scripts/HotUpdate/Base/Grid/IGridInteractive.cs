@@ -7,7 +7,7 @@ namespace HotUpdate.Base.Grid
     /// </summary>
     public interface IGridInteractive<out T>
     {
-        event Action<T> OnClick;
+        void SetClick(Action<T> OnClick);
         
         void TriggerClick();
     }

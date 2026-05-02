@@ -23,6 +23,12 @@ namespace HotUpdate.Game.Inventory.UI
         
         public EItemType ItemType { get; private set; }
         
+        /// <summary>
+        /// 初始化选项
+        /// </summary>
+        /// <param name="itemType"></param>
+        /// <param name="icon"></param>
+        /// <param name="group"></param>
         public void InitOption(EItemType itemType, Sprite icon, ToggleGroup group)
         {
             ItemType = itemType;

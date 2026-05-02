@@ -81,22 +81,20 @@ namespace HotUpdate.Base.Items
                 Logger.Log($"{nameof(ItemDataCollection)}: Item(id = {itemId}, num = {deltaNum}) added");
             }
         }
-        
+
         /// <summary>
         /// 移除物品数据
         /// </summary>
         /// <param name="id">可堆叠物品则为物品ID，不可堆叠物品则为实例ID</param>
-        /// <param name="deltaNum">移除数量</param>
-        public void RemoveData(int id, int deltaNum)
+        /// <param name="deltaNum">移除数量，不可堆叠的物品忽略该参数，默认移除当前实例</param>
+        /// <param name="isPile">是否可堆叠</param>
+        public void RemoveData(long id, int deltaNum, bool isPile)
         {
-            if(!ConfigMap.TryGetValue(id, out var config))
-                throw new KeyNotFoundException($"[{nameof(ItemDataProvider)}]: Item {id} id not found");
-
             // 可堆叠物品的删除逻辑
-            if (config.isPile)
+            if (isPile)
             {
                 // 找到要移除的物品数据在字典中的索引
-                if(!_stackIndexByItemId.TryGetValue(id, out var index))
+                if(!_stackIndexByItemId.TryGetValue((int)id, out var index))
                     return;
                 
                 // 找到要删除的数据

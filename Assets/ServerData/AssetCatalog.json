@@ -16,18 +16,18 @@
       "assetName": "Assets\\Editor\\ArtRes\\Animation\\Role\\Role_Controller.controller",
       "assetType": "Object"
     },
-    "MSYH": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MSYH",
-      "bundleName": "fonts",
-      "assetName": "Assets\\Editor\\ArtRes\\Fonts\\MSYH.TTC",
-      "assetType": "Object"
-    },
     "UpdateTipView": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "UpdateTipView",
       "bundleName": "ui",
       "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\UpdateTipView.prefab",
+      "assetType": "Object"
+    },
+    "BaseTipView": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "BaseTipView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\BaseTipView.prefab",
       "assetType": "Object"
     },
     "HotUpdate.Base.dll": {
@@ -100,13 +100,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Sphere.prefab",
       "assetType": "Object"
     },
-    "BaseTipView": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "BaseTipView",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\BaseTipView.prefab",
-      "assetType": "Object"
-    },
     "Friend_UI": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "Friend_UI",
@@ -133,6 +126,13 @@
       "key": "Main_Chat_Panel",
       "bundleName": "ui",
       "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Chat_Panel.prefab",
+      "assetType": "Object"
+    },
+    "WeaponDetailPanel": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "WeaponDetailPanel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\DetailPanel\\WeaponDetailPanel.prefab",
       "assetType": "Object"
     },
     "Atlas_Item": {
@@ -2210,13 +2210,6 @@
       "assetName": "Assets/Editor/ArtRes/Texture/Common/zselect-icon.png",
       "assetType": "Texture"
     },
-    "WeaponDetailPanel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "WeaponDetailPanel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\DetailPanel\\WeaponDetailPanel.prefab",
-      "assetType": "Object"
-    },
     "MaterialDetailPanel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "MaterialDetailPanel",
@@ -2280,6 +2273,13 @@
       "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
       "assetType": "Object"
     },
+    "MSYH SDF FallBack": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MSYH SDF FallBack",
+      "bundleName": "tmpasset",
+      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH SDF FallBack.asset",
+      "assetType": "Object"
+    },
     "MainScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "MainScene",
@@ -2320,6 +2320,13 @@
       "key": "ItemConfigs",
       "bundleName": "gameconfig",
       "assetName": "Assets\\Editor\\ArtRes\\GameConfig\\ItemConfigs.json",
+      "assetType": "Object"
+    },
+    "MSYH": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MSYH",
+      "bundleName": "fonts",
+      "assetName": "Assets\\Editor\\ArtRes\\Fonts\\MSYH.TTC",
       "assetType": "Object"
     }
   },
@@ -2412,12 +2419,11 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 13950516,
-        "hash": "cb196bfd399231ac57a33564f58f99959a75d2f65c4d8a679fce51bc88a9d512",
+        "size": 28256409,
+        "hash": "e26fc4e393dcc22fecbe4d97b74ab6af7407032350d69bffdcae800e2324922f",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
-            "tmpasset",
             "ui"
           ]
         }
@@ -2435,8 +2441,8 @@
       "tmpasset": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
-        "size": 14122969,
-        "hash": "f5b4d8d182e40e7fb234594205c2af5c4ff49934837029ec6c446e655cc9c59d",
+        "size": 14635598,
+        "hash": "9d3dce4faab3d2e1f17329147c7c3fa4e225267cecd884c30a3bc022ed5addbf",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -2445,8 +2451,8 @@
       "ui": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
-        "size": 2336581,
-        "hash": "b7d0da4e70e793ed28209318d23babc39d397bac62d9bb83c0968c8a7669077f",
+        "size": 2336642,
+        "hash": "441cd019dd7178439cbcb8cdab1ac0e3b23dce9decf6ec093d2d34fc156cc0d3",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
@@ -2761,6 +2767,7 @@
     "tmpasset": {
       "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
       "$values": [
+        "MSYH SDF FallBack",
         "MSYH_SDF"
       ]
     },

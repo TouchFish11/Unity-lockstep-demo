@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.DI;
 using Core.UI.MVC;
-using HotUpdate.Base.Grid;
-using HotUpdate.Common.Items;
 using HotUpdate.Game.Inventory.UI.State;
 using UnityEngine;
 
@@ -95,6 +93,13 @@ namespace HotUpdate.Game.Inventory.UI
         protected override void OnDropdownValueChanged(string dropdownName, int index)
         {
             OnDropdownValueChangedEvent?.Invoke(dropdownName, index);
+        }
+        
+        public event Action<string, string> OnInputFieldValueChangedEvent;
+
+        protected override void OnInputFieldValueChanged(string fieldName, string inputStr)
+        {
+            OnInputFieldValueChangedEvent?.Invoke(fieldName, inputStr);
         }
 
         protected override Task OnDestroy()

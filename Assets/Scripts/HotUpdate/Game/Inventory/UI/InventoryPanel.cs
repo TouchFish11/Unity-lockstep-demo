@@ -22,6 +22,8 @@ namespace HotUpdate.Game.Inventory.UI
         [InjectUI] public Button btnSub;
         [InjectUI] public Button btnAdd;
         
+        [InjectUI(1)] public RectTransform deleteBox;
+        
         [InjectUI(1)] public RectTransform DetailArea { get; private set; }
         
         [InjectUI(1)] public RectTransform DeleteArea { get; private set; }
@@ -32,6 +34,12 @@ namespace HotUpdate.Game.Inventory.UI
         {
             base.Awake();
             OptGroup = svOpts.content.GetComponent<ToggleGroup>();
+            DeleteArea.gameObject.SetActive(false);
+        }
+        
+        public void SetDeleteBoxActive(bool active)
+        {
+            deleteBox.gameObject.SetActive(active);
         }
     }
 }

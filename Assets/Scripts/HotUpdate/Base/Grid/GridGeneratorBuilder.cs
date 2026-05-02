@@ -14,7 +14,7 @@ namespace HotUpdate.Base.Grid
     /// </summary>
     /// <typeparam name="T">格子展示的数据类型</typeparam>
     /// <typeparam name="K">格子组件类型，必须继承自 Object 并实现 IGridBase&lt;T&gt; 接口</typeparam>
-    public class GridGeneratorBuilder<T, K> where K : Object, IGridBase<T>
+    public class GridGeneratorBuilder<T, K> where K : Object, IGridBase<T> where T : class
     {
         [Inject] private IPoolManager _poolManager;
         private static readonly Dictionary<EGridLayout, Func<GridLayout>> _gridLayouts = new();

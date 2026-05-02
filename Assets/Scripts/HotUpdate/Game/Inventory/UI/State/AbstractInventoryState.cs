@@ -2,7 +2,9 @@ using System;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
+using Core.Mono;
 using Core.UI;
+using Core.Utility;
 using HotUpdate.Base.Inventory;
 using HotUpdate.Common.Items;
 using UnityEngine;
@@ -12,6 +14,7 @@ namespace HotUpdate.Game.Inventory.UI.State
 {
     public abstract class AbstractInventoryState : IInventoryState
     {
+        [Inject] protected IMonoAdapter monoAdapter;
         [Inject] protected IUIManager uiManager;
         [Inject] protected ObjectSpawner _objectSpawner;
         [Inject] protected IInventoryManager _inventoryManager;
@@ -29,7 +32,7 @@ namespace HotUpdate.Game.Inventory.UI.State
         
         public Task Enter()
         {
-            inventoryController.OnButtonClickEvent += OnOnButtonClickEvent;
+            inventoryController.OnButtonClickEvent += OnButtonClickEvent;
             inventoryController.OnScrollRectValueChangedEvent += OnScrollRectValueChangedEvent;
             return OnEnter();
         }
@@ -53,8 +56,8 @@ namespace HotUpdate.Game.Inventory.UI.State
             // 初始化生成器
             model.GridGenerator.AddClickListener(ItemClick);
             model.GridGenerator.SetDatas(items);
-            // 手动更新一次
-            model.GridGenerator.FadeUpdateGrid();
+            // 手动更新一次，将协程转换为Task等待
+            await TaskUtility.WaitForCoroutine(model.GridGenerator.FadeUpdateGrid(), monoAdapter);
             // 记录当前选择的物品类型
             model.CurrentItemType = itemType;
             // 显示第一个物品的详细信息
@@ -63,22 +66,62 @@ namespace HotUpdate.Game.Inventory.UI.State
                 await inventoryState.UpdateDetail(items[0]);
             }
         }
-        
-        private async void ItemClick(Item item)
+
+        protected async void ItemClick(Item item)
         {
+            // 更新详细界面
+            await UpdateDetail(item);
+            // 更新New标志
+            UpdateGridState(item);
+            await OnItemClick(item);
+        }
+
+        protected abstract Task OnItemClick(Item item);
+        
+        /// <summary>
+        /// 更新详细界面
+        /// </summary>
+        /// <param name="item"></param>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public async Task UpdateDetail(Item item)
+        {
+            PoolObject poolObject = default;
             try
             {
-                await OnItemClick(item);
+                var itemConfig = item.itemConfig;
+                var itemData = _inventoryManager.GetData(item);
+
+                if (!model.DetailPanelPoolObject.Obj || model.CurrentItemType != itemConfig.itemType)
+                {
+                    if(model.DetailPanelPoolObject.Obj)
+                        model.DetailPanelPoolObject.Collect();
+                    // 工厂创建详细界面
+                    poolObject = await model.DetailPanelFactory.CreateDetailPanel(itemConfig.itemType, view.DetailArea);
+                    model.DetailPanelPoolObject = poolObject.Convert<InventoryDetailPanel>();
+                }
+
+                // 初始化详细界面
+                model.DetailPanelPoolObject.Obj.UpdateInfo(itemConfig, itemData);
             }
             catch (Exception e)
             {
-                Logger.LogError($"[{nameof(AbstractInventoryState)}]: {e.Message}");
+                poolObject.Collect(true);
+                Logger.LogError($"{nameof(InventoryController)}: Create detail panel fail, {e.Message}");
             }
         }
         
-        protected abstract Task OnItemClick(Item item);
+        /// <summary>
+        /// 更新格子状态
+        /// </summary>
+        /// <param name="item"></param>
+        protected void UpdateGridState(Item item)
+        {
+            // 是否点击了格子，移除new标识
+            _inventoryManager.UpdateGridNewState(item);
+        }
 
-        private void OnOnButtonClickEvent(string btnName)
+        private void OnButtonClickEvent(string btnName)
         {
             if (btnName == nameof(view.btnClose))
             {
@@ -100,7 +143,7 @@ namespace HotUpdate.Game.Inventory.UI.State
 
         public Task Exit()
         {
-            inventoryController.OnButtonClickEvent -= OnOnButtonClickEvent;
+            inventoryController.OnButtonClickEvent -= OnButtonClickEvent;
             inventoryController.OnScrollRectValueChangedEvent -= OnScrollRectValueChangedEvent;
             return OnExit();
         }

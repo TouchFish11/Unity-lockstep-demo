@@ -32,6 +32,25 @@ namespace HotUpdate.Game.Inventory
             _itemDataProvider = gameDataManager.ItemDataProvider;
         }
 
+        /// <summary>
+        /// 删除可堆叠的物品
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="deleteNum"></param>
+        public void DeleteItem(int itemId, int deleteNum)
+        {
+            _itemDataProvider.RemoveData(itemId, deleteNum, true);
+        }
+        
+        /// <summary>
+        /// 删除不可堆叠物品
+        /// </summary>
+        /// <param name="persistentId"></param>
+        public void DeleteItem(long persistentId)
+        {
+            _itemDataProvider.RemoveData(persistentId, 1, false);
+        }
+        
         public ItemData GetData(Item item)
         {
             // 根据是否可堆叠查找不同的物品数据

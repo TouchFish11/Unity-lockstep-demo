@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 817324391
+CRC: 3843980125
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: fdd024e97ddc65023d2c40b2217cc148
+    Hash: 57a6d22984cf6154a880ea563d7c7711
   TypeTreeHash:
     serializedVersion: 2
     Hash: 883544743a38c9822709974f4036d31b
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: fdd024e97ddc65023d2c40b2217cc148
+    Hash: 57a6d22984cf6154a880ea563d7c7711
 HashAppended: 0
 ClassTypes:
 - Class: 21
@@ -52,5 +52,6 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.TextCoreFontEngineModule
   ClassName: UnityEngine.TextCore.GlyphRect
 Assets:
+- Assets/Editor/ArtRes/TMPAsset/MSYH SDF FallBack.asset
 - Assets/Editor/ArtRes/TMPAsset/MSYH_SDF.asset
 Dependencies: []

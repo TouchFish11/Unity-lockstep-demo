@@ -62,7 +62,7 @@ namespace Core.UI
             FindChildrenControl<Toggle>();
             FindChildrenControl<ToggleGroup>();
             FindChildrenControl<Slider>();
-            FindChildrenControl<InputField>();
+            FindChildrenControl<TMP_InputField>();
             FindChildrenControl<ScrollRect>();
             FindChildrenControl<TMP_Dropdown>();
             FindChildrenControl<Dropdown>();
@@ -163,8 +163,8 @@ namespace Core.UI
                     case Toggle toggle:
                         toggle.onValueChanged.AddListener(isOn => { OnToggleValueChanged?.Invoke(controlName, isOn); });
                         break;
-                    case InputField inputField:
-                        inputField.onValueChanged.AddListener(inputValue => { OnInputFieldValueChanged?.Invoke(controlName, inputValue); });
+                    case TMP_InputField tMP_InputField:
+                        tMP_InputField.onValueChanged.AddListener(inputValue => { OnInputFieldValueChanged?.Invoke(controlName, inputValue); });
                         break;
                     case ScrollRect scrollRect:
                         scrollRect.onValueChanged.AddListener(posValues => OnScrollRectValueChanged?.Invoke(controlName, posValues));

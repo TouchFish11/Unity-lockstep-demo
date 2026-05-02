@@ -6,6 +6,7 @@ using Core.DI;
 using Core.Mono;
 using Core.Pool;
 using HotUpdate.Base.Icon;
+using HotUpdate.Common.Items;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 using Object = UnityEngine.Object;
@@ -18,7 +19,7 @@ namespace HotUpdate.Base.Grid
     /// </summary>
     /// <typeparam name="T">格子展示的数据类型</typeparam>
     /// <typeparam name="K">格子组件类型，必须继承自 Object 并实现 IGridBase&lt;T&gt; 接口</typeparam>
-    public sealed class GridGenerator<T, K> : IPoolData where K : Object, IGridBase<T>
+    public sealed class GridGenerator<T, K> : IPoolData where K : Object, IGridBase<T> where T : class
     {
         // 对象生成器（支持异步实例化与对象池）
         [Inject] private ObjectSpawner _objectSpawner;
@@ -45,6 +46,12 @@ namespace HotUpdate.Base.Grid
         // 渐变创建协程
         private Coroutine _fadeCreateCor;
 
+        public K GetGrid(Item item)
+        {
+            var index = _dataList.FindIndex(i => i == item as T);
+            return (K)_nowShowGridDic.GetValueOrDefault(index).Obj;
+        }
+        
         public IEnumerable<K> GetAllCell()
         {
             foreach (var poolObject in _nowShowGridDic.Values)
@@ -56,10 +63,11 @@ namespace HotUpdate.Base.Grid
         /// <summary>
         /// 渐变创建格子，仅在第一次打开或切换类型时使用，只是为了呈现一个好的动画效果
         /// </summary>
-        public void FadeUpdateGrid()
+        public IEnumerator FadeUpdateGrid()
         {
             StopFadeCreateGrid();
             _fadeCreateCor = _monoAdapter.StartCoroutine(FadeCreate_Cor());
+            yield return _fadeCreateCor;
         }
         
         /// <summary>
@@ -186,7 +194,7 @@ namespace HotUpdate.Base.Grid
                     // 有效：将实际对象替换占位
                     _nowShowGridDic[index] = poolObj;
                     // 注册交互事件
-                    poolObj.Obj.OnClick += _clickCallback;
+                    poolObj.Obj.SetClick(_clickCallback);
                 }
                 else
                 {
@@ -242,7 +250,7 @@ namespace HotUpdate.Base.Grid
                 // 有效：将实际对象替换占位
                 _nowShowGridDic[i] = poolObj;
                 // 注册交互事件
-                poolObj.Obj.OnClick += _clickCallback;
+                poolObj.Obj.SetClick(_clickCallback);
                 // 每帧创建数
                 if ((i - minIndex + 1) % CreateGridPerFrame == 0)
                     yield return null;

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
-using Core.Log;
+using Core.Mono;
+using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace Core.Utility
 {
@@ -76,6 +78,25 @@ namespace Core.Utility
             else
             {
                 callback?.Invoke(task.Result);
+            }
+        }
+
+        /// <summary>
+        /// 等待协程完成
+        /// </summary>
+        /// <param name="coroutine"></param>
+        /// <param name="monoAdapter"></param>
+        /// <returns></returns>
+        public static Task WaitForCoroutine(IEnumerator coroutine, IMonoAdapter monoAdapter)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            monoAdapter.StartCoroutine(RunCoroutine());
+            return tcs.Task;
+            
+            IEnumerator RunCoroutine()
+            {
+                yield return coroutine;
+                tcs.SetResult(true);
             }
         }
     }

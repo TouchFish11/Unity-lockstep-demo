@@ -45,6 +45,10 @@ namespace HotUpdate.Game.Inventory.UI
             DetailPanelFactory = _poolManager.GetData<InventoryDetailViewCreateFactory>();
         }
         
+        /// <summary>
+        /// 获取第一个类型的选项
+        /// </summary>
+        /// <returns></returns>
         public ItemTypeOpt GetFirstItemTypeOpt()
         {
             return _itemTypeOpts[0].Convert<ItemTypeOpt>().Obj;

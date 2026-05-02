@@ -31,5 +31,9 @@ namespace HotUpdate.Base.Inventory
         /// </summary>
         /// <param name="item">物品对象</param>
         void UpdateGridNewState(Item item);
+
+        void DeleteItem(int itemId, int deleteNum);
+        
+        void DeleteItem(long persistentId);
     }
 }
