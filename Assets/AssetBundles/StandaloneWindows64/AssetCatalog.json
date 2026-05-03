@@ -2,6 +2,41 @@
   "$type": "Core.AssetBundles.Management.AssetCatalog, CoreModule",
   "assetMap": {
     "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Core.AssetBundles.Management.AssetEntry, CoreModule]], mscorlib",
+    "ABTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "ABTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
+      "assetType": "Scene"
+    },
+    "GameScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "GameScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
+      "assetType": "Scene"
+    },
+    "InventoryMainTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "InventoryMainTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
+      "assetType": "Scene"
+    },
+    "InventoryTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "InventoryTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryTestScene.unity",
+      "assetType": "Scene"
+    },
+    "MainScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MainScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\MainScene.unity",
+      "assetType": "Scene"
+    },
     "MSYH SDF FallBack": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "MSYH SDF FallBack",
@@ -126,11 +161,24 @@
     "$type": "Core.AssetBundles.Collection.ABPackageCollection, CoreModule",
     "keyToValueMap": {
       "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Core.AssetBundles.Collection.ABPackageInfo, CoreModule]], mscorlib",
+      "scenes": {
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
+        "name": "scenes",
+        "size": 13952310,
+        "hash": "daabd30e098bbecefb589ee5cfd488fc319a2c742c274e1366a968a6f11cb7bb",
+        "dependencies": {
+          "$type": "System.String[], mscorlib",
+          "$values": [
+            "tmpasset",
+            "ui"
+          ]
+        }
+      },
       "tmpasset": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
-        "size": 14635598,
-        "hash": "9d3dce4faab3d2e1f17329147c7c3fa4e225267cecd884c30a3bc022ed5addbf",
+        "size": 15240449,
+        "hash": "fd63e8086cf59a3ff40ea2478793bc553977e4d2ca256067c446cc32b442039a",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -139,8 +187,8 @@
       "ui": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
-        "size": 2336642,
-        "hash": "441cd019dd7178439cbcb8cdab1ac0e3b23dce9decf6ec093d2d34fc156cc0d3",
+        "size": 2335579,
+        "hash": "03f9282e5ffce123f5654deb1ec79ca0ed1187618f409b2fff34af62e1f751bd",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
@@ -152,6 +200,16 @@
   },
   "bundleToAssetKeys": {
     "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib]], mscorlib",
+    "scenes": {
+      "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+      "$values": [
+        "ABTestScene",
+        "GameScene",
+        "InventoryMainTestScene",
+        "InventoryTestScene",
+        "MainScene"
+      ]
+    },
     "tmpasset": {
       "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
       "$values": [

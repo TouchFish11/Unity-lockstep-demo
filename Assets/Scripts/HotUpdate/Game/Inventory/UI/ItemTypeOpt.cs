@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using Core.UI;
 using HotUpdate.Common.Items;
 using UnityEngine;
@@ -19,7 +18,7 @@ namespace HotUpdate.Game.Inventory.UI
         /// <summary>
         /// 选项类型切换事件
         /// </summary>
-        public event Func<EItemType, Task> OnItemTypeOptChange;
+        public event Action<EItemType> OnItemTypeOptChange;
         
         public EItemType ItemType { get; private set; }
         
@@ -42,14 +41,13 @@ namespace HotUpdate.Game.Inventory.UI
             togOpt.isOn = true;
         }
 
-        protected override async void OnToggleValueChanged(string togName, bool isOn)
+        protected override void OnToggleValueChanged(string togName, bool isOn)
         {
             try
             {
                 if (togName == nameof(togOpt) && isOn)
                 {
-                    if (OnItemTypeOptChange != null)
-                        await OnItemTypeOptChange?.Invoke(ItemType);
+                    OnItemTypeOptChange?.Invoke(ItemType);
                 }
             }
             catch (OperationCanceledException canceledException)

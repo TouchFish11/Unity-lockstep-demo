@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using HotUpdate.Common.Items;
 
 namespace HotUpdate.Game.Inventory.UI.State
 {
@@ -8,7 +9,11 @@ namespace HotUpdate.Game.Inventory.UI.State
     public interface IInventoryState
     {
         Task Enter();
+
+        Task OnItemClick(Item item);
         
         Task Exit();
+        
+        void OnItemsRefreshed();
     }
 }

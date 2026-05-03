@@ -112,9 +112,9 @@ MonoBehaviour:
       hash: 39e2e7c79f0e333d3795ae1a1c93154d80bde4f3ef46a93f8ec479f1576474b8
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryMainTestScene.unity
-      size: 24713
+      size: 26091
       name: InventoryMainTestScene.unity
-      hash: 6b33333f25028320a0e8f3ba3192d388a72a2fd3a33c7ab23bb426448b497732
+      hash: 6949f5e764bbc92de7b0be809434cda4111546c4bc3a1e36ccf4ed1c496be074
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryTestScene.unity
       size: 8115
@@ -146,9 +146,9 @@ MonoBehaviour:
       hash: b261f1fbc507bbca642e1b5a7e76db1e34b866794b74bea495cbb2f9fdba62eb
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH_SDF.asset
-      size: 16875239
+      size: 16914950
       name: MSYH_SDF.asset
-      hash: f27c1a4856938900be1343c9c8894803936514e44b92ed6420bbcd912d5ede6e
+      hash: 8409d00f51889d0d9fd6203a94729181abc6912dfe030d7d8c9e9ce484e5b044
       assetType: 0
   - assetBundleName: ui
     assetInfos:
@@ -168,9 +168,9 @@ MonoBehaviour:
       hash: 8c6d374278397a3786e916d560caeb8dc7aea4003b7e320d2c79c2281a490676
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\InventoryPanel.prefab
-      size: 128186
+      size: 159086
       name: InventoryPanel.prefab
-      hash: fd8341101ae69bd6a00f82c6e01759d4c24be61ac6a19dddb056749655a74b6c
+      hash: 28eecda3f98e9ef447885c080c77c52201626364f37c4d6e21927ca4af105394
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemCell.prefab
       size: 31332

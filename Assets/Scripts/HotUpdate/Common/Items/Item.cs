@@ -3,6 +3,12 @@ using HotUpdate.Common.Items.Config;
 
 namespace HotUpdate.Common.Items
 {
+    public enum EGridState
+    {
+        Normal,
+        Delete,
+    }
+
     /// <summary>
     /// 物品对象，可通过缓存池复用
     /// </summary>
@@ -17,6 +23,10 @@ namespace HotUpdate.Common.Items
         // 玩家数据
         public int auxValue;    // 物品辅助数据，数量/强化等级/收藏星级等
         public bool isNew;
+        
+        // 物品状态
+        public bool isDeleted;  // 是否删除
+        public EGridState gridState;    // 格子状态
         
         void IPoolData.ResetData()
         {

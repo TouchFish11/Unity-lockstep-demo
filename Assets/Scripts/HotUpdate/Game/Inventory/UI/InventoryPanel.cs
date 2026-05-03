@@ -21,6 +21,9 @@ namespace HotUpdate.Game.Inventory.UI
         [InjectUI] public TMP_InputField inputFieldDeleteNum;
         [InjectUI] public Button btnSub;
         [InjectUI] public Button btnAdd;
+        [InjectUI] public Button btnMin;
+        [InjectUI] public Button btnMax;
+        [InjectUI] public Slider sliderNum;
         
         [InjectUI(1)] public RectTransform deleteBox;
         

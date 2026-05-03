@@ -16,12 +16,6 @@ namespace HotUpdate.Game.Inventory.UI
     /// </summary>
     public class ItemCell : UIBehaviourBase, IGridBase<Item>
     {
-        public enum EGridAction
-        {
-            Normal,
-            Delete,
-        }
-        
         [InjectUI] private Image imgBkQuality;
         [InjectUI] private Image imgIcon;
         [InjectUI] private TextMeshProUGUI txtNumOrLv;
@@ -31,12 +25,8 @@ namespace HotUpdate.Game.Inventory.UI
         
         // 物品对象
         private Item _item;
-        // 物品格子当前行为
-        private EGridAction _gridAction = EGridAction.Normal;
         
         [InjectUI(1)] private RectTransform New { get; set; }
-        
-        private bool _isDelete;
         
         public bool Selected { get; set; }
         
@@ -45,39 +35,12 @@ namespace HotUpdate.Game.Inventory.UI
         /// </summary>
         private Action<Item> _onClick;
 
-        protected override void Awake()
+        protected override void OnEnable()
         {
-            base.Awake();
             // 默认隐藏
             imgHighlight.gameObject.SetActive(false);
             imgDeleteFlag.gameObject.SetActive(false);
             New.gameObject.SetActive(false);
-        }
-
-        public void SetClick(Action<Item> OnClick)
-        {
-            _onClick = OnClick;
-        }
-
-        /// <summary>
-        /// 选中当前物品格子
-        /// </summary>
-        public void TriggerClick()
-        {
-            if (_item.isNew)
-            {
-                // 隐藏New标志
-                New.gameObject.SetActive(false);
-                _item.isNew = false;
-            }
-
-            _isDelete = !_isDelete;
-            if (_gridAction == EGridAction.Delete)
-            {
-                imgDeleteFlag.gameObject.SetActive(_isDelete);
-            }
-            
-            _onClick?.Invoke(_item);
         }
 
         /// <summary>
@@ -91,25 +54,57 @@ namespace HotUpdate.Game.Inventory.UI
             imgIcon.sprite = iconProvider.TryGetIcon(item.itemConfig.icon, out var icon) ? icon : null;
             // 根据物品的类型返回不同的数值格式化内容
             txtNumOrLv.text = ItemFormatter.GetItemNumOrLevel(item);
-            // 是否是新物品
-            New.gameObject.SetActive(item.isNew);
-            _gridAction = EGridAction.Normal;
             _item = item;
+            // 更新显示状态
+            UpdateState();
+        }
+        
+        public void SetClick(Action<Item> OnClick)
+        {
+            _onClick = OnClick;
+        }
+
+        private void UpdateState()
+        {
+            // 是否是新物品
+            New.gameObject.SetActive(_item.isNew);
+            // 是否是待删除物品
+            imgDeleteFlag.gameObject.SetActive(_item.isDeleted);
+        }
+
+        /// <summary>
+        /// 选中当前物品格子
+        /// </summary>
+        public void TriggerClick()
+        {
+            _onClick?.Invoke(_item);
+            
+            if (_item.isNew)
+            {
+                // 隐藏New标志
+                New.gameObject.SetActive(false);
+            }
+            
+            // 切换删除标志显示/隐藏
+            imgDeleteFlag.gameObject.SetActive(_item.isDeleted);
         }
         
         /// <summary>
-        /// 切换格子行为
+        /// 切换格子状态
         /// </summary>
-        /// <param name="gridAction"></param>
-        public void SwitchAction(EGridAction gridAction)
+        /// <param name="gridState"></param>
+        public void ApplyState(EGridState gridState)
         {
-            _gridAction = gridAction;
-            // 清理删除标志
-            if (_isDelete)
+            if (gridState == EGridState.Normal)
             {
-                _isDelete = false;
-                imgDeleteFlag.gameObject.SetActive(false);
+                // 清理删除标志
+                if (_item.isDeleted)
+                {
+                    _item.isDeleted = !_item.isDeleted;
+                    imgDeleteFlag.gameObject.SetActive(false);
+                }
             }
+            _item.gridState = gridState;
         }
 
         protected override void OnButtonClick(string btnName)
@@ -122,7 +117,6 @@ namespace HotUpdate.Game.Inventory.UI
 
         protected override void OnDisable()
         {
-            imgHighlight?.gameObject.SetActive(false);
             _onClick = null;
             _item = null;
         }
