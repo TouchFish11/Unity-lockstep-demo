@@ -20,7 +20,7 @@ namespace HotUpdate.Game.Inventory
         private readonly IPoolManager _poolManager;
         private readonly IIconProvider _iconProvider;
         
-        // 物品持久化ID到物品对象的映射
+        // 当前显示的物品持久化ID到物品对象的映射
         private readonly Dictionary<long, Item> _instanceIdToItemMap =  new();
         // 当前已经加载过的图标Key
         private readonly HashSet<string> _iconKeys = new();
@@ -30,6 +30,11 @@ namespace HotUpdate.Game.Inventory
             _poolManager = poolManager;
             _iconProvider = iconProvider;
             _itemDataProvider = gameDataManager.ItemDataProvider;
+        }
+
+        public IEnumerable<Item> GetAllItems()
+        {
+            return _instanceIdToItemMap.Values;
         }
 
         /// <summary>
@@ -61,6 +66,7 @@ namespace HotUpdate.Game.Inventory
 
         public void UpdateGridNewState(Item item)
         {
+            item.isNew = false;
             var itemData = GetData(item);
             if (itemData != null && itemData.isNew)
                 itemData.isNew = false;

@@ -26,7 +26,6 @@ namespace HotUpdate.Common.Items
         
         // 物品状态
         public bool isDeleted;  // 是否删除
-        public EGridState gridState;    // 格子状态
         
         void IPoolData.ResetData()
         {

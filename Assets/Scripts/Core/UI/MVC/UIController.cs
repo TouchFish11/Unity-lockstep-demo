@@ -97,7 +97,6 @@ namespace Core.UI.MVC
             view.GetBinder().OnScrollRectValueChanged -= ScrollRectValueChanged;
             view.GetBinder().OnDropdownValueChanged -= DropdownValueChanged;
             await OnInactivate();
-            model.ClearData();
             view.ViewObj.SetActive(false);
         }
 
@@ -235,6 +234,8 @@ namespace Core.UI.MVC
             // 界面被销毁
             _controllerState = EControllerState.Destroyed;
             await OnDestroy();
+            // 销毁界面才清理界面数据
+            model.ClearData();
         }
         
         protected virtual Task OnDestroy()

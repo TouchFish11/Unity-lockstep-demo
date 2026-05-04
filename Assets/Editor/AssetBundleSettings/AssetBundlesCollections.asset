@@ -112,9 +112,9 @@ MonoBehaviour:
       hash: 39e2e7c79f0e333d3795ae1a1c93154d80bde4f3ef46a93f8ec479f1576474b8
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryMainTestScene.unity
-      size: 26091
+      size: 30174
       name: InventoryMainTestScene.unity
-      hash: 6949f5e764bbc92de7b0be809434cda4111546c4bc3a1e36ccf4ed1c496be074
+      hash: 25b17614c2cf0645fd519ebb2de245fdeca45c38afee063c6b83bf5afc12ba51
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\InventoryTestScene.unity
       size: 8115
@@ -146,9 +146,9 @@ MonoBehaviour:
       hash: b261f1fbc507bbca642e1b5a7e76db1e34b866794b74bea495cbb2f9fdba62eb
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH_SDF.asset
-      size: 16914950
+      size: 16924096
       name: MSYH_SDF.asset
-      hash: 8409d00f51889d0d9fd6203a94729181abc6912dfe030d7d8c9e9ce484e5b044
+      hash: cda05e96fd3fca3884dc46c562beb3969675180185b48cabdb543d0ebc39dd50
       assetType: 0
   - assetBundleName: ui
     assetInfos:
@@ -168,9 +168,9 @@ MonoBehaviour:
       hash: 8c6d374278397a3786e916d560caeb8dc7aea4003b7e320d2c79c2281a490676
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\InventoryPanel.prefab
-      size: 159086
+      size: 159088
       name: InventoryPanel.prefab
-      hash: 28eecda3f98e9ef447885c080c77c52201626364f37c4d6e21927ca4af105394
+      hash: fd3b6a7781ba6fb065785bc1f7de171ed0c00c9ab06b2348eaeb057901af51aa
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemCell.prefab
       size: 31332
@@ -217,13 +217,18 @@ MonoBehaviour:
       name: Friend_UI.prefab
       hash: 3248bdc42d6fc8f19d4a077eb34150f39f3bb1e4532cbd711203e7aa4ec932eb
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Tip\BaseTipView.prefab
-      size: 11727
-      name: BaseTipView.prefab
-      hash: 855af5c5730e673805df9abbd997cb21fae2cb8aa41972579c171b5ae6a3243d
+    - assetPath: Assets\Editor\ArtRes\UI\Tip\TipPanel.prefab
+      size: 27838
+      name: TipPanel.prefab
+      hash: bb485865dc31b49f36e170afe6b02cc89e9fc6766104ad5452e124afb9b7f6b4
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Tip\UpdateTipView.prefab
-      size: 24432
+      size: 30274
       name: UpdateTipView.prefab
-      hash: 49d34912f93f7164a8c0a6d4bd86cc2d4e9a0db63c590864f8aa985914cf28e9
+      hash: 9aafd6efeb172d8a29dbef3e1bfdb4b3041510a8490fda4a9f02b96e9ecefdb9
+      assetType: 0
+    - assetPath: Assets\Editor\ArtRes\UI\Tip\Content\DeleteItemConfirmContent.prefab
+      size: 19473
+      name: DeleteItemConfirmContent.prefab
+      hash: 05c6577c4b0dd72ff766d3dbe05c1217e31f84a06c9aa228f0fd5f03e2f2e1a2
       assetType: 0

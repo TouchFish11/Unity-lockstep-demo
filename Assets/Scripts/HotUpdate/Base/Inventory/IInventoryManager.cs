@@ -35,5 +35,6 @@ namespace HotUpdate.Base.Inventory
         void DeleteItem(int itemId, int deleteNum);
         
         void DeleteItem(long persistentId);
+        IEnumerable<Item> GetAllItems();
     }
 }

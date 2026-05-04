@@ -52,7 +52,7 @@ namespace Core.AssetBundles.Management
             Collect();
         }
 
-        public PoolObject<T> Convert<T>() where T : Object
+        public PoolObject<T> Convert<T>() where T : class
         {
             return new PoolObject<T>(this);
         }

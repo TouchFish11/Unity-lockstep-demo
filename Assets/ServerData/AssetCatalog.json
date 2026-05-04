@@ -16,18 +16,18 @@
       "assetName": "Assets\\Editor\\ArtRes\\Animation\\Role\\Role_Controller.controller",
       "assetType": "Object"
     },
+    "DeleteItemConfirmContent": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "DeleteItemConfirmContent",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\Content\\DeleteItemConfirmContent.prefab",
+      "assetType": "Object"
+    },
     "UpdateTipView": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "UpdateTipView",
       "bundleName": "ui",
       "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\UpdateTipView.prefab",
-      "assetType": "Object"
-    },
-    "BaseTipView": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "BaseTipView",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\BaseTipView.prefab",
       "assetType": "Object"
     },
     "HotUpdate.Base.dll": {
@@ -100,6 +100,13 @@
       "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Sphere.prefab",
       "assetType": "Object"
     },
+    "TipPanel": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "TipPanel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\TipPanel.prefab",
+      "assetType": "Object"
+    },
     "Friend_UI": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "Friend_UI",
@@ -126,13 +133,6 @@
       "key": "Main_Chat_Panel",
       "bundleName": "ui",
       "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Chat_Panel.prefab",
-      "assetType": "Object"
-    },
-    "WeaponDetailPanel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "WeaponDetailPanel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\DetailPanel\\WeaponDetailPanel.prefab",
       "assetType": "Object"
     },
     "Atlas_Item": {
@@ -2210,6 +2210,13 @@
       "assetName": "Assets/Editor/ArtRes/Texture/Common/zselect-icon.png",
       "assetType": "Texture"
     },
+    "WeaponDetailPanel": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "WeaponDetailPanel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\DetailPanel\\WeaponDetailPanel.prefab",
+      "assetType": "Object"
+    },
     "MaterialDetailPanel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "MaterialDetailPanel",
@@ -2259,13 +2266,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\UI\\Battle\\Battle_Panel.prefab",
       "assetType": "Object"
     },
-    "UIRoot": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "UIRoot",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\UIRoot.prefab",
-      "assetType": "Object"
-    },
     "MSYH_SDF": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "MSYH_SDF",
@@ -2278,6 +2278,13 @@
       "key": "MSYH SDF FallBack",
       "bundleName": "tmpasset",
       "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH SDF FallBack.asset",
+      "assetType": "Object"
+    },
+    "UIRoot": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "UIRoot",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\UIRoot.prefab",
       "assetType": "Object"
     },
     "MainScene": {
@@ -2308,13 +2315,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
       "assetType": "Scene"
     },
-    "ABTestScene": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ABTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
-      "assetType": "Scene"
-    },
     "ItemConfigs": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "ItemConfigs",
@@ -2328,6 +2328,13 @@
       "bundleName": "fonts",
       "assetName": "Assets\\Editor\\ArtRes\\Fonts\\MSYH.TTC",
       "assetType": "Object"
+    },
+    "ABTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "ABTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
+      "assetType": "Scene"
     }
   },
   "abPackageCollection": {
@@ -2419,12 +2426,11 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 13952310,
-        "hash": "daabd30e098bbecefb589ee5cfd488fc319a2c742c274e1366a968a6f11cb7bb",
+        "size": 29345233,
+        "hash": "073ae60021fa912c8fff62548890bd3dd81a407278dd49ce022dd6a4cd44ac3f",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
-            "tmpasset",
             "ui"
           ]
         }
@@ -2442,8 +2448,8 @@
       "tmpasset": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
-        "size": 15240449,
-        "hash": "fd63e8086cf59a3ff40ea2478793bc553977e4d2ca256067c446cc32b442039a",
+        "size": 15413587,
+        "hash": "d9112f96db9b322920d2b23c6b59fab39b22416cff7144ea26c05171a266b2d4",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -2452,13 +2458,11 @@
       "ui": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
-        "size": 2335579,
-        "hash": "03f9282e5ffce123f5654deb1ec79ca0ed1187618f409b2fff34af62e1f751bd",
+        "size": 17744503,
+        "hash": "9a852f22cd96316e9070097fa8e63820f5ecfb78299fbc432296b1cce93940e8",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": [
-            "tmpasset"
-          ]
+          "$values": []
         }
       }
     }
@@ -2788,8 +2792,9 @@
         "Main_Panel",
         "Chat_UI",
         "Friend_UI",
-        "BaseTipView",
-        "UpdateTipView"
+        "TipPanel",
+        "UpdateTipView",
+        "DeleteItemConfirmContent"
       ]
     }
   }

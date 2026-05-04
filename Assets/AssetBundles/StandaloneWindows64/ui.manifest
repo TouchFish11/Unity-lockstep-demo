@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 122040243
+CRC: 2854154972
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 625c30f37887d8f6067893879b8d7d48
+    Hash: 3899453a2a72f9f77696d15246489ebc
   TypeTreeHash:
     serializedVersion: 2
-    Hash: de089335320cbb9f7976d523d17e151f
+    Hash: dbf067db155e107e825866d761ab9288
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 625c30f37887d8f6067893879b8d7d48
+    Hash: 3899453a2a72f9f77696d15246489ebc
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -21,6 +21,8 @@ ClassTypes:
 - Class: 21
   Script: {instanceID: 0}
 - Class: 28
+  Script: {instanceID: 0}
+- Class: 48
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
@@ -77,6 +79,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: b560eed1c7da1bc48ade909970262009, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 44d13e5e5e174ce458c8c8e80b564734, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
@@ -90,7 +94,11 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 6aedfa7fdf6019f4fbf04ae8bf97c7b3, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: a9f20106dbbb8ab47afbeee617b8703d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 302787513cfa9204585928b60c1f01d5, type: 3}
 - Class: 115
+  Script: {instanceID: 0}
+- Class: 128
   Script: {instanceID: 0}
 - Class: 213
   Script: {instanceID: 0}
@@ -116,11 +124,29 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Unity.InputSystem
   ClassName: UnityEngine.InputSystem.InputControlScheme/DeviceRequirement
 - AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.FaceInfo_Legacy
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.FontAssetCreationSettings
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.KerningTable
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_Character
+- AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_Dropdown/DropdownEvent
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_Dropdown/OptionData
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_Dropdown/OptionDataList
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_FontFeatureTable
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_FontWeightPair
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphAdjustmentRecord
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphPairAdjustmentRecord
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphValueRecord
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_InputField/OnChangeEvent
 - AssemblyName: Unity.TextMeshPro
@@ -137,6 +163,14 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.Events.PersistentCallGroup
 - AssemblyName: UnityEngine.CoreModule
   ClassName: UnityEngine.RectOffset
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.FaceInfo
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.Glyph
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphMetrics
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphRect
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.AnimationTriggers
 - AssemblyName: UnityEngine.UI
@@ -167,11 +201,11 @@ Assets:
 - Assets/Editor/ArtRes/UI/Inventory/DetailPanel/MaterialDetailPanel.prefab
 - Assets/Editor/ArtRes/UI/Inventory/ItemCell.prefab
 - Assets/Editor/ArtRes/UI/Main/Main_Chat_Panel.prefab
+- Assets/Editor/ArtRes/UI/Tip/Content/DeleteItemConfirmContent.prefab
+- Assets/Editor/ArtRes/UI/Tip/TipPanel.prefab
 - Assets/Editor/ArtRes/UI/Inventory/DetailPanel/WeaponDetailPanel.prefab
 - Assets/Editor/ArtRes/UI/Main/Chat/Chat_UI.prefab
 - Assets/Editor/ArtRes/UI/Tip/UpdateTipView.prefab
 - Assets/Editor/ArtRes/UI/Main/Main_Panel.prefab
-- Assets/Editor/ArtRes/UI/Tip/BaseTipView.prefab
 - Assets/Editor/ArtRes/UI/Battle/Battle_Panel.prefab
-Dependencies:
-- D:/UnityProject/AnimationSystem/Assets/AssetBundles/StandaloneWindows64/tmpasset
+Dependencies: []

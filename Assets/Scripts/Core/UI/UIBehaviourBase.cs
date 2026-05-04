@@ -23,11 +23,12 @@ namespace Core.UI
             binder.OnSliderValueChanged += OnSliderValueChanged;
             binder.OnInputFieldValueChanged += OnInputFieldValueChanged;
             binder.OnToggleValueChanged += OnToggleValueChanged;
+            binder.OnScrollRectValueChanged += OnScrollRectValueChanged;
 
             ScanFieldAndPropertyInstance();
             ScanTransformInstance();
         }
-
+        
         /// <summary>
         /// 获取UI控件
         /// </summary>
@@ -44,6 +45,8 @@ namespace Core.UI
         protected virtual void OnInputFieldValueChanged(string inputFieldName, string value) { }
 
         protected virtual void OnToggleValueChanged(string togName, bool isOn) { }
+
+        protected virtual void OnScrollRectValueChanged(string svName, Vector2 pos) { }
         
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {

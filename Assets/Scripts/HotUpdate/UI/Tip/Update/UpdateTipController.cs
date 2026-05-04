@@ -4,7 +4,7 @@ namespace HotUpdate.UI.Tip.Update
 {
     using Task = System.Threading.Tasks.Task;
     
-    public class UpdateTipController : TipController<UpdateTipView, UpdateTipModel>
+    public class UpdateTipController : TipController
     {
         /// <summary>
         /// 确认事件
@@ -28,7 +28,7 @@ namespace HotUpdate.UI.Tip.Update
 
         public void SetUpdateMessage(string message)
         {
-            view.SetUpdateTip(message);
+            //view.SetUpdateTip(message);
         }
 
         /// <summary>
@@ -38,12 +38,12 @@ namespace HotUpdate.UI.Tip.Update
         /// <param name="tip">显示的文本</param>
         public void SetTipActive(bool isActive, string tip = "")
         {
-            view.SetTipActive(isActive, tip);
+            //view.SetTipActive(isActive, tip);
         }
 
         protected override void OnButtonClick(string btnName)
         {
-            if (btnName == nameof(view.btnSure))
+            if (btnName == nameof(view.btnOk))
             {
                 uiManager.DestroyView(panelId);
                 OnSure?.Invoke();

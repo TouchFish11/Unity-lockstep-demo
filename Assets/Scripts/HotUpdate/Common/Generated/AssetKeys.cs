@@ -3,8 +3,8 @@ public static class AssetKeys
 {
     public const string Bot = "Bot";
     public const string Role_Controller = "Role_Controller";
+    public const string DeleteItemConfirmContent = "DeleteItemConfirmContent";
     public const string UpdateTipView = "UpdateTipView";
-    public const string BaseTipView = "BaseTipView";
     public const string HotUpdate_Base = "HotUpdate.Base.dll";
     public const string HotUpdate_Common = "HotUpdate.Common.dll";
     public const string HotUpdate_Game = "HotUpdate.Game.dll";
@@ -15,11 +15,11 @@ public static class AssetKeys
     public const string Bot_Mask = "Bot_Mask";
     public const string Gray = "Gray";
     public const string Sphere = "Sphere";
+    public const string TipPanel = "TipPanel";
     public const string Friend_UI = "Friend_UI";
     public const string Chat_UI = "Chat_UI";
     public const string Main_Panel = "Main_Panel";
     public const string Main_Chat_Panel = "Main_Chat_Panel";
-    public const string WeaponDetailPanel = "WeaponDetailPanel";
     public const string Atlas_Item = "Atlas_Item";
     public const string arrow_basic = "arrow_basic";
     public const string bone_skull = "bone_skull";
@@ -251,6 +251,7 @@ public static class AssetKeys
     public const string zoom_tool = "zoom-tool";
     public const string zselect_arrow = "zselect-arrow";
     public const string zselect_icon = "zselect-icon";
+    public const string WeaponDetailPanel = "WeaponDetailPanel";
     public const string MaterialDetailPanel = "MaterialDetailPanel";
     public const string ItemTypeOpt = "ItemTypeOpt";
     public const string ItemDetailPanelBase = "ItemDetailPanelBase";
@@ -258,14 +259,14 @@ public static class AssetKeys
     public const string InventoryPanel = "InventoryPanel";
     public const string BeginView = "BeginView";
     public const string Battle_Panel = "Battle_Panel";
-    public const string UIRoot = "UIRoot";
     public const string MSYH_SDF = "MSYH_SDF";
     public const string MSYH_SDF_FallBack = "MSYH SDF FallBack";
+    public const string UIRoot = "UIRoot";
     public const string MainScene = "MainScene";
     public const string InventoryTestScene = "InventoryTestScene";
     public const string InventoryMainTestScene = "InventoryMainTestScene";
     public const string GameScene = "GameScene";
-    public const string ABTestScene = "ABTestScene";
     public const string ItemConfigs = "ItemConfigs";
     public const string MSYH = "MSYH";
+    public const string ABTestScene = "ABTestScene";
 }

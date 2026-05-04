@@ -10,7 +10,7 @@ using HotUpdate.Base.Icon;
 using HotUpdate.Base.Inventory;
 using HotUpdate.Game.Data;
 using HotUpdate.Game.Inventory;
-using HotUpdate.Game.Main.UI;
+using HotUpdate.UI.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Logger = Core.Log.Logger;
