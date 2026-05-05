@@ -1,4 +1,5 @@
 using UnityEngine;
+using Logger = Core.Log.Logger;
 
 namespace HotUpdate.Base.Grid
 {

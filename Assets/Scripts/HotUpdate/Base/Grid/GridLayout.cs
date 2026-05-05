@@ -2,6 +2,7 @@ using Core.AssetBundles.Management;
 using Core.DI;
 using UnityEngine;
 using UnityEngine.UI;
+using Logger = Core.Log.Logger;
 
 namespace HotUpdate.Base.Grid
 {
@@ -27,6 +28,9 @@ namespace HotUpdate.Base.Grid
         internal int dataCount;
         // 格子起始偏移
         internal Vector2 originOffset;
+
+        protected float viewportWidth;
+        
         
         /// <summary>
         /// 计算格子索引起始索引和结束索引
@@ -48,6 +52,11 @@ namespace HotUpdate.Base.Grid
         public virtual void CalcContentSize(int dataCount)
         {
             this.dataCount = dataCount;
+
+            _sv.content.anchoredPosition = Vector2.zero;
+            //LayoutRebuilder.ForceRebuildLayoutImmediate(_sv.viewport);
+            viewportWidth = _sv.viewport.rect.width;
+            Logger.Log(viewportWidth);
         }
     }
 }
