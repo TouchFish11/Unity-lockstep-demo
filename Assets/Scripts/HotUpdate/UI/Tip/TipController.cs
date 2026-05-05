@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.Log;
-using Core.UI.MVC;
+using Core.UI.ViewController;
 using HotUpdate.Base.Tip;
 using HotUpdate.UI.Inventory;
 
@@ -12,9 +12,11 @@ namespace HotUpdate.UI.Tip
     /// <summary>
     /// 提示界面控制器
     /// </summary>
-    public class TipController : UIController<TipView, TipModel>
+    public class TipController : UIController<TipView>
     {
         [Inject] private ObjectSpawner _objectSpawner;
+
+        private PoolObject _confirmContent;
         
         private event Action _onConfirm;
         
@@ -64,7 +66,7 @@ namespace HotUpdate.UI.Tip
             {
                 case EConfirmContent.Delete:
                     var poolObj = await _objectSpawner.SpawnAsync<DeleteItemConfirmContent>(AssetKeys.DeleteItemConfirmContent, view.ContentRoot);
-                    model.ConfirmContent = poolObj;
+                    _confirmContent = poolObj;
                     DIContainer.InjectIntoInstance(poolObj.Obj);
                     return poolObj.Obj;
                 default:
@@ -80,14 +82,16 @@ namespace HotUpdate.UI.Tip
             }
             
             _onConfirm = null;
-            model.ConfirmContent.Convert<IConfirmContent>().Obj.ClearContent();
+            _confirmContent.Convert<IConfirmContent>().Obj.ClearContent();
+            _confirmContent.Collect();
             await uiManager.DestroyView(panelId);
         }
 
         protected override Task OnDestroy()
         {
             _objectSpawner.Dispose();
-            return base.OnDestroy();
+            _objectSpawner = null;
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace Core.UI.MVC
+namespace Core.UI.ViewController
 {
     /// <summary>
     /// MVC控制器界面状态类型

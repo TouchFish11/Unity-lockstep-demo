@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.UI.MVC;
+using Core.UI.ViewController;
 using UnityEngine;
 
 namespace Core.UI
@@ -73,10 +73,9 @@ namespace Core.UI
         /// <param name="pos"></param>
         /// <param name="quaternion"></param>
         /// <typeparam name="TView"></typeparam>
-        /// <typeparam name="TModel"></typeparam>
         /// <typeparam name="TController"></typeparam>
         /// <returns></returns>
-        Task<TController> CreateViewAsync<TView, TModel, TController>(string panelName, E_UILayer layer, Vector2 pos = default, Quaternion quaternion = default)
-            where TView : UIView, IuiView where TModel : class, IuiModel where TController : class, IuiController;
+        Task<TController> CreateViewAsync<TView, TController>(string panelName, E_UILayer layer, Vector2 pos = default, Quaternion quaternion = default)
+            where TView : UIView, IuiView where TController : class, IuiController;
     }
 }

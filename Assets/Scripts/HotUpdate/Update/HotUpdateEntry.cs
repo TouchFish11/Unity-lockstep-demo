@@ -48,7 +48,7 @@ namespace HotUpdate.Update
                 var uiManager = DIContainer.Create<UIManager>();
                 await uiManager.InitUIManagerAsync(AssetKeys.UIRoot);
                 // 显示开始界面
-                var controller = await uiManager.CreateViewAsync<BeginView, BeginModel, BeginController>(AssetKeys.BeginView, E_UILayer.Mid);
+                var controller = await uiManager.CreateViewAsync<BeginView, BeginController>(AssetKeys.BeginView, E_UILayer.Mid);
                 // 进入游戏
                 controller.OnClickEnterGame += EnterGame;
                 // 检查更新
@@ -91,7 +91,7 @@ namespace HotUpdate.Update
                 await Task.WhenAll(tasks);
                 
                 // 打开主界面
-                await DIContainer.Create<UIManager>().CreateViewAsync<MainPanel, MainModel, MainController>(AssetKeys.Main_Panel,  E_UILayer.Mid);
+                await DIContainer.Create<UIManager>().CreateViewAsync<MainPanel, MainController>(AssetKeys.Main_Panel,  E_UILayer.Mid);
             }
             catch (Exception e)
             {

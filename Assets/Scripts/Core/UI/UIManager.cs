@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
-using Core.UI.MVC;
+using Core.UI.ViewController;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 using Object = UnityEngine.Object;
@@ -69,22 +69,21 @@ namespace Core.UI
             };
         }
         
-        public async Task<TController> CreateViewAsync<TView, TModel, TController>(
+        public async Task<TController> CreateViewAsync<TView, TController>(
             string panelName, E_UILayer layer, Vector2 pos = default, Quaternion quaternion = default)
-            where TView : UIView, IuiView where TModel : class, IuiModel where TController : class, IuiController
+            where TView : UIView, IuiView where TController : class, IuiController
         {
             // 初始化控制器
             var controller = DIContainer.Create<TController>();
-            var model = DIContainer.Create<TModel>();
             try
             {
                 // 获取面板
                 var viewObj = await _objectSpawner.SpawnAsync<TView>(panelName,GetLayer(layer), pos, quaternion);
                 // 生成该界面的唯一ID
                 var id = GenerateId();
-                await controller.Init(id, viewObj.Obj, model);
+                await controller.Init(id, viewObj.Obj);
                 // 初始化面板信息
-                var newInfo = new PanelInfo<TView>(id, viewObj, viewObj.Obj, model, controller);
+                var newInfo = new PanelInfo<TView>(id, viewObj, viewObj.Obj, controller);
                 // 存储面板信息
                 _panels.Add(id, newInfo);
                 return controller;

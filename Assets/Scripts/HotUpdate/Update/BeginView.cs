@@ -1,7 +1,7 @@
 using Core.DI;
 using Core.Mono;
 using Core.UI;
-using Core.UI.MVC;
+using Core.UI.ViewController;
 using Core.Utility;
 using TMPro;
 using UnityEngine;

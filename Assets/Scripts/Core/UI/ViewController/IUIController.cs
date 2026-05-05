@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Core.UI.MVC
+namespace Core.UI.ViewController
 {
     public interface IuiController
     {
@@ -9,9 +9,8 @@ namespace Core.UI.MVC
         /// </summary>
         /// <param name="id"></param>
         /// <param name="view"></param>
-        /// <param name="model"></param>
         /// <returns></returns>
-        Task Init(int id, IuiView view, IuiModel model);
+        Task Init(int id, IuiView view);
         
         /// <summary>
         /// 显示

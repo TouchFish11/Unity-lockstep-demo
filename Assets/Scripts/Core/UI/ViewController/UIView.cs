@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Core.UI.MVC
+namespace Core.UI.ViewController
 {
     [RequireComponent(typeof(CanvasGroup))]
     public abstract class UIView : UIBehaviourBase, IuiView

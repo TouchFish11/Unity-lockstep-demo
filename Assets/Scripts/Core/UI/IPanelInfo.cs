@@ -1,5 +1,5 @@
 using Core.AssetBundles.Management;
-using Core.UI.MVC;
+using Core.UI.ViewController;
 
 namespace Core.UI
 {
@@ -9,11 +9,6 @@ namespace Core.UI
         /// 界面缓存对象
         /// </summary>
         PoolObject PoolObject { get; }
-        
-        /// <summary>
-        /// 界面数据接口
-        /// </summary>
-        IuiModel Model { get; }
         
         /// <summary>
         /// 界面控制器接口

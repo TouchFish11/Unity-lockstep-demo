@@ -71,7 +71,7 @@ namespace HotUpdate.UI.Inventory
                 newItem.auxValue = delNum;
                 items.Add(newItem);
             }
-            Logger.Log($"显示数量为：{items.Count}");
+
             return Task.FromResult(items);
         }
 

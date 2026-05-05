@@ -4,13 +4,15 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.Mono;
-using Core.UI.MVC;
+using Core.Pool;
+using Core.UI.ViewController;
 using Core.Utility;
 using HotUpdate.Base.Grid;
 using HotUpdate.Base.Inventory;
 using HotUpdate.Common.Items;
 using HotUpdate.Game.Inventory;
 using HotUpdate.UI.Inventory.State;
+using HotUpdate.UI.Inventory.ViewModel;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -19,33 +21,54 @@ namespace HotUpdate.UI.Inventory
     /// <summary>
     /// 背包界面控制器
     /// </summary>
-    public class InventoryController : UIController<InventoryPanel, InventoryModel>
+    public class InventoryController : UIController<InventoryPanel>
     {
+        [Inject] private IPoolManager _poolManager;
         [Inject] protected IInventoryManager _inventoryManager;
         [Inject] protected ObjectSpawner _objectSpawner;
         [Inject] protected IMonoAdapter monoAdapter;
         
         private readonly Dictionary<Type, IInventoryState> _inventoryStates = new();
-        
         // 当前背包界面所处的状态
         private IInventoryState _currentInventoryState;
+        // 物品排序委托
+        public Comparison<Item> sortComparison = InventorySorterFactory.DefaultIDSorter(1);
+        
+        /// <summary>
+        /// 当前显示的物品类型
+        /// </summary>
+        public EItemType CurrentItemType { get; set; }
+        
+        /// <summary>
+        /// 格子生成器
+        /// </summary>
+        public GridGenerator<Item, ItemCell> GridGenerator { get; set; }
+        
+        /// <summary>
+        /// 详细界面工厂
+        /// </summary>
+        public InventoryDetailViewCreateFactory DetailPanelFactory { get; set; }
         
         public event Action<string> OnButtonClickEvent;
         public event Action<string, string> OnInputFieldValueChangedEvent;
         public event Action<string, float> OnSliderValueChangedEvent;
+
+        private InventoryDeleteViewModel _inventoryDeleteViewModel;
         
         protected override async Task OnInit()
         {
+            _inventoryDeleteViewModel = DIContainer.Create<InventoryDeleteViewModel>();
+            view.SetViewModel(_inventoryDeleteViewModel);
+            
             // 初始化背包界面所有状态
             _inventoryStates.Add(typeof(InventoryDeleteState), DIContainer.Create<InventoryDeleteState>(parameterValues: new object[]
             {
-                model,
-                view,
+                _inventoryDeleteViewModel,
                 this
             }));
             
             // 初始化工厂
-            model.InitDetailPanelFactory();
+            DetailPanelFactory = _poolManager.GetData<InventoryDetailViewCreateFactory>();
             // 初始化格子生成器
             InitGridGenerator();
             // 创建选项
@@ -61,9 +84,6 @@ namespace HotUpdate.UI.Inventory
         protected override async Task OnInactivate()
         {
             await TransitionTo(null);
-            // 先回收，再销毁，否则对象池会无法清理
-            model.ClearOpt();
-            _objectSpawner.Dispose();
         }
         
         public void InitGridGenerator()
@@ -79,7 +99,7 @@ namespace HotUpdate.UI.Inventory
                 .Build();
             
             // 保存生成器
-            model.GridGenerator = generator;
+            GridGenerator = generator;
         }
         
         /// <summary>
@@ -93,10 +113,10 @@ namespace HotUpdate.UI.Inventory
                 var opt = await _objectSpawner.SpawnAsync<ItemTypeOpt>(AssetKeys.ItemTypeOpt, view.svOpts.content);
                 opt.Obj.InitOption((EItemType)itemType, null, view.OptGroup);
                 opt.Obj.OnItemTypeOptChange += UpdateItemsByType;
-                model.AddItemTypeOpt(opt);
+                view.AddItemTypeOpt(opt);
             }
             // // 默认选择第一个选项
-            model.GetFirstItemTypeOpt().Select();
+            view.GetFirstItemTypeOpt().Select();
             view.OptGroup.allowSwitchOff = false;
         }
         
@@ -117,16 +137,16 @@ namespace HotUpdate.UI.Inventory
                  * 导致又触发ScrollRectValueChanged事件创建新的格子，导致清空后又有格子，会出现显示异常和重复创建格子的问题
                  * 因为这个异步方法会被挂起的副作用，所以等待await后再执行清理格子，就能避免这个问题
                  */
-                model.GridGenerator.ClearGrids();
+                GridGenerator.ClearGrids();
                 // 排序物品数据DTO，默认按照品质类型排序    
-                items.Sort(model.sortComparison);
+                items.Sort(sortComparison);
                 // 初始化生成器
-                model.GridGenerator.AddClickListener(ItemClick);
-                model.GridGenerator.SetDatas(items);
+                GridGenerator.AddClickListener(ItemClick);
+                GridGenerator.SetDatas(items);
                 // 手动更新一次，将协程转换为Task等待
-                await TaskUtility.WaitForCoroutine(model.GridGenerator.FadeUpdateGrid(), monoAdapter);
+                await TaskUtility.WaitForCoroutine(GridGenerator.FadeUpdateGrid(), monoAdapter);
                 // 记录当前选择的物品类型
-                model.CurrentItemType = itemType;
+                CurrentItemType = itemType;
                 // 显示第一个物品的详细信息
                 if (items.Count > 0)
                 {
@@ -176,17 +196,17 @@ namespace HotUpdate.UI.Inventory
                 var itemConfig = item.itemConfig;
                 var itemData = _inventoryManager.GetData(item);
 
-                if (!model.DetailPanelPoolObject.Obj || model.CurrentItemType != itemConfig.itemType)
+                if (!view.DetailPanelPoolObject.Obj || CurrentItemType != itemConfig.itemType)
                 {
-                    if(model.DetailPanelPoolObject.Obj)
-                        model.DetailPanelPoolObject.Collect();
+                    if(view.DetailPanelPoolObject.Obj)
+                        view.DetailPanelPoolObject.Collect();
                     // 工厂创建详细界面
-                    poolObject = await model.DetailPanelFactory.CreateDetailPanel(itemConfig.itemType, view.DetailArea);
-                    model.DetailPanelPoolObject = poolObject.Convert<InventoryDetailPanel>();
+                    poolObject = await DetailPanelFactory.CreateDetailPanel(itemConfig.itemType, view.DetailArea);
+                    view.DetailPanelPoolObject = poolObject.Convert<InventoryDetailPanel>();
                 }
 
                 // 初始化详细界面
-                model.DetailPanelPoolObject.Obj.UpdateInfo(itemConfig, itemData);
+                view.DetailPanelPoolObject.Obj.UpdateInfo(itemConfig, itemData);
             }
             catch (Exception e)
             {
@@ -242,13 +262,13 @@ namespace HotUpdate.UI.Inventory
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         private void SwitchSort(EItemSort itemSort)
         {
-            model.sortComparison = itemSort switch
+            sortComparison = itemSort switch
             {
                 EItemSort.Default => InventorySorterFactory.DefaultIDSorter(1),
                 EItemSort.Quality => InventorySorterFactory.QualitySorter(-1),
                 _ => throw new ArgumentOutOfRangeException(nameof(itemSort), itemSort, null)
             };
-            UpdateItemsByType(model.CurrentItemType);
+            UpdateItemsByType(CurrentItemType);
         }
         
         /// <summary>
@@ -293,7 +313,7 @@ namespace HotUpdate.UI.Inventory
             }
 
             // 应用状态
-            foreach (var itemCell in model.GridGenerator.GetAllCell())
+            foreach (var itemCell in GridGenerator.GetAllCell())
             {
                 itemCell.ApplyState(state);
             }
@@ -301,20 +321,27 @@ namespace HotUpdate.UI.Inventory
         
         protected override async void OnButtonClick(string btnName)
         {
-            if (btnName == nameof(view.btnClose))
+            try
             {
-                await ExitDeleteState();
-                // 关闭背包界面
-                await uiManager.DestroyView(panelId);
-                Logger.Log($"[{nameof(InventoryController)}]: {view.name} closed");
+                if (btnName == nameof(view.btnClose))
+                {
+                    await ExitDeleteState();
+                    // 关闭背包界面
+                    await uiManager.DestroyView(panelId);
+                    Logger.Log($"[{nameof(InventoryController)}]: {view.name} closed");
+                }
+                else if (btnName == nameof(view.btnRequestDelete))
+                {
+                    await EnterDeleteState();
+                }
+                else
+                {
+                    OnButtonClickEvent?.Invoke(btnName);
+                }
             }
-            else if (btnName == nameof(view.btnRequestDelete))
+            catch (Exception e)
             {
-                await EnterDeleteState();
-            }
-            else
-            {
-                OnButtonClickEvent?.Invoke(btnName);
+                Logger.LogError($"[{nameof(InventoryController)}]: button click logic execute error, {e.Message}");
             }
         }
         
@@ -322,7 +349,7 @@ namespace HotUpdate.UI.Inventory
         {
             if (scrollViewName == nameof(view.svItems))
             {
-                model.GridGenerator?.UpdateGrid();
+                GridGenerator?.UpdateGrid();
             }
         }
         
@@ -343,13 +370,9 @@ namespace HotUpdate.UI.Inventory
                         break;
                 }
             }
-            catch (OperationCanceledException canceledException)
-            {
-                Logger.Log($"[{nameof(InventoryController)}]: operator cancel, {canceledException.Message}");
-            }
             catch (Exception e)
             {
-                Logger.LogError($"[{nameof(InventoryController)}]: {e.Message}");
+                Logger.LogError($"[{nameof(InventoryController)}]: switch item sort error, {e.Message}");
             }
         }
 
@@ -365,8 +388,29 @@ namespace HotUpdate.UI.Inventory
 
         protected override Task OnDestroy()
         {
+            // 清理选项UI
+            view.ClearOpt();
+            _objectSpawner.Dispose();
+            
+            // 清理删除状态缓存
             _inventoryStates.Clear();
             _currentInventoryState = null;
+            
+            // 清理详细界面UI
+            view.DetailPanelPoolObject.Collect();
+            _poolManager.PushData(DetailPanelFactory);
+            DetailPanelFactory = null;
+            
+            // 清理物品格子UI
+            _poolManager.PushData(GridGenerator);
+            GridGenerator = null;
+            
+            _inventoryDeleteViewModel.Dispose();
+            _inventoryDeleteViewModel = null;
+
+            // 清理其它对象
+            sortComparison = null;
+            _poolManager = null;
             return Task.CompletedTask;
         }
     }

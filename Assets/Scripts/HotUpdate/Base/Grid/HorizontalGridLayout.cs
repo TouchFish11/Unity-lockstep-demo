@@ -1,5 +1,4 @@
 using UnityEngine;
-using Logger = Core.Log.Logger;
 
 namespace HotUpdate.Base.Grid
 {
@@ -10,6 +9,8 @@ namespace HotUpdate.Base.Grid
     {
         // 每列最大行数
         public int maxRow;
+        // 视口宽度
+        protected float viewportWidth;
         
         public override (int minIndex, int maxIndex) CalcIndex()
         {
@@ -23,15 +24,7 @@ namespace HotUpdate.Base.Grid
             // ((RectTransform)_sv.transform).sizeDelta.x 是视口（显示区域）的实际宽度
             // 视口底部位置 = 已滚动偏移量 + 视口高度
             // 同样方式算出底部所在行数，乘 _maxCol 再加 (_maxCol - 1) 得到该行最后一个格子的索引
-            var maxIndex = (int)((_sv.viewport.rect.width - _content.anchoredPosition.x) / (_gridWidth + _gridXSpace)) * maxRow + (maxRow - 1);
-            
-            //-_content.anchoredPosition.x + _sv.content.sizeDelta.x
-
-            // ((RectTransform)_sv.transform).sizeDelta.x
-            // (-_content.anchoredPosition.x + ((RectTransform)_sv.transform).sizeDelta.x)
-
-            Logger.Log($"锚点x：{_content.anchoredPosition.x}，索引：{maxIndex}，" +
-                       $"{_sv.viewport.rect.width}");
+            var maxIndex = (int)((viewportWidth - _content.anchoredPosition.x) / (_gridWidth + _gridXSpace)) * maxRow + (maxRow - 1);
             
             // 边界保护：不能超出数据范围
             if (minIndex < 0)
@@ -62,6 +55,11 @@ namespace HotUpdate.Base.Grid
             // 总高度 = 总行数 * (格子高度 + 垂直间距)
             // 设置 sizeDelta 使滚动条能够正确反映内容总长度
             _content.sizeDelta = new Vector2(Mathf.CeilToInt(dataCount / (float)maxRow) * (_gridWidth + _gridXSpace), 0);
+            
+            // 暂时这样处理，否则拿不到viewport.rect.width
+            Canvas.ForceUpdateCanvases();
+            // 初始化视口宽度
+            viewportWidth = _sv.viewport.rect.width;
         }
     }
 }

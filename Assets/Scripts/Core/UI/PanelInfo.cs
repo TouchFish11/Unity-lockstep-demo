@@ -1,5 +1,5 @@
 using Core.AssetBundles.Management;
-using Core.UI.MVC;
+using Core.UI.ViewController;
 
 namespace Core.UI
 {
@@ -12,17 +12,15 @@ namespace Core.UI
         private int _id;
         
         public PoolObject PoolObject { get; private set; }
-
-        public IuiModel Model { get; }
+        
         public IuiController Controller { get; }
         public IuiView View { get; }
         
-        public PanelInfo(int id, PoolObject<T> poolObject, IuiView view, IuiModel model, IuiController uIController)
+        public PanelInfo(int id, PoolObject<T> poolObject, IuiView view, IuiController uIController)
         {
             _id = id;
             PoolObject = poolObject;
             View = view;
-            Model = model;
             Controller = uIController;
         }
     }

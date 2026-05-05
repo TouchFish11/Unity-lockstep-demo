@@ -1,9 +1,8 @@
 using Core.DI;
 using Core.UI;
-using Net.Sync;
 using TMPro;
 
-namespace HotUpdate.Main.Chat
+namespace HotUpdate.Game.Main.Chat
 {
     public class ChatUI : UIBehaviourBase
     {
@@ -11,8 +10,8 @@ namespace HotUpdate.Main.Chat
         
         public void SetMessage(int clientID, string msg)
         {
-            var userName = clientID == DIContainer.GetInstance<INetGameProxy>().SessionId ? "我" : $"{clientID}";
-            txtChatMsg.text = $"{userName}：{msg}";
+            //var userName = clientID == DIContainer.GetInstance<INetGameProxy>().SessionId ? "我" : $"{clientID}";
+            //txtChatMsg.text = $"{userName}：{msg}";
         }
     }
 }

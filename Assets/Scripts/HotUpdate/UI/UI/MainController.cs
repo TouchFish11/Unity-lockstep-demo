@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using Core.DI;
 using Core.Log;
 using Core.UI;
-using Core.UI.MVC;
+using Core.UI.ViewController;
 using HotUpdate.Game.Data;
 using HotUpdate.UI.Inventory;
 
 namespace HotUpdate.UI.UI
 {
-    public class MainController : UIController<MainPanel, MainModel>
+    public class MainController : UIController<MainPanel>
     {
         [Inject] private GameDataManager _dataManager;
         
@@ -34,7 +34,7 @@ namespace HotUpdate.UI.UI
             {
                 if (btnName == nameof(view.btnInventory))
                 {
-                    await uiManager.CreateViewAsync<InventoryPanel, InventoryModel, InventoryController>(AssetKeys.InventoryPanel, E_UILayer.Mid);
+                    await uiManager.CreateViewAsync<InventoryPanel, InventoryController>(AssetKeys.InventoryPanel, E_UILayer.Mid);
                 }
                 else if (btnName == nameof(view.btnAddItem))
                 {

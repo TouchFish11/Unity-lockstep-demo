@@ -1,5 +1,5 @@
 using Core.UI;
-using Core.UI.MVC;
+using Core.UI.ViewController;
 using UnityEngine.UI;
 
 namespace HotUpdate.UI.UI

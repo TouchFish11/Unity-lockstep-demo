@@ -4,7 +4,7 @@ using Core.DI;
 using Core.Log;
 using Core.Process;
 using Core.UI;
-using Core.UI.MVC;
+using Core.UI.ViewController;
 using Core.Utility;
 using HotUpdate.UI.Tip.Update;
 
@@ -15,7 +15,7 @@ namespace HotUpdate.Update
     /// <summary>
     /// 开始界面控制器
     /// </summary>
-    public class BeginController : UIController<BeginView, BeginModel>
+    public class BeginController : UIController<BeginView>
     {
         [Inject] private readonly IAssetBundleUpdater _assetBundleUpdater;
         private string _speed;
@@ -182,7 +182,7 @@ namespace HotUpdate.Update
                 {
                     if (_assetBundleUpdater.GetContext().IsHasUpdate)
                     {
-                        var controller = await uiManager.CreateViewAsync<UpdateTipView, UpdateTipModel, UpdateTipController>(AssetKeys.UpdateTipView, E_UILayer.Mid);
+                        var controller = await uiManager.CreateViewAsync<UpdateTipView, UpdateTipController>(AssetKeys.UpdateTipView, E_UILayer.Mid);
                         // 设置消息
                         controller.SetUpdateMessage("更新成功，请重新启动游戏");
                         // 暂时这样处理，可根据枚举类型决定如何处理按钮点击逻辑
@@ -199,7 +199,7 @@ namespace HotUpdate.Update
                 else
                 {
                     // 更新失败
-                    var controller = await uiManager.CreateViewAsync<UpdateTipView, UpdateTipModel, UpdateTipController>(AssetKeys.UpdateTipView, E_UILayer.Mid);
+                    var controller = await uiManager.CreateViewAsync<UpdateTipView, UpdateTipController>(AssetKeys.UpdateTipView, E_UILayer.Mid);
                     // 设置消息
                     controller.SetUpdateMessage(GetErrorMessage(updateResult.UpdateError));
                 

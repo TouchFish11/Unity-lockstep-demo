@@ -5,12 +5,12 @@ using Core.GlobalEvent.Events;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
-namespace Core.UI.MVC
+namespace Core.UI.ViewController
 {
     /// <summary>
     /// UI控制器
     /// </summary>
-    public abstract class UIController<TView, TModel> : IuiController where TView : IuiView where TModel : IuiModel
+    public abstract class UIController<TView> : IuiController where TView : IuiView
     {
         [DI.Inject] protected IUIManager uiManager;
         [DI.Inject] protected IEventCenter eventCenter;
@@ -20,22 +20,20 @@ namespace Core.UI.MVC
         // 控制器（界面）唯一ID
         public int panelId;
         protected TView view;
-        protected TModel model;
         
-        public async Task Init(int id, IuiView view, IuiModel model)
+        public async Task Init(int id, IuiView view)
         {
             try
             {
                 _controllerState = EControllerState.Initializing;
                 panelId = id;
                 this.view = (TView)view;
-                this.model = (TModel)model;
                 await OnInit();
                 await Activate();
             }
             catch (Exception e)
             {
-                Logger.LogError($"{nameof(UIController<TView, TModel>)}: Controller initialization failed, {e.Message}");
+                Logger.LogError($"{nameof(UIController<TView>)}: Controller initialization failed, {e.Message}");
             }
         }
 
@@ -234,8 +232,6 @@ namespace Core.UI.MVC
             // 界面被销毁
             _controllerState = EControllerState.Destroyed;
             await OnDestroy();
-            // 销毁界面才清理界面数据
-            model.ClearData();
         }
         
         protected virtual Task OnDestroy()

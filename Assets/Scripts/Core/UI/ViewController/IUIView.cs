@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Core.UI.MVC
+namespace Core.UI.ViewController
 {
     public interface IuiView
     {

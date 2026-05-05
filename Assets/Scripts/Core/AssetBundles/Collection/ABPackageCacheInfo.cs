@@ -43,16 +43,16 @@ namespace Core.AssetBundles.Collection
         /// <summary>
         /// AB包Hash
         /// </summary>
-        public string Hash { get { return _hash; } set { _hash = value; } }
+        public string Hash { get => _hash; set => _hash = value; }
 
         /// <summary>
         /// AB包是否下载完成
         /// </summary>
-        public bool IsSuccess { get { return _isSuccess; } set { _isSuccess = value; } }
+        public bool IsSuccess { get => _isSuccess; set => _isSuccess = value; }
 
         /// <summary>
         /// 已下载的字节数
         /// </summary>
-        public long DownloadedBytes { get { return _downloadedBytes; } set { _downloadedBytes = value; } }
+        public long DownloadedBytes { get => _downloadedBytes; set => _downloadedBytes = value; }
     }
 }

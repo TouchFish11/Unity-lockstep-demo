@@ -6,6 +6,7 @@ using Core.UI;
 using HotUpdate.Base.Inventory;
 using HotUpdate.Base.Tip;
 using HotUpdate.Common.Items;
+using HotUpdate.UI.Inventory.ViewModel;
 using HotUpdate.UI.Tip;
 using Logger = Core.Log.Logger;
 
@@ -19,9 +20,8 @@ namespace HotUpdate.UI.Inventory.State
         [Inject] private IInventoryManager _inventoryManager;
         [Inject] private IUIManager _uiManager;
         
-        private readonly InventoryModel _inventoryModel;
         private readonly InventoryController _inventoryController;
-        private readonly InventoryPanel _inventoryPanel;
+        private readonly InventoryDeleteViewModel _inventoryDeleteViewModel;
         
         private readonly Dictionary<Item, int> _deletedItems = new();
         
@@ -30,10 +30,9 @@ namespace HotUpdate.UI.Inventory.State
         /// 默认最小删除数量
         private const int DefaultDeleteMinNum = 1;
         
-        public InventoryDeleteState(InventoryModel model, InventoryPanel view, InventoryController inventoryController)
+        public InventoryDeleteState(InventoryDeleteViewModel viewModel, InventoryController inventoryController)
         {
-            _inventoryModel = model;
-            _inventoryPanel = view;
+            _inventoryDeleteViewModel = viewModel;
             _inventoryController = inventoryController;
         }
         
@@ -46,9 +45,9 @@ namespace HotUpdate.UI.Inventory.State
             // 监听滑动条事件
             _inventoryController.OnSliderValueChangedEvent += OnSliderValueChanged;
             // 激活删除区域
-            _inventoryPanel.DeleteArea.gameObject.SetActive(true);
+            _inventoryDeleteViewModel.DeleteAreaActive.Value = true;
             // 隐藏删除盒，因为还没有选择删除的物品
-            _inventoryPanel.SetDeleteBoxActive(false);
+            _inventoryDeleteViewModel.DeleteBoxActive.Value = false;
             return Task.CompletedTask;
         }
 
@@ -56,16 +55,15 @@ namespace HotUpdate.UI.Inventory.State
         {
             // 先记录当前操作的物品
             _currentItem = item;
-            // 更新滑动条的最最大/最小数量
+            // 更新滑动条的最最大/最小值
             var itemData = _inventoryManager.GetData(_currentItem);
-            _inventoryPanel.sliderNum.maxValue = itemData.itemNum;
-            _inventoryPanel.sliderNum.minValue = DefaultDeleteMinNum;
+            _inventoryDeleteViewModel.DeleteSliderExtremum.Value = (DefaultDeleteMinNum, itemData.itemNum);
 
             // 点击相同格子移除销毁状态
             if (_deletedItems.Remove(item))
             {
                 // 隐藏删除盒的输入
-                _inventoryPanel.SetDeleteBoxActive(false);
+                _inventoryDeleteViewModel.DeleteBoxActive.Value = false;
             }
             // 新增销毁物品
             else
@@ -74,13 +72,13 @@ namespace HotUpdate.UI.Inventory.State
                 if (item.itemConfig.isPile)
                 {
                     // 激活删除盒的输入
-                    _inventoryPanel.SetDeleteBoxActive(true);
+                    _inventoryDeleteViewModel.DeleteBoxActive.Value = true;
                     UpdateDeleteStateUI(DefaultDeleteMinNum);
                 }
                 else
                 {
                     // 隐藏删除盒的输入
-                    _inventoryPanel.SetDeleteBoxActive(false);
+                    _inventoryDeleteViewModel.DeleteBoxActive.Value = false;
                 }
             }
             return Task.CompletedTask;
@@ -88,16 +86,16 @@ namespace HotUpdate.UI.Inventory.State
 
         private async void OnButtonClickEvent(string btnName)
         {
-            if (btnName == nameof(_inventoryPanel.btnAdd))
+            if (btnName == "btnAdd")
             {
                 // 能进入这里的逻辑，一定是可堆叠的物品
-                var currentNum  = _deletedItems[_currentItem];
+                var currentNum = _deletedItems[_currentItem];
                 ++currentNum;
                 // 同步字典缓存
                 _deletedItems[_currentItem] = currentNum;
                 UpdateDeleteStateUI(currentNum);
             }
-            else if (btnName == nameof(_inventoryPanel.btnSub))
+            else if (btnName == "btnSub")
             {
                 // 能进入这里的逻辑，一定是可堆叠的物品
                 var currentNum = _deletedItems[_currentItem];
@@ -106,21 +104,21 @@ namespace HotUpdate.UI.Inventory.State
                 _deletedItems[_currentItem] = currentNum;
                 UpdateDeleteStateUI(currentNum);
             }
-            else if (btnName == nameof(_inventoryPanel.btnDelete))
+            else if (btnName == "btnDelete")
             {
                 await RequestDelete();
             }
-            else if (btnName == nameof(_inventoryPanel.btnCancelDelete))
+            else if (btnName == "btnCancelDelete")
             {
                 // 删除完毕后，退出删除状态
                 await _inventoryController.ExitDeleteState();
             }
-            else if (btnName == nameof(_inventoryPanel.btnMin))
+            else if (btnName == "btnMin")
             {
                 _deletedItems[_currentItem] = DefaultDeleteMinNum;
                 UpdateDeleteStateUI(DefaultDeleteMinNum);
             }
-            else if (btnName == nameof(_inventoryPanel.btnMax))
+            else if (btnName == "btnMax")
             {
                 var itemData = _inventoryManager.GetData(_currentItem);
                 _deletedItems[_currentItem] = itemData.itemNum;
@@ -134,7 +132,7 @@ namespace HotUpdate.UI.Inventory.State
         private async Task RequestDelete()
         {
             // 打开删除确认界面
-            var tipController = await _uiManager.CreateViewAsync<TipView, TipModel, TipController>(AssetKeys.TipPanel, E_UILayer.Mid);
+            var tipController = await _uiManager.CreateViewAsync<TipView, TipController>(AssetKeys.TipPanel, E_UILayer.Mid);
             // 初始化确认数据
             var confirmData = DIContainer.Create<ConfirmData>();
             confirmData.ConfirmTitle = "删除提示";
@@ -156,7 +154,7 @@ namespace HotUpdate.UI.Inventory.State
                 // 删除物品
                 _inventoryController.ExecuteDelete(_deletedItems);
                 // 刷新当前界面
-                _inventoryController.UpdateItemsByType(_inventoryModel.CurrentItemType);
+                _inventoryController.UpdateItemsByType(_inventoryController.CurrentItemType);
                 // 删除完毕后，退出删除状态
                 await _inventoryController.ExitDeleteState();
             }
@@ -180,57 +178,56 @@ namespace HotUpdate.UI.Inventory.State
             var itemData = _inventoryManager.GetData(_currentItem);
             if (currentNum == DefaultDeleteMinNum && itemData.itemNum == DefaultDeleteMinNum)
             {
-                _inventoryPanel.btnAdd.enabled = false;
-                _inventoryPanel.btnMax.enabled = false;
-                _inventoryPanel.btnSub.enabled = false;
-                _inventoryPanel.btnMin.enabled = false;
-                    
-                _inventoryPanel.inputFieldDeleteNum.text = DefaultDeleteMinNum.ToString();
-                _inventoryPanel.sliderNum.value = DefaultDeleteMinNum;
+                _inventoryDeleteViewModel.AddDeleteBtnEnalbe.Value = false;
+                _inventoryDeleteViewModel.SubDeleteBtnEnalbe.Value = false;
+                _inventoryDeleteViewModel.MaxDeleteBtnEnalbe.Value = false;
+                _inventoryDeleteViewModel.MinDeleteBtnEnalbe.Value = false;
+                
+                _inventoryDeleteViewModel.InputFieldDeleteNum.Value = DefaultDeleteMinNum.ToString();
+                _inventoryDeleteViewModel.DeleteSliderNum.Value = DefaultDeleteMinNum;
                 return;
             }
                 
             // 删除数量不允许超过拥有数量
             if (currentNum == itemData.itemNum)
             {
-                // 禁用增加按钮
-                _inventoryPanel.btnAdd.enabled = false;
-                // 禁用最大按钮
-                _inventoryPanel.btnMax.enabled = false;
-
-                _inventoryPanel.btnSub.enabled = true;
-                _inventoryPanel.btnMin.enabled = true;
+                // 禁用增加/最大按钮
+                _inventoryDeleteViewModel.AddDeleteBtnEnalbe.Value = false;
+                _inventoryDeleteViewModel.MaxDeleteBtnEnalbe.Value = false;
+                // 启用最小/减少按钮
+                _inventoryDeleteViewModel.SubDeleteBtnEnalbe.Value = true;
+                _inventoryDeleteViewModel.MinDeleteBtnEnalbe.Value = true;
             }
             // 删除数量不允许为负数或0
             else if(currentNum == 1)
             {
-                // 禁用最小按钮
-                _inventoryPanel.btnSub.enabled = false;
-                // 禁用减少按钮
-                _inventoryPanel.btnMin.enabled = false;
+                // 禁用最小/减少按钮
+                _inventoryDeleteViewModel.SubDeleteBtnEnalbe.Value = false;
+                _inventoryDeleteViewModel.MinDeleteBtnEnalbe.Value = false;
                     
-                _inventoryPanel.btnAdd.enabled = true;
-                _inventoryPanel.btnMax.enabled = true;
+                // 启用增加/最大按钮
+                _inventoryDeleteViewModel.AddDeleteBtnEnalbe.Value = true;
+                _inventoryDeleteViewModel.MaxDeleteBtnEnalbe.Value = true;
             }
             else
             {
-                _inventoryPanel.btnAdd.enabled = true;
-                _inventoryPanel.btnMax.enabled = true;
-                _inventoryPanel.btnSub.enabled = true;
-                _inventoryPanel.btnMin.enabled = true;
+                _inventoryDeleteViewModel.AddDeleteBtnEnalbe.Value = true;
+                _inventoryDeleteViewModel.SubDeleteBtnEnalbe.Value = true;
+                _inventoryDeleteViewModel.MaxDeleteBtnEnalbe.Value = true;
+                _inventoryDeleteViewModel.MinDeleteBtnEnalbe.Value = true;
             }
                 
             // 更新输入框显示
-            if(_inventoryPanel.inputFieldDeleteNum.text != currentNum.ToString())
-                _inventoryPanel.inputFieldDeleteNum.text = currentNum.ToString();
+            if(_inventoryDeleteViewModel.InputFieldDeleteNum.Value != currentNum.ToString())
+                _inventoryDeleteViewModel.InputFieldDeleteNum.Value = currentNum.ToString();
             // 更新滑动条显示
-            if((int)_inventoryPanel.sliderNum.value != currentNum)
-                _inventoryPanel.sliderNum.value = currentNum;
+            if((int)_inventoryDeleteViewModel.DeleteSliderNum.Value != currentNum)
+                _inventoryDeleteViewModel.DeleteSliderNum.Value = currentNum;
         }
         
         private void OnInputFieldValueChangedEvent(string inputFieldName, string inputFieldValue)
         {
-            if (inputFieldName == nameof(_inventoryPanel.inputFieldDeleteNum))
+            if (inputFieldName == "inputFieldDeleteNum")
             {
                 if(_currentItem == null)
                     return;
@@ -252,16 +249,13 @@ namespace HotUpdate.UI.Inventory.State
 
         private void OnSliderValueChanged(string sliderName, float value)
         {
-            if (sliderName == nameof(_inventoryPanel.sliderNum))
+            if (sliderName == "sliderNum")
             {
-                if (_inventoryPanel.sliderNum.wholeNumbers)
-                {
-                    var currentNum = (int)value;
-                    if (_deletedItems.ContainsKey(_currentItem))
-                        _deletedItems[_currentItem] = currentNum;
+                var currentNum = (int)value;
+                if (_deletedItems.ContainsKey(_currentItem))
+                    _deletedItems[_currentItem] = currentNum;
                     
-                    UpdateDeleteStateUI(currentNum);
-                }
+                UpdateDeleteStateUI(currentNum);
             }
         }
 
@@ -282,11 +276,11 @@ namespace HotUpdate.UI.Inventory.State
             _currentItem = null;
             
             // 重置输入框数量
-            _inventoryPanel.inputFieldDeleteNum.text = DefaultDeleteMinNum.ToString();
+            _inventoryDeleteViewModel.InputFieldDeleteNum.Value = DefaultDeleteMinNum.ToString();
             // 重置滑动条数量
-            _inventoryPanel.sliderNum.value = DefaultDeleteMinNum;
+            _inventoryDeleteViewModel.DeleteSliderNum.Value = DefaultDeleteMinNum;
             // 隐藏删除区域
-            _inventoryPanel.DeleteArea.gameObject.SetActive(false);
+            _inventoryDeleteViewModel.DeleteAreaActive.Value = false;
         }
 
         public Task Exit()
