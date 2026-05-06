@@ -5,6 +5,32 @@ using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
+    public class Solution
+    {
+        #region 两数之和
+        
+        public int[] TwoSum(int[] nums, int target)
+        {
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+
+            for (var i = 0; i < nums.Length; i++)
+            {
+                var sub = target - nums[i];
+                if (dict.TryGetValue(sub, out var value))
+                {
+                    return new[] { i, value };
+                }
+                
+                dict.TryAdd(nums[i], i);
+            }
+            
+            return Array.Empty<int>();
+        }
+        
+        
+        #endregion
+    }
+    
     #region 相交链表
 
     public class ListNode 

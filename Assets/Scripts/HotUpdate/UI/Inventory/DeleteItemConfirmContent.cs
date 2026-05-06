@@ -7,6 +7,7 @@ using Core.Pool;
 using Core.UI;
 using Core.Utility;
 using HotUpdate.Base.Grid;
+using HotUpdate.Base.Items;
 using HotUpdate.Base.Tip;
 using HotUpdate.Common.Items;
 using TMPro;
@@ -23,6 +24,7 @@ namespace HotUpdate.UI.Inventory
     {
         [Inject] private IPoolManager _poolManager;
         [Inject] private IMonoAdapter _monoAdapter;
+        [Inject] private ItemCreateFactory _itemCreateFactory;
         
         [InjectUI] private TextMeshProUGUI txtDelTip;
         [InjectUI] private ScrollRect svDel;
@@ -63,8 +65,8 @@ namespace HotUpdate.UI.Inventory
             var items = new List<Item>(deleteItems.Count);
             foreach (var (item, delNum) in deleteItems)
             {
-                // 对象池复用对象
-                var newItem = _poolManager.GetData<Item>();
+                // 获取物品对象对象
+                var newItem = _itemCreateFactory.CreateItem();
                 newItem.persistentId = item.persistentId;
                 newItem.itemConfig = item.itemConfig;
                 // 赋值为删除数量
@@ -84,6 +86,7 @@ namespace HotUpdate.UI.Inventory
         public void ClearContent()
         {
             _poolManager.PushData(_generator);
+            _poolManager.PushData(_itemCreateFactory);
             _generator = null;
         }
 

@@ -35,6 +35,12 @@ namespace HotUpdate.Base.Inventory
         void DeleteItem(int itemId, int deleteNum);
         
         void DeleteItem(long persistentId);
+        
+        /// <summary>
+        /// 获取当前类型显示的所有物品对象，只能获取所有可堆叠/不可堆叠的物品对象
+        /// 当同一类型存在可堆叠和不可堆叠的物品时，无法准确获取
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<Item> GetAllItems();
     }
 }

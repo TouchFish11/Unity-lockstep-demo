@@ -288,34 +288,32 @@ namespace HotUpdate.UI.Inventory
 
         private Task EnterDeleteState()
         {
-            SetGridVisualState(EGridState.Delete);
             // 切换为删除状态
             return TransitionTo(typeof(InventoryDeleteState));
         }
 
         public Task ExitDeleteState()
         {
-            SetGridVisualState(EGridState.Normal);
+            ClearGridDeleteState();
             // 切换为正常状态
             return TransitionTo(null);
         }
-        
+
         /// <summary>
-        /// 设置格子的可视状态
+        /// 清理格子的删除状态
         /// </summary>
-        /// <param name="state"></param>
-        public void SetGridVisualState(EGridState state)
+        public void ClearGridDeleteState()
         {
-            // 重置Item删除标记和状态
+            // 获取当前显示物品，重置Item删除标记
             foreach (var item in _inventoryManager.GetAllItems())
             {
                 item.isDeleted = false;
             }
 
-            // 应用状态
+            // 清理删除状态
             foreach (var itemCell in GridGenerator.GetAllCell())
             {
-                itemCell.ApplyState(state);
+                itemCell.ClearDeleteState();
             }
         }
         

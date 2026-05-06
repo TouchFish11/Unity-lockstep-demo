@@ -56,13 +56,13 @@ namespace HotUpdate.UI.Inventory
             inventoryDeleteViewModel.DeleteAreaActive.Subscribe(SetDeleteAreaActive);
             inventoryDeleteViewModel.DeleteBoxActive.Subscribe(SetDeleteBoxActive);
             inventoryDeleteViewModel.DeleteSliderExtremum.Subscribe(SetDeleteSliderExtremum);
-            inventoryDeleteViewModel.DeleteSliderNum.Subscribe(SetDeleteSliderNum);
-            inventoryDeleteViewModel.InputFieldDeleteNum.Subscribe(SetInputFieldDeleteNum);
+            inventoryDeleteViewModel.DeleteNum.Subscribe(SetDeleteSliderNum);
+            inventoryDeleteViewModel.DeleteNum.Subscribe(SetInputFieldDeleteNum);
             
-            inventoryDeleteViewModel.AddDeleteBtnEnalbe.Subscribe(SetAddDeleteBtnEnable);
-            inventoryDeleteViewModel.SubDeleteBtnEnalbe.Subscribe(SetSubDeleteBtnEnable);
-            inventoryDeleteViewModel.MaxDeleteBtnEnalbe.Subscribe(SetMaxDeleteBtnEnable);
-            inventoryDeleteViewModel.MinDeleteBtnEnalbe.Subscribe(SetMinDeleteBtnEnable);
+            inventoryDeleteViewModel.AddDeleteBtnEnable.Subscribe(SetAddDeleteBtnEnable);
+            inventoryDeleteViewModel.SubDeleteBtnEnable.Subscribe(SetSubDeleteBtnEnable);
+            inventoryDeleteViewModel.MaxDeleteBtnEnable.Subscribe(SetMaxDeleteBtnEnable);
+            inventoryDeleteViewModel.MinDeleteBtnEnable.Subscribe(SetMinDeleteBtnEnable);
         }
 
         private void SetDeleteAreaActive(bool isActive)
@@ -85,9 +85,14 @@ namespace HotUpdate.UI.Inventory
             sliderNum.maxValue = extremum.max;
         }
         
-        private void SetDeleteSliderNum(float num)
+        private void SetDeleteSliderNum(int deleteNum)
         {
-            sliderNum.value = num;
+            sliderNum.SetValueWithoutNotify(deleteNum);
+        }
+        
+        private void SetInputFieldDeleteNum(int deleteNum)
+        {
+            inputFieldDeleteNum.SetTextWithoutNotify(deleteNum.ToString());
         }
 
         private void SetAddDeleteBtnEnable(bool enable)
@@ -108,11 +113,6 @@ namespace HotUpdate.UI.Inventory
         private void SetMinDeleteBtnEnable(bool enable)
         {
             btnMin.enabled = enable;
-        }
-
-        private void SetInputFieldDeleteNum(string deleteNum)
-        {
-            inputFieldDeleteNum.text = deleteNum;
         }
 
         /// <summary>

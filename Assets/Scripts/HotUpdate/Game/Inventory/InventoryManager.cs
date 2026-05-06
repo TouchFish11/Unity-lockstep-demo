@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.DI;
 using Core.Pool;
 using HotUpdate.Base.Icon;
 using HotUpdate.Base.Inventory;
@@ -16,12 +17,16 @@ namespace HotUpdate.Game.Inventory
     /// </summary>
     public class InventoryManager : IInventoryManager
     {
+        [Inject] private ItemCreateFactory _itemCreateFactory;
         private readonly ItemDataProvider _itemDataProvider;
         private readonly IPoolManager _poolManager;
         private readonly IIconProvider _iconProvider;
         
-        // 当前显示的物品持久化ID到物品对象的映射
+        // 当前显示的不可堆叠物品持久化ID到物品对象的映射
         private readonly Dictionary<long, Item> _instanceIdToItemMap =  new();
+        // 当前显示的可堆叠物品物品ID到物品对象的映射
+        private readonly Dictionary<int, Item> _itemIdToItemMap =  new();
+        
         // 当前已经加载过的图标Key
         private readonly HashSet<string> _iconKeys = new();
         
@@ -34,7 +39,11 @@ namespace HotUpdate.Game.Inventory
 
         public IEnumerable<Item> GetAllItems()
         {
-            return _instanceIdToItemMap.Values;
+            // 当前显示的是不可堆叠物品
+            if(_instanceIdToItemMap.Count > 0)
+                return _instanceIdToItemMap.Values;
+            // 当前显示的是可堆叠物品
+            return  _itemIdToItemMap.Values;
         }
 
         /// <summary>
@@ -74,13 +83,14 @@ namespace HotUpdate.Game.Inventory
         
         public async Task<List<Item>> CreateItemsAsync(EItemType itemType)
         {
-            // 回收Item
-            foreach (var (_, item) in _instanceIdToItemMap)
-            {
+            // 回收Item，清空缓存
+            foreach (var item in _instanceIdToItemMap.Values)
                 _poolManager.PushData(item);
-            }
-            // 清空缓存
             _instanceIdToItemMap.Clear();
+            
+            foreach (var item in _itemIdToItemMap.Values)
+                _poolManager.PushData(item);
+            _itemIdToItemMap.Clear();
             
             // 创建所有物品对象
             var dtoTasks = new List<Task<Item>>();
@@ -117,7 +127,7 @@ namespace HotUpdate.Game.Inventory
         private async Task<Item> CreateItem(long persistentId, ItemConfig itemConfig, ItemData itemData)
         {
             // 对象池复用对象
-            var item = _poolManager.GetData<Item>();
+            var item = _itemCreateFactory.CreateItem();
             // 设置实例ID
             item.persistentId = persistentId;
             // 引用物品配置
@@ -126,9 +136,11 @@ namespace HotUpdate.Game.Inventory
             item.auxValue = ItemResolver.ResolveAux(itemData);
             // 是否是新物品
             item.isNew = itemData.isNew;
-            // 缓存对象
+            // 缓存对象，按是否可堆叠分别缓存
             if(persistentId != ItemPersistentIdGenerator.DefaultNotStackableId)
                 _instanceIdToItemMap.Add(persistentId, item);
+            else
+                _itemIdToItemMap.Add(itemConfig.itemId, item);
             // 加载该物品的图标
             var sprite = await _iconProvider.LoadIconAsync(itemConfig.icon);
             // 缓存加载成功物品图标Key

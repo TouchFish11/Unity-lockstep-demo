@@ -23,16 +23,19 @@ namespace Core.UI
             get => _value;
             set
             {
-                if (EqualityComparer<T>.Default.Equals(_value, value)) 
+                if (EqualityComparer<T>.Default.Equals(_value, value))
+                {
+                    Logger.Log($"[{nameof(ReactiveProperty<T>)}]: 相等性判断, {_value}");
                     return;
+                }
                 
                 // 如果当前正在通知，说明这是一次重入调用，我们不立刻再次通知，
                 // 而是直接返回（值已经更新，但不会触发新的通知，从而终止循环）。
-                if (_isNotifying)
-                {
-                    Logger.Log($"[{nameof(ReactiveProperty<T>)}]: 重入调用, {_value}");
-                    return;
-                }
+                // if (_isNotifying)
+                // {
+                //     Logger.Log($"[{nameof(ReactiveProperty<T>)}]: 重入调用, {_value}");
+                //     return;
+                // }
 
                 _value = value;
                 Invoke(_value);
@@ -79,6 +82,14 @@ namespace Core.UI
                 throw new ObjectDisposedException(nameof(ReactiveProperty<T>));
             
             _onValueChangeds.Remove(listener);
+        }
+        
+        /// <summary>
+        /// 强制通知
+        /// </summary>
+        public void ForceNotify()
+        {
+            Invoke(_value);
         }
 
         /// <summary>

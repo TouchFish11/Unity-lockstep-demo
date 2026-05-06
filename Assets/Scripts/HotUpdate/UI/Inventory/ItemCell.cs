@@ -83,18 +83,14 @@ namespace HotUpdate.UI.Inventory
             // 切换删除标志显示/隐藏
             imgDeleteFlag.gameObject.SetActive(_item.isDeleted);
         }
-        
+
         /// <summary>
-        /// 切换格子状态
+        /// 清理格子的删除状态，隐藏删除标记显示
         /// </summary>
-        /// <param name="gridState"></param>
-        public void ApplyState(EGridState gridState)
+        public void ClearDeleteState()
         {
-            if (gridState == EGridState.Normal)
-            {
-                // 清理删除标志
-                imgDeleteFlag.gameObject.SetActive(false);
-            }
+            // 清理删除标志
+            imgDeleteFlag.gameObject.SetActive(false);
         }
 
         protected override void OnButtonClick(string btnName)
