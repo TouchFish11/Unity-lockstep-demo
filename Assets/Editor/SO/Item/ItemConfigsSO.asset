@@ -25,7 +25,7 @@ MonoBehaviour:
         - rid: 798032819359318178
         - rid: 798032819359318180
         - rid: 798032819359318182
-        - rid: 798032819359318183
+        - rid: 2665602479357689860
     - rid: 798032819359318176
       type: {class: MaterialItemConfig, ns: HotUpdate.Common.Items.Config, asm: HotUpdate.Common}
       data:
@@ -66,8 +66,8 @@ MonoBehaviour:
         isPile: 0
         itemQuality: 0
         itemType: 0
-    - rid: 798032819359318183
-      type: {class: ItemConfig, ns: HotUpdate.Common.Items.Config, asm: HotUpdate.Common}
+    - rid: 2665602479357689860
+      type: {class: MaterialItemConfig, ns: HotUpdate.Common.Items.Config, asm: HotUpdate.Common}
       data:
         itemId: 0
         name: 

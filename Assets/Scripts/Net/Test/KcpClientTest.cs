@@ -1,7 +1,5 @@
 using System;
 using kcp2k;
-using Net.Sync;
-using Net.Sync.Msg;
 using UnityEngine;
 using KcpClient = kcp2k.KcpClient;
 

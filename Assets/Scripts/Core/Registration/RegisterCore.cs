@@ -50,7 +50,7 @@ namespace Core.Registration
             DIContainer.BindSingleton<IResourcesManager, ResourcesManager>();
             DIContainer.BindSingleton<ITimerManager, TimerManager>();
             DIContainer.BindSingleton<IVideoManager, VideoPlayManager>();
-            DIContainer.BindSingleton<IFactoryManager, FactoryManager>(); 
+            DIContainer.BindSingleton<IFactoryManager, FactoryManager>();
 #if UNITY_EDITOR
             DIContainer.BindSingleton<IHotUpdateManager, HotUpdateMockManager>();
 #else

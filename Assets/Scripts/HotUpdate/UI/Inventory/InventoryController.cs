@@ -10,7 +10,7 @@ using Core.Utility;
 using HotUpdate.Base.Grid;
 using HotUpdate.Base.Inventory;
 using HotUpdate.Common.Items;
-using HotUpdate.Game.Inventory;
+using HotUpdate.Game.Inventory.Sorts;
 using HotUpdate.UI.Inventory.State;
 using HotUpdate.UI.Inventory.ViewModel;
 using UnityEngine;
@@ -32,7 +32,7 @@ namespace HotUpdate.UI.Inventory
         // 当前背包界面所处的状态
         private IInventoryState _currentInventoryState;
         // 物品排序委托
-        public Comparison<Item> sortComparison = InventorySorterFactory.DefaultIDSorter(1);
+        public Comparison<Item> sortComparison = InventorySorter.Default(1);
         
         /// <summary>
         /// 当前显示的物品类型
@@ -129,7 +129,7 @@ namespace HotUpdate.UI.Inventory
             try
             {
                 // 先通知当前状态执行逻辑
-                _currentInventoryState?.OnItemsRefreshed();
+                _currentInventoryState?.OnBeforeRefreshItem();
                 // 根据当前数据创建，先 await，避免惯性滚动触发创建
                 var items = await _inventoryManager.CreateItemsAsync(itemType);
                 /*
@@ -163,8 +163,8 @@ namespace HotUpdate.UI.Inventory
         {
             try
             {
-                // 更新New标志
-                UpdateGridNewState(item);
+                // 是否点击了格子，移除new标识
+                _inventoryManager.UpdateGridNewState(item);
                 // 删除模式才执行
                 if (_currentInventoryState != null)
                 {
@@ -214,16 +214,6 @@ namespace HotUpdate.UI.Inventory
                 Logger.LogError($"{nameof(InventoryController)}: Create detail panel fail, {e.Message}");
             }
         }
-        
-        /// <summary>
-        /// 更新格子状态
-        /// </summary>
-        /// <param name="item"></param>
-        private void UpdateGridNewState(Item item)
-        {
-            // 是否点击了格子，移除new标识
-            _inventoryManager.UpdateGridNewState(item);
-        }
 
         /// <summary>
         /// 更新格子的删除标志
@@ -264,8 +254,8 @@ namespace HotUpdate.UI.Inventory
         {
             sortComparison = itemSort switch
             {
-                EItemSort.Default => InventorySorterFactory.DefaultIDSorter(1),
-                EItemSort.Quality => InventorySorterFactory.QualitySorter(-1),
+                EItemSort.Default => InventorySorter.Default(1),
+                EItemSort.Quality => InventorySorter.Get<QualitySorter>(-1),
                 _ => throw new ArgumentOutOfRangeException(nameof(itemSort), itemSort, null)
             };
             UpdateItemsByType(CurrentItemType);

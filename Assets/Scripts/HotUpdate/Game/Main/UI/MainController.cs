@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Core.DI;
-using Core.Net.FrameSync.Manager;
 using Core.UI.ViewController;
 using HotUpdate.Game.Main.Chat;
 using HotUpdate.Main.Chat;

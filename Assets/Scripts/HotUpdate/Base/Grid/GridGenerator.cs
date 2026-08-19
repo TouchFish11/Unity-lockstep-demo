@@ -86,7 +86,7 @@ namespace HotUpdate.Base.Grid
             if (minIndex != oldMinIndex || maxIndex != oldMaxIndex)
             {
                 // 向上滑动（内容向上，minIndex 变大）：回收顶部移出的格子
-                // 范围：oldMinIndex 到 minIndex-1
+                // 范围：oldMinIndex 到 minIndex
                 for (var i = oldMinIndex; i < minIndex; i++)
                 {
                     if (_nowShowGridDic.TryGetValue(i, out var poolObj))

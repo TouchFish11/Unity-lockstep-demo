@@ -176,7 +176,7 @@ namespace HotUpdate.UI.Inventory.State
             // 获取玩家物品拥有数量
             var itemData = _inventoryManager.GetData(_currentItem);
             // 限制范围
-            currentNum = Math.Clamp(currentNum, 1, itemData.itemNum);
+            currentNum = Mathf.Clamp(currentNum, 1, itemData.itemNum);
             
             // 同步字典
             if (_deletedItems.ContainsKey(_currentItem))
@@ -261,7 +261,7 @@ namespace HotUpdate.UI.Inventory.State
             }
         }
 
-        public void OnItemsRefreshed()
+        public void OnBeforeRefreshItem()
         {
             _inventoryController.ExitDeleteState();
         }

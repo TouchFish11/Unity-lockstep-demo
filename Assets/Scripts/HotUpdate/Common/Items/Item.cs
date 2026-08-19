@@ -3,12 +3,6 @@ using HotUpdate.Common.Items.Config;
 
 namespace HotUpdate.Common.Items
 {
-    public enum EGridState
-    {
-        Normal,
-        Delete,
-    }
-
     /// <summary>
     /// 物品对象，可通过缓存池复用
     /// </summary>

@@ -28,8 +28,8 @@ namespace HotUpdate.UI.Inventory.State
         Task Exit();
         
         /// <summary>
-        /// 当物品栏刷新时优先调用
+        /// 当物品栏刷新前优先调用
         /// </summary>
-        void OnItemsRefreshed();
+        void OnBeforeRefreshItem();
     }
 }

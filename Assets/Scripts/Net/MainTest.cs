@@ -1,6 +1,9 @@
 using Core.DI;
 using kcp2k;
+using Net.Protocols;
 using Net.Sync;
+using Net.SyncModule.Interface;
+using Net.SyncModule.Manager;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
