@@ -1,15 +1,11 @@
-using Core.AssetBundles.Management;
+using System;
 using Core.UI.ViewController;
 
 namespace Core.UI
 {
+    [Obsolete("Legacy", true)]
     public interface IPanelInfo
     {
-        /// <summary>
-        /// 界面缓存对象
-        /// </summary>
-        PoolObject PoolObject { get; }
-        
         /// <summary>
         /// 界面控制器接口
         /// </summary>
@@ -18,6 +14,6 @@ namespace Core.UI
         /// <summary>
         /// 界面视图接口
         /// </summary>
-        IuiView View { get; }
+        UIView View { get; }
     }
 }

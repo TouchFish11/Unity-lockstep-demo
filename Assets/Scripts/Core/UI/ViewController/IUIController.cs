@@ -5,6 +5,11 @@ namespace Core.UI.ViewController
     public interface IuiController
     {
         /// <summary>
+        /// 界面ID
+        /// </summary>
+        int PanelId { get; }
+        
+        /// <summary>
         /// 初始化
         /// </summary>
         /// <param name="id"></param>
@@ -30,6 +35,6 @@ namespace Core.UI.ViewController
         /// 销毁
         /// 主要处理资源释放的逻辑
         /// </summary>
-        Task Destroy();
+        Task Dispose();
     }
 }

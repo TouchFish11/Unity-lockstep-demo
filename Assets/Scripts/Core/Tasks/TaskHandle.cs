@@ -1,44 +1,40 @@
 using System;
-using Core.Log;
 
 namespace Core.Tasks
 {
     /// <summary>
     /// 任务句柄
     /// </summary>
-    public struct TaskHandle : IDisposable
+    [Obsolete("Redundancy of encapsulation", true)]
+    internal struct TaskHandle : IDisposable
     {
-        // 句柄ID
+#if UNITY_EDITOR
+        // 句柄ID，调试用
         private readonly int _id;
+#endif
         // 任务的引用计数
         private uint _refCount; 
         // 任务对象
-        private FTask _task;
+        private AoTask _task;
         
         /// <summary>
         /// 获取内部的任务对象，每次访问该属性会是的引用计数增加
         /// </summary>
-        public FTask Task
+        public AoTask Task
         {
             get
             {
                 ++_refCount;
-#if UNITY_EDITOR && DEBUG_TEST
-                Logger.Log($"[TaskHandle]: id({_id}) Task 引用数增加到: {_refCount}");
-#endif
                 return _task;
             }
         }
         
-        /// <summary>
-        /// 内部的任务对象是否有效
-        /// </summary>
-        public bool IsValid => _task != null;
-        
-        public TaskHandle(FTask fTask)
+        internal TaskHandle(AoTask aoTask)
         {
-            _id = TaskHandleHelper.GetGlobalId();
-            _task = fTask;
+#if UNITY_EDITOR
+            _id = TaskHandleHelper.GetGlobalId();   
+#endif
+            _task = aoTask;
             _refCount = 0;
         }
         
@@ -51,13 +47,10 @@ namespace Core.Tasks
             {
                 --_refCount;
             }
-
-#if UNITY_EDITOR && DEBUG_TEST
-            Logger.Log($"[TaskHandle]: id({_id}) Task 引用数释放到: {_refCount}");
-#endif
+            
             if (_refCount == 0)
             {
-                _task?.Release();
+                //_task?.Release();
                 _task = null;
             }
         }
@@ -66,39 +59,35 @@ namespace Core.Tasks
     /// <summary>
     /// 泛型任务句柄
     /// </summary>
-    public struct TaskHandle<T> : IDisposable
+    internal struct TaskHandle<T> : IDisposable
     {
-        // 句柄ID
+#if UNITY_EDITOR
+        // 句柄ID，调试用
         private readonly int _id;
+#endif
         // 任务的引用计数
         private uint _refCount; 
         // 任务对象
-        private FTask<T> _task;
+        private AoTask<T> _task;
 
         /// <summary>
         /// 获取内部的任务对象，每次访问该属性会是的引用计数增加
         /// </summary>
-        public FTask<T> Task
+        public AoTask<T> Task
         {
             get
             {
                 ++_refCount;
-#if UNITY_EDITOR && DEBUG_TEST
-                Logger.Log($"[TaskHandle]: id({_id}) Task 引用数增加到: {_refCount}");
-#endif
                 return _task;
             }
         }
-
-        /// <summary>
-        /// 内部的任务对象是否有效
-        /// </summary>
-        public bool IsValid => _task != null;
         
-        public TaskHandle(FTask<T> fTask)
+        public TaskHandle(AoTask<T> aoTask)
         {
-            _id = TaskHandleHelper.GetGlobalId();
-            _task = fTask;
+#if UNITY_EDITOR
+            _id = TaskHandleHelper.GetGlobalId();   
+#endif
+            _task = aoTask;
             _refCount = 0;
         }
         
@@ -112,12 +101,9 @@ namespace Core.Tasks
                 --_refCount;
             }
 
-#if UNITY_EDITOR && DEBUG_TEST
-            Logger.Log($"[TaskHandle]: id({_id}) Task 引用数释放到: {_refCount}");
-#endif
             if (_refCount == 0)
             {
-                _task?.Release();
+                //_task?.Release();
                 _task = null;
             }
         }

@@ -6,8 +6,14 @@ namespace Net.SyncModule.Interface
 {
     public interface INetGameProxy
     {
+        /// <summary>
+        /// 业务层使用的连接完成事件
+        /// </summary>
         event Action<int> OnGameConnected;
         
+        /// <summary>
+        /// 业务层使用的连接断开事件
+        /// </summary>
         event Action OnGameDisconnected;
 
         /// <summary>
@@ -43,5 +49,10 @@ namespace Net.SyncModule.Interface
         /// </summary>
         /// <param name="netConfig"></param>
         INetGameProxy Init(NetConfig netConfig);
+
+        /// <summary>
+        /// TCP的延迟时间回调
+        /// </summary>
+        event Action<long> TcpRtt;
     }
 }

@@ -1,5 +1,5 @@
 using System;
-using Net.Configs;
+using Net.Protocols.Configs;
 
 namespace Net.Protocols.Tcp.Messages.Common
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Core.AssetBundles.Collection;
 using Core.AssetBundles.Update.Core;
 using Core.AssetBundles.Update.Exception;
 using Core.Utility;
@@ -17,24 +18,40 @@ namespace Core.AssetBundles.Update.State
     {
         // 损坏的AB包信息列表
         private readonly List<(string abName, long downloadedBytes, bool hashSame, string badHash)> _abBrokenInfos = new();
+        // 当前进度
+        private int currentProgress = 0;
         
-        public override void Enter()
+        /// <summary>
+        /// 远端包集合
+        /// </summary>
+        private ABPackageCollection RemoteCollection
         {
-            _abBrokenInfos.Clear();
-            base.Enter();
+            get => assetBundleUpdater.GetContext().RemotePackageCollection;
+            set
+            {
+                
+            }
         }
 
         /// <summary>
-        /// 执行资源完整性校验核心逻辑
+        /// 缓存文件集合
         /// </summary>
-        /// <returns>是否校验通过</returns>
-        public override async Task<UpdateResult> Execute()
+        private AbPackageCacheCollection CacheCollection
+        {
+            get => assetBundleUpdater.GetContext().CachePackageCollection;
+            set
+            {
+                
+            }
+        }
+        
+        protected override async void OnEnter()
         {
             try
             {
+                _abBrokenInfos.Clear();
                 // 执行完整性校验，传入进度回调
-                await CheckAssetsIntegrity((cureent, total) =>
-                    assetBundleUpdater.GetContext().UpdateCheckProgress(cureent, total));
+                await CheckAssetsIntegrity((cureent, total) => assetBundleUpdater.GetContext().UpdateCheckProgress(cureent, total));
 
                 // 替换正式清单文件
                 var tempListPath = PathUtility.GetAbLoadPath(FileUtility.TempCatalogDefaultName);
@@ -46,19 +63,21 @@ namespace Core.AssetBundles.Update.State
 
                 // 持久化缓存文件（记录已下载的AssetBundle信息）
                 await updateService.WriteCacheFileAsync(assetBundleUpdater.GetContext().CachePackageCollection);
+                
+                assetBundleUpdater.ChangePhase(EUpdatePhase.Finished);
             }
             catch (AssetBunleBrokenException assetBunleBrokenException)
             {
-                return UpdateResult.CreateFailure(UpdateResult.EUpdateError.AssetBunleBroken, assetBunleBrokenException);
+                var result = updateResultFactory.CreateFailure(UpdateResult.EUpdateError.AssetBunleBroken, assetBunleBrokenException);
+                assetBundleUpdater.GetContext().UpdateOver(result);
             }
             catch (System.Exception exception)
             {
-                return UpdateResult.CreateFailure(UpdateResult.EUpdateError.Unknown, exception);
+                var result = updateResultFactory.CreateFailure(UpdateResult.EUpdateError.Unknown, exception);
+                assetBundleUpdater.GetContext().UpdateOver(result);
             }
-            
-            return UpdateResult.CreateSuccess();
         }
-
+        
         /// <summary>
         /// 校验AssetBundle资源完整性
         /// 对比已下载资源的大小、Hash与远程清单是否一致，标记不完整资源
@@ -67,38 +86,40 @@ namespace Core.AssetBundles.Update.State
         /// <returns>是否所有资源都完整</returns>
         public async Task CheckAssetsIntegrity(Action<int, int> onCheckProgress)
         {
-            var context = assetBundleUpdater.GetContext();
-            
-            // 获取远程包集合和缓存包集合
-            var remoteCollection = context.RemotePackageCollection;
-            var cacheCollection = context.CachePackageCollection;
-
-            var currentProgress = 0;
+            var hashTasks = new List<Task>(CacheCollection.Count);
             // 遍历所有缓存包，校验完整性
-            foreach (var cachePair in cacheCollection)
+            foreach (var cachePair in CacheCollection)
             {
-                var hash = await HashUtility.GenerateFileSHA256HashAsync(PathUtility.GetAbLoadPath(cachePair.Value.AbName));
-                var hashSame = remoteCollection[cachePair.Key].Hash == hash;
-                // 校验条件：已下载字节数 == 远程包大小 且 Hash一致
-                if (remoteCollection[cachePair.Key].Size != cachePair.Value.DownloadedBytes || !hashSame)
-                {
-                    // 校验失败，标记为损坏包
-                    AddBrokenInfo(cachePair.Key,  cachePair.Value.DownloadedBytes, hashSame, hash);
-                }
-                
-                // 更新缓存hash信息
-                cachePair.Value.Hash = hash;
-                
-                // 触发校验进度回调
-                ++currentProgress;
-                onCheckProgress?.Invoke(currentProgress, cacheCollection.Count);
+                var path = PathUtility.GetAbLoadPath(cachePair.Value.AbName.WithAbSuffix());
+                hashTasks.Add(ComputeHashAsync(path, cachePair, onCheckProgress));
             }
+            
+            await Task.WhenAll(hashTasks);
 
             // 抛出AB包损坏异常
             if (_abBrokenInfos.Count != 0)
             {
                 throw new AssetBunleBrokenException(GetAssetBunleBrokenExceptionMessage());
             }
+        }
+
+        private async Task ComputeHashAsync(string path, KeyValuePair<string,AbPackageCacheInfo> cachePair, Action<int, int> onCheckProgress)
+        {
+            var hash = await HashUtility.GenerateFileSHA256HashAsync(path);
+            var hashSame = RemoteCollection[cachePair.Key].Hash == hash;
+            // 校验条件：已下载字节数 == 远程包大小 且 Hash一致
+            if (RemoteCollection[cachePair.Key].Size != cachePair.Value.DownloadedBytes || !hashSame)
+            {
+                // 校验失败，标记为损坏包
+                AddBrokenInfo(cachePair.Key,  cachePair.Value.DownloadedBytes, hashSame, hash);
+            }
+                
+            // 更新缓存hash信息
+            cachePair.Value.Hash = hash;
+                
+            // 触发校验进度回调
+            ++currentProgress;
+            onCheckProgress?.Invoke(currentProgress, CacheCollection.Count);
         }
 
         private void AddBrokenInfo(string abName, long downloadedBytes, bool hashSame, string badHash)
@@ -112,12 +133,18 @@ namespace Core.AssetBundles.Update.State
             var sb = new StringBuilder();
             foreach (var abBrokenInfo in _abBrokenInfos)
             {
-                sb.AppendLine($"包名：{abBrokenInfo.abName}，已下载字节数：{abBrokenInfo.downloadedBytes}，Hash是否相等{abBrokenInfo.hashSame}，" +
-                              $"损坏包hash：{abBrokenInfo.badHash}");
+                sb.AppendLine($"包名：{abBrokenInfo.abName}，已下载字节数：{abBrokenInfo.downloadedBytes}，Hash是否相等{abBrokenInfo.hashSame}，" + $"损坏包hash：{abBrokenInfo.badHash}");
             }
             return sb.ToString();
         }
-        
+
+        protected override void OnExit()
+        {
+            currentProgress = 0;
+            RemoteCollection = null;
+            CacheCollection = null;
+        }
+
         /// <summary>
         /// 当前更新阶段标识
         /// </summary>

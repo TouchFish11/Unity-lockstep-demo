@@ -51,17 +51,27 @@ namespace Core.AssetBundles.Update.Core
             }
             catch (System.Exception e)
             {
-                Logger.Log($"{nameof(DownloadHandlerStream)}.{nameof(CompleteContent)}：写入异常，文件流，{_fileStream.Name}：已被释放");
+                Logger.LogDebug(ELogTags.Network, $"写入异常，文件流，{_fileStream.Name}：已被释放");
                 CloseStream();
-                Logger.LogError($"{nameof(DownloadHandlerStream)}.{nameof(ReceiveData)}: {e.Message}");
+                Logger.LogError(ELogTags.Network, $"{nameof(DownloadHandlerStream)}.{nameof(ReceiveData)}: {e.Message}");
                 return false;
             }
         }
 
         protected override void CompleteContent()
         {
-            Logger.Log($"{nameof(DownloadHandlerStream)}.{nameof(CompleteContent)}：下载完成，文件流，{_fileStream.Name}：已被释放");
-            CloseStream();
+            var path = _fileStream.Name;
+            try
+            {
+                CloseStream();
+                Logger.LogDebug(ELogTags.Network, $"下载完成，文件流'{path}'已被释放");
+            }
+            catch (System.Exception e)
+            {
+                Logger.LogError(ELogTags.Network, $"{nameof(DownloadHandlerStream)}：关闭流'{path}'失败, {e.Message}");
+                _fileStream?.Dispose();
+                _fileStream = null;
+            }
         }
 
         /// <summary>
@@ -70,12 +80,11 @@ namespace Core.AssetBundles.Update.Core
         public void Pause()
         {
             if (_fileStream == null)
-            {
                 return;
-            }
             
-            Logger.Log($"已手动暂停文件流，{_fileStream.Name}：已被释放");
+            var path = _fileStream.Name;
             CloseStream();
+            Logger.LogDebug(ELogTags.Network, $"已暂停文件流'{path}'");
         }
         
         /// <summary>
@@ -84,14 +93,19 @@ namespace Core.AssetBundles.Update.Core
         private void CloseStream()
         {
             if (_fileStream == null)
-            {
                 return;
-            }
             
             _fileStream.Flush(true);
             _fileStream.Close();
             _fileStream.Dispose();
             _fileStream = null;
+        }
+
+        public override void Dispose()
+        {
+            // 下载失败时不会执行CompleteContent()，需要在这里主动关闭流
+            CloseStream();
+            base.Dispose();
         }
     }
 }

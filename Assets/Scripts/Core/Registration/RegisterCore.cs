@@ -6,21 +6,22 @@ using Core.EditorRes;
 using Core.Global;
 using Core.GlobalEvent;
 using Core.HotUpdate;
-using Core.Input.ActionAsset;
+using Core.Inputs;
 using Core.Mono;
 using Core.Music;
 using Core.Net;
 using Core.Pool;
 using Core.PreLoad;
-using Core.Reflection;
 using Core.Res;
 using Core.Scene;
 using Core.Serialize.Binary;
 using Core.Serialize.Json;
 using Core.Systems.Memorys;
+using Core.Tasks.Extensions;
 using Core.Time;
 using Core.UI;
 using Core.Video;
+using TaskFactory = Core.Tasks.TaskFactory;
 
 namespace Core.Registration
 {
@@ -50,21 +51,22 @@ namespace Core.Registration
             DIContainer.BindSingleton<IResourcesManager, ResourcesManager>();
             DIContainer.BindSingleton<ITimerManager, TimerManager>();
             DIContainer.BindSingleton<IVideoManager, VideoPlayManager>();
-            DIContainer.BindSingleton<IFactoryManager, FactoryManager>();
+            DIContainer.BindSingleton<ISceneManager, SceneManager>();
+            DIContainer.BindSingleton<IPreLoadManager, PreLoadManager>();
 #if UNITY_EDITOR
             DIContainer.BindSingleton<IHotUpdateManager, HotUpdateMockManager>();
 #else
             DIContainer.BindSingleton<IHotUpdateManager, HotUpdateManager>();
 #endif
-            DIContainer.BindSingleton<ISceneManager, SceneManager>();
-            DIContainer.BindSingleton<IPreLoadManager, PreLoadManager>();
+            // 配置实例
+            TaskAwaiterExtensions.Configure(DIContainer.Resolve<TaskFactory>());
             
             // 初始化AB包管理器
             var assetBundleManager = DIContainer.Create<AssetBundleManager>(parameterValues: new object[]
             {
-                GlobalSettings.Instance.criticalActiveThreshold,
-                GlobalSettings.Instance.bundleSlidingWindowMaxCount,
-                GlobalSettings.Instance.maxDurationPerWindow
+                GlobalSettings.Instance.resourcesModuleConfig.criticalActiveThreshold,
+                GlobalSettings.Instance.resourcesModuleConfig.bundleSlidingWindowMaxCount,
+                GlobalSettings.Instance.resourcesModuleConfig.maxDurationPerWindow
             });
             await assetBundleManager.Init();
             // 初始化

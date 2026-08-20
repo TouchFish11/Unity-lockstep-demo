@@ -1,16 +1,23 @@
 using System;
+using Net.Protocols;
 using Net.SyncModule.Manager;
 
-namespace Net.Sync
+namespace Net.SyncModule.Clients
 {
     /// <summary>
     /// 协议接口
     /// </summary>
     public interface IProtocolClient
     {
+        /// <summary>
+        /// 接收消息数据回调，获取的是完整的一条消息
+        /// </summary>
         event Action<byte[], EProtocolChannel> OnDataReceived;
+        
         event Action OnConnected;
+        
         event Action OnDisconnected;
+        
         event Action<string> OnError;
 
         /// <summary>

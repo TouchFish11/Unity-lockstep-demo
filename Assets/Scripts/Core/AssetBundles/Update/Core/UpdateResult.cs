@@ -1,5 +1,3 @@
-using Core.DI;
-using Core.Log;
 using Core.Pool;
 
 namespace Core.AssetBundles.Update.Core
@@ -51,6 +49,11 @@ namespace Core.AssetBundles.Update.Core
             AssetBunleIncomplete,
             
             /// <summary>
+            /// 下载取消
+            /// </summary>
+            AssetBundDownloadCancelled,
+            
+            /// <summary>
             /// 未知
             /// 非继承UpdateException的异常归类为该类型
             /// </summary>
@@ -68,27 +71,6 @@ namespace Core.AssetBundles.Update.Core
         public System.Exception UpdateException { get; set; }
         
         public EUpdateError UpdateError { get; set; }
-
-        public static UpdateResult CreateSuccess()
-        {
-            var result = DIContainer.GetInstance<IPoolManager>().GetData<UpdateResult>();
-            result.Success = true;
-            result.UpdateException = null;
-            result.UpdateError = EUpdateError.None;
-            return result;
-        }
-        
-        public static UpdateResult CreateFailure(EUpdateError updateError, System.Exception exception)
-        {
-            var result = DIContainer.GetInstance<IPoolManager>().GetData<UpdateResult>();
-            result.Success = false;
-            result.UpdateException = exception;
-            result.UpdateError = updateError;
-            
-            // 记录日志
-            Logger.LogError($"{nameof(UpdateResult)}.{nameof(CreateFailure)}：错误类型：{updateError}；异常：{exception.Message}");
-            return result;
-        }
 
         public void ResetData()
         {

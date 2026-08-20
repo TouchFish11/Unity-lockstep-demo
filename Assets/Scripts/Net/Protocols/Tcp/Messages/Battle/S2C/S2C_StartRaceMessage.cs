@@ -1,4 +1,4 @@
-﻿using Net.Configs;
+﻿using Net.Protocols.Configs;
 
 namespace Net.Protocols.Tcp.Messages.Battle.S2C
 {

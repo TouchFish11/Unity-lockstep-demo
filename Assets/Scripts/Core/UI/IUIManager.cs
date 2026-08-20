@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.UI.ViewController;
 using UnityEngine;
@@ -19,11 +18,6 @@ namespace Core.UI
         /// UI摄像机
         /// </summary>
         Camera UICamera { get; }
-
-        /// <summary>
-        /// 所有显示的界面
-        /// </summary>
-        Dictionary<int, IPanelInfo>.ValueCollection Panels { get; }
 
         /// <summary>
         /// 获取指定层级对象
@@ -75,7 +69,13 @@ namespace Core.UI
         /// <typeparam name="TView"></typeparam>
         /// <typeparam name="TController"></typeparam>
         /// <returns></returns>
-        Task<TController> CreateViewAsync<TView, TController>(string panelName, E_UILayer layer, Vector2 pos = default, Quaternion quaternion = default)
-            where TView : UIView, IuiView where TController : class, IuiController;
+        Task<TController> CreateViewAsync<TView, TController>(string panelName, E_UILayer layer, Vector2 pos = default, Quaternion quaternion = default) where TView : UIView, IuiView where TController : class, IuiController;
+
+        /// <summary>
+        /// 通过界面ID获取界面类型名称
+        /// </summary>
+        /// <param name="panelId"></param>
+        /// <returns></returns>
+        string GetPanelTypeName(int panelId);
     }
 }

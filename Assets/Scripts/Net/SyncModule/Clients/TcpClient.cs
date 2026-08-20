@@ -1,7 +1,8 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using Net.Sync;
+using Core.Log;
+using Net.Protocols;
 using Net.SyncModule.Manager;
 using Logger = Core.Log.Logger;
 
@@ -13,8 +14,14 @@ namespace Net.SyncModule.Clients
     public class TcpClient : IProtocolClient
     {
         private Socket _tcpSocket;
-        // 消息缓冲区
-        private readonly byte[] _bytesBuffer;
+        // 解析数据缓冲区
+        private readonly byte[] _dataBuffer;
+        // 临时数据缓冲区
+        private readonly byte[] _tempBuffer;
+        // 当前缓冲区长度
+        private int _cacheLength;
+        // 当前缓冲区索引
+        private int nowIndex;
         
         public event Action<byte[], EProtocolChannel> OnDataReceived;
         
@@ -24,9 +31,10 @@ namespace Net.SyncModule.Clients
         
         public event Action<string> OnError;
 
-        public TcpClient(short bufferSize = 4096)
+        public TcpClient(short bufferSize = 4096, short tempBufferSize = 512)
         {
-            _bytesBuffer = new byte[bufferSize];
+            _dataBuffer = new byte[bufferSize];
+            _tempBuffer = new byte[tempBufferSize];
         }
         
         public async void Connect(string serverIp, ushort serverPort)
@@ -43,7 +51,7 @@ namespace Net.SyncModule.Clients
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                Logger.LogException(ELogTags.Network, e);
                 OnError?.Invoke(e.Message);
             }
         }
@@ -56,7 +64,7 @@ namespace Net.SyncModule.Clients
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                Logger.LogException(ELogTags.Network, e);
                 OnError?.Invoke(e.Message);
             }
         }
@@ -70,16 +78,82 @@ namespace Net.SyncModule.Clients
             {
                 while (true)
                 {
-                    var receive = await _tcpSocket.ReceiveAsync(new ArraySegment<byte>(_bytesBuffer), SocketFlags.None);
-                    var copyBuffer = new byte[receive];
-                    Array.Copy(_bytesBuffer, 0, copyBuffer, 0, receive);
-                    OnDataReceived?.Invoke(copyBuffer, EProtocolChannel.Unreliable);
+                    var receive = await _tcpSocket.ReceiveAsync(new ArraySegment<byte>(_tempBuffer), SocketFlags.None);
+                    HandleData(receive);
                 }
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                Logger.LogException(ELogTags.Network, e);
                 OnError?.Invoke(e.Message);
+            }
+        }
+
+        private void HandleData(int receiveNum)
+        {
+            try
+            {
+                //先转存进缓存数组中
+                Array.Copy(_tempBuffer, 0, _dataBuffer, _cacheLength, receiveNum);
+                _cacheLength += receiveNum;
+
+                while (true)
+                {
+                    var msgLength = -1;
+                    var hasHeader = false;
+
+                    // 先判断是否够解析消息头（8字节）
+                    if (_cacheLength - nowIndex >= 8)
+                    {
+                        var msgID = BitConverter.ToInt32(_dataBuffer, nowIndex);
+                        nowIndex += 4;
+                        msgLength = BitConverter.ToInt32(_dataBuffer, nowIndex);
+                        nowIndex += 4;
+                        hasHeader = true;
+                        //Logger.LogDebug(ELogTags.Network, $"[TCP-Debug]：消息ID：{msgID},长度：{msgLength}");
+                    }
+
+                    // 解析消息体（够头+够体）
+                    if (hasHeader && _cacheLength - nowIndex >= msgLength)
+                    {
+                        var msgRawData = new byte[msgLength];
+                        Array.Copy(_dataBuffer, nowIndex - 8, msgRawData, 0, msgLength);
+                        OnDataReceived?.Invoke(msgRawData, EProtocolChannel.Resolve);
+                        
+                        // 移动解析索引，跳过当前消息体
+                        // 加上消息体的长度
+                        nowIndex += msgLength;
+
+                        // 加上客户端ID的长度
+                        // 加4是因为，序列化的客户端ID不会在这里解析，而是在反序列化时解析
+                        // 所以加上四，否则会导致nowIndex值不等于args.BytesTransferred
+                        nowIndex += 4;
+
+                        // 如果缓冲区已空，重置索引（避免 nowIndex 一直增大）
+                        if (nowIndex == _cacheLength)
+                        {
+                            nowIndex = 0;
+                            _cacheLength = 0;
+                            break; // 缓冲区空了，退出循环
+                        }
+                    }
+                    else
+                    {
+                        // 分包场景：不够头或不够体，回退索引+退出循环
+                        if (hasHeader)
+                        {
+                            // 解析了头但不够体，回退8字节（头的长度）
+                            nowIndex -= 8;
+                        }
+
+                        // 退出循环，等待下次收到数据再继续解析
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ELogTags.Network, ex);
             }
         }
 

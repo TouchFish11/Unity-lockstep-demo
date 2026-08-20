@@ -24,9 +24,12 @@ namespace Core.AssetBundles.Management
         // 句柄id缓存池
         private static readonly Queue<int> _idPool = new();
         
+        internal static IAssetBundleManager AssetBundleManager { get; private set; }
+        
         internal static void Init(IAssetBundleManager assetBundleManager)
         {
-            _assetManager = DIContainer.Create<AssetManager>(parameterValues: assetBundleManager);
+            AssetBundleManager = assetBundleManager;
+            _assetManager = DIContainer.Create<AssetManager>(parameterValues: AssetBundleManager);
         }
 
         /// <summary>
@@ -128,6 +131,16 @@ namespace Core.AssetBundles.Management
         }
 
         /// <summary>
+        /// 异步加载场景资源
+        /// </summary>
+        /// <param name="sceneKey"></param>
+        /// <returns></returns>
+        public static Task LoadSceneAsync(string sceneKey)
+        {
+            return _assetManager.LoadSceneBundleAsync(sceneKey);
+        }
+
+        /// <summary>
         /// 创建简单句柄，非组合句柄对象
         /// </summary>
         /// <param name="key"></param>
@@ -145,8 +158,8 @@ namespace Core.AssetBundles.Management
             AssetLocation.ELocationType locationType;
             if (entry is SpriteAssetEntry spriteAssetEntry)
             {
-                assetKey = spriteAssetEntry.atlasKey;
-                spriteKey = spriteAssetEntry.key;
+                assetKey = spriteAssetEntry.atlasKey;   // 图集名，不是entry.key，此时entry.key是图片名
+                spriteKey = spriteAssetEntry.key;   // 图片名
                 locationType = AssetLocation.ELocationType.Sprite;
             }
             else
@@ -212,9 +225,9 @@ namespace Core.AssetBundles.Management
         /// 获取所有的场景路径（key）
         /// </summary>
         /// <returns></returns>
-        public static List<string> GetAllScenePath()
+        public static List<string> GetAllSceneKey()
         {
-            return _assetManager.GetAllScenePath();
+            return _assetManager.GetAllSceneKey();
         }
 
         /// <summary>
@@ -260,12 +273,12 @@ namespace Core.AssetBundles.Management
         {
             // 无效的句柄访问，抛出异常
             if (!IsValidate(handleId, version))
-                throw ExceptionFactory.ThrowInvalidHandleAccessException(handleId, version, null);
+                throw ExceptionHelper.ThrowInvalidHandleAccessException(handleId, version, null);
             
             // 找不到定位对象，抛出异常，实际上不会找不到，因为都是复用的
             var location = _assetIdToLocationsMap.GetValueOrDefault(handleId);
             if(location == null)
-                throw new NullReferenceException($"[{nameof(GameAsset)}]: Location does not exist, handle(id {handleId}, version {version})");
+                throw new NullReferenceException($"Location does not exist, handle(id {handleId}, version {version})");
             
             // 若是图集图片资源的定位对象，则通过图集名和图片名访问对应的资源
             if (location.LocationType == AssetLocation.ELocationType.Sprite)
@@ -326,7 +339,7 @@ namespace Core.AssetBundles.Management
         /// <returns></returns>
         private static bool IsValidate(int id, int version)
         {
-            return _assetIdToLocationsMap.TryGetValue(id, out var location) && location.Version == version;
+            return _assetIdToLocationsMap.TryGetValue(id, out var location) && location.Version == version && !_idPool.Contains(id);
         }
     }
 }

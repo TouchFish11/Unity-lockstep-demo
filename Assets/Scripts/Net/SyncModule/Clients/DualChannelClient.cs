@@ -1,8 +1,9 @@
 using System;
 using System.Net.Sockets;
+using Net.Protocols;
 using Net.SyncModule.Manager;
 
-namespace Net.Sync
+namespace Net.SyncModule.Clients
 {
     /// <summary>
     /// 基于TCP/UDP封装的双通道客户端

@@ -1,40 +1,39 @@
-using System;
 using System.Threading.Tasks;
+using Core.DI;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events;
 using UnityEngine;
-using Logger = Core.Log.Logger;
 
 namespace Core.UI.ViewController
 {
     /// <summary>
     /// UI控制器
     /// </summary>
-    public abstract class UIController<TView> : IuiController where TView : IuiView
+    public abstract class UIController<TView> : IuiController where TView : UIView
     {
-        [DI.Inject] protected IUIManager uiManager;
-        [DI.Inject] protected IEventCenter eventCenter;
+        [Inject] protected IUIManager uiManager;
+        [Inject] protected IEventCenter eventCenter;
 
         // 控制器界面状态
         private EControllerState _controllerState;
         // 控制器（界面）唯一ID
         public int panelId;
+        // 关联的界面UI对象
         protected TView view;
+
+        public int PanelId => panelId;
         
+        /// <summary>
+        /// 界面打开时光标是否可见
+        /// </summary>
+        protected virtual bool IsCursorVisible { get; set; }
+
         public async Task Init(int id, IuiView view)
         {
-            try
-            {
-                _controllerState = EControllerState.Initializing;
-                panelId = id;
-                this.view = (TView)view;
-                await OnInit();
-                await Activate();
-            }
-            catch (Exception e)
-            {
-                Logger.LogError($"{nameof(UIController<TView>)}: Controller initialization failed, {e.Message}");
-            }
+            _controllerState = EControllerState.Initializing;
+            panelId = id;
+            this.view = (TView)view;
+            await OnInit();
         }
 
         /// <summary>
@@ -43,18 +42,22 @@ namespace Core.UI.ViewController
         /// <returns></returns>
         public async Task Activate()
         {
-            // 正在激活
-            _controllerState = EControllerState.Activating;
+            // 激活中，不允许执行任何修改父子关系的操作
             view.ViewObj.SetActive(true);
+            
             // 监听鼠标显隐事件
-            eventCenter.TriggerEvent(new MouseVisibleChangedEvent
+            if (IsCursorVisible)
             {
-                IsVisible = true,
-                SourceName = ToString()
-            });
-
+                var mouseVisibleChangedEvent = EventSource.Get<MouseVisibleChangedEvent>();
+                mouseVisibleChangedEvent.IsVisible = true;
+                mouseVisibleChangedEvent.SourceName = ToString();
+                eventCenter.TriggerEvent(mouseVisibleChangedEvent);
+            }
+                
             // 触发界面打开事件
-            eventCenter.TriggerEvent(new OpenViewEvent { UIController = this });
+            var openViewEvent = EventSource.Get<OpenViewEvent>();
+            openViewEvent.UIController = this;
+            eventCenter.TriggerEvent(openViewEvent);
             
             // 监听界面UI事件
             view.GetBinder().OnButtonClick += ButtonOnClick;
@@ -63,29 +66,33 @@ namespace Core.UI.ViewController
             view.GetBinder().OnInputFieldValueChanged += InputFieldValueChanged;
             view.GetBinder().OnScrollRectValueChanged += ScrollRectValueChanged;
             view.GetBinder().OnDropdownValueChanged += DropdownValueChanged;
-            // 界面显示时执行
+            // 正在激活
+            _controllerState = EControllerState.Activating;
+            // 激活完成界面显示时执行
             await OnActive();
             // 先执行显示逻辑，再改变界面状态标识，激活完成可用
             _controllerState = EControllerState.Ready;
         }
         
         /// <summary>
-        /// 失活
+        /// 失活，若界面被Dispose，则在<see cref="OnDispose"/>前执行
         /// </summary>
         /// <returns></returns>
         public async Task InActivate()
         {
-            // 先改变界面状态标识，再执行失活逻辑
-            _controllerState = EControllerState.InActivating;
             // 注销监听鼠标显隐事件
-            eventCenter.TriggerEvent(new MouseVisibleChangedEvent
+            if (IsCursorVisible)
             {
-                IsVisible = false,
-                SourceName = ToString()
-            });
+                var mouseVisibleChangedEvent = EventSource.Get<MouseVisibleChangedEvent>();
+                mouseVisibleChangedEvent.IsVisible = false;
+                mouseVisibleChangedEvent.SourceName = ToString();
+                eventCenter.TriggerEvent(mouseVisibleChangedEvent);
+            }
             
             // 触发界面关闭事件
-            eventCenter.TriggerEvent(new CloseViewEvent { UIController = this });
+            var closeViewEvent = EventSource.Get<CloseViewEvent>();
+            closeViewEvent.UIController = this;
+            eventCenter.TriggerEvent(closeViewEvent);
             
             // 注销监听界面UI事件
             view.GetBinder().OnButtonClick -= ButtonOnClick;
@@ -94,7 +101,12 @@ namespace Core.UI.ViewController
             view.GetBinder().OnInputFieldValueChanged -= InputFieldValueChanged;
             view.GetBinder().OnScrollRectValueChanged -= ScrollRectValueChanged;
             view.GetBinder().OnDropdownValueChanged -= DropdownValueChanged;
+            
+            // 改变界面状态标识
+            _controllerState = EControllerState.InActivating;
+            // 处理失活逻辑
             await OnInactivate();
+            // 此时失活中，不允许执行任何修改父子对象的操作
             view.ViewObj.SetActive(false);
         }
 
@@ -105,13 +117,13 @@ namespace Core.UI.ViewController
         protected abstract Task OnInit();
         
         /// <summary>
-        /// 当界面被激活（显示）时执行，在这里执行界面初始化操作，每次显示时都会执行（若未被销毁）
+        /// 当界面被激活（显示）时执行，在这里执行界面初始化操作，显示动画等，每次显示时都会执行（若未被销毁）
         /// </summary>
         /// <returns></returns>
         protected abstract Task OnActive();
 
         /// <summary>
-        /// 当界面被失活（隐藏）时执行，可以在此执行界面清理操作
+        /// 当界面被失活（隐藏）时执行，可以在此执行界面清理操作，隐藏动画等
         /// </summary>
         /// <returns></returns>
         protected abstract Task OnInactivate();
@@ -226,15 +238,20 @@ namespace Core.UI.ViewController
         /// <param name="index">选中的索引</param>
         protected virtual void OnDropdownValueChanged(string dropdownName, int index) { }
 
-        public async Task Destroy()
+        public async Task Dispose()
         {
             await InActivate();
             // 界面被销毁
             _controllerState = EControllerState.Destroyed;
-            await OnDestroy();
+            await OnDispose();
+            await view.Destroy();
         }
         
-        protected virtual Task OnDestroy()
+        /// <summary>
+        /// 在UI界面销毁前执行，可以用于主动清理UI界面缓存的对象
+        /// </summary>
+        /// <returns></returns>
+        protected virtual Task OnDispose()
         {
             return Task.CompletedTask;
         }

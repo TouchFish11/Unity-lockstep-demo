@@ -11,12 +11,14 @@ namespace Core.AssetBundles.Management
         // 代表单个包的其中一个资源
         private readonly object _asset;
         // 该资源所在的AB包
-        private readonly BundleWrapper _bundleWrapper;
+        private BundleWrapper _bundleWrapper;
         
         /// <summary>
         /// 资源Key
         /// </summary>
         public string AssetKey { get; }
+        
+        public string BundleName => _bundleWrapper.BundleName;
         
         public AssetWrapper(object asset, string assetKey, BundleWrapper bundleWrapper)
         {
@@ -61,7 +63,6 @@ namespace Core.AssetBundles.Management
         public void Retain()
         {
             ++RefCount;
-            Logger.Log($"[AssetWrapper]: '{AssetKey}' asset refCount Add to: {RefCount}");
         }
 
         /// <summary>
@@ -72,19 +73,18 @@ namespace Core.AssetBundles.Management
             if (RefCount > 0)
             {
                 --RefCount;
-                Logger.Log($"[AssetWrapper]: '{AssetKey}' asset refCount Reduce to: {RefCount}");
-                
                 if (RefCount != 0) 
                     return;
             
                 // 释放包引用计数
                 _bundleWrapper.Release();
+                _bundleWrapper = null;
                 OnUnload?.Invoke();
                 OnUnload = null;
                 return;
             }
 
-            Logger.LogWarning($"[AssetWrapper]: '{AssetKey}' asset refCount repeated release");
+            Logger.LogWarning(ELogTags.Asset, $"'{AssetKey}' asset refCount repeated release");
         }
         
         /// <summary>

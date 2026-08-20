@@ -3,17 +3,16 @@ using Core.DI;
 using Core.Mono;
 using kcp2k;
 using Net.Protocols;
-using Net.Sync;
 using Net.SyncModule.Clients;
 using Net.SyncModule.Interface;
-using KcpClient = Net.Sync.KcpClient;
+using KcpClient = Net.SyncModule.Clients.KcpClient;
 
 namespace Net.SyncModule.Manager
 {
     /// <summary>
     /// 网络管理器
     /// </summary>
-    public class NetManager : INetManager
+    internal partial class NetManager : INetManager
     {
         [Inject] private IMonoAdapter _monoAdapter;
         
@@ -22,7 +21,7 @@ namespace Net.SyncModule.Manager
         /// </summary>
         private static readonly NetConfig DefaultConfig = new()
         {
-            Serializer = MessageSerializerGetter.BinaryMessageSerializer(),
+            Resolver = MessageSerializerGetter.BinaryMessageSerializer(),
             ClientType = EClientType.Kcp,
             KcpConfig = new KcpConfig()
         };
@@ -30,7 +29,7 @@ namespace Net.SyncModule.Manager
         // 客户端
         private readonly IProtocolClient _client;
         // 消息序列化器
-        private readonly IMessageSerializer _messageSerializer;
+        private readonly IMessageResolver _messageResolver;
         // 当前网络配置
         private readonly NetConfig _config;
         
@@ -45,7 +44,7 @@ namespace Net.SyncModule.Manager
                 throw new ArgumentNullException(nameof(config));
             
             // 初始化
-            _messageSerializer = config.Serializer ?? DefaultConfig.Serializer;
+            _messageResolver = config.Resolver ?? DefaultConfig.Resolver;
             _client = config.ClientType switch
             {
                 EClientType.Dual => new DualChannelClient(),
@@ -57,7 +56,7 @@ namespace Net.SyncModule.Manager
             _client.OnConnected += () => OnConnected?.Invoke();
             _client.OnDisconnected += () => OnDisconnected?.Invoke();
             _client.OnError += error => OnError?.Invoke(error);
-            _client.OnDataReceived += (messageData, channel) => OnMessageReceived?.Invoke(_messageSerializer.Deserialize(messageData, channel), channel);
+            _client.OnDataReceived += OnDataReceived;
             _config = config;
             
             _monoAdapter.AddUpdateListener(OnUpdate);
@@ -73,8 +72,13 @@ namespace Net.SyncModule.Manager
 
         public void Send(Message message, EProtocolChannel channel)
         {
-            var messageBytes = _messageSerializer.Serialize(message, channel);
+            var messageBytes = _messageResolver.Serialize(message, channel);
             _client.SendAsync(messageBytes, channel);
+        }
+
+        private void OnDataReceived(byte[] msgData, EProtocolChannel channel)
+        {
+            OnMessageReceived?.Invoke(_messageResolver.Deserialize(msgData, channel), channel);
         }
 
         public void OnUpdate()
@@ -85,7 +89,7 @@ namespace Net.SyncModule.Manager
         public void Disconnect()
         {
             _client.Disconnect();
-            DIContainer.GetInstance<IMonoAdapter>().RemoveUpdateListener(OnUpdate);
+            _monoAdapter.RemoveUpdateListener(OnUpdate);
         }
     }
 }

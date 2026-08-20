@@ -1,4 +1,5 @@
 using kcp2k;
+using Net.Protocols;
 using Net.SyncModule.Interface;
 
 namespace Net.SyncModule.Manager
@@ -18,7 +19,7 @@ namespace Net.SyncModule.Manager
         /// <summary>
         /// 消息序列化器
         /// </summary>
-        public IMessageSerializer Serializer { get; set; }
+        public IMessageResolver Resolver { get; set; }
         
         /// <summary>
         /// 协议类型

@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.HotUpdate;
+using Core.Log;
 using Core.Registration;
 using Core.Serialize.Json;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
-namespace Game.Main
+namespace Game
 {
     /// <summary>
     /// 游戏启动器
@@ -27,17 +28,16 @@ namespace Game.Main
                 // 注册框架
                 await RegisterCore.InitCore();
                 // 加载启动配置
-                LoadBootConfig();
+                LoadLaunchConfig();
                 // 加载热更程序集
                 await LoadHotfixDll();
                 // 创建热更入口
                 using var spawner = DIContainer.Create<ObjectSpawner>();
-                var entryObj = await spawner.SpawnAsync<GameObject>(bootConfig.hotfixObjKey);
-                DIContainer.InjectIntoInstance(entryObj.Obj);
+                await spawner.SpawnAsync<GameObject>(bootConfig.hotfixObjKey);
             }
             catch (Exception e)
             {
-                Logger.LogError($"{nameof(GameLauncher)}:Game startup failed {e.Message})");
+                Logger.LogError(ELogTags.GameLauncher, $"Game startup failed, {e}");
             }
         }
         
@@ -48,31 +48,47 @@ namespace Game.Main
         {
             if (bootConfig == null)
             {
-                Logger.LogError($"{nameof(GameLauncher)}:无法加载启动配置，使用默认硬编码包名");
-                bootConfig = new BootConfig { hotfixDllBundleName = "hotupdate" };
+                Logger.LogError(ELogTags.GameLauncher, $"无法加载启动配置，使用默认硬编码包名");
+                bootConfig = new BootConfig
+                {
+                    aotDllBundleName = "hotupdateaot.assetbundle",
+                    hotfixDllBundleName = "hotupdate.assetbundle"
+                };
             }
+
+            IHotUpdateManager hotUpdateManager;
+#if UNITY_EDITOR
+            hotUpdateManager = DIContainer.Resolve<HotUpdateMockManager>();
+#else
+            hotUpdateManager = DIContainer.Resolve<HotUpdateManager>();
+            // 补充元数据
+            using var aotDllHandle = await GameAsset.LoadAllAssetAsync<TextAsset>(bootConfig.aotDllBundleName);
+            var dllDic = new Dictionary<string, byte[]>();
+            foreach (var asset in aotDllHandle.Assets)
+            {
+                dllDic.Add(asset.name, asset.bytes);
+            }
+            hotUpdateManager.LoadMetadataForAOTAssemblies(dllDic); 
+#endif
             
-            // 加载所有dll资源
-            var handle = await GameAsset.LoadAllAssetAsync<TextAsset>(bootConfig.hotfixDllBundleName);
+            // 加载所有热更dll资源
+            using var handle = await GameAsset.LoadAllAssetAsync<TextAsset>(bootConfig.hotfixDllBundleName);
             var list = new List<TextAsset>(handle.Assets);
             // 获取热更程序集依赖设置
             var settingsTextAsset = list.Find(text => text.name.Contains(nameof(HotUpdateAssemblySettings)));
             list.Remove(settingsTextAsset);
-            var settings = DIContainer.Create<JsonManager>().FromJson<HotUpdateAssemblySettings>(settingsTextAsset.text);
-            var hotUpdateManager = DIContainer.Create<HotUpdateMockManager>();
-            // 补充元数据
-            hotUpdateManager.LoadMetadataForAOTAssemblies(AOTGenericReferences.PatchedAOTAssemblyList);  
+            var settings = DIContainer.Resolve<JsonManager>().FromJson<HotUpdateAssemblySettings>(settingsTextAsset.text);
             // 加载所有热更程序集
             await hotUpdateManager.LoadAssembliesAsync(settings, list);
-            Logger.Log($"{nameof(GameLauncher)}:Load the hotfix assemblies complete");
+            Logger.LogDebug(ELogTags.GameLauncher, $"Load the hotfix assemblies complete");
         }
         
         /// <summary>
         /// 加载启动配置
         /// </summary>
-        private void LoadBootConfig()
+        private void LoadLaunchConfig()
         {
-            var jsonManager = DIContainer.GetInstance<IJsonManager>();
+            var jsonManager = DIContainer.Resolve<IJsonManager>();
             // 优先从持久化目录读取（热更可能更新配置，但通常不需要）
             var persistentPath = Path.Combine(Application.persistentDataPath, bootConfigFileName);
             if (File.Exists(persistentPath))

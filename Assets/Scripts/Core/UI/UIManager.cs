@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
+using Core.Exceptions;
+using Core.Log;
 using Core.UI.ViewController;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -18,7 +20,7 @@ namespace Core.UI
         // 界面唯一ID
         private static int _panelId;
         // 存储打开的界面
-        private readonly Dictionary<int, IPanelInfo> _panels = new();
+        private readonly Dictionary<int, PanelInfo> _panels = new();
         // 上层
         private Transform _topLayer;
         // 中层
@@ -29,8 +31,8 @@ namespace Core.UI
         private Transform _systemLayer;
         // 对象生成器
         private readonly ObjectSpawner _objectSpawner;
-        // canvas缓存对象
-        private PoolObject _uiRoot;
+        // canvas和UI相机的复合缓存对象
+        private GameObject _uiRoot;
         
         private UIManager(ObjectSpawner spawner)
         {
@@ -40,10 +42,10 @@ namespace Core.UI
         public async Task InitUIManagerAsync(string uiRoot)
         {
             // 获取画布实例
-            var poolObject = await _objectSpawner.SpawnAsync<GameObject>(uiRoot);
+            var uiRootObj = await _objectSpawner.SpawnAsync<GameObject>(uiRoot);
             // 获取画布、UI摄像机实例
-            Canvas = poolObject.Obj.GetComponentInChildren<Canvas>();
-            UICamera = poolObject.Obj.GetComponentInChildren<Camera>();
+            Canvas = uiRootObj.GetComponentInChildren<Canvas>();
+            UICamera = uiRootObj.GetComponentInChildren<Camera>();
             
             // 获取对应层级对象位置
             _topLayer = Canvas.transform.Find("Top");
@@ -51,10 +53,10 @@ namespace Core.UI
             _botLayer = Canvas.transform.Find("Bot");   
             _systemLayer = Canvas.transform.Find("System");
             
-            Object.DontDestroyOnLoad(poolObject.Obj);
+            Object.DontDestroyOnLoad(uiRootObj);
             
             // 缓存对象
-            _uiRoot = poolObject;
+            _uiRoot = uiRootObj;
         }
         
         public Transform GetLayer(E_UILayer layer)
@@ -69,29 +71,30 @@ namespace Core.UI
             };
         }
         
-        public async Task<TController> CreateViewAsync<TView, TController>(
-            string panelName, E_UILayer layer, Vector2 pos = default, Quaternion quaternion = default)
-            where TView : UIView, IuiView where TController : class, IuiController
+        public async Task<TController> CreateViewAsync<TView, TController>(string panelName, E_UILayer layer, Vector2 pos = default, Quaternion quaternion = default) where TView : UIView, IuiView where TController : class, IuiController
         {
-            // 初始化控制器
-            var controller = DIContainer.Create<TController>();
             try
             {
+                // 初始化控制器
+                var controller = DIContainer.Create<TController>();
                 // 获取面板
                 var viewObj = await _objectSpawner.SpawnAsync<TView>(panelName,GetLayer(layer), pos, quaternion);
                 // 生成该界面的唯一ID
                 var id = GenerateId();
-                await controller.Init(id, viewObj.Obj);
+                // 界面初始化
+                await controller.Init(id, viewObj);
+                // 界面激活
+                await controller.Activate();
                 // 初始化面板信息
-                var newInfo = new PanelInfo<TView>(id, viewObj, viewObj.Obj, controller);
+                var newInfo = new PanelInfo<TView>(id, viewObj, controller);
                 // 存储面板信息
                 _panels.Add(id, newInfo);
+                Logger.LogDebug(ELogTags.UI, $"{panelName} created and init successfully");
                 return controller;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Logger.LogError($"{nameof(UIManager)}.{nameof(CreateViewAsync)}:创建界面错误，{e.Message}");
-                return controller;
+                throw ExceptionHelper.ThrowUICreateException(typeof(TController), ex);
             }
         }
         
@@ -100,9 +103,9 @@ namespace Core.UI
             if (_panels.TryGetValue(panelId, out var panelInfo))
             {
                 // 调用控制器的销毁
-                await panelInfo.Controller.Destroy();
+                await panelInfo.Controller.Dispose();
                 // 回收界面
-                panelInfo.PoolObject.Collect(true);
+                _objectSpawner.Release(panelInfo.View, true);
                 // 从缓存中移除
                 _panels.Remove(panelId);
             }
@@ -132,14 +135,20 @@ namespace Core.UI
                     return controller;
                 }
             }
-            Logger.LogError($"{nameof(UIManager)}.{nameof(GetController)}: Controller({typeof(TController)}) is not found.");
+            
+            Logger.LogError(ELogTags.UI, $"Controller({typeof(TController)}) is not found.");
             return default;
+        }
+
+        public string GetPanelTypeName(int panelId)
+        {
+            return _panels.TryGetValue(panelId, out var panel) ? panel.Controller.GetType().Name : string.Empty;
         }
         
         public Task Clear()
         {
             // 回收画布和摄像机
-            _uiRoot.Collect(true);
+            _objectSpawner.Release(_uiRoot, true);
             Canvas = null;
             UICamera = null;
             
@@ -162,8 +171,6 @@ namespace Core.UI
         {
             return ++_panelId;
         }
-        
-        public Dictionary<int, IPanelInfo>.ValueCollection Panels => _panels.Values;
 
         public Canvas Canvas { get; private set; }
 

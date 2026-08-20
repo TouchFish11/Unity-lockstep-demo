@@ -1,20 +1,18 @@
-using System;
-
 namespace Core.PreLoad
 {
+    /// <summary>
+    /// 预加载数据
+    /// </summary>
     public readonly struct PreLoadData
     {
-        public string AbName { get; }
-            
-        public Type AssetType { get; }
-            
+        /// <summary>
+        /// 资源名称
+        /// </summary>
         public string AssetName { get; }
 
-        public PreLoadData(string abName, string assetName, Type assetType)
+        public PreLoadData(string assetName)
         {
-            this.AbName = abName;
             this.AssetName = assetName;
-            this.AssetType = assetType;
         }
     }
 }

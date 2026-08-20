@@ -1,3 +1,5 @@
+using Core.Pool;
+
 namespace Core.GlobalEvent
 {
     /// <summary>
@@ -19,6 +21,11 @@ namespace Core.GlobalEvent
         public virtual void ResetEvent()
         {
             // 基类默认无重置逻辑，由子类按需重写
+        }
+
+        void IPoolData.ResetData()
+        {
+            ResetEvent();
         }
     }
 }

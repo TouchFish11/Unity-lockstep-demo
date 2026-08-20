@@ -11,7 +11,9 @@ namespace Net.SyncModule.Interface
     {
         event Action<Message, EProtocolChannel> OnMessageReceived;
         event Action OnConnected;
+        
         event Action OnDisconnected;
+        
         event Action<string> OnError;
         
         void Connect();

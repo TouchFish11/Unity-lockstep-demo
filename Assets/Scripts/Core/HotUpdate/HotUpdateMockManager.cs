@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Core.AssetBundles.Management;
+using Core.Log;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -17,11 +17,10 @@ namespace Core.HotUpdate
     {
         // 缓存热更程序集名称
         private readonly ConcurrentBag<string> _assemblyNames = new();
-        private readonly IAssetBundleManager _assetBundleManager;
 
-        private HotUpdateMockManager(IAssetBundleManager assetBundleManager)
+        private HotUpdateMockManager()
         {
-            _assetBundleManager = assetBundleManager;
+
         }
         
         public Task LoadAssembliesAsync(HotUpdateAssemblySettings settings, List<TextAsset> textAssets)
@@ -38,7 +37,7 @@ namespace Core.HotUpdate
                         continue;
                     
                     _assemblyNames.Add(assembly.GetName().Name);
-                    Logger.Log($"{nameof(HotUpdateMockManager)}.{nameof(LoadAssembliesAsync)}:Editor found hotfix dll({dllText.name})");
+                    Logger.LogDebug(ELogTags.HotUpdate, $"Editor found hotfix dll({dllText.name})");
                 }
             }
             return Task.CompletedTask;
@@ -85,7 +84,8 @@ namespace Core.HotUpdate
             var assemblies = new List<Assembly>();
             foreach (var assemblyName in _assemblyNames)
             {
-                assemblies.Add(Assembly.Load(assemblyName));
+                if(assemblyName.Contains("HotUpdate"))
+                    assemblies.Add(Assembly.Load(assemblyName));
             }
             return assemblies.ToArray();
         }
@@ -99,7 +99,7 @@ namespace Core.HotUpdate
             return assemblies.Count;
         }
         
-        public void LoadMetadataForAOTAssemblies(IReadOnlyList<string> aotDlls)
+        public void LoadMetadataForAOTAssemblies(Dictionary<string, byte[]> aotDlls)
         {
             // 编辑器下不需要补充元数据
         }

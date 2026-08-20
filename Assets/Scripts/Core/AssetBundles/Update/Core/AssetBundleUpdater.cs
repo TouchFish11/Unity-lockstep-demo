@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Core.AssetBundles.Update.State;
+using Core.DI;
 using Core.Log;
 using Core.Mono;
 using Core.Pool;
@@ -13,19 +14,21 @@ namespace Core.AssetBundles.Update.Core
     /// </summary>
     public class AssetBundleUpdater : IAssetBundleUpdater, IApplicationExitNotify
     {
+        public int QuitPriority => 0;
+        
+        [Inject] private UpdateResultFactory _updateResultFactory;
         // 对象池管理器接口
         private readonly IPoolManager _poolManager;
-        
-        public int QuitPriority => 0;
         // 更新上下文
         private ABUpdateContext _updateContext;
-        // 更新状态列表
-        private readonly List<IUpdateState> _updateStates = new();
+        // 更新状态映射
+        private readonly Dictionary<EUpdatePhase, IUpdateState> _updateStateMap = new();
         // 当前更新状态
         private IUpdateState _currentUpdateState;
-        // 当前更新状态索引
-        private int _stateIndex;
+        
+        /// <summary>
         /// 更新服务
+        /// </summary>
         public UpdateService UpdateService { get; }
 
         /// <summary>
@@ -52,49 +55,37 @@ namespace Core.AssetBundles.Update.Core
             _updateContext = _poolManager.GetData<ABUpdateContext>();
             foreach (var updateState in UpdateStateFactory.GetStates())
             {
-                _updateStates.Add(updateState);
+                _updateStateMap.Add(updateState.UpdatePhase, updateState);
             }
         }
 
         /// <summary>
         /// 执行AssetBundle更新检查及下载流程
         /// </summary>
-        public async void CheckUpdate()
+        public void CheckUpdate()
         {
-            try
+            ChangePhase(EUpdatePhase.DownLoadRemoteCatalogFile);
+        }
+        
+        public void ChangePhase(EUpdatePhase updatePhase)
+        {
+            if (_updateContext.IsPauseDownload)
+                return;
+                
+            _currentUpdateState?.Exit();
+            if (_updateStateMap.TryGetValue(updatePhase, out var updateState))
             {
-                _currentUpdateState = _updateStates[_stateIndex];
-                // 循环执行当前状态的逻辑，直到满足退出条件：
-                // 暂停下载（外部主动暂停） 当前状态为空（异常/终止） 状态执行失败
-                while (!_updateContext.IsPauseDownload && _currentUpdateState != null)
-                {
-                    // 执行当前状态的核心逻辑
-                    _currentUpdateState.Enter();
-                    var result = await _currentUpdateState.Execute();
-                    if (result.Success)
-                    {
-                        _currentUpdateState.Exit();
-
-                        if (_stateIndex == _updateStates.Count - 1)
-                        {
-                            return;
-                        }
-
-                        _currentUpdateState = _updateStates[++_stateIndex];
-                        continue;
-                    }
-
-                    _updateContext.UpdateOver(result);
-                    return;
-                }
+                _currentUpdateState = updateState;
+                _currentUpdateState.Enter();
             }
-            catch (System.Exception e)
+            else
             {
-                Logger.LogError($"{nameof(AssetBundleUpdater)}.{nameof(CheckUpdate)}：下载异常：{e.Message}");
-                _updateContext.UpdateOver(UpdateResult.CreateFailure(UpdateResult.EUpdateError.Unknown, e));
+                // 该状态没有启用
+                _currentUpdateState = _updateStateMap[++updatePhase];
+                _currentUpdateState.Enter();
             }
         }
-
+        
         /// <summary>
         /// 初始化AssetBundle本地加载/缓存路径
         /// </summary>
@@ -126,21 +117,21 @@ namespace Core.AssetBundles.Update.Core
             }
             
             _poolManager.PushData(_updateContext);
-            _stateIndex = 0;
-            _updateStates.Clear();
+            _updateStateMap.Clear();
         }
         
         public void OnAppQuit()
         {
             try
             {
-                if (_currentUpdateState == null || UpdatePhase == EUpdatePhase.Finished) return;
+                if (_currentUpdateState == null || UpdatePhase == EUpdatePhase.Finished) 
+                    return;
                 UpdateService.CancelDownload(_updateContext);
-                Logger.Log($"{nameof(AssetBundleUpdater)}.{nameof(OnAppQuit)}:已取消下载");
+                Logger.LogDebug(ELogTags.HotUpdate, $"已取消下载");
             }
             catch (System.Exception e)
             {
-                Logger.LogError($"{nameof(AssetBundleUpdater)}.{nameof(OnAppQuit)}:取消下载错误，{e.Message})");
+                Logger.LogError(ELogTags.HotUpdate, $"取消下载错误,{e.Message})");
             }
         }
     }

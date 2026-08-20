@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using Core.AssetBundles.Management;
-using Core.Serialize.Json;
+using Core.Log;
 using HybridCLR;
 using UnityEngine;
 using Logger = Core.Log.Logger;
@@ -24,26 +22,21 @@ namespace Core.HotUpdate
         // 排序后的dll列表
         private readonly List<string> _sortDlls = new();
         // 记录所有已处理节点
-        private HashSet<string> _visited = new();
+        private readonly HashSet<string> _visited = new();
         // 记录当前递归路径，用于检测循环
-        private HashSet<string> _visiting = new();
+        private readonly HashSet<string> _visiting = new();
         
-        private readonly IAssetBundleManager _assetBundleManager;
-        private readonly IJsonManager _jsonManager;
-
-        private HotUpdateManager(IAssetBundleManager assetBundleManager,  IJsonManager jsonManager)
+        private HotUpdateManager()
         {
-            _assetBundleManager = assetBundleManager;
-            _jsonManager = jsonManager;
+
         }
         
-        public void LoadMetadataForAOTAssemblies(IReadOnlyList<string> aotDlls)
+        public void LoadMetadataForAOTAssemblies(Dictionary<string, byte[]> aotDlls)
         {
-            foreach (var aotDllName in aotDlls)
+            foreach (var (dllName, aotBytes) in aotDlls)
             {
-                var assemblyBytes = GetAssemblyBytes(aotDllName);
-                var errorCode = RuntimeApi.LoadMetadataForAOTAssembly(assemblyBytes, HomologousImageMode.SuperSet);
-                Logger.Log($"{nameof(HotUpdateManager)}.{nameof(LoadMetadataForAOTAssemblies)}:已补充元数据{aotDllName}，错误码:{errorCode}");
+                var errorCode = RuntimeApi.LoadMetadataForAOTAssembly(aotBytes, HomologousImageMode.SuperSet);
+                Logger.LogDebug(ELogTags.HotUpdate, $"已补充元数据{dllName}，错误码:{errorCode}");
             }
         }
 
@@ -58,7 +51,12 @@ namespace Core.HotUpdate
             {
                 foreach (var dllText in textAssets)
                 {
-                    if (nameWithExtension != dllText.name) continue;
+                    if (nameWithExtension != dllText.name)
+                    {
+                        Logger.LogWarning(ELogTags.HotUpdate, $"skip dll {dllText.name}");
+                        continue;
+                    }
+                    
                     // 多线程加载程序集
                     await LoadAssemblyAsyncInternal(dllText.bytes);
                 }
@@ -81,8 +79,7 @@ namespace Core.HotUpdate
                 DFS(dllName, dllDependencies);
             }
             
-            // 将依赖项提前，先加载依赖项
-            _sortDlls.Reverse();
+            Logger.LogDebug(ELogTags.HotUpdate, $"程序集依赖：{string.Join(',', _sortDlls)}");
             return;
 
             void DFS(string dllName, Dictionary<string, List<string>> dllDependencies)
@@ -197,25 +194,14 @@ namespace Core.HotUpdate
                 {
                     var assembly = Assembly.Load(bytes);
                     _assemblyNames.Add(assembly.GetName().Name);
-                    Logger.Log($"{nameof(HotUpdateManager)}.{nameof(LoadAssemblyAsyncInternal)}:已加载热更程序集{assembly.GetName().Name}");
+                    Logger.LogDebug(ELogTags.HotUpdate, $"已加载热更程序集{assembly.GetName().Name}");
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"{nameof(HotUpdateManager)}.{nameof(LoadAssemblyAsyncInternal)}:热更程序集加载错误{e.Message}");
-                    Logger.LogError($"{nameof(HotUpdateManager)}.{nameof(LoadAssemblyAsyncInternal)}:热更程序集加载错误{e.Message}");
+                    Logger.LogException(ELogTags.HotUpdate, e);
+                    throw;
                 }
             });
-        }
-        
-        /// <summary>
-        /// TODO：补充的程序集单独打包AB包加载
-        /// 获取程序集字节数组
-        /// </summary>
-        /// <param name="assemblyNameWithExtension">包含拓展名的程序集名称</param>
-        /// <returns></returns>
-        private static byte[] GetAssemblyBytes(string assemblyNameWithExtension)
-        {
-            return File.ReadAllBytes(Path.Combine(Application.streamingAssetsPath, $"{assemblyNameWithExtension}.bytes"));
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Net.Protocols
     
         public void HandleMessage(Message message)
         {
-            Message = message as T;
+            Message = (T)message;
             OnHandle();
         }
 

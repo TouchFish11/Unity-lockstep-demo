@@ -9,6 +9,14 @@ namespace Core.Utility
     /// </summary>
     public static class FileUtility
     {
+        /// <summary>
+        /// AB包自定义后缀
+        /// </summary>
+        /// <value>
+        /// assetbundle
+        /// </value>
+        public static string AbSuffix => "assetbundle";
+        
         #region 默认文件
 
         /// <summary>
@@ -65,15 +73,7 @@ namespace Core.Utility
         /// <value>
         /// PlayerActionAssets.json
         /// </value>
-        public static string InputActionLocalFileName => "MainActionMap.json";
-
-        /// <summary>
-        /// AB包自定义后缀
-        /// </summary>
-        /// <value>
-        /// .assetbundle
-        /// </value>
-        public static string AbSuffix => ".assetbundle";
+        public static string InputActionLocalFileName => "MainActionMap";
         
         /// <summary>
         /// 游戏设置文件名
@@ -107,6 +107,12 @@ namespace Core.Utility
         /// ActivityData.json
         /// </value>
         public static string LocalActivityDataFileName => "ActivityData.json";
+        
+        /// <summary>
+        /// 玩家物品数据文件名称
+        /// </summary>
+        public const string PlayerItemDataFileName = "ItemData.json";
+
 
         /// <summary>
         /// 获取所有文件
@@ -136,6 +142,26 @@ namespace Core.Utility
                 GetTotalFiles(info, fileInfos, filterSuffixes);
             }
             return fileInfos;
+        }
+
+        /// <summary>
+        /// 为AB名称添加后缀
+        /// </summary>
+        /// <param name="bundleName">不包含拓展名的AB包名称</param>
+        /// <returns></returns>
+        public static string WithAbSuffix(this string bundleName)
+        {
+            return $"{bundleName}.{AbSuffix}";
+        }
+        
+        /// <summary>
+        /// 为AB文件名移除后缀
+        /// </summary>
+        /// <param name="bundleName">包含拓展名的AB包名称</param>
+        /// <returns></returns>
+        public static string WithOutAbSuffix(this string bundleName)
+        {
+            return Path.ChangeExtension(bundleName, null);
         }
     }
 }

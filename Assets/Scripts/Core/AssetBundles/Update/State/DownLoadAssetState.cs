@@ -10,6 +10,7 @@ using Core.DI;
 using Core.Extensions;
 using Core.Global;
 using Core.Mono;
+using Core.Tasks;
 using Core.Utility;
 
 namespace Core.AssetBundles.Update.State
@@ -26,50 +27,43 @@ namespace Core.AssetBundles.Update.State
         // 上次更新下载速度的时间戳
         private float _lastSpeedUpdateTime;
         // 下载速度更新间隔（秒）
-        private readonly float _speedUpdateInterval;
+        private readonly float _speedUpdateInterval = GlobalSettings.Instance.updateModuleConfig.speedUpdateInterval;
         // 是否正在下载中
         private bool _isDownloading;
-        
-        public DownLoadAssetState()
-        {
-            _speedUpdateInterval = GlobalSettings.Instance.speedUpdateInterval;
-        }
 
-        /// <summary>
-        /// 执行资源下载核心逻辑
-        /// </summary>
-        /// <returns>是否下载成功</returns>
-        public override async Task<UpdateResult> Execute()
+        protected override async void OnEnter()
         {
             try
             {
                 // 获取需要下载的总字节数
-                var downLoadTotalBytes = (ulong)ABPackageCollection.GetTotalDownLoadBytes(
-                    assetBundleUpdater.GetContext().RemotePackageCollection,
-                    assetBundleUpdater.GetContext().WaitDownloadCollection
-                );
+                var downLoadTotalBytes = (ulong)ABPackageCollection.GetTotalDownLoadBytes(assetBundleUpdater.GetContext().RemotePackageCollection, assetBundleUpdater.GetContext().WaitDownloadCollection);
                 // 初始化下载速度更新
                 _monoAdapter.StartCoroutine(UpdateSpeed());
 
                 // 异步下载资源，传入进度回调，更新下载进度
-                await DownLoadAssetsAsync(bytesPerFrame =>
-                    assetBundleUpdater.GetContext().UpdateProgress(bytesPerFrame, downLoadTotalBytes));
+                await DownLoadAssetsAsync(bytesPerFrame => assetBundleUpdater.GetContext().UpdateProgress(bytesPerFrame, downLoadTotalBytes));
 
                 // 标记下载结束
                 _isDownloading = false;
+                assetBundleUpdater.ChangePhase(EUpdatePhase.CheckAssetsIntegrity);
             }
             catch (AssetBunleIncompleteException assetBunleIncompleteException)
             {
-                return UpdateResult.CreateFailure(UpdateResult.EUpdateError.AssetBunleIncomplete, assetBunleIncompleteException);
+                var result = updateResultFactory.CreateFailure(UpdateResult.EUpdateError.AssetBunleIncomplete, assetBunleIncompleteException);
+                assetBundleUpdater.GetContext().UpdateOver(result);
+            }
+            catch (AssetBundDownloadCancelled assetBundDownloadCancelled)
+            {
+                var result = updateResultFactory.CreateFailure(UpdateResult.EUpdateError.AssetBundDownloadCancelled, assetBundDownloadCancelled);
+                assetBundleUpdater.GetContext().UpdateOver(result);
             }
             catch (System.Exception exception)
             {
-                return UpdateResult.CreateFailure(UpdateResult.EUpdateError.Unknown, exception);
+                var result = updateResultFactory.CreateFailure(UpdateResult.EUpdateError.Unknown, exception);
+                assetBundleUpdater.GetContext().UpdateOver(result);
             }
-            
-            return UpdateResult.CreateSuccess();
         }
-
+        
         /// <summary>
         /// 异步下载AssetBundle资源
         /// 支持并发下载、断点续传、失败重试、进度回调
@@ -79,7 +73,7 @@ namespace Core.AssetBundles.Update.State
         public async Task DownLoadAssetsAsync(Action<ulong> proCallBack)
         {
             // 获取资源服务器IP
-            var serverIp = GlobalSettings.Instance.resServerIp;
+            var serverIp = GlobalSettings.Instance.updateModuleConfig.resServerIp;
             // 获取待下载的AssetBundle集合
             var waitDownloadCollection = assetBundleUpdater.GetContext().WaitDownloadCollection;
             // 初始化所有待下载资源的请求器
@@ -90,7 +84,7 @@ namespace Core.AssetBundles.Update.State
                 // DownloadedBytes不为0说明是续传，追加
                 var isAppend = waitDownloadCollection[pair.Key].DownloadedBytes != 0;
                 // 创建AB包下载请求器
-                var abWebRequester = poolManager.GetData<ABWebRequester>().Init(serverIp, waitDownloadInfo.AbName, isAppend, waitDownloadInfo.AbName, string.Empty, waitDownloadInfo.DownloadedBytes);
+                var abWebRequester = poolManager.GetData<ABWebRequester>().Init(serverIp, waitDownloadInfo.AbName.WithAbSuffix(), isAppend, waitDownloadInfo.AbName, string.Empty, waitDownloadInfo.DownloadedBytes);
                 // 绑定下载进度回调
                 abWebRequester.OnDownloadProgress += proCallBack;
                 // 将请求器加入待下载队列
@@ -98,7 +92,7 @@ namespace Core.AssetBundles.Update.State
             }
 
             // 获取最大并发下载数
-            var maxConcurrencyNum = GlobalSettings.Instance.maxConcurrencyNum;
+            var maxConcurrencyNum = GlobalSettings.Instance.updateModuleConfig.maxConcurrencyNum;
             var context = assetBundleUpdater.GetContext();
 
             /*
@@ -107,9 +101,13 @@ namespace Core.AssetBundles.Update.State
              * 控制并发数，待下载队列有请求且并发数未达上限时，启动新下载
              * 处理下载失败的请求，更新失败队列
              */
-            while (!context.IsPauseDownload && 
-                   (context.RequesterWaitList.Count > 0 || context.RequesterLoadingList.Count > 0 || !(context.RequesterWaitList.Count == 0 && context.RequesterLoadingList.Count == 0 && context.RequesterFailList.Count >= 0)))
+            while (!context.IsPauseDownload && (context.RequesterWaitList.Count > 0 || context.RequesterLoadingList.Count > 0 || !(context.RequesterWaitList.Count == 0 && context.RequesterLoadingList.Count == 0 && context.RequesterFailList.Count >= 0)))
             {
+                if (context.IsPauseDownload)
+                {
+                    throw new AssetBundDownloadCancelled("下载取消");
+                }
+                
                 // 启动新的下载请求（控制并发数）
                 while (context.RequesterLoadingList.Count < maxConcurrencyNum && context.RequesterWaitList.Count > 0)
                 {
@@ -127,15 +125,17 @@ namespace Core.AssetBundles.Update.State
                             // 获取下载后的文件信息
                             var fileInfo = new FileInfo(PathUtility.GetAbLoadPath(requester.FileName));
                             // 更新缓存信息
-                            var cacheInfo = new AbPackageCacheInfo(requester.FileName, requester.Hash, fileInfo.Length);
+                            var cacheInfo = new AbPackageCacheInfo(requester.AbName, requester.Hash, fileInfo.Length);
                             updateService.UpdateCacheFile(context, cacheInfo);
+                            // 下载成功，回收到对象池
+                            poolManager.PushData(requester);
                         }
                         // 下载失败，加入失败队列
                         else
                         {
                             context.AddRequesterToFail(requester);
                         }
-                    });
+                    }, GlobalSettings.Instance.updateModuleConfig.connectTimeout);
                     
                     await Task.Yield(); // 帧间等待，避免阻塞主线程
                 }
@@ -155,7 +155,7 @@ namespace Core.AssetBundles.Update.State
             // 检查下载是否完整
             await CheckDownloadComplete();
         }
-
+        
         /// <summary>
         /// 检查下载是否完整
         /// </summary>
@@ -163,7 +163,11 @@ namespace Core.AssetBundles.Update.State
         /// <exception cref="Exception"></exception>
         private async Task CheckDownloadComplete()
         {
-            if (assetBundleUpdater.GetContext().RequesterFailList.Count != 0)
+            var failCount = assetBundleUpdater.GetContext().RequesterFailList.Count;
+
+            CollectRequester();
+            
+            if (failCount != 0)
             {
                 throw new AssetBunleIncompleteException(GetAssetBunleIncompleteExceptionMessage());
             }
@@ -182,6 +186,17 @@ namespace Core.AssetBundles.Update.State
             }
         }
 
+        /// <summary>
+        /// 回收下载失败的链表的所有请求
+        /// </summary>
+        private void CollectRequester()
+        {
+            foreach (var abWebRequester in assetBundleUpdater.GetContext().RequesterFailList)
+            {
+                poolManager.PushData(abWebRequester);
+            }
+        }
+        
         /// <summary>
         /// 循环更新下载速度
         /// 按配置的间隔时间，持续更新当前下载速度到上下文
@@ -210,7 +225,7 @@ namespace Core.AssetBundles.Update.State
             var sb = new StringBuilder();
             foreach (var info in assetBundleUpdater.GetContext().CachePackageCollection.Values)
             {
-                sb.AppendLine($"AB包：{info.AbName}未下载完整，已下载字节数：{info.DownloadedBytes}");
+                sb.AppendLine($"AB包：{info.AbName.WithAbSuffix()}未下载完整，已下载字节数：{info.DownloadedBytes}");
             }
 
             // 计算已下载数
@@ -225,6 +240,11 @@ namespace Core.AssetBundles.Update.State
             
             sb.AppendLine($"当前下载数：{currentCount}，总下载数：{assetBundleUpdater.GetContext().CachePackageCollection.Count}");
             return sb.ToString();
+        }
+
+        protected override void OnExit()
+        {
+
         }
 
         /// <summary>

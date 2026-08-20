@@ -1,5 +1,6 @@
 using System;
-using Net.Configs;
+using Net.Protocols.Configs;
+using Net.Protocols.FSync.Messages;
 using Net.Protocols.Tcp.Messages.Battle.S2C;
 using Net.Protocols.Tcp.Messages.Common;
 
@@ -29,6 +30,7 @@ namespace Net.Protocols
                 MessageIDConfig.Heartbeat_ID => new HeartMessage(),
                 MessageIDConfig.LeaveRace_ID => new LeaveRaceMessage(),
                 MessageIDConfig.ReconnectRace_ID => new ReconnectRaceMessage(),
+                MessageIDConfig.S2C_Frame_ID => new S2C_FrameMessage(),
                 _ => throw new Exception($"Unknown message id: {msgId}")
             };
 

@@ -34,5 +34,15 @@ namespace Core.Exceptions
         /// 网络错误码
         /// </summary>
         public const int NetworkErrorCode = 1006;
+        
+        /// <summary>
+        /// UI初始化错误码
+        /// </summary>
+        public const int UIInitializeErrorCode = 1007;
+        
+        /// <summary>
+        /// 事件中心分发事件异常错误码
+        /// </summary>
+        public const int EventTriggerErrorCode = 1008;
     }
 }

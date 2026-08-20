@@ -13,23 +13,19 @@ namespace Core.AssetBundles.Update.State
     /// </summary>
     public class CompareContrastState : UpdateState
     {
-        /// <summary>
-        /// 执行对比校验核心逻辑
-        /// </summary>
-        /// <returns>是否执行成功</returns>
-        public override async Task<UpdateResult> Execute()
+        protected override async void OnEnter()
         {
             try
             {
                 // 执行对比校验逻辑
                 await CompareContrastFileInfo();
+                assetBundleUpdater.ChangePhase(EUpdatePhase.CheckDeviceStorage);
             }
             catch (System.Exception exception)
             {
-                return UpdateResult.CreateFailure(UpdateResult.EUpdateError.AnalyzeAssetBundle, exception);
+                var result = updateResultFactory.CreateFailure(UpdateResult.EUpdateError.AnalyzeAssetBundle, exception);
+                assetBundleUpdater.GetContext().UpdateOver(result);
             }
-            
-            return UpdateResult.CreateSuccess();
         }
 
         /// <summary>
@@ -47,6 +43,14 @@ namespace Core.AssetBundles.Update.State
             var waitDownloadCollection = assetBundleUpdater.GetContext().WaitDownloadCollection; // 待下载包集合
             var cachePackageCollection = assetBundleUpdater.GetContext().CachePackageCollection;   // 缓存包集合
 
+            // 转存本地临时数据
+            var abPackageInfos = new Dictionary<string, ABPackageInfo>();
+            foreach (var abPackageInfo in localCollection.Values)
+            {
+                abPackageInfos.Add(abPackageInfo.Name, abPackageInfo);
+            }
+            
+            waitDownloadCollection.Clear();
             // 遍历远程AB包信息集合，对比本地包信息
             foreach (var (abName, abPackageInfo) in remoteCollection)
             {
@@ -84,6 +88,7 @@ namespace Core.AssetBundles.Update.State
             var cacheContent = await File.ReadAllTextAsync(cacheFilePath);
             if (!string.IsNullOrEmpty(cacheContent))
             {
+                cachePackageCollection.Clear();
                 // 反序列化缓存文件到缓存集合
                 var abCacheCollection = jsonManager.FromJson<AbPackageCacheCollection>(cacheContent);
                 foreach (var (abName, abPackageCacheInfo) in abCacheCollection)
@@ -98,35 +103,48 @@ namespace Core.AssetBundles.Update.State
             // 遍历待下载集合，对比缓存集合，过滤无需重复下载的包
             foreach (var waitPair in waitDownloadCollection)
             {
-                // 缓存中无该包信息，跳过（需要新下载）
+                // 缓存中无该包信息
                 if (!cachePackageCollection.ContainsKey(waitPair.Key))
                 {
-                    continue;
+                    var path = PathUtility.GetAbLoadPath(waitPair.Key.WithAbSuffix());
+                    if (!File.Exists(path))
+                        continue;
+
+                    var localLength = new FileInfo(path).Length;
+                    // 先判断是否是之前的完整旧包，是就跳过
+                    if (localLength == abPackageInfos[waitPair.Key].Size)
+                        continue;
+                    
+                    // 下载了但没有被缓存文件记录的意外情况（App异常关闭），根据文件的实际大小断点续传
+                    var packageCacheInfo = new AbPackageCacheInfo(waitPair.Key, string.Empty, localLength);
+                    cachePackageCollection.TryAdd(waitPair.Key, packageCacheInfo);
                 }
 
-                // 说明这个包没有下载完成，没有开始下载或下载未完成
-                if (waitPair.Value.Hash == string.Empty && waitPair.Value.DownloadedBytes < remoteCollection[waitPair.Key].Size)
+                // 获取缓存文件的单个包信息
+                var cachePackageInfo = cachePackageCollection[waitPair.Key];
+                // 说明这个包没有下载完成——没有开始下载或下载未完成
+                if (cachePackageInfo.Hash == string.Empty && cachePackageInfo.DownloadedBytes < remoteCollection[waitPair.Key].Size)
                 {
-                    waitPair.Value.DownloadedBytes = cachePackageCollection[waitPair.Key].DownloadedBytes;
+                    // 更新待下载包信息，从当前位置开始下载
+                    waitPair.Value.DownloadedBytes = cachePackageInfo.DownloadedBytes;
                 }
-                // 下载完成了，但是没有进行校验，那就不用下载了
-                else if(waitPair.Value.Hash == string.Empty && waitPair.Value.DownloadedBytes == remoteCollection[waitPair.Key].Size)
+                // 最新包下载完成，但是没有进行校验，那就不用下载了，若校验失败会回到这个状态
+                else if(cachePackageInfo.Hash == string.Empty && cachePackageInfo.DownloadedBytes == remoteCollection[waitPair.Key].Size)
                 {
                     waitRemoveABFileList.Add(waitPair.Key);
                 }
-                else if(waitPair.Value.Hash != string.Empty)
+                else if(cachePackageInfo.Hash != string.Empty)
                 {
                     // 缓存中该包Hash与待下载包不一致，说明需要更新，跳过（保留待下载）
-                    if (cachePackageCollection[waitPair.Key].Hash != waitPair.Value.Hash)
-                    {
+                    if (cachePackageInfo.Hash != waitPair.Value.Hash)
                         continue;
-                    }
                     
                     // 缓存中该包Hash一致，且已下载完成，标记为无需下载（加入移除列表）
-                    if (cachePackageCollection[waitPair.Key].IsSuccess)
+                    if (cachePackageInfo.IsSuccess)
                     {
                         waitRemoveABFileList.Add(waitPair.Key);
                     }
+                    // 不会出现hash相同，没有下载完成的情况，因为存在记录的hash说明校验过了，肯定是下载完了的
                 }
             }
 
@@ -140,6 +158,10 @@ namespace Core.AssetBundles.Update.State
             assetBundleUpdater.GetContext().IsHasUpdate = waitDownloadCollection.Count != 0;
         }
 
+        protected override void OnExit()
+        {
+            
+        }
         /// <summary>
         /// 当前更新阶段标识
         /// </summary>

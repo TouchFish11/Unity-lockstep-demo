@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
+using Core.Log;
 using UnityEngine;
 
 namespace HotUpdate.Base.Icon
@@ -48,7 +49,7 @@ namespace HotUpdate.Base.Icon
             }
             catch (Exception e)
             {
-                Core.Log.Logger.LogError($"[{nameof(IconProvider)}]: '{iconKey}' asset load fail, {e.Message}");
+                Core.Log.Logger.LogError(ELogTags.Icon, $"[{nameof(IconProvider)}]: '{iconKey}' asset load fail, {e.Message}");
                 return null;
             }
             finally

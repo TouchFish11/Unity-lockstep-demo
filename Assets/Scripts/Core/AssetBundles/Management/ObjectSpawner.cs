@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.DI;
+using Core.Log;
 using Core.Mono;
 using Core.Pool;
+using Core.PreLoad;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,51 +15,22 @@ using Object = UnityEngine.Object;
 namespace Core.AssetBundles.Management
 {
     /// <summary>
-    /// 对象生成器
+    /// 对象生成器，需要实例化的对象才使用此工具
     /// </summary>
-    public class ObjectSpawner : IDisposable, IPoolData
+    public class ObjectSpawner : IDisposable
     {
         [Inject] private IPoolManager _poolManager;
+        
         // 资源Key到资源句柄的映射
-        private readonly Dictionary<string, AssetHandle> _keyToHandleMap = new();
+        private Dictionary<string, AssetHandle> _keyToHandleMap = new();
         // 资源Key到资源加载任务的映射
-        private readonly Dictionary<string, Task<AssetHandle<GameObject>>> _keyToHandleTaskMap = new();
+        private Dictionary<string, Task<AssetHandle<GameObject>>> _keyToHandleLoadingTaskMap = new();
         // 缓存加载过的资源Key
-        private readonly HashSet<string> _assetKeys = new();
-
-        /// <summary>
-        /// 生成对象
-        /// </summary>
-        /// <param name="key">资源Key</param>
-        /// <param name="parent">对象的父对象</param>
-        /// <param name="pos">若是UI对象，则为锚点坐标；否则根据父对象是否存在来设置本地/世界坐标</param>
-        /// <param name="rot">若是UI对象，则为本地旋转；否则根据父对象是否存在来设置本地/世界旋转</param>
-        /// <param name="worldSpace">是否保留世界坐标</param>
-        /// <typeparam name="T">游戏对象上的组件类型</typeparam>
-        /// <returns>返回该游戏对象上的特定组件</returns>
-        public PoolObject<T> Spawn<T>(string key, Transform parent = null, Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
-        {
-            // 尝试从对象池获取
-            var poolObject = GetPoolObject<T>(key, parent, pos, rot, worldSpace);
-            if(poolObject.Obj)
-                return poolObject.Convert<T>();
-
-            // 复用句柄资源实例化
-            if (_keyToHandleMap.TryGetValue(key, out var handle))
-            {
-                return Instantiate<T>(handle, key, parent, pos, rot, worldSpace);
-            }
-            
-            // 加载资源
-            handle = GameAsset.LoadAsset<GameObject>(key);
-            // 缓存Key
-            _assetKeys.Add(key);
-            // 缓存句柄
-            _keyToHandleMap.Add(key, handle);
-            Logger.Log($"[{nameof(ObjectSpawner)}]: Cache asset({key}), Cache handle id({handle.HandleId})");
-            // 实例化
-            return Instantiate<T>(handle, key, parent, pos, rot, worldSpace);
-        }
+        private HashSet<string> _assetKeys = new();
+        // 缓存使用的实例
+        private List<Object> _activeObjects = new();
+        // 释放时的快照
+        private List<Object> _releaseSnapshot = new();
         
         /// <summary>
         /// 异步生成对象
@@ -69,34 +42,41 @@ namespace Core.AssetBundles.Management
         /// <param name="worldSpace">是否保留世界坐标</param>
         /// <typeparam name="T">游戏对象上的组件类型</typeparam>
         /// <returns>返回该游戏对象上的特定组件</returns>
-        public async Task<PoolObject<T>> SpawnAsync<T>(string key, Transform parent = null, Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
+        public async Task<T> SpawnAsync<T>(string key, Transform parent = null, Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
         {
             // 尝试从对象池获取
-            var poolObject = GetPoolObject<T>(key, parent, pos, rot, worldSpace);
-            if(poolObject.Obj)
-                return poolObject.Convert<T>();
-
+            var poolObj = GetPoolObject<T>(key, parent, pos, rot, worldSpace);
+            if (poolObj)
+            {
+                _activeObjects.Add(poolObj);
+                return poolObj;
+            }
+            
             // 先从缓存句柄中获取
             if (_keyToHandleMap.TryGetValue(key, out var assetHandle))
             {
                 // 实例化资源
-                return Instantiate<T>(assetHandle, key, parent, pos, rot, worldSpace);
+                var newObj = Instantiate<T>(assetHandle, key, parent, pos, rot, worldSpace);
+                _activeObjects.Add(newObj);
+                return newObj;
             }
             
             // 返回正在加载的任务
-            if (_keyToHandleTaskMap.TryGetValue(key, out var cacheTask))
+            if (_keyToHandleLoadingTaskMap.TryGetValue(key, out var cacheTask))
             {
                 var handle = await cacheTask;
-                return Instantiate<T>(handle, key, parent, pos, rot, worldSpace);
+                var newObj = Instantiate<T>(handle, key, parent, pos, rot, worldSpace);
+                _activeObjects.Add(newObj);
+                return newObj;
             }
-
+            
             // 异步加载资源
             var handleTask = GameAsset.LoadAssetAsync<GameObject>(key);
-            if (!_keyToHandleTaskMap.TryAdd(key, handleTask))
+            if (!_keyToHandleLoadingTaskMap.TryAdd(key, handleTask))
             {
-                handleTask = _keyToHandleTaskMap[key];
+                handleTask = _keyToHandleLoadingTaskMap[key];
             }
-
+            
             try
             {
                 // 等待资源加载
@@ -106,31 +86,193 @@ namespace Core.AssetBundles.Management
                 // 缓存句柄
                 _keyToHandleMap.Add(key, newHandle);
                 // 实例化资源
-                return Instantiate<T>(newHandle, key, parent, pos, rot, worldSpace);
+                var newObj = Instantiate<T>(newHandle, key, parent, pos, rot, worldSpace);
+                _activeObjects.Add(newObj);
+                return newObj;
             }
             catch (Exception e)
             {
                 GameAsset.Release(_keyToHandleMap[key]);
                 _assetKeys.Remove(key);
                 _keyToHandleMap.Remove(key);
-                Logger.LogError($"[{nameof(ObjectSpawner)}]: {e.Message}");
-                return default;
+                // TODO：抛异常
+                Logger.LogError(ELogTags.Asset, $"[{nameof(ObjectSpawner)}]: Create '{key}' obj error,{e.Message}");
+                return null;
             }
             finally
             {
-                _keyToHandleTaskMap.Remove(key);
+                _keyToHandleLoadingTaskMap.Remove(key);
+            }
+        }
+        
+        /// <summary>
+        /// 生成对象
+        /// </summary>
+        /// <param name="key">资源Key</param>
+        /// <param name="parent">对象的父对象</param>
+        /// <param name="pos">若是UI对象，则为锚点坐标；否则根据父对象是否存在来设置本地/世界坐标</param>
+        /// <param name="rot">若是UI对象，则为本地旋转；否则根据父对象是否存在来设置本地/世界旋转</param>
+        /// <param name="worldSpace">是否保留世界坐标</param>
+        /// <typeparam name="T">游戏对象上的组件类型</typeparam>
+        /// <returns>返回该游戏对象上的特定组件</returns>
+        public T Spawn<T>(string key, Transform parent = null, Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
+        {
+            // 尝试从对象池获取
+            var poolObj = GetPoolObject<T>(key, parent, pos, rot, worldSpace);
+            if (poolObj)
+            {
+                _activeObjects.Add(poolObj);
+                return poolObj;
+            }
+
+            T newObj;
+            // 复用句柄资源实例化
+            if (_keyToHandleMap.TryGetValue(key, out var handle))
+            {
+                newObj = Instantiate<T>(handle, key, parent, pos, rot, worldSpace);
+                _activeObjects.Add(newObj);
+                return newObj;
+            }
+            
+            // 加载资源
+            handle = GameAsset.LoadAsset<GameObject>(key);
+            // 缓存Key
+            _assetKeys.Add(key);
+            // 缓存句柄
+            _keyToHandleMap.Add(key, handle);
+            // 实例化
+            newObj = Instantiate<T>(handle, key, parent, pos, rot, worldSpace);
+            _activeObjects.Add(newObj);
+            return newObj;
+        }
+        
+        /// <summary>
+        /// 异步生成多个对象，只能获取同一类型的多个资源，不支持混合类型
+        /// </summary>
+        /// <param name="keys">同一类型的不同资源key</param>
+        /// <typeparam name="T">类型</typeparam>
+        /// <returns></returns>
+        public async Task<IReadOnlyList<T>> SpawnsAsync<T>(params string[] keys) where T : Object
+        {
+            // 保存所有生成任务
+            var loadTasks = new List<Task<T>>();
+            foreach (var key in keys)
+            {
+                loadTasks.Add(SpawnAsync<T>(key));
+            }
+            
+            // 等待所有加载任务结束
+            var objArr = await Task.WhenAll(loadTasks);
+            var objs = new List<T>();
+            // 存储结果
+            objs.AddRange(objArr);
+            return objs;
+        }
+        
+        /// <summary>
+        /// 异步生成多个对象，只能获取同一类型的多个资源，不支持混合类型
+        /// </summary>
+        /// <param name="list">缓存列表</param>
+        /// <param name="keys">同一类型的不同资源key</param>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <returns>获取数量</returns>
+        /// <exception cref="ArgumentNullException">当list为null时抛出</exception>
+        public async Task<int> SpawnsAsync<T>(IList<T> list, params string[] keys) where T : Object
+        {
+            if(list == null)
+                throw new ArgumentNullException(nameof(list));
+            
+            // 保存所有生成任务
+            var loadTasks = new List<Task<T>>();
+            foreach (var key in keys)
+            {
+                loadTasks.Add(SpawnAsync<T>(key));
+            }
+            
+            // 等待所有加载任务结束
+            var poolObjects = await Task.WhenAll(loadTasks);
+            // 存储结果
+            list.AddRange(poolObjects);
+            return list.Count;
+        }
+
+        /// <summary>
+        /// 资源异步预加载，只能预加载GameObject类型的资源
+        /// </summary>
+        /// <param name="preLoadDatas">预加载资源数据</param>
+        /// <exception cref="ArgumentNullException">preLoadDatas为null时抛出</exception>
+        public async Task PreLoadAsync(params PreLoadData[] preLoadDatas)
+        {
+            if(preLoadDatas == null)
+                throw new ArgumentNullException(nameof(preLoadDatas));
+            
+            if(preLoadDatas.Length == 0)
+                return;
+            
+            var loadings = new List<Task<AssetHandle<GameObject>>>();
+            foreach (var preLoadData in preLoadDatas)
+            {
+                var key = preLoadData.AssetName;
+                Task<AssetHandle<GameObject>> loadingTask;
+                if (_keyToHandleLoadingTaskMap.TryGetValue(key, out var task))
+                {
+                    loadingTask = task;
+                }
+                else
+                {
+                    // 异步加载资源
+                    loadingTask = GameAsset.LoadAssetAsync<GameObject>(key);
+                    _keyToHandleLoadingTaskMap.Add(key, loadingTask);
+                }
+                loadings.Add(loadingTask);
+            }
+            
+            try
+            {
+                // 等待资源加载
+                var assetHandles = await Task.WhenAll(loadings);
+                for (var i = 0; i < preLoadDatas.Length; i++)
+                {
+                    var key = preLoadDatas[i].AssetName;
+                    // 缓存Key和句柄
+                    _assetKeys.Add(key);
+                    _keyToHandleMap.Add(key, assetHandles[i]);
+                }
+            }
+            catch (Exception e)
+            {
+                for (var i = 0; i < loadings.Count; i++)
+                {
+                    var key = preLoadDatas[i].AssetName;
+                    if (loadings[i].IsCompletedSuccessfully)
+                    {
+                        if (_keyToHandleMap.TryGetValue(key, out var value))
+                        {
+                            GameAsset.Release(value);
+                        }
+                    }
+                    else
+                    {
+                        Logger.LogError(ELogTags.Asset, $"[{nameof(ObjectSpawner)}]: Create obj({key}) error,{e.Message}");
+                    }
+                }
+            }
+            finally
+            {
+                foreach (var preLoadData in preLoadDatas)
+                {
+                    _keyToHandleLoadingTaskMap.Remove(preLoadData.AssetName);
+                }
             }
         }
         
         /// 从对象池复用对象为池化对象
-        private PoolObject GetPoolObject<T>(string key, Transform parent = null, 
-            Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
+        private T GetPoolObject<T>(string key, Transform parent = null, Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
         {
             var instance = _poolManager.Get<T>(key);
             if (!instance) 
-                return default;
+                return null;
             
-            var poolObject = new PoolObject(ObjectIdPool.GetGlobalId(), instance, this);
             switch (instance)
             {
                 // UI
@@ -163,26 +305,17 @@ namespace Core.AssetBundles.Management
                     break;
                 }
             }
-            
-            return poolObject.Convert<T>();
+
+            return instance;
         }
 
         /// 实例化资源并封装为池化对象返回
-        private PoolObject<T> Instantiate<T>(AssetHandle assetHandle, string key, Transform parent = null, 
-            Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
+        private static T Instantiate<T>(AssetHandle assetHandle, string key, Transform parent = null, Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
         {
             // 实例化资源
-            var newObj = InstantiateInternal<T>(assetHandle, key, parent, pos, rot, worldSpace);
-            var poolObject = new PoolObject(ObjectIdPool.GetGlobalId(), newObj, this);
-            return poolObject.Convert<T>();
-        }
-
-        /// 实例化资源（内部）
-        private static T InstantiateInternal<T>(AssetHandle assetHandle, string key, Transform parent = null, 
-            Vector3 pos = default, Quaternion rot = default, bool worldSpace = false) where T : Object
-        {
+            var asset = assetHandle.ConvertTo<T>().Asset;
             // 实例化对象
-            var newObj = Object.Instantiate(assetHandle.ConvertTo<T>().Asset);
+            var newObj = Object.Instantiate(asset);
             // 不是UI对象
             if (newObj is not UIBehaviour uiBehaviour)
             {
@@ -215,84 +348,69 @@ namespace Core.AssetBundles.Management
             newObj.name = key;
             return newObj;
         }
-        
-        /// <summary>
-        /// 异步生成多个对象，只能获取同一类型的多个资源，不支持混合类型
-        /// </summary>
-        /// <param name="keys">同一类型的不同资源key</param>
-        /// <typeparam name="T">类型</typeparam>
-        /// <returns></returns>
-        public async Task<PoolObject<T>> SpawnsAsync<T>(params string[] keys) where T : Object
-        {
-            var poolObject = new PoolObject(ObjectIdPool.GetGlobalId(), null, this);
-            // 保存所有生成任务
-            var loadTasks = new List<Task<PoolObject<T>>>();
-            foreach (var key in keys)
-            {
-                loadTasks.Add(SpawnAsync<T>(key));
-            }
-            
-            // 等待所有加载任务结束
-            var poolObjects = await Task.WhenAll(loadTasks);
-            
-            // 存储结果到新池化对象中
-            foreach (var po in poolObjects)
-            {
-                poolObject.Objs.Add(po.Obj);
-            }
-
-            return poolObject.Convert<T>();
-        }
 
         /// <summary>
-        /// 统一的回收入口（通过 PooledObject 自动调用）
+        /// 统一的回收入口
         /// </summary>
-        /// <param name="poolObject">池化对象</param>
-        /// <param name="destroy">是否销毁不放入对象池</param>
-        internal void Release(PoolObject poolObject, bool destroy)
-        {
-            if (poolObject.Objs.Count > 0)
-            {
-                foreach (var poolObjectObj in poolObject.Objs)
-                {
-                    ReleaseInternal(poolObjectObj, destroy);
-                }
-            }
-            else
-            {
-                ReleaseInternal(poolObject.Obj, destroy);
-            }
-        }
-
-        /// 释放对象（内部）
-        private void ReleaseInternal(Object obj, bool destroy)
+        public bool Release<T>(T obj, bool destroy = false) where T : Object
         {
             if (!obj)
             {
-                Logger.LogError($"{nameof(ObjectSpawner)}: Manually destroying object is not allowed");
-                return;
+                Logger.LogWarning(ELogTags.Asset, $"The object has been destroyed, Manually destroying object is not allowed");
+                return false;
             }
             
+            if (!_activeObjects.Contains(obj))
+            {
+                Logger.LogWarning(ELogTags.Asset, $"The object ‘{obj.name}’ has been released.");
+                return false;
+            }
+
+            _activeObjects.Remove(obj);
             if (destroy)
-                EngineUtility.Destroy(obj);
+            {
+                EngineUtility.Destroy(obj as GameObject ?? (obj as Component)?.gameObject);
+            }
             else
             {
-                Logger.Log($"[{nameof(ObjectSpawner)}]: {obj.name} collect pool");
                 _poolManager.PushObj(obj);
             }
-        }
-        
-        /// <summary>
-        /// 销毁生成器，当不在使用该生成器时调用此方法，释放缓存的剩余句柄
-        /// 要先确保生成器创建出的池化对象都执行回收后才能调用此方法销毁
-        /// 否则对象池会有残留
-        /// </summary>
-        public void Dispose()
-        {
-            _poolManager.PushData(this);
+            
+            return true;
         }
 
-        void IPoolData.ResetData()
+        /// <summary>
+        /// 批量释放对象
+        /// </summary>
+        /// <param name="objs">释放的对象集合</param>
+        /// <param name="destroy">是否销毁不放入对象池</param>
+        /// <returns>已释放的对象数量</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public int Release<T>(IEnumerable<T> objs, bool destroy = false) where T : Object
+        {
+            if(objs == null)
+                throw new ArgumentNullException(nameof(objs));
+
+            var releseCount = 0;
+            
+            // 缓存到快照中，避免释放时修改集合
+            _releaseSnapshot.Clear();
+            _releaseSnapshot.AddRange(objs);
+            foreach (var obj in _releaseSnapshot)
+            {
+                if (Release(obj, destroy))
+                {
+                    ++releseCount;
+                }
+            }
+            
+            return releseCount;
+        }
+
+        /// <summary>
+        /// 清理所有句柄缓存，调用后可以继续使用该生成器，这个方法不会调用Release
+        /// </summary>
+        public void Clear()
         {
             // 为了避免引用泄露，需要在不使用该生成器时统一释放剩余的句柄
             foreach (var handle in _keyToHandleMap.Values)
@@ -304,9 +422,27 @@ namespace Core.AssetBundles.Management
             // 清空对象池的这些资源Key的缓存对象
             foreach (var assetKey in _assetKeys)
             {
-                _poolManager.ClearCache(assetKey);
+                _poolManager.ReleaseCache(assetKey);
             }
             _assetKeys.Clear();
+            
+            _keyToHandleLoadingTaskMap.Clear();
+            _releaseSnapshot.Clear();
+        }
+        
+        /// <summary>
+        /// 销毁生成器，当不在使用该生成器时调用此方法，会间接调用Clear
+        /// 需确保所有对象release，否则使用的对象会残留
+        /// </summary>
+        public void Dispose()
+        {
+            Clear();
+            _poolManager = null;
+            _keyToHandleMap = null;
+            _keyToHandleLoadingTaskMap = null;
+            _assetKeys = null;
+            _activeObjects = null;
+            _releaseSnapshot = null;
         }
     }
 }

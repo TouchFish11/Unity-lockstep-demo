@@ -14,23 +14,33 @@ namespace Net.SyncModule.Manager
     public class NetGameProxy : INetGameProxy
     {
         // 封装底层网络管理器
-        private INetManager _netManager;
+        [Inject] private INetManager _netManager;
+        
         // 消息路由处理
         private MessageRouter _router;
-        // 游戏层关注的事件
+
         public event Action<int> OnGameConnected;
+        
         public event Action OnGameDisconnected;
-        
-        /// 服务器下发的当前连接的客户端Token
+
+        public event Action<long> TcpRtt;
+
+        /// <summary>
+        /// 服务器下发的当前连接的客户端ID
+        /// </summary>
         public int SessionId { get; private set; }
-        
-        private NetGameProxy(){}
+
+        private NetGameProxy()
+        {
+            
+        }
         
         public INetGameProxy Init(NetConfig netConfig)
         {
             _netManager = DIContainer.Create<NetManager>(parameterValues: netConfig);
             _netManager.OnConnected += OnGameConnectedInternal;
             _netManager.OnMessageReceived += OnMessageReceive;
+            ((IHeartbeatService)_netManager).OnRttCalc += TcpRtt;
             _router = DIContainer.Create<MessageRouter>();
             return this;
         }
@@ -49,7 +59,7 @@ namespace Net.SyncModule.Manager
 
         public void Send(Message message, EProtocolChannel channel)
         {
-            if(channel == EProtocolChannel.Reliable)
+            if(channel == EProtocolChannel.Resolve)
                 ((TcpMessage)message).SessionID = SessionId;
             else
                 ((C2S_NextFrameMessage)message).OptMessage.SessionID = SessionId;
@@ -63,14 +73,11 @@ namespace Net.SyncModule.Manager
 
         private void OnGameConnectedInternal()
         {
-            Logger.Log($"[Net Connected] 连接服务器成功!");
+            Logger.LogDebug(ELogTags.System,$"[Net Connected] 连接服务器成功!");
         }
 
         private void OnMessageReceive(Message message, EProtocolChannel channel)
         {
-            if (message == null) 
-                return;
-            
             _router.Dispatch(message);
         }
     }

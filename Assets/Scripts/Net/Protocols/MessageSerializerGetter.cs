@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Net.SyncModule.Interface;
 
 namespace Net.Protocols
 {
@@ -9,11 +8,11 @@ namespace Net.Protocols
     /// </summary>
     public static class MessageSerializerGetter
     {
-        private static readonly Dictionary<Type, IMessageSerializer> serializers = new()
+        private static readonly Dictionary<Type, IMessageResolver> serializers = new()
         {
-            {typeof(BinaryMessageSerializer),  new BinaryMessageSerializer()},
+            {typeof(DefaultMessageResolver),  new DefaultMessageResolver()},
         };
 
-        public static Func<IMessageSerializer> BinaryMessageSerializer => () => serializers[typeof(BinaryMessageSerializer)];
+        public static Func<IMessageResolver> BinaryMessageSerializer => () => serializers[typeof(DefaultMessageResolver)];
     }
 }

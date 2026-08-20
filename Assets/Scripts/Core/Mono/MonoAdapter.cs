@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Core.Mono.MonoFunction;
+using Core.Log;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -12,21 +12,17 @@ namespace Core.Mono
     /// </summary>
     public class MonoAdapter : MonoBehaviour, IMonoAdapter
     {
-        private List<IAwakable> awakables = new();
-        private List<Action> _fixedUpdates = new();
-        private List<Action> _updates = new();
-        private List<Action> _lateUpdates = new();
+        private readonly List<Action> _fixedUpdates = new();
+        private readonly List<Action> _updates = new();
+        private readonly List<Action> _lateUpdates = new();
         
-        private List<IApplicationExitNotify> _applicationExits = new();
-        private List<IApplicationPauseNotify> _applicationPauses = new();
-        private List<IApplicationFocusNotify> _applicationFocus = new();
+        private readonly List<IApplicationExitNotify> _applicationExits = new();
+        private readonly List<IApplicationPauseNotify> _applicationPauses = new();
+        private readonly List<IApplicationFocusNotify> _applicationFocus = new();
         
         private void Awake()
         {
-            foreach (var awakable in awakables)
-            {
-                awakable.Awake();
-            }
+
         }
 
         private void OnEnable()
@@ -166,6 +162,9 @@ namespace Core.Mono
         {
             try
             {
+                if(_applicationExits == null)
+                    return;
+                
                 // 按优先级排序
                 _applicationExits.Sort((i1, i2) =>
                 {
@@ -173,16 +172,17 @@ namespace Core.Mono
                     if (i1.QuitPriority < i2.QuitPriority) return -1;
                     return 0;
                 });
-                
+
+                var snapshot = new List<IApplicationExitNotify>(_applicationExits);
                 // 依次执行退出逻辑
-                foreach (var applicationExitNotify in _applicationExits)
+                foreach (var applicationExitNotify in snapshot)
                 {
-                    applicationExitNotify.OnAppQuit();
+                    applicationExitNotify?.OnAppQuit();
                 }
             }
             catch (Exception e)
             {
-                Logger.LogError($"{nameof(MonoAdapter)}.{nameof(OnApplicationQuit)}:应用程序退出时逻辑执行错误，{e.Message}");
+                Logger.LogError(ELogTags.MonoApdater, $"{nameof(MonoAdapter)}: Application exit logic execution error,{e.Message}");
             }
         }
 
@@ -190,14 +190,15 @@ namespace Core.Mono
         {
             try
             {
-                foreach (var applicationPauseNotify in _applicationPauses)
+                var snapshot = new List<IApplicationPauseNotify>(_applicationPauses);
+                foreach (var applicationPauseNotify in snapshot)
                 {
-                    applicationPauseNotify.OnAppPause(pauseStatus);
+                    applicationPauseNotify?.OnAppPause(pauseStatus);
                 }
             }
             catch (Exception e)
             {
-                Logger.LogError($"{nameof(MonoAdapter)}.{nameof(OnApplicationPause)}:应用程序暂停/恢复时逻辑执行错误，{e.Message}");
+                Logger.LogError(ELogTags.MonoApdater, $"{nameof(MonoAdapter)}: Application logic when a suspend/resume mistake,{e.Message}");
             }
         }
 
@@ -205,35 +206,27 @@ namespace Core.Mono
         {
             try
             {
-                foreach (var applicationFocusNotify in _applicationFocus)
+                var snapshot = new List<IApplicationFocusNotify>(_applicationFocus);
+                foreach (var applicationFocusNotify in snapshot)
                 {
                     applicationFocusNotify.OnAppFocus(hasFocus);
                 }
             }
             catch (Exception e)
             {
-                Logger.LogError($"{nameof(MonoAdapter)}.{nameof(OnApplicationFocus)}:应用程序聚焦/失焦时逻辑执行错误，{e.Message}");
+                Logger.LogError(ELogTags.MonoApdater, $"{nameof(MonoAdapter)}: Application focus/out-of-focus logic error,{e.Message}");
             }
         }
 
         protected void OnDestroy()
         {
-            awakables.Clear();
-            awakables = null;
-
             _fixedUpdates.Clear();
             _updates.Clear();
             _lateUpdates.Clear();
-            _fixedUpdates = null;
-            _updates = null;
-            _lateUpdates = null;
             
             _applicationExits.Clear();
             _applicationPauses.Clear();
             _applicationFocus.Clear();
-            _applicationExits = null;
-            _applicationPauses = null;
-            _applicationFocus = null;
         }
     }
 }

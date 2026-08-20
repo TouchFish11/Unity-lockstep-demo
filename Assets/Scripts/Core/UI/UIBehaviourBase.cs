@@ -10,8 +10,7 @@ namespace Core.UI
     /// UIBehaviour基类
     /// 对原生UIBehaviour的封装
     /// </summary>
-    public abstract class UIBehaviourBase : UIBehaviour, IUiBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerMoveHandler,
-        IPointerDownHandler, IPointerUpHandler
+    public abstract class UIBehaviourBase : UIBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerMoveHandler, IPointerDownHandler, IPointerUpHandler
     {
         // UI组件绑定器
         protected UIComponentBinder binder;
@@ -24,9 +23,12 @@ namespace Core.UI
             binder.OnInputFieldValueChanged += OnInputFieldValueChanged;
             binder.OnToggleValueChanged += OnToggleValueChanged;
             binder.OnScrollRectValueChanged += OnScrollRectValueChanged;
-
+            binder.OnDropdownValueChanged += OnDropdownValueChanged;
+            
             ScanFieldAndPropertyInstance();
             ScanTransformInstance();
+            
+            DIContainer.InjectIntoInstance(this);
         }
         
         /// <summary>
@@ -47,6 +49,8 @@ namespace Core.UI
         protected virtual void OnToggleValueChanged(string togName, bool isOn) { }
 
         protected virtual void OnScrollRectValueChanged(string svName, Vector2 pos) { }
+        
+        protected virtual void OnDropdownValueChanged(string ddName, int index) { }
         
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {

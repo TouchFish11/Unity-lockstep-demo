@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Net.Protocols.Configs;
 
 namespace Net.Protocols.FSync.Messages
 {
@@ -7,6 +8,8 @@ namespace Net.Protocols.FSync.Messages
     /// </summary>
     public class S2C_FrameMessage : FrameMessage
     {
+        public static int FrameMessageID => MessageIDConfig.S2C_Frame_ID;
+        
         /// <summary>
         /// 帧消息列表，可能包含多帧消息
         /// </summary>
@@ -15,6 +18,8 @@ namespace Net.Protocols.FSync.Messages
         public override int GetMsgLength()
         {
             var length = 0;
+            // 消息ID
+            length += 4;
             // 列表内容长度
             length += 4;
             // 列表内容
@@ -31,6 +36,7 @@ namespace Net.Protocols.FSync.Messages
             var index = 0;
             var length = GetMsgLength();
             var bytes = new byte[length];
+            MessageUtil.WriteField(bytes, FrameMessageID, ref index);
             MessageUtil.WriteField(bytes, length, ref index);
             foreach (var oneFrameMessage in FrameMessages)
             {
@@ -43,6 +49,7 @@ namespace Net.Protocols.FSync.Messages
         public override int Deserialize(byte[] bytes, int beginIndex = 0)
         {
             var index = beginIndex;
+            MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息ID
             var length = MessageUtil.ReadInt(bytes, ref index);
             FrameMessages = new List<S2C_OneFrameMessage>(length);
             for (var i = 0; i < length; i++)

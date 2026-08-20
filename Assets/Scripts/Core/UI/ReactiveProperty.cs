@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Core.Log;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
@@ -12,6 +13,11 @@ namespace Core.UI
         private List<Action<T>> _onValueChangeds;
         private IDisposable _preProperty;
         private bool _isDisposed;
+        private bool _isNotifying;
+
+#if UNITY_EDITOR
+        private int _notifyDepth;
+#endif
         
         public T Value
         {
@@ -19,8 +25,19 @@ namespace Core.UI
             set
             {
                 if (EqualityComparer<T>.Default.Equals(_value, value))
+                {
+                    Logger.LogDebug(ELogTags.Reactive, $"相等性判断, {_value}");
                     return;
+                }
                 
+                // 如果当前正在通知，说明这是一次重入调用，我们不立刻再次通知，
+                // 而是直接返回（值已经更新，但不会触发新的通知，从而终止循环）。
+                // if (_isNotifying)
+                // {
+                //     Logger.Log($"[{nameof(ReactiveProperty<T>)}]: 重入调用, {_value}");
+                //     return;
+                // }
+
                 _value = value;
                 Invoke(_value);
             }
@@ -107,7 +124,7 @@ namespace Core.UI
         {
             var result = new ReactiveProperty<TResult>(selector(_value));
 
-            this.Subscribe(v =>
+            Subscribe(v =>
             {
                 result.Value = selector(v);
             });
@@ -126,7 +143,18 @@ namespace Core.UI
         {
             if (_onValueChangeds == null || _onValueChangeds.Count == 0)
                 return;
+
+#if UNITY_EDITOR
+            _notifyDepth++;
+            if (_notifyDepth > 20)
+            {
+                Logger.LogError(ELogTags.Reactive, $"检测到可能的无限递归，深度 {_notifyDepth}，请检查订阅逻辑！");
+                _notifyDepth--;
+                return; // 熔断
+            }
+#endif
             
+            _isNotifying = true;
             // 复制一份避免回调中修改列表导致异常
             var snapshot = new List<Action<T>>(_onValueChangeds);
             foreach (var listener in snapshot)
@@ -137,9 +165,14 @@ namespace Core.UI
                 }
                 catch (Exception e)
                 {
-                    Logger.LogError($"[{nameof(ReactiveProperty<T>)}]: callBack invoke error, {e.Message}");
+                    Logger.LogError(ELogTags.Reactive, $"[{nameof(ReactiveProperty<T>)}]: callBack invoke error, {e.Message}");
                 }
             }
+
+            _isNotifying = false;
+#if UNITY_EDITOR
+            _notifyDepth--;
+#endif
         }
         
         public void Dispose()
