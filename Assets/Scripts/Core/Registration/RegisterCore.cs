@@ -10,6 +10,8 @@ using Core.Inputs;
 using Core.Mono;
 using Core.Music;
 using Core.Net;
+using Core.Net.SyncModule.Interface;
+using Core.Net.SyncModule.Manager;
 using Core.Pool;
 using Core.PreLoad;
 using Core.Res;
@@ -38,6 +40,7 @@ namespace Core.Registration
             DIContainer.BindSingleton<IMonoAdapter, MonoAdapter>();
             DIContainer.BindSingleton<IMemoryMonitor, MemoryMonitor>();
             DIContainer.BindSingleton<IUWRManager, UWRManager>();
+            DIContainer.BindSingleton<INetGameProxy, NetGameProxy>();
             DIContainer.BindSingleton<IPoolManager, PoolManager>();
             DIContainer.BindSingleton<IUIManager, UIManager>();
             DIContainer.BindSingleton<IAssetBundleManager, AssetBundleManager>();
@@ -53,6 +56,7 @@ namespace Core.Registration
             DIContainer.BindSingleton<IVideoManager, VideoPlayManager>();
             DIContainer.BindSingleton<ISceneManager, SceneManager>();
             DIContainer.BindSingleton<IPreLoadManager, PreLoadManager>();
+            DIContainer.Bind<NetManager>().As<INetManager>().As<IHeartbeatService>().AsSingleton();
 #if UNITY_EDITOR
             DIContainer.BindSingleton<IHotUpdateManager, HotUpdateMockManager>();
 #else

@@ -426,7 +426,8 @@ namespace Core.DI
         }
         
         /// <summary>
-        /// 创建方法：替代 new，并自动注入依赖
+        /// 创建临时对象：替代 new，并自动注入依赖。
+        /// 注：不受绑定影响
         /// </summary>
         /// <param name="parameterValues">可选：手动指定的构造参数（按顺序）</param>
         public static T Create<T>(params object[] parameterValues) where T : class
@@ -449,7 +450,8 @@ namespace Core.DI
         }
 
         /// <summary>
-        /// 创建方法：替代 new，并自动注入依赖
+        /// 创建临时对象：替代 new，并自动注入依赖
+        /// 注：不受绑定影响
         /// </summary>
         /// <param name="type"></param>
         /// <param name="parameterValues"></param>
