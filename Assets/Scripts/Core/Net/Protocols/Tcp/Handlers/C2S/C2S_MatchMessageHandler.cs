@@ -1,4 +1,4 @@
-using Net.Protocols.Tcp.Messages.Battle.C2S;
+using Core.Net.Protocols.Tcp.Messages.Battle.C2S;
 
 namespace Net.Protocols.Tcp.Handlers.C2S
 {

@@ -37,7 +37,7 @@ namespace Game
             }
             catch (Exception e)
             {
-                Logger.LogError(ELogTags.GameLauncher, $"Game startup failed, {e}");
+                Logger.LogException(ELogTags.GameLauncher, e);
             }
         }
         
@@ -95,6 +95,8 @@ namespace Game
             {
                 var json = File.ReadAllText(persistentPath);
                 bootConfig = jsonManager.FromJson<BootConfig>(json);
+                if(bootConfig != null)
+                    return;
             }
 
             // 其次从 StreamingAssets 读取（首包内置）

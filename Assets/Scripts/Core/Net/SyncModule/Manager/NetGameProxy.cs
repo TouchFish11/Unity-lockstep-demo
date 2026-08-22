@@ -18,7 +18,9 @@ namespace Core.Net.SyncModule.Manager
         // 消息路由处理
         private MessageRouter _router;
 
-        public event Action<int> OnConnected;
+        public int ClientId => _netManager.SessionId;
+        
+        public event Action<int, int[]> OnConnected;
         
         public event Action OnDisconnected;
 
@@ -35,7 +37,7 @@ namespace Core.Net.SyncModule.Manager
             _netManager.Init(netConfig);
             _netManager.OnConnected += OnConnectedEvent;
             _netManager.OnMessageReceived += OnMessageReceive;
-            _netManager.OnDisconnected += OnDisconnected;
+            _netManager.OnDisconnected += OnDisconnectedEvent;
             _netManager.OnError += OnError;
             ((IHeartbeatService)_netManager).OnRttCalc += RttCalcEvent;
             _router = DIContainer.Create<MessageRouter>();
@@ -62,9 +64,14 @@ namespace Core.Net.SyncModule.Manager
             _netManager.Disconnect();
         }
 
-        private void OnConnectedEvent(int clientId)
+        private void OnConnectedEvent(int clientId, int[] clientIds)
         {
-            OnConnected?.Invoke(clientId);
+            OnConnected?.Invoke(clientId, clientIds);
+        }
+
+        private void OnDisconnectedEvent()
+        {
+            OnDisconnected?.Invoke();
         }
 
         private void OnMessageReceive(Message message, EProtocolChannel channel)

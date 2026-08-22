@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Core.DI;
 using Core.Exceptions;
 using Core.Net.Protocols.FSync.Handlers;
+using Core.Net.Protocols.Tcp.Handlers.S2C;
+using Core.Net.Protocols.Tcp.Messages.Common;
 using Net.Protocols.FSync.Messages;
 using Net.Protocols.Tcp.Handlers.C2S;
-using Net.Protocols.Tcp.Handlers.S2C;
 using Net.Protocols.Tcp.Messages.Battle.S2C;
-using Net.Protocols.Tcp.Messages.Common;
 
 namespace Net.Protocols
 {

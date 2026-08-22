@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Core.Log;
+using Core.Net.Protocols.Tcp.Messages.Common;
 using Core.Net.SyncModule.Interface;
 using Net.Protocols;
-using Net.Protocols.Tcp.Messages.Common;
 
 namespace Core.Net.SyncModule.Manager
 {

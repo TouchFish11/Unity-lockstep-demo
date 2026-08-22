@@ -1,3 +1,5 @@
+using System;
+
 namespace Net.Protocols
 {
     /// <summary>
@@ -13,6 +15,7 @@ namespace Net.Protocols
         /// <summary>
         /// 处理没有自定义消息头的消息类型
         /// </summary>
+        [Obsolete("Raw channel is deprecated, please use Resolve channel instead")]
         Raw = 2
     }
 }

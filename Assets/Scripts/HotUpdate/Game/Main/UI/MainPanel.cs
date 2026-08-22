@@ -2,7 +2,7 @@ using Core.UI.ViewController;
 using TMPro;
 using UnityEngine.UI;
 
-namespace HotUpdate.Main.UI
+namespace HotUpdate.Game.Main.UI
 {
     /// <summary>
     /// 主界面

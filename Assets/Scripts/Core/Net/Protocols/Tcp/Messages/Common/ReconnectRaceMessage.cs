@@ -1,6 +1,7 @@
 using Net.Protocols.Configs;
+using Net.Protocols.Tcp;
 
-namespace Net.Protocols.Tcp.Messages.Common
+namespace Core.Net.Protocols.Tcp.Messages.Common
 {
     /// <summary>
     /// 重新连接比赛消息

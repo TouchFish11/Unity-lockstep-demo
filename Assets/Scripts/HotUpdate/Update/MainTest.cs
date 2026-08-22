@@ -8,30 +8,20 @@ using kcp2k;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
-namespace Net
+namespace HotUpdate.Update
 {
     public class MainTest : MonoBehaviour
     {
-        private async void Start()
+        private async void Awake()
         {
             Application.runInBackground = true;
             await RegisterCore.InitCore();
-            
+        }
+
+        private void Start()
+        {
             // -----------------
-            var config = new NetConfig
-            {
-                ServerIp = "127.0.0.1",
-                ServerPort = 8080,
-                Resolver = MessageSerializerSource.DefaultMessageResolver,
-                ClientType = EClientType.Tcp,
-                KcpConfig = new KcpConfig(DualMode:false, Timeout: 30000)
-            };
-            
-            var proxy = DIContainer.Resolve<INetGameProxy>().Init(config);
-            proxy.OnConnected += OnConnected;
-            proxy.OnDisconnected += OnDisconnected;
-            proxy.TcpRtt += OnTcpRtt;
-            proxy.Connect();
+
         }
 
         private void OnTcpRtt(long rtt)
@@ -39,7 +29,7 @@ namespace Net
             Logger.LogDebug(ELogTags.System, $"[Net] TCP RTT:{rtt}ms");
         }
 
-        private static void OnConnected(int clientId)
+        private static void OnConnected(int clientId, int[] clientIds)
         {
             Logger.LogDebug(ELogTags.System, $"[Net] 已初始化客户端ID:{clientId}");
         }

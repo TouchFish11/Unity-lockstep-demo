@@ -1,6 +1,7 @@
 using Net.Protocols.Configs;
+using Net.Protocols.Tcp;
 
-namespace Net.Protocols.Tcp.Messages.Common
+namespace Core.Net.Protocols.Tcp.Messages.Common
 {
     /// <summary>
     /// 新客户端加入消息，此时的SessionID是新客户端的ID，服务器下发给所有其它客户端

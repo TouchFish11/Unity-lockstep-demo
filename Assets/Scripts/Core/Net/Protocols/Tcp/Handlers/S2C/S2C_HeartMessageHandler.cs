@@ -1,8 +1,9 @@
 using Core.DI;
+using Core.Net.Protocols.Tcp.Messages.Common;
 using Core.Net.SyncModule.Interface;
-using Net.Protocols.Tcp.Messages.Common;
+using Net.Protocols;
 
-namespace Net.Protocols.Tcp.Handlers.S2C
+namespace Core.Net.Protocols.Tcp.Handlers.S2C
 {
     public class S2C_HeartMessageHandler : MessageHandler<HeartMessage>
     {

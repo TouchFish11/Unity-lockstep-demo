@@ -1,5 +1,6 @@
 {
+  "aotDllBundleName": "hotupdateaot",
   "hotfixDllBundleName": "hotupdate",
   "hotfixObjKey": "HotUpdateEntry",
-  "version": "639135282328444801"
+  "version": "639230303930248418"
 }

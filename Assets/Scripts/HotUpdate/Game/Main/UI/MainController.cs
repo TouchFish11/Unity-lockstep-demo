@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Core.UI.ViewController;
 using HotUpdate.Game.Main.Chat;
 using HotUpdate.Main.Chat;
-using HotUpdate.Main.UI;
 
 namespace HotUpdate.Game.Main.UI
 {

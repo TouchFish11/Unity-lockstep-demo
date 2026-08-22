@@ -7,9 +7,14 @@ namespace Core.Net.SyncModule.Interface
     public interface INetGameProxy
     {
         /// <summary>
+        /// 服务器下发的客户端ID
+        /// </summary>
+        int ClientId { get; }
+        
+        /// <summary>
         /// 业务层使用的连接完成事件
         /// </summary>
-        event Action<int> OnConnected;
+        event Action<int, int[]> OnConnected;
         
         /// <summary>
         /// 业务层使用的连接断开事件

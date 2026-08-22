@@ -1,6 +1,7 @@
 using Net.Protocols.Configs;
+using Net.Protocols.Tcp;
 
-namespace Net.Protocols.Tcp.Messages.Battle.C2S
+namespace Core.Net.Protocols.Tcp.Messages.Battle.C2S
 {
     /// <summary>
     /// 客户端比赛准备就绪消息

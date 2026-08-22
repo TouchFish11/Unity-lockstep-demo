@@ -11,7 +11,7 @@ namespace Core.Net.SyncModule.Interface
     {
         event Action<Message, EProtocolChannel> OnMessageReceived;
         
-        event Action<int> OnConnected;
+        event Action<int, int[]> OnConnected;
         
         event Action OnDisconnected;
         
@@ -23,12 +23,13 @@ namespace Core.Net.SyncModule.Interface
         int SessionId { get; }
 
         void Init(NetConfig config);
-        
+
         /// <summary>
         /// 设置会话ID，外部无需调用
         /// </summary>
         /// <param name="sessionToken"></param>
-        void SetSessionToken(int sessionToken);
+        /// <param name="clientIds"></param>
+        void SetSessionToken(int sessionToken, int[] clientIds);
         
         void Connect();
         

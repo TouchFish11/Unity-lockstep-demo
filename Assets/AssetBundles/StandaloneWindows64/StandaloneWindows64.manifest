@@ -1,11 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2045989589
+CRC: 2441683492
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
+      Name: ui
+      Dependencies:
+        Dependency_0: tmpasset
+    Info_1:
       Name: scenes
       Dependencies:
         Dependency_0: ui
-    Info_1:
-      Name: ui
+    Info_2:
+      Name: tmpasset
       Dependencies: {}

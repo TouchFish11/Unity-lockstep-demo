@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Core.Net.Protocols.Tcp.Messages.Common;
 using Net.Protocols.Configs;
 using Net.Protocols.FSync.Messages;
 using Net.Protocols.Tcp;
 using Net.Protocols.Tcp.Messages.Battle.S2C;
-using Net.Protocols.Tcp.Messages.Common;
 
 namespace Net.Protocols
 {

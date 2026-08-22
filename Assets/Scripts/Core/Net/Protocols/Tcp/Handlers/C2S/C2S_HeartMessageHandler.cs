@@ -1,5 +1,5 @@
 using System;
-using Net.Protocols.Tcp.Messages.Common;
+using Core.Net.Protocols.Tcp.Messages.Common;
 
 namespace Net.Protocols.Tcp.Handlers.C2S
 {

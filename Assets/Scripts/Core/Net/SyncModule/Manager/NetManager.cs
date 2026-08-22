@@ -36,7 +36,7 @@ namespace Core.Net.SyncModule.Manager
         
         public event Action<Message, EProtocolChannel> OnMessageReceived;
         
-        public event Action<int> OnConnected;
+        public event Action<int, int[]> OnConnected;
         
         public event Action OnDisconnected;
         
@@ -76,11 +76,11 @@ namespace Core.Net.SyncModule.Manager
             _client.Connect(_config.ServerIp, _config.ServerPort);
         }
         
-        public void SetSessionToken(int sessionId)
+        public void SetSessionToken(int sessionId, int[] clientIds)
         {
             // 获取到ID才去通知业务层连接成功
             SessionId = sessionId;
-            OnConnected?.Invoke(sessionId);
+            OnConnected?.Invoke(sessionId, clientIds);
         }
 
         public void Send(Message message, EProtocolChannel channel)

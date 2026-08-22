@@ -1,8 +1,9 @@
 using Core.DI;
+using Core.Net.Protocols.Tcp.Messages.Common;
 using Core.Net.SyncModule.Interface;
-using Net.Protocols.Tcp.Messages.Common;
+using Net.Protocols;
 
-namespace Net.Protocols.Tcp.Handlers.S2C
+namespace Core.Net.Protocols.Tcp.Handlers.S2C
 {
     /// <summary>
     /// 服务器连接消息处理器
@@ -16,7 +17,7 @@ namespace Net.Protocols.Tcp.Handlers.S2C
         protected override void OnHandle()
         {
             // 记录ID
-            _netManager.SetSessionToken(Message.SessionID);
+            _netManager.SetSessionToken(Message.SessionID, Message.ClientIds.ToArray());
             // 发送心跳
             _heartbeatService.Start();
         }

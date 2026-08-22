@@ -1,6 +1,7 @@
+using Net.Protocols;
 using Net.Protocols.Tcp.Messages.Battle.S2C;
 
-namespace Net.Protocols.Tcp.Handlers.S2C
+namespace Core.Net.Protocols.Tcp.Handlers.S2C
 {
     /// <summary>
     /// 服务器匹配成功消息处理器

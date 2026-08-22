@@ -1,6 +1,7 @@
 using Net.Protocols.Configs;
+using Net.Protocols.Tcp;
 
-namespace Net.Protocols.Tcp.Messages.Common
+namespace Core.Net.Protocols.Tcp.Messages.Common
 {
     /// <summary>
     /// 断开连接消息。断开连接消息ID 客户端主动断开则发送给服务器作为断开请求； 客户端收到服务器则可以真正断开
