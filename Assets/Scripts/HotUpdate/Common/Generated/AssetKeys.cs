@@ -10,9 +10,11 @@ public static class AssetKeys
     public const string HotUpdate_Game = "HotUpdate.Game.dll";
     public const string HotUpdate_UI = "HotUpdate.UI.dll";
     public const string HotUpdate_Update = "HotUpdate.Update.dll";
+    public const string HotUpdateAssemblySettings = "HotUpdateAssemblySettings";
     public const string HotUpdateEntry = "HotUpdateEntry";
     public const string Bot_Mask = "Bot_Mask";
     public const string Gray = "Gray";
+    public const string RolePrefab = "RolePrefab";
     public const string Sphere = "Sphere";
     public const string ABTestScene = "ABTestScene";
     public const string GameScene = "GameScene";
@@ -277,6 +279,7 @@ public static class AssetKeys
     public const string Friend_UI = "Friend_UI";
     public const string BloodUIObj = "BloodUIObj";
     public const string ConfirmPanel = "ConfirmPanel";
+    public const string ConfirmView = "ConfirmView";
     public const string ConnectPlayerObjUI = "ConnectPlayerObjUI";
     public const string GamePanel = "GamePanel";
     public const string LoadingPanel = "LoadingPanel";

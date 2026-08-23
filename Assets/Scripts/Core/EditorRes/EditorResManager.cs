@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Core.Log;
-using Core.Singleton;
 using Core.Utility;
 using UnityEditor;
 using UnityEngine;

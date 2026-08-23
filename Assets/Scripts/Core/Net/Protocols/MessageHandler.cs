@@ -1,4 +1,5 @@
 using Core.DI;
+using Core.GlobalEvent;
 using Core.Net.SyncModule.Interface;
 
 namespace Net.Protocols
@@ -9,8 +10,9 @@ namespace Net.Protocols
     /// <typeparam name="T"></typeparam>
     public abstract class MessageHandler<T> : IMessageHandler where T : Message, new()
     {
-        [Inject] protected INetGameProxy _netGameProxy;
-        [Inject] protected INetManager _netManager;
+        [Inject] protected INetGameProxy netGameProxy;
+        [Inject] protected INetManager netManager;
+        [Inject] protected IEventCenter eventCenter;
         
         public abstract T Message { get; protected set; }
     

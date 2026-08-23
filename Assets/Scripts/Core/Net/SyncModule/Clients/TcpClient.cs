@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Core.Log;
+using Core.Net.Protocols;
 using Net.Protocols;
 using Logger = Core.Log.Logger;
 
@@ -31,7 +32,7 @@ namespace Core.Net.SyncModule.Clients
         
         public event Action OnDisconnected;
         
-        public event Action<string> OnError;
+        public event Action<EErrorCode, string> OnError;
 
         public TcpClient(short bufferSize = 4096, short tempBufferSize = 512)
         {
@@ -54,7 +55,7 @@ namespace Core.Net.SyncModule.Clients
             catch (Exception e)
             {
                 Logger.LogException(ELogTags.Network, e);
-                OnError?.Invoke(e.Message);
+                OnError?.Invoke(EErrorCode.ConnectServerFail, e.Message);
             }
         }
 
@@ -67,7 +68,7 @@ namespace Core.Net.SyncModule.Clients
             catch (Exception e)
             {
                 Logger.LogException(ELogTags.Network, e);
-                OnError?.Invoke(e.Message);
+                OnError?.Invoke(EErrorCode.InvalidSend, e.Message);
             }
         }
 
@@ -78,7 +79,7 @@ namespace Core.Net.SyncModule.Clients
         {
             try
             {
-                while (_tcpSocket != null && _tcpSocket.Connected)
+                while (IsConnected)
                 {
                     var receive = await _tcpSocket.ReceiveAsync(new ArraySegment<byte>(_tempBuffer), SocketFlags.None);
                     HandleData(receive);
@@ -88,7 +89,7 @@ namespace Core.Net.SyncModule.Clients
             catch (Exception e)
             {
                 Logger.LogException(ELogTags.Network, e);
-                OnError?.Invoke(e.Message);
+                OnError?.Invoke(EErrorCode.InvalidReceive, e.Message);
             }
         }
 
@@ -156,6 +157,7 @@ namespace Core.Net.SyncModule.Clients
             }
             catch (Exception ex)
             {
+                OnError?.Invoke(EErrorCode.DataResolve, ex.Message);
                 Logger.LogException(ELogTags.Network, ex);
             }
         }
@@ -167,15 +169,12 @@ namespace Core.Net.SyncModule.Clients
 
         public void Disconnect()
         {
-            if (_tcpSocket == null)
+            if (!IsConnected)
                 return;
 
-            if (_tcpSocket.Connected)
-            {
-                _tcpSocket.Shutdown(SocketShutdown.Send);
-                _tcpSocket.Disconnect(false);
-                _tcpSocket.Close();
-            }
+            _tcpSocket.Shutdown(SocketShutdown.Send);
+            _tcpSocket.Disconnect(false);
+            _tcpSocket.Close();
             _tcpSocket = null;
             OnDisconnected?.Invoke();
         }

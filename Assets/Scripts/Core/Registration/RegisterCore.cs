@@ -57,6 +57,7 @@ namespace Core.Registration
             DIContainer.BindSingleton<ISceneManager, SceneManager>();
             DIContainer.BindSingleton<IPreLoadManager, PreLoadManager>();
             DIContainer.Bind<NetManager>().As<INetManager>().As<IHeartbeatService>().AsSingleton();
+            DIContainer.Bind<NetGameManager>().AsSingleton();
 #if UNITY_EDITOR
             DIContainer.BindSingleton<IHotUpdateManager, HotUpdateMockManager>();
 #else

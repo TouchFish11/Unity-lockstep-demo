@@ -38,6 +38,7 @@ namespace Core.GlobalEvent
             EventSource.Init(poolManager);
             monoAdapter.AddUpdateListener(OnUpdate);
             _eventTriggerMaxNumPerFrame = GlobalSettings.Instance.eventModuleConfig.eventTriggerMaxNumPerFrame;
+            _poolManager = poolManager;
         }
 
         /// <summary>

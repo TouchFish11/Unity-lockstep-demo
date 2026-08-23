@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Core.Exceptions;
 using Core.Log;
+using Core.Net.Protocols;
 using Core.Net.Protocols.Tcp.Messages.Common;
 using Core.Net.SyncModule.Interface;
 using Net.Protocols;
@@ -36,16 +38,20 @@ namespace Core.Net.SyncModule.Manager
                 _isRunning = true;
                 while (_client.IsConnected && _isRunning)
                 {
+                    if (!IsAlive && LastHeartbeatUtc != null)
+                        throw ExceptionHelper.Throw($"连接超时（心跳阈值：{Interval}；最近心跳时间：{LastHeartbeatUtc}");
+                    
                     SendHeartbeatAsync();
                     await Task.Delay(Interval);
                 }
             }
             catch (Exception e)
             {
+                OnError?.Invoke(EErrorCode.Timeout, e.Message);
                 Logger.LogException(ELogTags.Network, e);
             }
         }
-
+        
         public void Stop()
         {
             _isRunning = false;

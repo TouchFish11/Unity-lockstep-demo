@@ -1,4 +1,5 @@
 using System;
+using Core.Net.Protocols;
 using Core.Net.SyncModule.Manager;
 using Net.Protocols;
 
@@ -15,7 +16,7 @@ namespace Core.Net.SyncModule.Interface
         
         event Action OnDisconnected;
         
-        event Action<string> OnError;
+        event Action<EErrorCode, string> OnError;
 
         /// <summary>
         /// 服务器下发的当前连接的客户端ID，仅在当前连接有效，不可跨会话

@@ -1,4 +1,5 @@
 using System;
+using Core.Net.Protocols;
 using Net.Protocols;
 
 namespace Core.Net.SyncModule.Clients
@@ -19,7 +20,7 @@ namespace Core.Net.SyncModule.Clients
         
         event Action OnDisconnected;
         
-        event Action<string> OnError;
+        event Action<EErrorCode, string> OnError;
 
         /// <summary>
         /// 连接到指定IP和端口的服务器

@@ -4,7 +4,7 @@ using Core.UI.ViewController;
 using TMPro;
 using UnityEngine.UI;
 
-namespace HotUpdate.UI.UI
+namespace HotUpdate.UI
 {
     public class MainView : UIView
     {

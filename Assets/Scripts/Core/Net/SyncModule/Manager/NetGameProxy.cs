@@ -1,5 +1,7 @@
 using System;
 using Core.DI;
+using Core.Mono;
+using Core.Net.Protocols;
 using Core.Net.SyncModule.Interface;
 using Net.Protocols;
 using Net.Protocols.FSync.Messages;
@@ -10,7 +12,7 @@ namespace Core.Net.SyncModule.Manager
     /// <summary>
     /// 网络游戏代理
     /// </summary>
-    public class NetGameProxy : INetGameProxy
+    public class NetGameProxy : INetGameProxy, IApplicationExitNotify
     {
         // 封装底层网络管理器
         [Inject] private INetManager _netManager;
@@ -18,6 +20,8 @@ namespace Core.Net.SyncModule.Manager
         // 消息路由处理
         private MessageRouter _router;
 
+        public int QuitPriority => 1;
+        
         public int ClientId => _netManager.SessionId;
         
         public event Action<int, int[]> OnConnected;
@@ -26,9 +30,9 @@ namespace Core.Net.SyncModule.Manager
 
         public event Action<long> TcpRtt;
         
-        private NetGameProxy()
+        private NetGameProxy(IMonoAdapter monoAdapter)
         {
-            
+            monoAdapter.AddApplicationExitNotify(this);
         }
         
         public INetGameProxy Init(NetConfig netConfig)
@@ -84,9 +88,14 @@ namespace Core.Net.SyncModule.Manager
             TcpRtt?.Invoke(rttMs);
         }
         
-        private void OnError(string message)
+        private void OnError(EErrorCode code, string message)
         {
-            
+            Disconnect();
+        }
+        
+        public void OnAppQuit()
+        {
+            Disconnect();
         }
     }
 }

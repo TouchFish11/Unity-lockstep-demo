@@ -1,5 +1,6 @@
 using System;
 using System.Net.Sockets;
+using Core.Net.Protocols;
 using Net.Protocols;
 
 namespace Core.Net.SyncModule.Clients
@@ -16,7 +17,7 @@ namespace Core.Net.SyncModule.Clients
         public event Action<byte[], EProtocolChannel> OnDataReceived;
         public event Action OnConnected;
         public event Action OnDisconnected;
-        public event Action<string> OnError;
+        public event Action<EErrorCode, string> OnError;
 
         public void Connect(string serverIp, ushort serverPort)
         {

@@ -10,7 +10,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Battle.C2S
     public class C2S_MatchConfirmMessage : TcpMessage
     {
         /// <summary>
-        /// 是否匹配，true为接收，false为拒绝
+        /// 是否匹配，true为接受，false为拒绝
         /// </summary>
         public bool IsMatch { get; set; }
         

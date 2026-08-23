@@ -1,5 +1,6 @@
 using System;
 using Core.Log;
+using Core.Net.Protocols;
 using kcp2k;
 using Net.Protocols;
 
@@ -20,7 +21,7 @@ namespace Core.Net.SyncModule.Clients
         public event Action<byte[], EProtocolChannel> OnDataReceived;
         public event Action OnConnected;
         public event Action OnDisconnected;
-        public event Action<string> OnError;
+        public event Action<EErrorCode, string> OnError;
 
         public KcpClient(KcpConfig kcp2kConfig)
         {
@@ -28,7 +29,7 @@ namespace Core.Net.SyncModule.Clients
                 OnConnect, 
                 OnDataReceive,
                 OnDisconnect,
-                (code, msg) => OnError?.Invoke($"{code}_{msg}"),
+                (code, msg) => OnError?.Invoke((EErrorCode)(int)code, msg),
                 kcp2kConfig);
             _kcp2kConfig = kcp2kConfig;
         }
@@ -49,7 +50,7 @@ namespace Core.Net.SyncModule.Clients
         {
             Logger.LogDebug(ELogTags.Network,$"[KcpClient] 收到数据包");
             // 直接返回原始数据给上层即可
-            OnDataReceived?.Invoke(rawData.Array, channel == KcpChannel.Reliable ? EProtocolChannel.Resolve : EProtocolChannel.Raw);
+            OnDataReceived?.Invoke(rawData.Array, EProtocolChannel.Resolve);
         }
 
         private void OnConnect()

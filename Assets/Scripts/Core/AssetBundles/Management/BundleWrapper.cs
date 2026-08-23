@@ -167,10 +167,10 @@ namespace Core.AssetBundles.Management
         /// <exception cref="AssetBundleLoadException"></exception>
         private async Task<bool> LoadFromFileAsyncInternal(CancellationToken token = default)
         {
-            // 异步加载AB包
-            using var assetBundleCreateRequestTask = AssetBundle.LoadFromFileAsync(LoadPath).ToTask(token);
             try
             {
+                // 异步加载AB包
+                using var assetBundleCreateRequestTask = AssetBundle.LoadFromFileAsync(LoadPath).ToTask(token);
                 AssetBundle = await assetBundleCreateRequestTask;
                 Logger.LogDebug(ELogTags.Asset, $"'{BundleName}' assetBundle is load");
                 return true;
@@ -275,9 +275,9 @@ namespace Core.AssetBundles.Management
         /// <exception cref="AssetsLoadException"></exception>
         private async Task<AssetWrapper[]> LoadAllAssetAsyncInternal<T>(CancellationToken token = default) where T : Object
         {
-            var assetBundleRequestsTask = AssetBundle.LoadAllAssetsAsync<T>().ToTasks<T>(token);
             try
             {
+                using var assetBundleRequestsTask = AssetBundle.LoadAllAssetsAsync<T>().ToTasks<T>(token);
                 var readOnlyAssets = await assetBundleRequestsTask;
                 var assetWrappers = new List<AssetWrapper>(readOnlyAssets.Count);
                 foreach (var asset in readOnlyAssets)
@@ -294,7 +294,6 @@ namespace Core.AssetBundles.Management
             }
             finally
             {
-                assetBundleRequestsTask.Dispose();
                 // 无论成败都移除，允许后续重新加载
                 _assetsLoadingTasks.Remove(typeof(T));
             }

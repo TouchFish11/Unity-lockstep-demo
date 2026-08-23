@@ -40,7 +40,7 @@ namespace Core.Net.SyncModule.Manager
         
         public event Action OnDisconnected;
         
-        public event Action<string> OnError;
+        public event Action<EErrorCode, string> OnError;
         
         public int SessionId { get; private set; }
 
@@ -61,7 +61,7 @@ namespace Core.Net.SyncModule.Manager
             
             _client.OnConnected += OnConnectedEvent;
             _client.OnDisconnected += () => OnDisconnected?.Invoke();
-            _client.OnError += error => OnError?.Invoke(error);
+            _client.OnError += (code, error) => OnError?.Invoke(code, error);
             _client.OnDataReceived += OnDataReceived;
             _config = config;
             

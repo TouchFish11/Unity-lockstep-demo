@@ -8,7 +8,7 @@ namespace Core.Mono
     {
         /// <summary>
         /// 退出优先级
-        /// 数值越小越先执行
+        /// 数值越小越先执行(0~N)
         /// </summary>
         int QuitPriority { get; }
         

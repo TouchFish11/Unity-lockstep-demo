@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Core.DI;
 using Core.Log;
 using Core.UI;
-using HotUpdate.UI.UI;
+using HotUpdate.UI;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 

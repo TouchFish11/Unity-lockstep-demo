@@ -1,7 +1,7 @@
 using Core.UI;
 using UnityEngine.UI;
 
-namespace HotUpdate.UI.UI
+namespace HotUpdate.UI
 {
     public class ConnectPlayerObjUI : UIBehaviourBase
     {
