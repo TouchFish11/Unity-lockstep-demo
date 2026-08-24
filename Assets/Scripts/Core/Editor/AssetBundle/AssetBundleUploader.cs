@@ -159,7 +159,7 @@ namespace Core.Editor.AssetBundle.Core
             var files = new List<FileInfo>();
             foreach (var file in dir.GetFiles())
             {
-                if (file.Extension == FileUtility.AbSuffix || file.Extension == ".json")
+                if (file.Extension == FileSources.AbSuffix || file.Extension == ".json")
                     files.Add(file);
             }
 

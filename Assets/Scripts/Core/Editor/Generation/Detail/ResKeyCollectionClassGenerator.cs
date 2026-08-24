@@ -50,43 +50,33 @@ namespace Core.Editor.Generation.Detail
     /// </summary>
     public class AssetKeysClassGenerator : ClassGenerator
     {
-        /// <summary>资源文件根目录路径</summary>
-        /// <value>默认指向Unity工程的 Assets/Editor/ArtRes 目录</value>
+        /// <summary>
+        /// 资源文件根目录路径
+        /// </summary>
+        /// <value>
+        /// 默认指向Unity工程的 Assets/Editor/ArtRes 目录
+        /// </value>
         private readonly string rootPath = $"{Application.dataPath}/Editor/ArtRes";
 
-        /// <summary>需要过滤的文件后缀名数组</summary>
-        /// <value>默认过滤.meta文件（Unity的元数据文件）</value>
+        /// <summary>
+        /// 需要过滤的文件后缀名数组
+        /// </summary>
+        /// <value>
+        /// 默认过滤.meta文件（Unity的元数据文件）
+        /// </value>
         private readonly string[] _filterSuffixes = { ".meta", ".bytes" };
         
-        /// <summary>存储扫描到的有效文件信息列表</summary>
-        private readonly List<FileInfo> fileInfos = new List<FileInfo>();
-
-        /// <summary>生成的类名称</summary>
-        /// <value>默认值：AssetKeys</value>
-        private const string className = "AssetKeys";
-
-        /// <summary>生成字段的访问修饰符</summary>
-        /// <value>默认值：public</value>
-        private const string accessModifier = "public";
-
-        /// <summary>生成字段的变量类型</summary>
-        /// <value>默认值：string（字符串类型）</value>
-        private const string variableType = "string";
-
-        /// <summary>生成字段的静态修饰符</summary>
-        /// <value>默认值：static（静态）</value>
-        private const string staticModifier = "static";
-
-        /// <summary>生成的C#脚本文件保存路径</summary>
-        private readonly string filePath = $"{Application.dataPath}/Scripts/HotUpdate/Common/AssetKeys.cs";
+        /// 存储扫描到的有效文件信息列表
+        private readonly List<FileInfo> fileInfos = new();
         
-        /// <summary>生成类的命名空间</summary>
-        /// <value>固定为Common命名空间</value>
         protected override string NameSpace => "HotUpdate.Common";
         
-        /// <summary>生成类的注释描述</summary>
-        protected override string Note { get; set; }
+        protected override string ClassName => "AssetKeys";
+        
+        public override string FilePath => $"{Application.dataPath}/Scripts/HotUpdate/Common/AssetKeys.cs";
 
+        protected override string Note => "资源键值集合类，自动生成，包含所有资源名称的静态字符串常量";
+        
         /// <summary>初始化方法</summary>
         /// <remarks>
         /// 1. 创建（确保）资源根目录存在
@@ -104,7 +94,7 @@ namespace Core.Editor.Generation.Detail
             foreach (var info in directoryInfos)
             {
                 // 递归获取当前子目录下所有非过滤后缀的文件列表
-                var totalFiles = FileUtility.GetTotalFiles(info, new List<FileInfo>(), _filterSuffixes);
+                var totalFiles = FileSources.GetTotalFiles(info, new List<FileInfo>(), _filterSuffixes);
                 // 将当前目录的文件信息添加到全局文件列表中
                 this.fileInfos.AddRange(totalFiles);
             }
@@ -126,15 +116,14 @@ namespace Core.Editor.Generation.Detail
             // 初始化字符串构建器，初始容量256（减少内存扩容）
             var sb = new StringBuilder(256);
             // 设置类的注释描述
-            Note = "资源键值集合类，自动生成，包含所有资源名称的静态字符串常量";
-
+            
             // 构建命名空间和类的基础结构
             sb.AppendLine($"namespace {NameSpace}");
             sb.AppendLine("{");
             sb.AppendLine("\t/// <summary>");
             sb.AppendLine($"\t/// {Note}");
             sb.AppendLine("\t/// </summary>");
-            sb.AppendLine($"\tpublic class {className}");
+            sb.AppendLine($"\tpublic class {ClassName}");
             sb.AppendLine("\t{");
 
             // 遍历所有扫描到的文件，为每个文件生成静态字符串属性
@@ -153,15 +142,20 @@ namespace Core.Editor.Generation.Detail
             sb.AppendLine("}");
 
             // 若目标文件已存在，先删除（确保覆盖最新内容）
-            if (File.Exists(filePath))
+            if (File.Exists(FilePath))
             {
-                File.Delete(filePath);
+                File.Delete(FilePath);
             }
             // 将构建好的代码字符串写入文件
-            File.WriteAllText(filePath, sb.ToString());
+            File.WriteAllText(FilePath, sb.ToString());
 
             // 刷新Unity资源数据库，使生成的脚本在编辑器中立即可见
             AssetDatabase.Refresh();
+        }
+
+        protected override void ClassContent(StringBuilder stringBuilder)
+        {
+            
         }
     }
 }

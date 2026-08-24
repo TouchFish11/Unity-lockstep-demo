@@ -1,6 +1,7 @@
+using Net.Protocols;
 using Net.Protocols.Configs;
 
-namespace Net.Protocols.FSync.Messages
+namespace Core.Net.Protocols.FSync.Messages
 {
     /// <summary>
     /// 客户端下一帧的操作，收集、发送时使用
@@ -21,14 +22,20 @@ namespace Net.Protocols.FSync.Messages
     
         public override int GetMsgLength()
         {
-            return sizeof(int) + sizeof(int) + OptMessage.GetMsgLength();
+            // 消息ID (int) + 消息体长度(int) + 帧ID(int) + OptMessage长度
+            return sizeof(int) + sizeof(int) + sizeof(int) + OptMessage.GetMsgLength();
         }
 
         public override byte[] Serialize()
         {
             var index = 0;
-            var bytes = new byte[GetMsgLength()];
+            var length = GetMsgLength();
+            var bytes = new byte[length];
+            // 写入消息ID
             MessageUtil.WriteField(bytes, FrameMessageID, ref index);
+            // 写入消息体长度
+            MessageUtil.WriteField(bytes, length, ref index);
+            MessageUtil.WriteField(bytes, FrameID, ref index);
             MessageUtil.WriteField(bytes, FrameID, ref index);
             MessageUtil.WriteField(bytes, OptMessage, ref index);
             return bytes;
@@ -38,6 +45,7 @@ namespace Net.Protocols.FSync.Messages
         {
             var index = beginIndex;
             MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息ID
+            var length = MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息体长度
             FrameID = MessageUtil.ReadInt(bytes, ref index);
             OptMessage = MessageUtil.ReadFrameMessage<OptMessage>(bytes, ref index);
             return index - beginIndex;

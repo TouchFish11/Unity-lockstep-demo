@@ -2,372 +2,6 @@
   "$type": "Core.AssetBundles.Management.AssetCatalog, CoreModule",
   "assetMap": {
     "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Core.AssetBundles.Management.AssetEntry, CoreModule]], mscorlib",
-    "DeleteItemConfirmContent": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "DeleteItemConfirmContent",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\Content\\DeleteItemConfirmContent.prefab",
-      "assetType": "Object",
-      "assetSize": 19481
-    },
-    "UpdateTipView": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "UpdateTipView",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\UpdateTipView.prefab",
-      "assetType": "Object",
-      "assetSize": 30274
-    },
-    "TipPanel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "TipPanel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\TipPanel.prefab",
-      "assetType": "Object",
-      "assetSize": 27838
-    },
-    "LoadingPanel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "LoadingPanel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\NetTest\\LoadingPanel.prefab",
-      "assetType": "Object",
-      "assetSize": 1068787
-    },
-    "GamePanel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "GamePanel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\NetTest\\GamePanel.prefab",
-      "assetType": "Object",
-      "assetSize": 78269
-    },
-    "ConnectPlayerObjUI": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ConnectPlayerObjUI",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\NetTest\\ConnectPlayerObjUI.prefab",
-      "assetType": "Object",
-      "assetSize": 8394
-    },
-    "ConfirmPanel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ConfirmPanel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\NetTest\\ConfirmPanel.prefab",
-      "assetType": "Object",
-      "assetSize": 15864
-    },
-    "BloodUIObj": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "BloodUIObj",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\NetTest\\BloodUIObj.prefab",
-      "assetType": "Object",
-      "assetSize": 5940
-    },
-    "Friend_UI": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Friend_UI",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Friend_UI.prefab",
-      "assetType": "Object",
-      "assetSize": 9042
-    },
-    "Chat_UI": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Chat_UI",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Chat_UI.prefab",
-      "assetType": "Object",
-      "assetSize": 7662
-    },
-    "Main_Panel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Main_Panel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Panel.prefab",
-      "assetType": "Object",
-      "assetSize": 73657
-    },
-    "Main_Chat_Panel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Main_Chat_Panel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Chat_Panel.prefab",
-      "assetType": "Object",
-      "assetSize": 72448
-    },
-    "WeaponDetailPanel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "WeaponDetailPanel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\DetailPanel\\WeaponDetailPanel.prefab",
-      "assetType": "Object",
-      "assetSize": 21821
-    },
-    "MaterialDetailPanel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MaterialDetailPanel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\DetailPanel\\MaterialDetailPanel.prefab",
-      "assetType": "Object",
-      "assetSize": 13491
-    },
-    "ItemTypeOpt": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ItemTypeOpt",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemTypeOpt.prefab",
-      "assetType": "Object",
-      "assetSize": 7745
-    },
-    "ItemDetailPanelBase": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ItemDetailPanelBase",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemDetailPanelBase.prefab",
-      "assetType": "Object",
-      "assetSize": 3225
-    },
-    "ItemCell": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ItemCell",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemCell.prefab",
-      "assetType": "Object",
-      "assetSize": 31332
-    },
-    "zselect-icon": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "zselect-icon",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/zselect-icon.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "zselect-arrow": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "zselect-arrow",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/zselect-arrow.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "zoom-tool": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "zoom-tool",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-tool.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "zoom-plus": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "zoom-plus",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-plus.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "zoom-minus": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "zoom-minus",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-minus.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "wine": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "wine",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/wine.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "windmill": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "windmill",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/windmill.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "water-wave": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "water-wave",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/water-wave.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "water-drop": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "water-drop",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/water-drop.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "wall-clock": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "wall-clock",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/wall-clock.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "volume-off": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "volume-off",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-off.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "volume-mute": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "volume-mute",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-mute.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "volume-medium": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "volume-medium",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-medium.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "volume-low": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "volume-low",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-low.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "volume-full": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "volume-full",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-full.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "volcano": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "volcano",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/volcano.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "virus": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "virus",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/virus.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "village": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "village",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/village.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "Vacuity": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "Vacuity",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/Vacuity.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "user": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "user",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/user.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "up-arrow-alt": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "up-arrow-alt",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/up-arrow-alt.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "up-arrow-1": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "up-arrow-1",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/up-arrow-1.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
-    "umbrella": {
-      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
-      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
-      "atlasKey": "Common.spriteatlasv2",
-      "key": "umbrella",
-      "bundleName": "spriteatlas",
-      "assetName": "Assets/Editor/ArtRes/Texture/Common/umbrella.png",
-      "assetType": "Texture",
-      "assetSize": 394
-    },
     "trophy2": {
       "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
       "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
@@ -2444,53 +2078,405 @@
       "assetType": "Object",
       "assetSize": 394
     },
-    "InventoryPanel": {
+    "DeleteItemConfirmContent": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "InventoryPanel",
+      "key": "DeleteItemConfirmContent",
       "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\InventoryPanel.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\Content\\DeleteItemConfirmContent.prefab",
       "assetType": "Object",
-      "assetSize": 159070
+      "assetSize": 19481
     },
-    "BeginView": {
+    "UpdateTipView": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "BeginView",
+      "key": "UpdateTipView",
       "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Begin\\BeginView.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\UpdateTipView.prefab",
       "assetType": "Object",
-      "assetSize": 45141
+      "assetSize": 30274
     },
-    "Battle_Panel": {
+    "TipPanel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Battle_Panel",
+      "key": "TipPanel",
       "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Battle\\Battle_Panel.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Tip\\TipPanel.prefab",
       "assetType": "Object",
-      "assetSize": 116839
+      "assetSize": 27838
     },
-    "UIRoot": {
+    "LoadingPanel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "UIRoot",
+      "key": "LoadingPanel",
       "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\UIRoot.prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\LoadingPanel.prefab",
       "assetType": "Object",
-      "assetSize": 13381
+      "assetSize": 1069146
     },
-    "MSYH_SDF": {
+    "GameView": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MSYH_SDF",
-      "bundleName": "tmpasset",
-      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
+      "key": "GameView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\GameView.prefab",
       "assetType": "Object",
-      "assetSize": 16942471
+      "assetSize": 75401
     },
-    "MSYH SDF FallBack": {
+    "ConnectPlayerObjUI": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MSYH SDF FallBack",
-      "bundleName": "tmpasset",
-      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH SDF FallBack.asset",
+      "key": "ConnectPlayerObjUI",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\ConnectPlayerObjUI.prefab",
       "assetType": "Object",
-      "assetSize": 2113341
+      "assetSize": 8394
+    },
+    "领带": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "领带",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\领带.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "鞋子饰内侧": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "鞋子饰内侧",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\鞋子饰内侧.mat",
+      "assetType": "Object",
+      "assetSize": 2267
+    },
+    "鞋子饰": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "鞋子饰",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\鞋子饰.mat",
+      "assetType": "Object",
+      "assetSize": 2255
+    },
+    "鞋子": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "鞋子",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\鞋子.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "裙饰铁": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "裙饰铁",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\裙饰铁.mat",
+      "assetType": "Object",
+      "assetSize": 2255
+    },
+    "裙子内侧": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "裙子内侧",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\裙子内侧.mat",
+      "assetType": "Object",
+      "assetSize": 2261
+    },
+    "裙子1": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "裙子1",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\裙子1.mat",
+      "assetType": "Object",
+      "assetSize": 2250
+    },
+    "裙子": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "裙子",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\裙子.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "袜子": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "袜子",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\袜子.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "袖子饰": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "袖子饰",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\袖子饰.mat",
+      "assetType": "Object",
+      "assetSize": 2255
+    },
+    "袖子内侧": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "袖子内侧",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\袖子内侧.mat",
+      "assetType": "Object",
+      "assetSize": 2261
+    },
+    "袖子": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "袖子",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\袖子.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "assets\\editor\\artres\\prefab\\firefly\\表情.png": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "assets\\editor\\artres\\prefab\\firefly\\表情.png",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\表情.png",
+      "assetType": "Object",
+      "assetSize": 136533
+    },
+    "表情": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "表情",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\表情.mat",
+      "assetType": "Object",
+      "assetSize": 2250
+    },
+    "衣饰铁": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "衣饰铁",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\衣饰铁.mat",
+      "assetType": "Object",
+      "assetSize": 2255
+    },
+    "衣领": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "衣领",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\衣领.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "衣服": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "衣服",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\衣服.png",
+      "assetType": "Object",
+      "assetSize": 3293266
+    },
+    "舌头": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "舌头",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\舌头.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "assets\\editor\\artres\\prefab\\firefly\\脸.png": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "assets\\editor\\artres\\prefab\\firefly\\脸.png",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\脸.png",
+      "assetType": "Object",
+      "assetSize": 221464
+    },
+    "脸": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "脸",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\脸.mat",
+      "assetType": "Object",
+      "assetSize": 2243
+    },
+    "脖饰": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "脖饰",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\脖饰.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "胸饰": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "胸饰",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\胸饰.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "背饰铃铛": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "背饰铃铛",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\背饰铃铛.mat",
+      "assetType": "Object",
+      "assetSize": 2261
+    },
+    "背带": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "背带",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\背带.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "肩带": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "肩带",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\肩带.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "眼睛1": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "眼睛1",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\眼睛1.mat",
+      "assetType": "Object",
+      "assetSize": 2250
+    },
+    "眼睛": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "眼睛",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\眼睛.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "眼白": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "眼白",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\眼白.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "眉毛": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "眉毛",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\眉毛.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "皮肤": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "皮肤",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\皮肤.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "牙齿": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "牙齿",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\牙齿.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "流萤3.0": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "流萤3.0",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\流萤3.0.fbx",
+      "assetType": "Object",
+      "assetSize": 20227936
+    },
+    "武器": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "武器",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\武器.png",
+      "assetType": "Object",
+      "assetSize": 1740219
+    },
+    "手套": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "手套",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\手套.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "assets\\editor\\artres\\prefab\\firefly\\头发.png": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "assets\\editor\\artres\\prefab\\firefly\\头发.png",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\头发.png",
+      "assetType": "Object",
+      "assetSize": 905422
+    },
+    "头发": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "头发",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\头发.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "外套": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "外套",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\外套.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "口腔": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "口腔",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\口腔.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "发饰": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "发饰",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\发饰.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "使用规则": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "使用规则",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\使用规则.txt",
+      "assetType": "Object",
+      "assetSize": 399
+    },
+    "toon3": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "toon3",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\toon3.png",
+      "assetType": "Object",
+      "assetSize": 5628
+    },
+    "toon2": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "toon2",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\toon2.png",
+      "assetType": "Object",
+      "assetSize": 5586
+    },
+    "mc3": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "mc3",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\mc3.png",
+      "assetType": "Object",
+      "assetSize": 33861
+    },
+    "mc1": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "mc1",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\mc1.png",
+      "assetType": "Object",
+      "assetSize": 64509
     },
     "Sphere": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2499,6 +2485,14 @@
       "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Sphere.prefab",
       "assetType": "Object",
       "assetSize": 3425
+    },
+    "RolePrefab": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "RolePrefab",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\RolePrefab.prefab",
+      "assetType": "Object",
+      "assetSize": 3449
     },
     "Gray": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2572,6 +2566,14 @@
       "assetType": "Object",
       "assetSize": 14336
     },
+    "PlayerControls": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "PlayerControls",
+      "bundleName": "gameconfig",
+      "assetName": "Assets\\Editor\\ArtRes\\GameConfig\\PlayerControls.json",
+      "assetType": "Object",
+      "assetSize": 2736
+    },
     "ItemConfigs": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "ItemConfigs",
@@ -2604,13 +2606,379 @@
       "assetType": "Object",
       "assetSize": 12460
     },
+    "umbrella": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "umbrella",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/umbrella.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "up-arrow-1": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "up-arrow-1",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/up-arrow-1.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "up-arrow-alt": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "up-arrow-alt",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/up-arrow-alt.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "user": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "user",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/user.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "Vacuity": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "Vacuity",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/Vacuity.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "village": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "village",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/village.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "virus": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "virus",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/virus.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "volcano": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "volcano",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volcano.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "volume-full": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "volume-full",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-full.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "volume-low": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "volume-low",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-low.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "volume-medium": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "volume-medium",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-medium.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "volume-mute": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "volume-mute",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-mute.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "volume-off": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "volume-off",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/volume-off.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "wall-clock": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "wall-clock",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/wall-clock.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "water-drop": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "water-drop",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/water-drop.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "water-wave": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "water-wave",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/water-wave.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "windmill": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "windmill",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/windmill.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "wine": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "wine",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/wine.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "zoom-minus": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "zoom-minus",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-minus.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "zoom-plus": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "zoom-plus",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-plus.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "zoom-tool": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "zoom-tool",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/zoom-tool.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "zselect-arrow": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "zselect-arrow",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/zselect-arrow.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "zselect-icon": {
+      "$type": "Core.AssetBundles.Management.SpriteAssetEntry, CoreModule",
+      "atlasAssetPath": "Assets\\Editor\\ArtRes\\SpriteAtlas\\Common.spriteatlasv2",
+      "atlasKey": "Common.spriteatlasv2",
+      "key": "zselect-icon",
+      "bundleName": "spriteatlas",
+      "assetName": "Assets/Editor/ArtRes/Texture/Common/zselect-icon.png",
+      "assetType": "Texture",
+      "assetSize": 394
+    },
+    "MSYH SDF FallBack": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MSYH SDF FallBack",
+      "bundleName": "tmpasset",
+      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH SDF FallBack.asset",
+      "assetType": "Object",
+      "assetSize": 2113341
+    },
+    "MSYH_SDF": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MSYH_SDF",
+      "bundleName": "tmpasset",
+      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
+      "assetType": "Object",
+      "assetSize": 16948305
+    },
+    "ConfirmView": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "ConfirmView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\ConfirmView.prefab",
+      "assetType": "Object",
+      "assetSize": 32068
+    },
+    "BloodUIObj": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "BloodUIObj",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\BloodUIObj.prefab",
+      "assetType": "Object",
+      "assetSize": 5940
+    },
+    "Friend_UI": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Friend_UI",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Friend_UI.prefab",
+      "assetType": "Object",
+      "assetSize": 9042
+    },
+    "Chat_UI": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Chat_UI",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Chat_UI.prefab",
+      "assetType": "Object",
+      "assetSize": 7662
+    },
+    "Main_Panel": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Main_Panel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Panel.prefab",
+      "assetType": "Object",
+      "assetSize": 73694
+    },
+    "Main_Chat_Panel": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Main_Chat_Panel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Chat_Panel.prefab",
+      "assetType": "Object",
+      "assetSize": 72448
+    },
+    "WeaponDetailPanel": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "WeaponDetailPanel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\DetailPanel\\WeaponDetailPanel.prefab",
+      "assetType": "Object",
+      "assetSize": 21821
+    },
+    "MaterialDetailPanel": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MaterialDetailPanel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\DetailPanel\\MaterialDetailPanel.prefab",
+      "assetType": "Object",
+      "assetSize": 13491
+    },
+    "ItemTypeOpt": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "ItemTypeOpt",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemTypeOpt.prefab",
+      "assetType": "Object",
+      "assetSize": 7745
+    },
+    "ItemDetailPanelBase": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "ItemDetailPanelBase",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemDetailPanelBase.prefab",
+      "assetType": "Object",
+      "assetSize": 3225
+    },
+    "ItemCell": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "ItemCell",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\ItemCell.prefab",
+      "assetType": "Object",
+      "assetSize": 31332
+    },
+    "InventoryPanel": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "InventoryPanel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Inventory\\InventoryPanel.prefab",
+      "assetType": "Object",
+      "assetSize": 159070
+    },
+    "BeginView": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "BeginView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Begin\\BeginView.prefab",
+      "assetType": "Object",
+      "assetSize": 45141
+    },
+    "Battle_Panel": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Battle_Panel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Battle\\Battle_Panel.prefab",
+      "assetType": "Object",
+      "assetSize": 116839
+    },
+    "UIRoot": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "UIRoot",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\UIRoot.prefab",
+      "assetType": "Object",
+      "assetSize": 13381
+    },
     "NetTestScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "NetTestScene",
       "bundleName": "scenes",
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\NetTestScene.unity",
       "assetType": "Scene",
-      "assetSize": 9406
+      "assetSize": 31144
     },
     "MainScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2682,8 +3050,8 @@
       "gameconfig": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "gameconfig",
-        "size": 1997,
-        "hash": "38e90308f90ea7f7b665a01f435ae00a703d9794043cea0899f309aa8e4d8c6d",
+        "size": 2711,
+        "hash": "a5e3e269d48b49e421b4ebc521764cb21e2689f5ec3fce1f9971e7e25c40d20a",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -2732,8 +3100,8 @@
       "prefab": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "prefab",
-        "size": 44705,
-        "hash": "7e6862d6f990377e7d7bf1e8d6ea610527e7742bb32018266525273453e2de32",
+        "size": 4571538,
+        "hash": "4de34a4998649e0ff4e41a6aaeaef68a06d56af262811978eca3bd7482f56986",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -2742,12 +3110,11 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 14055156,
-        "hash": "06dc032a96ced1498ac0bc2201064b26e56f71dbfc84b0c9d2455457d21e34d1",
+        "size": 29615552,
+        "hash": "0eaf40dfaa6a413e68c6eea4522d4d896224e2abaabaf3f1fb6805a45d490ee1",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
-            "tmpasset",
             "ui"
           ]
         }
@@ -2765,23 +3132,23 @@
       "tmpasset": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
-        "size": 15461494,
-        "hash": "7da8c4b195e7cba46e495e6f9e8d1771af276f8822d35352b1e27d0a8101446f",
+        "size": 1934043,
+        "hash": "09aa9d33c3dfee8770bf3babed24c87de3afdb56add2375bb02db9f5418d94de",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": []
+          "$values": [
+            "fonts"
+          ]
         }
       },
       "ui": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
-        "size": 2390961,
-        "hash": "48673491f2ccbd4140ea7652ec15592e1fef4cdacc453a95542be93f1ce96a89",
+        "size": 17948526,
+        "hash": "8d1cefab0cd1588366f0220222ce6eb18551de75af2ca47e7c7425ca7fa2ce80",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": [
-            "tmpasset"
-          ]
+          "$values": []
         }
       }
     }
@@ -2804,7 +3171,8 @@
     "gameconfig": {
       "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
       "$values": [
-        "ItemConfigs"
+        "ItemConfigs",
+        "PlayerControls"
       ]
     },
     "hotupdate": {
@@ -2839,7 +3207,52 @@
     "prefab": {
       "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
       "$values": [
-        "Sphere"
+        "RolePrefab",
+        "Sphere",
+        "mc1",
+        "mc3",
+        "toon2",
+        "toon3",
+        "使用规则",
+        "发饰",
+        "口腔",
+        "外套",
+        "头发",
+        "assets\\editor\\artres\\prefab\\firefly\\头发.png",
+        "手套",
+        "武器",
+        "流萤3.0",
+        "牙齿",
+        "皮肤",
+        "眉毛",
+        "眼白",
+        "眼睛",
+        "眼睛1",
+        "肩带",
+        "背带",
+        "背饰铃铛",
+        "胸饰",
+        "脖饰",
+        "脸",
+        "assets\\editor\\artres\\prefab\\firefly\\脸.png",
+        "舌头",
+        "衣服",
+        "衣领",
+        "衣饰铁",
+        "表情",
+        "assets\\editor\\artres\\prefab\\firefly\\表情.png",
+        "袖子",
+        "袖子内侧",
+        "袖子饰",
+        "袜子",
+        "裙子",
+        "裙子1",
+        "裙子内侧",
+        "裙饰铁",
+        "鞋子",
+        "鞋子饰",
+        "鞋子饰内侧",
+        "领带"
       ]
     },
     "scenes": {
@@ -3113,9 +3526,9 @@
         "Chat_UI",
         "Friend_UI",
         "BloodUIObj",
-        "ConfirmPanel",
+        "ConfirmView",
         "ConnectPlayerObjUI",
-        "GamePanel",
+        "GameView",
         "LoadingPanel",
         "TipPanel",
         "UpdateTipView",

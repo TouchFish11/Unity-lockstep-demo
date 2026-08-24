@@ -1,4 +1,6 @@
-namespace Net.Protocols.FSync.Messages
+using Net.Protocols;
+
+namespace Core.Net.Protocols.FSync.Messages
 {
     /// <summary>
     /// 帧同步的帧操作消息
@@ -12,6 +14,11 @@ namespace Net.Protocols.FSync.Messages
         
         /// <summary>
         /// 操作类型，不同字节数代表不同的游戏操作
+        /// <remarks>
+        /// O：空操作
+        /// 1：移动
+        /// 2：普攻
+        /// </remarks>
         /// </summary>
         public byte OptType { get; set; }
 
@@ -62,6 +69,11 @@ namespace Net.Protocols.FSync.Messages
             Arg2 = MessageUtil.ReadInt(bytes, ref index);
             Arg3 = MessageUtil.ReadInt(bytes, ref index);
             return index - beginIndex;
+        }
+
+        public override string ToString()
+        {
+            return $"Opt:{OptType};Arg:(Arg1:{Arg1}, Arg2:{Arg2}, Arg3:{Arg3})";
         }
     }
 }

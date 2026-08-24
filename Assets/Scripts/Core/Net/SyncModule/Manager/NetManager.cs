@@ -106,6 +106,9 @@ namespace Core.Net.SyncModule.Manager
 
         public void Disconnect()
         {
+            if(_client == null) 
+                return;
+            
             _client.Disconnect();
             _monoAdapter.RemoveUpdateListener(OnUpdate);
         }

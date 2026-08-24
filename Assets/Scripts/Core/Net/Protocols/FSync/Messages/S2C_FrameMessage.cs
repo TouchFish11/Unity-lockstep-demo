@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using Net.Protocols;
 using Net.Protocols.Configs;
 
-namespace Net.Protocols.FSync.Messages
+namespace Core.Net.Protocols.FSync.Messages
 {
     /// <summary>
     /// 服务器发送给客户端的帧消息
@@ -36,7 +37,9 @@ namespace Net.Protocols.FSync.Messages
             var index = 0;
             var length = GetMsgLength();
             var bytes = new byte[length];
+            // 写入消息ID
             MessageUtil.WriteField(bytes, FrameMessageID, ref index);
+            // 写入消息体长度
             MessageUtil.WriteField(bytes, length, ref index);
             foreach (var oneFrameMessage in FrameMessages)
             {
@@ -50,7 +53,7 @@ namespace Net.Protocols.FSync.Messages
         {
             var index = beginIndex;
             MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息ID
-            var length = MessageUtil.ReadInt(bytes, ref index);
+            var length = MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息体长度
             FrameMessages = new List<S2C_OneFrameMessage>(length);
             for (var i = 0; i < length; i++)
             {

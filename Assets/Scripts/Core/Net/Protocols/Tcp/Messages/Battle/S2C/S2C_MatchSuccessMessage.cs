@@ -1,7 +1,8 @@
 ﻿
+using Net.Protocols;
 using Net.Protocols.Configs;
 
-namespace Net.Protocols.Tcp.Messages.Battle.S2C
+namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
 {
     /// <summary>
     /// 匹配成功消息

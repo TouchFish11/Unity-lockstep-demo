@@ -1,6 +1,6 @@
 ﻿using Net.Protocols.Configs;
 
-namespace Net.Protocols.Tcp.Messages.Battle.S2C
+namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
 {
     /// <summary>
     /// 开始比赛消息

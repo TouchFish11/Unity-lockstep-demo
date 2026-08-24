@@ -1,6 +1,6 @@
 using System;
 using System.Text;
-using Net.Protocols.FSync.Messages;
+using Core.Net.Protocols.FSync.Messages;
 
 namespace Net.Protocols
 {

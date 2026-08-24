@@ -64,7 +64,7 @@ namespace Core.Editor.AssetBundle.Core
             {
                 if (filterDirectories != null && Array.Exists(filterDirectories, d => d == dir.Name))
                     continue;
-                var files = FileUtility.GetTotalFiles(dir, new List<FileInfo>(), filterSuffixes);
+                var files = FileSources.GetTotalFiles(dir, new List<FileInfo>(), filterSuffixes);
                 fileInfoDic.Add(dir.Name, files);
             }
 
@@ -228,7 +228,7 @@ namespace Core.Editor.AssetBundle.Core
 
             foreach (var dir in directoryInfo.GetDirectories())
             {
-                var files = FileUtility.GetTotalFiles(dir, new List<FileInfo>(), filterSuffixes);
+                var files = FileSources.GetTotalFiles(dir, new List<FileInfo>(), filterSuffixes);
                 fileInfoDic.Add(dir.Name, files);
             }
 

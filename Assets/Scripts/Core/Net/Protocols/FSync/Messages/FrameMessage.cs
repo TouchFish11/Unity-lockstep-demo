@@ -1,4 +1,6 @@
-namespace Net.Protocols.FSync.Messages
+using Net.Protocols;
+
+namespace Core.Net.Protocols.FSync.Messages
 {
     /// <summary>
     /// 帧同步消息基类

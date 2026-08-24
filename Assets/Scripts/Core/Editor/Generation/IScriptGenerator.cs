@@ -5,6 +5,8 @@ namespace Core.Editor.Generation
     /// </summary>
     public interface IScriptGenerator
     {
+        string FilePath { get; }
+        
         /// <summary>
         /// 生成脚本
         /// </summary>

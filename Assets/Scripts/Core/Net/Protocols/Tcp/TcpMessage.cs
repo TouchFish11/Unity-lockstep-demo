@@ -1,4 +1,6 @@
-namespace Net.Protocols.Tcp
+using Net.Protocols;
+
+namespace Core.Net.Protocols.Tcp
 {
     /// <summary>
     /// TCP消息
@@ -14,7 +16,8 @@ namespace Net.Protocols.Tcp
         
         public sealed override int GetMsgLength()
         {
-            // 消息ID + 消息体长度 + 消息体
+            // [消息ID][消息体长度][消息体]
+            // [消息体] <=> [客户端ID][子类消息体]
             return 4 + 4 + GetBodyLength();
         }
 

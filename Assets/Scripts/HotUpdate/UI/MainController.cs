@@ -3,19 +3,20 @@ using Core.AssetBundles.Management;
 using Core.DI;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events.Net;
+using Core.Inputs;
 using Core.Log;
 using Core.Net.Protocols;
 using Core.Net.Protocols.Tcp.Messages.Battle.C2S;
 using Core.Net.SyncModule.Interface;
 using Core.Net.SyncModule.Manager;
-using Core.Scene;
 using Core.UI;
 using Core.UI.ViewController;
 using HotUpdate.Game.Race;
 using HotUpdate.UI.Loading;
 using kcp2k;
 using Net.Protocols;
-using UnityEngine.SceneManagement;
+using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Logger = Core.Log.Logger;
 
@@ -27,8 +28,8 @@ namespace HotUpdate.UI
         [Inject] private IEventCenter _eventCenter;
         [Inject] private ObjectSpawner _objectSpawner;
         [Inject] private IUIManager _uiManager;
-        [Inject] private ISceneManager _sceneManager;
         [Inject] private NetGameManager _netGameManager;
+        [Inject] private IInputSystem _iInputSystem;
         
         // 是否正在匹配
         private bool isMatching;
@@ -41,6 +42,7 @@ namespace HotUpdate.UI
             _eventCenter.SubscribeEvent<PlayerDisconnectedEvent>(PlayerDisconnected);
             _eventCenter.SubscribeEvent<MatchSuccessEvent>(MatchSuccess);
             _eventCenter.SubscribeEvent<PrepareRaceEvent>(PrepareRace);
+            _eventCenter.SubscribeEvent<StartRaceEvent>(StartRace);
             return Task.CompletedTask;
         }
         
@@ -154,32 +156,37 @@ namespace HotUpdate.UI
         private async void PrepareRace(PrepareRaceEvent prepareRaceEvent)
         {
             // 创建加载界面
-            var loading = await _uiManager.CreateViewAsync<LoadingView, LoadingController>(AssetKeys.LoadingPanel, E_UILayer.Bot);
+            await _uiManager.CreateViewAsync<LoadingView, LoadingController>(AssetKeys.LoadingPanel, E_UILayer.Bot);
+            // 隐藏确认UI，主界面
             _objectSpawner.Release(_confirmPanelUI);
             _confirmPanelUI = null;
-
-            await _sceneManager.LoadSceneAsync("", LoadSceneMode.Single, null);
-
+            await _uiManager.SetViewActive(panelId, false);
+            // 创建游戏界面
+            await _uiManager.CreateViewAsync<RaceView, RaceController>(AssetKeys.GameView, E_UILayer.Bot);
+            
             foreach (var raceClientId in prepareRaceEvent.RaceClientIds)
             {
                 var roleController = await _objectSpawner.SpawnAsync<RaceRoleController>(AssetKeys.RolePrefab);
-
-                if (_netProxy.ClientId == raceClientId)
+                roleController.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                // 自身客户端角色，添加输入
+                var self = _netProxy.ClientId == raceClientId;
+                if (self)
                 {
-                    // TODO：添加输入组件；添加相机
-                    // InputComponent inputComponent = playerCharacter.AddComponent<InputComponent>();
-                    // GameObject mainCamera = AssetBundleLoadManager.Instance.LoadAsset<GameObject>(E_AssetBundleType.Camera, "Main Camera");
-                    // GameObject mainCameraInstance = GameObject.Instantiate(mainCamera);
-                    // CameraController cameraController = mainCameraInstance.GetComponent<CameraController>();
-                    // cameraController.Init(playerCharacter.transform);
-                    // inputComponent.enabled = false;
+                    // 添加输入组件
+                    roleController.gameObject.AddComponent<PlayerInput>();
                 }
                 
-                roleController.Init(raceClientId);
+                roleController.Init(raceClientId, _iInputSystem, self);
                 _netGameManager.AddPlayer(raceClientId, roleController);
             }
             
             _netProxy.Send(new C2S_ReadyMessage(), EProtocolChannel.Resolve);
+        }
+
+        private void StartRace(StartRaceEvent startRaceEvent)
+        {
+            var controller = _uiManager.GetController<LoadingController>();
+            _uiManager.DestroyView(controller.PanelId);
         }
         
         protected override Task OnDispose()

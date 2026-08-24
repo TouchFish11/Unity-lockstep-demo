@@ -1,5 +1,7 @@
 using System;
-using UnityEngine.Events;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Core.Inputs.Providers;
 using UnityEngine.InputSystem;
 
 namespace Core.Inputs
@@ -9,26 +11,63 @@ namespace Core.Inputs
     /// </summary>
     public interface IInputSystem
     {
-        void DisableInput();
-        void EditInput(E_MainActionMap keyMap, Key oldKey, UnityAction<E_KeyConflict> overCallBack);
-        void EnableInput();
-        InputAction GetInputAction(string actionName);
-        void InvokeExchangeKey();
-        void UpdateActions(PlayerInput playerInput = null);
+        /// <summary>
+        /// 初始化输入系统
+        /// </summary>
+        /// <param name="provider"></param>
+        Task InitSystem(IInputDataProvider provider);
         
         /// <summary>
         /// 初始化玩家输入组件
         /// </summary>
         /// <param name="playerInput">玩家输入组件实例</param>
-        /// <param name="container">主行动映射数据容器</param>
         /// <param name="onActionTrigger">输入动作触发时的回调方法</param>
         /// <returns>异步任务</returns>
-        void InitPlayerInput(PlayerInput playerInput, MainActionMapDataContainer container, Action<InputAction.CallbackContext> onActionTrigger);
+        void InitPlayerInput(PlayerInput playerInput, Action<InputAction.CallbackContext> onActionTrigger);
 
         /// <summary>
-        /// 初始化输入系统
+        /// 启用输入
         /// </summary>
-        /// <param name="inputJson">输入配置JSON</param>
-        void InitInputSystem(string inputJson);
+        void Enable();
+        
+        /// <summary>
+        /// 禁用输入
+        /// </summary>
+        void Disable();
+
+        /// <summary>
+        /// 编辑输入按键，自动禁用输入和改键完成后自动启用
+        /// </summary>
+        /// <param name="actionName">操作名称</param>
+        /// <param name="bindingName">绑定名称</param>
+        ReeditOperation EditInput(string actionName, string bindingName);
+
+        /// <summary>
+        /// 编辑输入按键，自动禁用输入和改键完成后自动启用
+        /// </summary>
+        /// <param name="actionName">操作名称</param>
+        /// <param name="bindIndex">绑定索引</param>
+        ReeditOperation EditInput(string actionName, int bindIndex);
+        
+        /// <summary>
+        /// 获取所有激活的操作名称
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<string> GetActiveActions();
+        
+        /// <summary>
+        /// 获取指定操作的所有单绑定名称，不包含复合绑定
+        /// </summary>
+        /// <param name="actionName"></param>
+        /// <returns></returns>
+        IEnumerable<BindingInfo> GetCurrentBindings(string actionName);
+
+        /// <summary>
+        /// 获取指定操作的指定索引绑定
+        /// </summary>
+        /// <param name="actionName"></param>
+        /// <param name="bindingIndex"></param>
+        /// <returns></returns>
+        BindingInfo GetCurrentBinding(string actionName, int bindingIndex);
     }
 }

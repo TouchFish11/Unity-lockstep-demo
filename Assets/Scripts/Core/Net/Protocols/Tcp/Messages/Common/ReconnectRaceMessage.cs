@@ -1,5 +1,4 @@
 using Net.Protocols.Configs;
-using Net.Protocols.Tcp;
 
 namespace Core.Net.Protocols.Tcp.Messages.Common
 {

@@ -1,4 +1,6 @@
-namespace Net.Protocols.Tcp.Messages.Chat
+using Net.Protocols;
+
+namespace Core.Net.Protocols.Tcp.Messages.Chat
 {
     /// <summary>
     /// 聊天消息

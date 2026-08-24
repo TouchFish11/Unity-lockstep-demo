@@ -111,7 +111,7 @@ namespace Core.Editor.AssetBundle.Core
 
                 foreach (var fileInfo in fileInfos)
                 {
-                    if (fileInfo.Extension != FileUtility.AbSuffix || fileInfo.Name.Contains(target.ToString()))
+                    if (fileInfo.Extension != FileSources.AbSuffix || fileInfo.Name.Contains(target.ToString()))
                         continue;
 
                     Progress($"Handing :{fileInfo.Name} dependencies...", (float)index++ / (fileInfos.Count - 2));

@@ -87,6 +87,26 @@ namespace Core.Serialize.Json
             await File.WriteAllTextAsync(saveFilePath, jsonStr);
         }
         
+        public void Save(string json, string saveFilePath)
+        {
+            File.WriteAllText(saveFilePath, json);
+        }
+
+        public Task SaveAsync(string json, string saveFilePath)
+        {
+            return File.WriteAllTextAsync(saveFilePath, json);
+        }
+
+        public string Load(string saveFilePath)
+        {
+            return File.ReadAllText(saveFilePath);
+        }
+
+        public Task<string> LoadAsync(string saveFilePath)
+        {
+            return File.ReadAllTextAsync(saveFilePath);
+        }
+        
         public string ToJson(object data, E_JsonType type = E_JsonType.Newtonsoft, JsonSerializerSettings settings = null)
         {
             // 根据序列化器类型执行序列化（格式化输出）

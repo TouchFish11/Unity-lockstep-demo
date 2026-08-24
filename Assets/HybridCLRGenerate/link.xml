@@ -38,7 +38,7 @@
     <type fullname="Core.UI.MVC.UIModel" preserve="all" />
     <type fullname="Core.UI.MVC.UIView" preserve="all" />
     <type fullname="Core.UI.UIBehaviourBase" preserve="all" />
-    <type fullname="Core.Utility.FileUtility" preserve="all" />
+    <type fullname="Core.Utility.FileSources" preserve="all" />
     <type fullname="Core.Utility.NewtonsoftJsonUtility" preserve="all" />
     <type fullname="Core.Utility.PathUtility" preserve="all" />
     <type fullname="Core.Utility.TextUtility" preserve="all" />

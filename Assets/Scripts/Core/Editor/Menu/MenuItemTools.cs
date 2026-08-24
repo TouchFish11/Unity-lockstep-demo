@@ -4,6 +4,7 @@ using Core.Editor.Generation.Detail;
 using Core.Global;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Core.Editor.Menu
 {
@@ -47,8 +48,20 @@ namespace Core.Editor.Menu
         [MenuItem("GameTool/Generate/Generate InputActionData")]
         public static void GenerateInputActionDataScript()
         {
-            IScriptGenerator scriptGenerator = new InputActionDataGenerator();
+            var inputActions = Resources.Load<InputActionAsset>("PlayerControls");
+            IScriptGenerator scriptGenerator = new InputActionConfigGenerator(inputActions);
             scriptGenerator.GenerateScript();
+            Debug.Log($"生成成功，路径：{scriptGenerator.FilePath}");
+            
+            var bingingSourcesClassGenerator = new SingleBindingSourcesClassGenerator(inputActions);
+            bingingSourcesClassGenerator.GenerateScript();
+            Debug.Log($"生成成功，路径：{bingingSourcesClassGenerator.FilePath}");
+
+            var json = inputActions.ToJson();
+            var path = Path.Combine(Application.dataPath, "Editor", "ArtRes", "GameConfig", "PlayerControls.json");
+            File.WriteAllText(path, json);
+            Debug.Log($"生成成功，路径：{path}");
+            AssetDatabase.Refresh();
         }
 
         /// <summary>

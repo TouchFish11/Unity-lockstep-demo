@@ -65,5 +65,34 @@ namespace Core.Serialize.Json
         /// <param name="settings">使用非Newtonsoft.Json时忽略；使用Newtonsoft.Json忽略，则默认使用全局设置</param>
         /// <returns>格式化后的Json字符串</returns>
         string ToJson(object data, E_JsonType type = E_JsonType.Newtonsoft, JsonSerializerSettings settings = null);
+
+        /// <summary>
+        /// 保存Json
+        /// </summary>
+        /// <param name="json"></param>
+        /// <param name="saveFilePath"></param>
+        void Save(string json, string saveFilePath);
+        
+        /// <summary>
+        /// 异步保存Json
+        /// </summary>
+        /// <param name="json"></param>
+        /// <param name="saveFilePath"></param>
+        /// <returns></returns>
+        Task SaveAsync(string json, string saveFilePath);
+        
+        /// <summary>
+        /// 加载Json
+        /// </summary>
+        /// <param name="saveFilePath"></param>
+        /// <returns></returns>
+        string Load(string saveFilePath);
+        
+        /// <summary>
+        /// 异步加载Json
+        /// </summary>
+        /// <param name="saveFilePath"></param>
+        /// <returns></returns>
+        Task<string> LoadAsync(string saveFilePath);
     }
 }

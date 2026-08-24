@@ -13,7 +13,10 @@ namespace Core.Editor.Generation.Detail
     /// 根据配置数据结构自动生成数据类、容器类和二进制数据文件
     /// </summary>
     public class ConfigDataGenerator : ClassGenerator
-    {
+    {        
+        // 配置数据对象
+        private readonly ConfigData.ConfigData configData;
+        
         /// <summary>
         /// 数据结构类在编辑器中的存储文件夹路径
         /// </summary>
@@ -29,12 +32,14 @@ namespace Core.Editor.Generation.Detail
         /// </summary>
         private static readonly string TableInfoEditorSavePath = $"{Application.dataPath}/Editor/ArtRes/GameConfig/Editor/";
 
-        // 配置数据对象
-        private readonly ConfigData.ConfigData configData;
-
         protected override string NameSpace => string.Empty;
-
-        protected override string Note { get; set; }
+        
+        protected override string ClassName => string.Empty;
+        
+        public override string FilePath => string.Empty;
+        
+        protected override string Note => string.Empty;
+        
 
         public ConfigDataGenerator(ConfigData.ConfigData configData)
         {
@@ -49,6 +54,11 @@ namespace Core.Editor.Generation.Detail
             GenerateDataContainer();
             // 生成二进制数据文件
             GenerateDataBinary();
+        }
+
+        protected override void ClassContent(StringBuilder stringBuilder)
+        {
+            
         }
 
         /// <summary>

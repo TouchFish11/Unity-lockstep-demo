@@ -95,7 +95,7 @@ namespace Core.Utility
         /// <summary>
         /// 获取用户数据文件的完整存储路径
         /// </summary>
-        /// <param name="fileName">文件名，可从FileUtility中获取</param>
+        /// <param name="fileName">文件名，可从FileSources中获取</param>
         /// <returns>拼接后的用户数据文件完整路径</returns>
         public static string GetUserDataLocalSavePath(string fileName)
         {
@@ -105,7 +105,7 @@ namespace Core.Utility
         /// <summary>
         /// 获取日志文件的完整存储路径
         /// </summary>
-        /// <param name="fileName">日志文件名，可从FileUtility中获取</param>
+        /// <param name="fileName">日志文件名，可从FileSources中获取</param>
         /// <returns>拼接后的日志文件完整路径</returns>
         public static string GetLogLocalSavePath(string fileName)
         {
@@ -115,7 +115,7 @@ namespace Core.Utility
         /// <summary>
         /// 获取游戏表格数据文件的完整加载路径
         /// </summary>
-        /// <param name="fileName">表格文件名，可从FileUtility中获取</param>
+        /// <param name="fileName">表格文件名，可从FileSources中获取</param>
         /// <returns>拼接后的表格数据文件完整路径</returns>
         public static string GetTableInfoLocalLoadPath(string fileName)
         {

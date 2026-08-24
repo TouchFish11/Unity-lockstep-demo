@@ -1,5 +1,7 @@
+using Core.GlobalEvent;
+using Core.GlobalEvent.Events.Net;
+using Core.Net.Protocols.Tcp.Messages.Battle.S2C;
 using Net.Protocols;
-using Net.Protocols.Tcp.Messages.Battle.S2C;
 
 namespace Core.Net.Protocols.Tcp.Handlers.S2C
 {
@@ -9,7 +11,8 @@ namespace Core.Net.Protocols.Tcp.Handlers.S2C
         
         protected override void OnHandle()
         {
-            
+            var startRaceEvent = EventSource.Get<StartRaceEvent>();
+            eventCenter.TriggerEvent(startRaceEvent);
         }
     }
 }

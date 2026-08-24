@@ -1,10 +1,17 @@
 using System;
-using System.Reflection;
-using System.Text;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Core.DI;
+using Core.Exceptions;
+using Core.GlobalEvent;
+using Core.GlobalEvent.Events;
+using Core.Inputs.Providers;
 using Core.Log;
-using UnityEngine.Events;
+using Core.Mono;
+using Core.Pool;
+using Core.Serialize.Json;
+using Core.Utility;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
 using Logger = Core.Log.Logger;
 
 namespace Core.Inputs
@@ -14,61 +21,71 @@ namespace Core.Inputs
     /// 负责输入动作的初始化、启用/禁用、按键修改、冲突检测等核心逻辑
     /// 继承单例基类，保证全局唯一实例；实现IInputSystem接口（接口未展示）
     /// </summary>
-    public class InputSystem : IInputSystem
+    public class InputSystem : IInputSystem, IApplicationExitNotify
     {
+        public int QuitPriority => 1;
+        
+        [Inject] private IJsonManager jsonManager;
+        [Inject] private IEventCenter eventCenter;
+        [Inject] private IPoolManager poolManager;
+        
         // 输入配置的JSON原始数据
-        private string _jsonInputData;
+        private string _defaultJsonInputData;
+        // 改键后的json覆盖json数据
+        private string _overrideJsonInputData;
         // 玩家输入组件引用，关联InputActionAsset
         private PlayerInput _playerInput;
-        // 按键交换的回调委托（用于处理按键冲突时的交换逻辑）
-        private UnityAction ExchangeKeyAction;
-        // 记录旧的动作映射枚举（修改按键时的原动作映射）
-        private E_MainActionMap oldKeyMap;
-        // 记录旧的按键（修改前的按键）
-        private Key oldKey;
-        // 记录新的按键（修改后的按键）
-        private Key newKey;
-        // 记录新的按键路径（InputSystem的标准路径格式）
-        private string newPath;
-        // 数据容器
-        private MainActionMapDataContainer _mapDataContainer;
         
-        private InputSystem()
+        private InputSystem(IMonoAdapter monoAdapter)
         {
-            
+            monoAdapter.AddApplicationExitNotify(this);
         }
 
         /// <summary>
         /// 初始化输入系统
         /// </summary>
-        /// <param name="inputJson"></param>
-        public void InitInputSystem(string inputJson)
+        /// <param name="provider"></param>
+        public async Task InitSystem(IInputDataProvider provider)
         {
-            _jsonInputData = inputJson;
+            await provider.LoadDataAsync();
+            if (provider.TryGetData(out var defaultJson, out var overrideJson))
+            {
+                _defaultJsonInputData = defaultJson;
+                if(string.IsNullOrEmpty(overrideJson))
+                {
+                    var messageEvent = EventSource.Get<GlobalMessageEvent>();
+                    messageEvent.Message = "本地输入数据加载失败";
+                    Logger.LogError(ELogTags.Input, $"OverrideJson is empty");
+                    eventCenter.TriggerEventAsync(messageEvent);
+                }
+                else
+                {
+                    _overrideJsonInputData = overrideJson;
+                }
+            }
+            else
+            {
+                throw ExceptionHelper.Throw("Default json is empty");
+            }
         }
 
         /// <summary>
         /// 初始化玩家输入组件
         /// </summary>
         /// <param name="playerInput">玩家输入组件实例</param>
-        /// <param name="container"></param>
         /// <param name="onActionTrigger">输入动作触发时的回调方法</param>
         /// <returns>异步任务</returns>
-        public void InitPlayerInput(PlayerInput playerInput, MainActionMapDataContainer container, Action<InputAction.CallbackContext> onActionTrigger)
+        public void InitPlayerInput(PlayerInput playerInput, Action<InputAction.CallbackContext> onActionTrigger)
         {
-            // 字典补齐
-            InitContainer<MainActionMapData>(container);
+            if (!playerInput || onActionTrigger == null)
+                throw ExceptionHelper.Throw("playerInput or onActionTrigger is null");
+            
             // 缓存玩家输入组件引用
             _playerInput = playerInput;
-            // 缓存数据容器
-            _mapDataContainer = container;
             // 设置通知行为为调用C#事件
             _playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
             // 注册动作触发回调
-            if (playerInput && onActionTrigger != null)
-            {
-                _playerInput.onActionTriggered += onActionTrigger;
-            }
+            _playerInput.onActionTriggered += onActionTrigger;
             UpdateActions();
         }
 
@@ -76,7 +93,7 @@ namespace Core.Inputs
         /// 启用所有输入动作
         /// 使输入系统响应玩家输入
         /// </summary>
-        public void EnableInput()
+        public void Enable()
         {
             _playerInput.actions?.Enable();
         }
@@ -85,7 +102,7 @@ namespace Core.Inputs
         /// 禁用所有输入动作
         /// 使输入系统停止响应玩家输入
         /// </summary>
-        public void DisableInput()
+        public void Disable()
         {
             _playerInput.actions?.Disable();
         }
@@ -93,132 +110,153 @@ namespace Core.Inputs
         /// <summary>
         /// 根据动作名称获取输入动作实例
         /// </summary>
-        /// <param name="actionName">输入动作名称（与InputActionAsset中配置一致）</param>
+        /// <param name="actionName">输入动作名称</param>
         /// <returns>对应的InputAction实例</returns>
-        public InputAction GetInputAction(string actionName)
+        private InputAction FindInputAction(string actionName)
         {
-            return _playerInput.actions[actionName];
+            return _playerInput.actions.FindAction(actionName);
         }
 
-        /// <summary>
-        /// 编辑输入按键（核心修改逻辑）
-        /// 监听玩家新的按键输入，替换原有按键配置
-        /// </summary>
-        /// <param name="keyMap">要修改的动作映射枚举</param>
-        /// <param name="oldKey">原按键</param>
-        /// <param name="overCallBack">修改完成/冲突时的回调（返回冲突类型）</param>
-        public void EditInput(E_MainActionMap keyMap, Key oldKey, UnityAction<E_KeyConflict> overCallBack)
+        public BindingInfo GetCurrentBinding(string actionName, int bindingIndex)
         {
-            // 监听任意按键按下事件（仅触发一次）
-            UnityEngine.InputSystem.InputSystem.onAnyButtonPress.CallOnce(inputControl =>
+            var action = FindInputAction(actionName);
+            return new BindingInfo(action.bindings[bindingIndex]);
+        }
+
+        public IEnumerable<BindingInfo> GetCurrentBindings(string actionName)
+        {
+            foreach (var inputBinding in FindInputAction(actionName).bindings)
             {
-                // 解析按键路径，格式转换为InputSystem标准路径（<设备>/按键名）
-                var originalPaths = inputControl.path.Split('/');
-                var newPath = $"<{originalPaths[1]}>/{originalPaths[2]}";
-
-                // 尝试将按键名转换为Key枚举（不区分大小写）
-                // 非键盘按键会转换失败
-                if (!Enum.TryParse(typeof(Key), originalPaths[2], true, out var result))
-                {
-                    // 回调：非键盘按键（不支持修改）
-                    overCallBack?.Invoke(E_KeyConflict.NotKeyboard);
-                    return;
-                }
-
-                var newTempKey = (Key)result;
-                // 检查是否为特殊按键（系统保留/不允许修改的按键）
-                if (IsSpecialKey(newTempKey))
-                {
-                    // 回调：特殊按键冲突
-                    overCallBack?.Invoke(E_KeyConflict.SpecialKey);
-                    return;
-                }
+                if (inputBinding.isComposite)
+                    continue;
                 
-                // 检查新按键是否与现有配置冲突
-                if (IsKeyConflict(keyMap, oldKey, newTempKey, newPath))
-                {
-                    // 回调：按键已存在冲突
-                    overCallBack?.Invoke(E_KeyConflict.ExistKey);
-                    return;
-                }
-
-                // 更新配置容器中的按键映射
-                _mapDataContainer.actionMap[keyMap] = new KeyPathMap(newTempKey, newPath);
-                // 刷新输入动作配置
-                UpdateActions();
-                // 回调：修改完成（无冲突）
-                overCallBack?.Invoke(E_KeyConflict.Over);
-            });
-        }
-
-        /// <summary>
-        /// 获取最新的输入动作资源
-        /// 根据配置容器中的自定义按键，替换原始JSON中的默认按键路径
-        /// </summary>
-        /// <returns>动态生成的InputActionAsset实例</returns>
-        private InputActionAsset GetInputActionAsset()
-        {
-            // 基于原始JSON数据构建新的配置字符串
-            var sb = new StringBuilder();
-            sb.Append(_jsonInputData);
-
-            // 遍历所有动作映射枚举，替换对应的按键路径
-            var enumType = typeof(E_MainActionMap);
-            foreach (var enumValue in Enum.GetValues(enumType))
-            {
-                var enumName = enumValue.ToString();
-                var memberInfo = enumType.GetMember(enumName)[0];
-                // 获取枚举上的替换标记特性
-                var attribute = memberInfo.GetCustomAttribute<ActionMapReplaceKeyAttribute>();
-
-                // 如果存在替换标记且配置容器中有对应映射，则替换路径
-                if (attribute != null && _mapDataContainer.actionMap.TryGetValue((E_MainActionMap)enumValue, out var keyPathMap))
-                {
-                    sb.Replace(attribute.ReplaceKey, keyPathMap.path);
-                }
+                yield return new BindingInfo(inputBinding);
             }
-            
-            // 从修改后的JSON生成InputActionAsset
-            return InputActionAsset.FromJson(sb.ToString());
+        }
+        
+        public IEnumerable<string> GetActiveActions()
+        {
+            foreach (var inputAction in _playerInput.actions)
+            {
+                yield return inputAction.name;
+            }
+        }
+        
+        public ReeditOperation EditInput(string actionName, string bindingName)
+        {
+            // 判断Action的输入类型，复合Action，先找到单个按键绑定的索引
+            return EditInputInternal(actionName, action => action.type != InputActionType.Button ? action.bindings.IndexOf(bd => bd.name == bindingName) : 0);
         }
 
-        /// <summary>
-        /// 执行按键交换逻辑
-        /// 处理按键冲突时的双向替换（A键替换B键，B键替换A键）
-        /// </summary>
-        public void InvokeExchangeKey()
+        public ReeditOperation EditInput(string actionName, int bindIndex)
         {
-            // 无有效交换数据时直接返回
-            if (oldKeyMap == E_MainActionMap.None && oldKey == Key.None && newKey == Key.None && newPath == null)
-                return;
+            // 使用外部指定的绑定索引
+            return EditInputInternal(actionName, _ => bindIndex);
+        }
 
-            // 执行交换回调
-            ExchangeKeyAction?.Invoke();
-            // 清空交换数据（重置状态）
-            ExchangeKeyAction = null;
-            oldKeyMap = E_MainActionMap.None;
-            oldKey = Key.None;
-            newKey = Key.None;
-            newPath = null;
+        private ReeditOperation EditInputInternal(string actionName, Func<InputAction, int> getBingingIndex)
+        {
+            // 先禁用输入
+            Disable();
+            // 找到要修改的
+            var action = FindInputAction(actionName);
+            if (action == null)
+                throw ExceptionHelper.Throw($"Current inputAction not found for {actionName}");
+            
+            var bindingIndex = getBingingIndex(action);
+            // 获取取消键
+            var cancelKey = GetCancelPathForCurrentScheme();
+            // 复用编辑对象
+            var editOperation = poolManager.GetData<ReeditOperation>();
+            // 开始监听修改按键
+            action.PerformInteractiveRebinding(bindingIndex)
+                .WithCancelingThrough(cancelKey)
+                .OnApplyBinding((operation, bindingPath) =>
+                {
+                    if (HasKeyConflict(actionName, bindingIndex, bindingPath, out var conflictInfo))
+                    {
+                        editOperation.ConflictType = EKeyConflict.ExistKey;
+                        editOperation.onConflict += isExchange =>
+                        {
+                            if (isExchange)
+                            {
+                                ExecuteExchangeKey(conflictInfo);
+                            }
+
+                            Enable();
+                            operation.Dispose();
+                        };
+
+                        // 间接调用外部回调
+                        editOperation.Apply();
+                        return;
+                    }
+                    
+                    var newBinding = new InputBinding
+                    {
+                        overridePath = bindingPath,
+                        overrideInteractions = action.bindings[bindingIndex].effectiveInteractions
+                    };
+                    operation.action.ApplyBindingOverride(bindingIndex, newBinding);
+                    // 保存覆盖数据
+                    _overrideJsonInputData = _playerInput.actions.SaveBindingOverridesAsJson();
+                    editOperation.ConflictType = EKeyConflict.Over;
+                    // 间接调用外部回调
+                    editOperation.Apply();
+                    Enable();
+                    operation.Dispose();
+                })
+                .OnCancel(operation =>
+                {
+                    // 用户取消
+                    editOperation.Cancel();
+                    Enable();
+                    operation.Dispose();
+                }).Start();
+            
+            return editOperation;
+        }
+        
+        /// <summary>
+        /// 获取当前的改建取消路径
+        /// </summary>
+        /// <returns></returns>
+        private string GetCancelPathForCurrentScheme()
+        {
+            // 如果没有设置 PlayerInput 或没有活跃方案，就返回键鼠默认
+            if (!_playerInput || _playerInput.currentControlScheme == null)
+                return "<Keyboard>/escape";
+
+            return _playerInput.currentControlScheme switch
+            {
+                "Keyboard&Mouse" => "<Keyboard>/escape",
+                "Gamepad" => "<Gamepad>/buttonEast",
+                _ => "<Keyboard>/escape"
+            };
         }
 
         /// <summary>
         /// 更新输入动作配置
         /// 将最新的InputActionAsset赋值给PlayerInput，使修改生效
         /// </summary>
-        /// <param name="playerInput">可选：指定新的PlayerInput实例</param>
+        /// <param name="playerInput">可选：指定新的PlayerInput实例；否则用<see cref="InitPlayerInput"/>中传入的实例</param>
         public void UpdateActions(PlayerInput playerInput = null)
         {
             if (playerInput)
             {
                 // 赋值新的InputActionAsset并更新引用
-                playerInput.actions = GetInputActionAsset();
+                playerInput.actions = InputActionAsset.FromJson(_defaultJsonInputData);
+                
+                if(!string.IsNullOrEmpty(_overrideJsonInputData))
+                    playerInput.actions.LoadBindingOverridesFromJson(_overrideJsonInputData);
                 _playerInput = playerInput;
             }
             else if (_playerInput)
             {
                 // 刷新现有PlayerInput的动作配置
-                _playerInput.actions = GetInputActionAsset();
+                _playerInput.actions = InputActionAsset.FromJson(_defaultJsonInputData);
+                if(!string.IsNullOrEmpty(_overrideJsonInputData))
+                    _playerInput.actions.LoadBindingOverridesFromJson(_overrideJsonInputData);
                 Logger.LogDebug(ELogTags.Input, $"Input configuration update successful,{_playerInput.actions}");
             }
             else
@@ -229,130 +267,92 @@ namespace Core.Inputs
         }
 
         /// <summary>
-        /// 检查是否为特殊按键（系统保留/不允许修改的按键）
-        /// </summary>
-        /// <param name="newKey">待检查的按键</param>
-        /// <returns>true=特殊按键，false=普通按键</returns>
-        private static bool IsSpecialKey(Key newKey)
-        {
-            // 定义特殊按键列表：无、退出、回车、结束、输入法选择
-            return newKey is Key.None or Key.Escape or Key.Enter or Key.End or Key.IMESelected;
-        }
-
-        /// <summary>
         /// 检查按键是否冲突
         /// 1. 同一动作映射下的相同路径不判定为冲突
         /// 2. 新按键已被其他动作映射使用则判定为冲突
         /// </summary>
-        /// <param name="oldKeyMap">原动作映射</param>
-        /// <param name="oldKey">原按键</param>
-        /// <param name="newKey">新按键</param>
-        /// <param name="newPath">新按键路径</param>
+        /// <param name="actionName">输入动作名称</param>
+        /// <param name="bindIndex">输入动作对应的按键的绑定索引，当前重绑定的action的绑定索引</param>
+        /// <param name="newPath"></param>
+        /// <param name="conflictInfo"></param>
         /// <returns>true=冲突，false=无冲突</returns>
-        private bool IsKeyConflict(E_MainActionMap oldKeyMap, Key oldKey, Key newKey, string newPath)
+        private bool HasKeyConflict(string actionName, int bindIndex, string newPath, out ConflictInfo conflictInfo)
         {
-            // 同一动作映射下，路径未变化（仅重复点击原按键），不判定为冲突
-            if (_mapDataContainer.actionMap[oldKeyMap].path == newPath)
+            var actions = _playerInput.actions;
+            var action = actions[actionName];
+            // 获取当前正在改的绑定的交互方式（尚未被覆盖，所以是旧的 interactions）
+            var currentInteractions = action.bindings[bindIndex].effectiveInteractions;
+            foreach (var inputAction in actions)
             {
-                return false;
-            }
-
-            // 遍历所有已配置的按键映射，检查新按键是否已被占用
-            foreach (var map in _mapDataContainer.actionMap.Values)
-            {
-                if (newKey != map.key)
+                for (var i = 0; i < inputAction.bindings.Count; i++)
                 {
-                    continue;
+                    // 其它Action的绑定
+                    var otherBinding = inputAction.bindings[i];
+                    
+                    if(otherBinding.isComposite)
+                        continue;
+                    
+                    var samePath = otherBinding.effectivePath == newPath;
+                    var sameInteraction = otherBinding.effectiveInteractions == currentInteractions;
+                    var nonSameIndex = i != bindIndex;
+                    var sameActon = otherBinding.action == actionName;
+                    
+                    // 自己改自己，不算冲突
+                    if(!nonSameIndex && sameActon && samePath && sameInteraction)
+                        continue;
+                    
+                    // 新路径与其它按键绑定路径相同，且触发方式也相同，且绑定索引不同，则存在冲突
+                    if (samePath && sameInteraction)
+                    {
+                        conflictInfo = new ConflictInfo
+                        {
+                            CurrentBinding = action.bindings[bindIndex],
+                            ConflictBinding = otherBinding,
+                            CurrentBindingIndex = bindIndex,
+                            ConflictBindingIndex = i
+                        };
+                        
+                        return true;
+                    }
                 }
-                
-                // 注册按键交换回调（后续执行双向替换）
-                ExchangeKeyAction += ExchangeKey;
-                // 记录冲突相关数据
-                this.oldKeyMap = oldKeyMap;
-                this.oldKey = oldKey;
-                this.newKey = newKey;
-                this.newPath = newPath;
-                return true;
             }
 
-            // 新按键未被占用，无冲突
+            conflictInfo = default;
             return false;
         }
-
-        /// <summary>
-        /// 交换冲突按键的配置
-        /// 当新按键已被占用时，将原动作映射与占用动作映射的按键互换
-        /// </summary>
-        private void ExchangeKey()
+        
+        private void ExecuteExchangeKey(ConflictInfo conflictInfo)
         {
-            // 遍历所有动作映射，找到占用新按键的映射
-            foreach (var keyMap in _mapDataContainer.actionMap.Keys)
+            var actions = _playerInput.actions;
+            // 当前重绑定Action
+            var currentActon = actions[conflictInfo.CurrentBinding.action];
+            // 将当前重绑定Action的绑定更改为冲突的绑定info
+            InputBinding conflictBinding = new()
             {
-                var keyPathMap = _mapDataContainer.actionMap[keyMap];
-
-                // 找到占用新按键的动作映射
-                if (keyPathMap.key != newKey)
-                {
-                    continue;
-                }
-                
-                // 缓存原动作映射的配置
-                var tempKeyPathMap = _mapDataContainer.actionMap[oldKeyMap];
-                // 替换原动作映射的按键为新按键
-                _mapDataContainer.actionMap[oldKeyMap] = new KeyPathMap(newKey, newPath);
-                // 将占用映射的按键替换为原按键
-                _mapDataContainer.actionMap[keyMap] = tempKeyPathMap;
-                // 刷新输入配置使交换生效
-                UpdateActions();
-                return;
-            }
+                overridePath = conflictInfo.ConflictBinding.effectivePath,
+                overrideInteractions = conflictInfo.ConflictBinding.effectiveInteractions
+            };
+            
+            currentActon.RemoveBindingOverride(conflictInfo.CurrentBindingIndex);
+            currentActon.ApplyBindingOverride(conflictInfo.CurrentBindingIndex, conflictBinding);
+            // 冲突的绑定的Action
+            var overrideActon = actions[conflictInfo.ConflictBinding.action];
+            // 将冲突的绑定的Action的绑定更改为当前重绑定的info，即交换
+            InputBinding currentBinding = new()
+            {
+                overridePath = conflictInfo.CurrentBinding.effectivePath,
+                overrideInteractions = conflictInfo.CurrentBinding.effectiveInteractions
+            };
+            
+            overrideActon.RemoveBindingOverride(conflictInfo.ConflictBindingIndex);
+            overrideActon.ApplyBindingOverride(conflictInfo.ConflictBindingIndex, currentBinding);
+            // 保存覆盖数据
+            _overrideJsonInputData = _playerInput.actions.SaveBindingOverridesAsJson();
         }
-
-        /// <summary>
-        /// 初始化输入动作配置容器
-        /// 反射读取指定类型的静态属性，初始化默认按键映射
-        /// </summary>
-        /// <typeparam name="T">存储默认按键配置的类型（静态属性）</typeparam>
-        /// <param name="container">要初始化的配置容器</param>
-        public static void InitContainer<T>(MainActionMapDataContainer container)
+        
+        public void OnAppQuit()
         {
-            var type = typeof(T);
-            // 获取类型的所有公共静态属性
-            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Static);
-            foreach (var property in properties)
-            {
-                // 属性名对应动作映射枚举名
-                var name = property.Name;
-                var actionEnum = (E_MainActionMap)Enum.Parse(typeof(E_MainActionMap), name);
-                
-                // 若存在这个映射，则跳过
-                if(container.actionMap.ContainsKey(actionEnum))
-                    continue;
-                
-                // 属性值对应按键路径
-                var value = property.GetValue(null).ToString();
-                // 获取属性上的按键映射特性
-                var memberInfo = type.GetMember(name)[0];
-                var attribute = memberInfo.GetCustomAttribute<ActionKeyMapAttribute>();
-                if (attribute == null)
-                {
-                    continue;
-                }
-                
-                // 根据特性类型初始化按键映射（键盘按键/鼠标值/鼠标按钮）
-                if (attribute.Key != Key.None)
-                {
-                    container.actionMap.Add(actionEnum, new KeyPathMap(attribute.Key, value));
-                }
-                else if (attribute.MouseValue != E_MouseValue.None)
-                {
-                    container.actionMap.Add(actionEnum, new KeyPathMap(attribute.MouseValue, value));
-                }
-                else
-                {
-                    container.actionMap.Add(actionEnum, new KeyPathMap(attribute.MouseButton, value));
-                }
-            }
+            jsonManager.SaveAsync(_overrideJsonInputData, PathUtility.GetUserDataLocalSavePath(FileSources.InputActionLocalFileName));
         }
     }
 }

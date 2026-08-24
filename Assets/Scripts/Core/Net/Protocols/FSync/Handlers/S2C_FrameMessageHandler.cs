@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using Core.DI;
+using Core.GlobalEvent;
+using Core.GlobalEvent.Events.Net;
+using Core.Net.Protocols.FSync.Messages;
 using Core.Net.SyncModule.Interface;
 using Core.Net.SyncModule.Manager;
 using Net.Protocols;
-using Net.Protocols.FSync.Messages;
 
 namespace Core.Net.Protocols.FSync.Handlers
 {
@@ -53,6 +55,9 @@ namespace Core.Net.Protocols.FSync.Handlers
                 _frameBuffer.Remove(FrameId + 1);
                 ExecuteFrame(nextFrame);
                 FrameId++;
+                var frameHandleEvent = EventSource.Get<FrameHandleEvent>();
+                frameHandleEvent.FrameId = FrameId;
+                eventCenter.TriggerEvent(frameHandleEvent);
             }
 
             // 执行完，采集本地输入，上报给服务器（为下一帧准备）
@@ -71,7 +76,7 @@ namespace Core.Net.Protocols.FSync.Handlers
         }
         
         /// <summary>
-        /// 采集本地输入并发送给服务器
+        /// 采集本地下一帧输入并发送给服务器
         /// </summary>
         private void SendFrameInput()
         {
@@ -89,7 +94,7 @@ namespace Core.Net.Protocols.FSync.Handlers
                 // 采集本地输入
                 netObject.CollectInput(c2SNextFrameMessage.OptMessage);
                 // 发送
-                _proxy.Send(c2SNextFrameMessage, EProtocolChannel.Raw);
+                _proxy.Send(c2SNextFrameMessage, EProtocolChannel.Resolve);
             }
         }
     }

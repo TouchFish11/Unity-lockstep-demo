@@ -1,4 +1,4 @@
-using Net.Protocols.FSync.Messages;
+using Core.Net.Protocols.FSync.Messages;
 
 namespace Core.Net.SyncModule.Interface
 {

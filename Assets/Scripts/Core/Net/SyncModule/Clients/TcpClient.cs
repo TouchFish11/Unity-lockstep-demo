@@ -106,7 +106,7 @@ namespace Core.Net.SyncModule.Clients
                     var msgBodyLength = -1;
                     var hasHeader = false;
 
-                    // 先判断是否够解析消息头（8字节）
+                    // 先判断是否够解析消息头:[消息ID][消息体长度]（8字节）
                     if (_cacheLength - nowIndex >= 8)
                     {
                         var msgID = BitConverter.ToInt32(_dataBuffer, nowIndex);

@@ -23,12 +23,12 @@ namespace Core.Service.Login
 
         public void SaveLoginData(LoginData loginData)
         {
-            //DIContainer.GetInstance<IBinaryDataManager>().SaveAsync(FileUtility.LocalLoginDataFileName, loginData);
+            //DIContainer.GetInstance<IBinaryDataManager>().SaveAsync(FileSources.LocalLoginDataFileName, loginData);
         }
 
         public Task<LoginData> LoadLoginData()
         {
-            //return await DIContainer.GetInstance<IBinaryDataManager>().LoadAsync<LoginData>(FileUtility.LocalLoginDataFileName);
+            //return await DIContainer.GetInstance<IBinaryDataManager>().LoadAsync<LoginData>(FileSources.LocalLoginDataFileName);
             return (Task<LoginData>)Task.CompletedTask;
         }
     }

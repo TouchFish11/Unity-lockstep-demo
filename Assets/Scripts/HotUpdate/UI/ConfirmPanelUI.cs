@@ -35,7 +35,7 @@ namespace HotUpdate.UI
                     Confirm();
                     break;
                 case nameof(btnRefuse):
-
+                    Refuse();
                     break;
             }
         }
@@ -44,6 +44,7 @@ namespace HotUpdate.UI
         {
             this.matchPlayerCount = matchPlayerCount;
             this.onPlayerCancel = onPlayerCancel;
+            UpdatePlayerConfirm(0);
         }
         
         /// <summary>
@@ -55,7 +56,14 @@ namespace HotUpdate.UI
             proxy.Send(new C2S_MatchConfirmMessage { IsMatch = true }, EProtocolChannel.Resolve);
             btnConfirm.enabled = false;
             btnRefuse.enabled = false;
-            UpdatePlayerConfirm(0);
+        }
+
+        private void Refuse()
+        {
+            var proxy = DIContainer.GetInstance<INetGameProxy>();
+            proxy.Send(new C2S_MatchConfirmMessage { IsMatch = false }, EProtocolChannel.Resolve);
+            btnConfirm.enabled = false;
+            btnRefuse.enabled = false;
         }
 
         private void ClientConfirmMatchStateEvent(ClientConfirmMatchStateEvent matchStateEvent)

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Net.Protocols;
 
-namespace Net.Protocols.FSync.Messages
+namespace Core.Net.Protocols.FSync.Messages
 {
     /// <summary>
     /// 存储所有客户端一帧内的操作消息
