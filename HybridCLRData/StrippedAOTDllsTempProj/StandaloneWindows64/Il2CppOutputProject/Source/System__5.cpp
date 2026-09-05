@@ -22954,7 +22954,7 @@ IL_0021_1:
 				Type_t* L_10 = ___0_attributeType;
 				NullCheck(L_9);
 				RuntimeObject* L_11;
-				L_11 = VirtualFuncInvoker1< RuntimeObject*, RuntimeObject* >::Invoke(29, L_9, L_10);
+				L_11 = VirtualFuncInvoker1< RuntimeObject*, RuntimeObject* >::Invoke(30, L_9, L_10);
 				V_5 = ((Attribute_tFDA8EFEFB0711976D22474794576DAF28F7440AA*)CastclassClass((RuntimeObject*)L_11, Attribute_tFDA8EFEFB0711976D22474794576DAF28F7440AA_il2cpp_TypeInfo_var));
 				goto IL_00d6;
 			}
@@ -23048,7 +23048,7 @@ IL_00bb_1:
 				Type_t* L_34 = ___0_attributeType;
 				Attribute_tFDA8EFEFB0711976D22474794576DAF28F7440AA* L_35 = V_2;
 				NullCheck(L_33);
-				VirtualActionInvoker2< RuntimeObject*, RuntimeObject* >::Invoke(30, L_33, L_34, L_35);
+				VirtualActionInvoker2< RuntimeObject*, RuntimeObject* >::Invoke(31, L_33, L_34, L_35);
 				Attribute_tFDA8EFEFB0711976D22474794576DAF28F7440AA* L_36 = V_2;
 				V_5 = L_36;
 				goto IL_00d6;

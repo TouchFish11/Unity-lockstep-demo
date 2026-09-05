@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using Net.Protocols;
-using Net.Protocols.Configs;
+using Core.Net.Protocols.Configs;
 
 namespace Core.Net.Protocols.FSync.Messages
 {
@@ -9,18 +8,16 @@ namespace Core.Net.Protocols.FSync.Messages
     /// </summary>
     public class S2C_FrameMessage : FrameMessage
     {
-        public static int FrameMessageID => MessageIDConfig.S2C_Frame_ID;
+        public int FrameMessageID => MessageIDConfig.S2C_Frame_ID;
         
         /// <summary>
         /// 帧消息列表，可能包含多帧消息
         /// </summary>
         public List<S2C_OneFrameMessage> FrameMessages { get; private set; }
-    
+        
         public override int GetMsgLength()
         {
             var length = 0;
-            // 消息ID
-            length += 4;
             // 列表内容长度
             length += 4;
             // 列表内容
@@ -28,33 +25,31 @@ namespace Core.Net.Protocols.FSync.Messages
             {
                 length += oneFrameMessage.GetMsgLength();
             }
-
+        
             return length;
         }
-
+        
         public override byte[] Serialize()
         {
             var index = 0;
             var length = GetMsgLength();
             var bytes = new byte[length];
-            // 写入消息ID
-            MessageUtil.WriteField(bytes, FrameMessageID, ref index);
-            // 写入消息体长度
+            // 写入消息列表长度
             MessageUtil.WriteField(bytes, length, ref index);
+            // 写入消息内容
             foreach (var oneFrameMessage in FrameMessages)
             {
                 MessageUtil.WriteField(bytes, oneFrameMessage, ref index);
             }
-            
             return bytes;
         }
 
         public override int Deserialize(byte[] bytes, int beginIndex = 0)
         {
             var index = beginIndex;
-            MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息ID
-            var length = MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息体长度
+            var length = MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息内容长度
             FrameMessages = new List<S2C_OneFrameMessage>(length);
+            // 反序列化消息内容
             for (var i = 0; i < length; i++)
             {
                 FrameMessages.Add(MessageUtil.ReadFrameMessage<S2C_OneFrameMessage>(bytes, ref index));

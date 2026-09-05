@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Core.Inputs.Providers
 {
     /// <summary>
-    /// 输入数据默认提供器
+    /// 输入数据默认提供器，自动加载配置数据，并从本地默认路径中读取覆盖文件<see cref="FileSources.InputActionLocalFileName"/>
     /// </summary>
     public class InputDataDefaultProvider : InputDataProvider
     {

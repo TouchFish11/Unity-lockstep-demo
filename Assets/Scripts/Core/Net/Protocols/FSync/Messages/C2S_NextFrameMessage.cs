@@ -1,5 +1,4 @@
-using Net.Protocols;
-using Net.Protocols.Configs;
+using Core.Net.Protocols.Configs;
 
 namespace Core.Net.Protocols.FSync.Messages
 {
@@ -18,36 +17,28 @@ namespace Core.Net.Protocols.FSync.Messages
         /// </summary>
         public OptMessage OptMessage { get; set; }
         
-        public static int FrameMessageID => MessageIDConfig.C2S_NextFrame_ID;
-    
+        public int FrameMessageID => MessageIDConfig.C2S_NextFrame_ID;
+        
         public override int GetMsgLength()
         {
-            // 消息ID (int) + 消息体长度(int) + 帧ID(int) + OptMessage长度
-            return sizeof(int) + sizeof(int) + sizeof(int) + OptMessage.GetMsgLength();
+            // 帧ID(int) + OptMessage长度
+            return sizeof(int) + OptMessage.GetMsgLength();
         }
-
+        
         public override byte[] Serialize()
         {
             var index = 0;
-            var length = GetMsgLength();
-            var bytes = new byte[length];
-            // 写入消息ID
-            MessageUtil.WriteField(bytes, FrameMessageID, ref index);
-            // 写入消息体长度
-            MessageUtil.WriteField(bytes, length, ref index);
-            MessageUtil.WriteField(bytes, FrameID, ref index);
-            MessageUtil.WriteField(bytes, FrameID, ref index);
-            MessageUtil.WriteField(bytes, OptMessage, ref index);
+            var bytes = new byte[GetMsgLength()];
+            MessageUtil.WriteField(bytes, FrameID, ref index);      // 写入帧ID
+            MessageUtil.WriteField(bytes, OptMessage, ref index);   // 写入下一帧的操作
             return bytes;
         }
-
+        
         public override int Deserialize(byte[] bytes, int beginIndex = 0)
         {
             var index = beginIndex;
-            MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息ID
-            var length = MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息体长度
-            FrameID = MessageUtil.ReadInt(bytes, ref index);
-            OptMessage = MessageUtil.ReadFrameMessage<OptMessage>(bytes, ref index);
+            FrameID = MessageUtil.ReadInt(bytes, ref index);                            // 反序列化帧ID
+            OptMessage = MessageUtil.ReadFrameMessage<OptMessage>(bytes, ref index);    // 反序列操作
             return index - beginIndex;
         }
     }

@@ -4,7 +4,6 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Core.Log;
 using Core.Net.Protocols;
-using Net.Protocols;
 using Logger = Core.Log.Logger;
 
 namespace Core.Net.SyncModule.Clients

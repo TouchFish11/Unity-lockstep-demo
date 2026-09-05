@@ -1,7 +1,6 @@
 using System;
 using Core.Net.Protocols;
 using Core.Net.SyncModule.Manager;
-using Net.Protocols;
 
 namespace Core.Net.SyncModule.Interface
 {

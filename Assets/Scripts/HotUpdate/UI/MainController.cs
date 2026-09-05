@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
@@ -14,7 +15,6 @@ using Core.UI.ViewController;
 using HotUpdate.Game.Race;
 using HotUpdate.UI.Loading;
 using kcp2k;
-using Net.Protocols;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -36,6 +36,8 @@ namespace HotUpdate.UI
         // 是否已经连接服务器
         private bool _isConnected;
         private ConfirmPanelUI _confirmPanelUI;
+
+        private readonly List<StatusHUD> _huds = new();
         
         protected override Task OnInit()
         {
@@ -96,8 +98,8 @@ namespace HotUpdate.UI
                 ServerIp = "127.0.0.1",
                 ServerPort = 8080,
                 Resolver = MessageSerializerSource.DefaultMessageResolver,
-                ClientType = EClientType.Tcp,
-                KcpConfig = new KcpConfig(DualMode:false, Timeout: 30000)
+                ClientType = EClientType.Kcp,
+                KcpConfig = new KcpConfig(Timeout: 15000)
             };
                         
             view.btnConnect.enabled = false;
@@ -162,7 +164,7 @@ namespace HotUpdate.UI
             _confirmPanelUI = null;
             await _uiManager.SetViewActive(panelId, false);
             // 创建游戏界面
-            await _uiManager.CreateViewAsync<RaceView, RaceController>(AssetKeys.GameView, E_UILayer.Bot);
+            var raceController = await _uiManager.CreateViewAsync<RaceView, RaceController>(AssetKeys.GameView, E_UILayer.Bot);
             
             foreach (var raceClientId in prepareRaceEvent.RaceClientIds)
             {
@@ -178,6 +180,11 @@ namespace HotUpdate.UI
                 
                 roleController.Init(raceClientId, _iInputSystem, self);
                 _netGameManager.AddPlayer(raceClientId, roleController);
+                
+                // 创建UI
+                var statusHUD = await _objectSpawner.SpawnAsync<StatusHUD>(AssetKeys.StatusHUD);
+                statusHUD.Init(roleController, raceController.View);
+                _huds.Add(statusHUD);
             }
             
             _netProxy.Send(new C2S_ReadyMessage(), EProtocolChannel.Resolve);
@@ -198,6 +205,9 @@ namespace HotUpdate.UI
             {
                 _objectSpawner.Release(connectPlayerObjUI);
             }
+
+            _objectSpawner.Release(_huds);
+            
             _objectSpawner.Clear();
             view.ConnectPlayers.Clear();
             

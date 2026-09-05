@@ -1,4 +1,4 @@
-namespace Net.Protocols
+namespace Core.Net.Protocols
 {
     public static class MessageHandleManager
     {

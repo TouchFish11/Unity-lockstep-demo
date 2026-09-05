@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using Core.Net.Protocols.FSync.Messages;
 
-namespace Net.Protocols
+namespace Core.Net.Protocols
 {
     /// <summary>
     /// 消息工具类

@@ -2,7 +2,6 @@ using Core.DI;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events.Net;
 using Core.Net.Protocols.Tcp.Messages.Battle.S2C;
-using Net.Protocols;
 
 namespace Core.Net.Protocols.Tcp.Handlers.S2C
 {

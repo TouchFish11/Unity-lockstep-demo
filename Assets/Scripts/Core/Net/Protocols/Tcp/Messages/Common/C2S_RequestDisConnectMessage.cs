@@ -1,4 +1,4 @@
-using Net.Protocols.Configs;
+using Core.Net.Protocols.Configs;
 
 namespace Core.Net.Protocols.Tcp.Messages.Common
 {
@@ -15,7 +15,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Common
             return MessageIDConfig.C2S_RequestDisconnect_ID;
         }
 
-        protected override int OnGetBodyLength()
+        protected override int GetBodyLength()
         {
             return 0;
         }

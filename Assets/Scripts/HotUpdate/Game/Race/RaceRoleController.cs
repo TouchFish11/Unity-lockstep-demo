@@ -38,25 +38,33 @@ namespace HotUpdate.Game.Race
                 _inputSystem = inputSystem;
                 _playerInput = GetComponent<PlayerInput>();
                 _inputSystem.InitPlayerInput(_playerInput, InputCallback);
+                _inputSystem.Enable();
             }
         }
 
         private void InputCallback(InputAction.CallbackContext context)
         {
-            if (context.phase == InputActionPhase.Performed)
+            var action = context.action;
+            switch (action.name)
             {
-                var action = context.action;
-                switch (action.name)
-                {
-                    case ActionConfigs.Move:
+                case ActionConfigs.Move:
+                    if (context.phase == InputActionPhase.Performed)
+                    {
                         opt = 1;
                         var value = action.ReadValue<Vector2>();
                         var dir = new Vector3(value.x, 0, value.y);
                         arg1 = (int)Fixed64.FromFloat(dir.x).RawValue;
                         arg2 = (int)Fixed64.FromFloat(dir.y).RawValue;
                         arg3 = (int)Fixed64.FromFloat(dir.z).RawValue;
-                        break;
-                }
+                    }
+                    else if(context.phase == InputActionPhase.Canceled)
+                    {
+                        opt = 1;
+                        arg1 = (int)Fixed64.Zero.RawValue;
+                        arg2 = (int)Fixed64.Zero.RawValue;
+                        arg3 = (int)Fixed64.Zero.RawValue;
+                    }
+                    break;
             }
         }
 

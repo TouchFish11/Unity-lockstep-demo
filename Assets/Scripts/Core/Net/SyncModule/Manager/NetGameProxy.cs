@@ -5,7 +5,6 @@ using Core.Net.Protocols;
 using Core.Net.Protocols.FSync.Messages;
 using Core.Net.Protocols.Tcp;
 using Core.Net.SyncModule.Interface;
-using Net.Protocols;
 
 namespace Core.Net.SyncModule.Manager
 {
@@ -59,7 +58,7 @@ namespace Core.Net.SyncModule.Manager
             if(channel == EProtocolChannel.Resolve)
                 ((TcpMessage)message).SessionID = _netManager.SessionId;
             else
-                ((C2S_NextFrameMessage)message).OptMessage.SessionID = _netManager.SessionId;
+                ((C2S_NextFrameMessage)message).OptMessage.SessionID = _netManager.SessionId;   // 冗余的赋值
             _netManager.Send(message, channel);
         }
 

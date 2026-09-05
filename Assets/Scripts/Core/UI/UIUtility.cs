@@ -35,8 +35,8 @@ namespace Core.UI
         /// </summary>
         /// <param name="world">世界摄像机</param>
         /// <param name="ui">UI摄像机</param>
-        /// <param name="parent">父对象</param>
-        /// <param name="uiObj">世界点</param>
+        /// <param name="parent">UI父对象</param>
+        /// <param name="uiObj">UI对象本身</param>
         /// <param name="worldPoint">世界点</param>
         /// <param name="offset">UI坐标偏移</param>
         public static bool WorldToLocalPointInRectangle(Camera world, Camera ui, Transform parent, GameObject uiObj, Vector3 worldPoint, Vector2 offset = default)

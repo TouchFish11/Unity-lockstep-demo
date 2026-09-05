@@ -398,7 +398,7 @@ namespace Core.AssetBundles.Management
             _releaseSnapshot.AddRange(objs);
             foreach (var obj in _releaseSnapshot)
             {
-                if (Release(obj, destroy))
+                if (Release((T)obj, destroy))
                 {
                     ++releseCount;
                 }

@@ -1,5 +1,5 @@
+using Core.Net.Protocols;
 using kcp2k;
-using Net.Protocols;
 
 namespace Core.Net.SyncModule.Manager
 {

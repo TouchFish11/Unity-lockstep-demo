@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using Core.DI;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events.Net;
+using Core.Log;
 using Core.Net.Protocols.FSync.Messages;
 using Core.Net.SyncModule.Interface;
 using Core.Net.SyncModule.Manager;
-using Net.Protocols;
 
 namespace Core.Net.Protocols.FSync.Handlers
 {
@@ -54,7 +54,7 @@ namespace Core.Net.Protocols.FSync.Handlers
             {
                 _frameBuffer.Remove(FrameId + 1);
                 ExecuteFrame(nextFrame);
-                FrameId++;
+                ++FrameId;
                 var frameHandleEvent = EventSource.Get<FrameHandleEvent>();
                 frameHandleEvent.FrameId = FrameId;
                 eventCenter.TriggerEvent(frameHandleEvent);

@@ -5,7 +5,6 @@ using Core.Net.Protocols;
 using Core.Net.SyncModule.Clients;
 using Core.Net.SyncModule.Interface;
 using kcp2k;
-using Net.Protocols;
 using KcpClient = Core.Net.SyncModule.Clients.KcpClient;
 
 namespace Core.Net.SyncModule.Manager

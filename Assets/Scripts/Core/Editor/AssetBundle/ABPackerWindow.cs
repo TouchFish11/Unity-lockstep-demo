@@ -44,8 +44,8 @@ namespace Editor.AssetBundle
         private bool uploadBytesIsCustomSetting;
         private uint maxBytesCapacity = 4096;
 
-        private const string hotUpdateAssemblyTargetPath = @"D:\UnityProject\TurnDemo\Assets\Editor\ArtRes\HotUpdate\";
-        private const string hybridCLRAssemblySourcesPath = @"D:\UnityProject\TurnDemo\HybridCLRData\HotUpdateDlls\StandaloneWindows64\";
+        private const string hotUpdateAssemblyTargetPath = @"D:\UnityProject\AnimationSystem\Assets\Editor\ArtRes\HotUpdate\";
+        private const string hybridCLRAssemblySourcesPath = @"D:\UnityProject\AnimationSystem\HybridCLRData\HotUpdateDlls\StandaloneWindows64\";
         private const string AssetsInputPath = "Assets/Editor/ArtRes/";
         private readonly string[] filterDirectories = { "Texture" };
         private readonly string[] filterSuffixes = { ".meta" };
@@ -85,7 +85,7 @@ namespace Editor.AssetBundle
 
             hotUpdateAssemblies = new[]
             {
-                "HotUpdate.Common", "HotUpdate.Base","HotUpdate.Game","HotUpdate.UI","HotUpdate.Entry",
+                "HotUpdate.Common", "HotUpdate.Base","HotUpdate.Game","HotUpdate.UI","HotUpdate.Update",
             };
 
             minSize = new Vector2(1389, 725);

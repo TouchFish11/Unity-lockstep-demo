@@ -1,4 +1,4 @@
-namespace Net.Protocols.Configs
+namespace Core.Net.Protocols.Configs
 {
     /// <summary>
     /// 消息ID配置，定义所有有自定义消息头的ID

@@ -5,6 +5,7 @@ public static class AssetBundleKeys
     public const string Fonts = "fonts";
     public const string Gameconfig = "gameconfig";
     public const string Hotupdate = "hotupdate";
+    public const string Hotupdateaot = "hotupdateaot";
     public const string HotupdateEntry = "hotupdate_entry";
     public const string Mask = "mask";
     public const string Material = "material";

@@ -1,5 +1,4 @@
 using Core.Net.Protocols.Tcp.Messages.Chat;
-using Net.Protocols;
 
 namespace Core.Net.Protocols.FSync.Handlers
 {

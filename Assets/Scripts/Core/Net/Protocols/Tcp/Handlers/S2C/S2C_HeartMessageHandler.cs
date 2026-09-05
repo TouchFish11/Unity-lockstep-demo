@@ -1,7 +1,6 @@
 using Core.DI;
 using Core.Net.Protocols.Tcp.Messages.Common;
 using Core.Net.SyncModule.Interface;
-using Net.Protocols;
 
 namespace Core.Net.Protocols.Tcp.Handlers.S2C
 {

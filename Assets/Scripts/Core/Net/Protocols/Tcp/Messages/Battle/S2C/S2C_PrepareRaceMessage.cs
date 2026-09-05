@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using Net.Protocols;
-using Net.Protocols.Configs;
+using Core.Net.Protocols.Configs;
 
 namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
 {
@@ -17,7 +16,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
             return MessageIDConfig.S2C_PrepareRace_ID;
         }
 
-        protected override int OnGetBodyLength()
+        protected override int GetBodyLength()
         {
             // clientIds长度 + clientIds主体
             return 4 + 4 * clientIds.Count;
@@ -25,7 +24,11 @@ namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
 
         protected override void SerializeBody(byte[] bytes, ref int index)
         {
-            MessageUtil.WriteField(bytes, clientIds, ref index);
+            MessageUtil.WriteField(bytes, clientIds.Count, ref index);
+            foreach (var clientId in clientIds)
+            {
+                MessageUtil.WriteField(bytes, clientId, ref index);
+            }
         }
 
         protected override void DeserializeBody(byte[] bytes, ref int index)

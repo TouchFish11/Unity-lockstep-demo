@@ -26,8 +26,6 @@ namespace Core.GlobalEvent
         private byte _currentTriggeredEventCount;
         // 事件触发最大递归深度
         private const byte _eventTriggerMaxRecursionDepth = 15;
-        // 事件列表触发快照
-        private readonly List<IEventInfo> _eventInfoSnapshots = new();
 
         /// <summary>
         /// 私有构造函数（单例模式）
@@ -51,23 +49,23 @@ namespace Core.GlobalEvent
             // 查找该事件类型下所有订阅的事件信息
             if (_typeToEventInfoMap.TryGetValue(typeof(TEvent), out var eventInfos))
             {
-                _eventInfoSnapshots.Clear();
-                _eventInfoSnapshots.AddRange(eventInfos);
-                
+                var eventInfoSnapshots = eventInfos.ToArray();
                 // 遍历触发所有匹配的事件回调
-                foreach (var eventInfoSnapshot in _eventInfoSnapshots)
+                foreach (var eventInfoSnapshot in eventInfoSnapshots)
                 {
+                    var eventInfo = (EventInfo<TEvent>)eventInfoSnapshot;
                     try
                     {
                         if (eventInfoSnapshot.RecursionDepth > _eventTriggerMaxRecursionDepth)
-                            throw new InvalidOperationException($"Recursion depth {_eventTriggerMaxRecursionDepth} is exceeded");
+                            throw ExceptionHelper.ThrowEventTriggerException(typeof(TEvent), null);
                         
-                        var eventInfo = (EventInfo<TEvent>)eventInfoSnapshot;
                         eventInfo.Invoke(evt);
+                        eventInfo.RecursionDepth--;
                     }
                     catch (Exception e)
                     {
-                        Logger.LogException(ELogTags.System, ExceptionHelper.ThrowEventTriggerException(typeof(TEvent), e));
+                        eventInfo.RecursionDepth--;
+                        Logger.LogException(ELogTags.System, e);
                     }
                 }
                 

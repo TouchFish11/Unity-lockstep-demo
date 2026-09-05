@@ -1,4 +1,4 @@
-using Net.Protocols.Configs;
+using Core.Net.Protocols.Configs;
 
 namespace Core.Net.Protocols.Tcp.Messages.Battle.C2S
 {
@@ -12,7 +12,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Battle.C2S
             return MessageIDConfig.C2S_Ready_ID;
         }
 
-        protected override int OnGetBodyLength()
+        protected override int GetBodyLength()
         {
             return 0;
         }

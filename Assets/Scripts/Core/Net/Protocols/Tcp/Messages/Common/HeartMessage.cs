@@ -1,5 +1,4 @@
-﻿using Net.Protocols;
-using Net.Protocols.Configs;
+﻿using Core.Net.Protocols.Configs;
 
 namespace Core.Net.Protocols.Tcp.Messages.Common
 {
@@ -23,7 +22,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Common
             return MessageIDConfig.Heartbeat_ID;
         }
         
-        protected override int OnGetBodyLength()
+        protected override int GetBodyLength()
         {
             return sizeof(long) + sizeof(long);
         }

@@ -10,9 +10,9 @@ namespace Core.Editor.HybridCLR
     public class HybridCLRTool
     {
         public const string HybridCLRRoot =
-            @"D:\UnityProject\TurnDemo\HybridCLRData\AssembliesPostIl2CppStrip\StandaloneWindows64\";
+            @"D:\UnityProject\AnimationSystem\HybridCLRData\AssembliesPostIl2CppStrip\StandaloneWindows64\";
 
-        public const string TargetRoot = @"D:\UnityProject\TurnDemo\Assets\Editor\ArtRes\HotUpdateAOT\";
+        public const string TargetRoot = @"D:\UnityProject\AnimationSystem\Assets\Editor\ArtRes\HotUpdateAOT\";
         
         [MenuItem("GameTool/Copy AOT Dlls")]
         public static void CopyAOTDlls()

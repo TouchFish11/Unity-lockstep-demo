@@ -1,6 +1,6 @@
 using System;
 
-namespace Net.Protocols
+namespace Core.Net.Protocols
 {
     /// <summary>
     /// 协议通道

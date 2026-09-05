@@ -24,14 +24,17 @@ struct VirtualFuncInvoker0
 
 struct CharU5BU5D_t799905CF001DD5F13F7DBB310181FC4D8B7D0AAB;
 struct Int32U5BU5D_t19C97395396A72ECAF310612F0760F165060314C;
+struct ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918;
 struct StringU5BU5D_t7674CD946EC0CE7B3AE0BE70E6EE85F2ECD9F248;
 struct String_t;
 
+IL2CPP_EXTERN_C RuntimeClass* Byte_t94D9231AC217BE4D2E004C4CD32DF6D099EA41A3_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* Convert_t7097FF336D592F7C06D88A98349A44646F91EFFC_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* HashHelpers_t0F28B03B873280BF35E747F5B954C752F924A770_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* Int32U5BU5D_t19C97395396A72ECAF310612F0760F165060314C_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* KnownColorTable_tB5906A1181942046FF6EF2C53777B6B79A7EFB08_il2cpp_TypeInfo_var;
+IL2CPP_EXTERN_C RuntimeClass* ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* PointF_tAF6EF9EE016595F150878B97ABC17A16DBEF2138_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* Point_tA4047F553979C79AD01BCA99AB47714D8D920AEE_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* RectangleF_t553237253FE9D1856528CAE15AF367839B925285_il2cpp_TypeInfo_var;
@@ -162,6 +165,7 @@ IL2CPP_EXTERN_C String_t* _stringLiteralAF25DC5A736EC63E7FFBDE734FC4EC9B0024A767
 IL2CPP_EXTERN_C String_t* _stringLiteralB04BD692036B5EE39D032DC402E0EC84CE96EFA4;
 IL2CPP_EXTERN_C String_t* _stringLiteralB15077D6B86395A72F7C1318136CD64578FA08BF;
 IL2CPP_EXTERN_C String_t* _stringLiteralB172CBE3B1EEEA5D73C5D6F86B5AC6FB85787A5B;
+IL2CPP_EXTERN_C String_t* _stringLiteralB243E266B4DBD4EC5C0B7CCF9C3B261EA0914EDC;
 IL2CPP_EXTERN_C String_t* _stringLiteralB26F50B338D34F3E42FFA9C2628393743D2AD2BE;
 IL2CPP_EXTERN_C String_t* _stringLiteralB2EF4AEEC292D34024BC775BC0F17D425A1C0325;
 IL2CPP_EXTERN_C String_t* _stringLiteralB3C05D8A35844E1E82D9FF2A8C83562939E1EDF2;
@@ -230,6 +234,7 @@ IL2CPP_EXTERN_C String_t* _stringLiteralFAEA585C93CC8A656C9B90659DEE7AE1EC03AF5F
 IL2CPP_EXTERN_C String_t* _stringLiteralFC0364E02AABC3EC57B1EFCB86BF8802604E2538;
 
 struct Int32U5BU5D_t19C97395396A72ECAF310612F0760F165060314C;
+struct ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918;
 struct StringU5BU5D_t7674CD946EC0CE7B3AE0BE70E6EE85F2ECD9F248;
 
 IL2CPP_EXTERN_C_BEGIN
@@ -470,6 +475,40 @@ struct StringU5BU5D_t7674CD946EC0CE7B3AE0BE70E6EE85F2ECD9F248  : public RuntimeA
 		Il2CppCodeGenWriteBarrier((void**)m_Items + index, (void*)value);
 	}
 };
+struct ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918  : public RuntimeArray
+{
+	ALIGN_FIELD (8) RuntimeObject* m_Items[1];
+
+	inline RuntimeObject* GetAt(il2cpp_array_size_t index) const
+	{
+		IL2CPP_ARRAY_BOUNDS_CHECK(index, (uint32_t)(this)->max_length);
+		return m_Items[index];
+	}
+	inline RuntimeObject** GetAddressAt(il2cpp_array_size_t index)
+	{
+		IL2CPP_ARRAY_BOUNDS_CHECK(index, (uint32_t)(this)->max_length);
+		return m_Items + index;
+	}
+	inline void SetAt(il2cpp_array_size_t index, RuntimeObject* value)
+	{
+		IL2CPP_ARRAY_BOUNDS_CHECK(index, (uint32_t)(this)->max_length);
+		m_Items[index] = value;
+		Il2CppCodeGenWriteBarrier((void**)m_Items + index, (void*)value);
+	}
+	inline RuntimeObject* GetAtUnchecked(il2cpp_array_size_t index) const
+	{
+		return m_Items[index];
+	}
+	inline RuntimeObject** GetAddressAtUnchecked(il2cpp_array_size_t index)
+	{
+		return m_Items + index;
+	}
+	inline void SetAtUnchecked(il2cpp_array_size_t index, RuntimeObject* value)
+	{
+		m_Items[index] = value;
+		Il2CppCodeGenWriteBarrier((void**)m_Items + index, (void*)value);
+	}
+};
 
 
 
@@ -486,9 +525,11 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR uint8_t Color_get_G_m8BBF290336C0D938F2546AB2
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR uint8_t Color_get_B_mC668C85173CDC211AC0E2FEB3E6C36E9C57DCC61 (Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR uint8_t Color_get_A_m20373E97C1E01A1B27CD551E4FB1CB62DD381230 (Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool Color_get_IsKnownColor_mDE5232E7F4367FD7055F468772188EC1C6576198 (Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661* __this, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* Color_get_Name_m82B674D6BA69AE386BB798DD78DB116307F3B876 (Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661* __this, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* String_Format_m918500C1EFB475181349A79989BB79BB36102894 (String_t* ___0_format, ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918* ___1_args, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* Color_get_NameAndARGBValue_m95C91B9588C731AC546868DBD1F1C4F2B95D44AF (Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* KnownColorTable_KnownColorToName_mEFAED2FFD4EFF6A60FA921AE11C3894880DD63BE (int32_t ___0_color, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* Convert_ToString_mD50A87BAAF57E646B5A7B8AE989EC2A6B8DC1057 (int64_t ___0_value, int32_t ___1_toBase, const RuntimeMethod* method) ;
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* Color_get_Name_m82B674D6BA69AE386BB798DD78DB116307F3B876 (Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int32_t KnownColorTable_KnownColorToArgb_m0979478F1E425ECEA80341F48B9C24AA50B36E97 (int32_t ___0_color, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* String_Concat_m8855A6DE10F84DA7F4EC113CADDB59873A25573B (String_t* ___0_str0, String_t* ___1_str1, String_t* ___2_str2, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* Byte_ToString_mB80CE094B94215119578E4D796566E71D7277EE4 (uint8_t* __this, const RuntimeMethod* method) ;
@@ -2094,6 +2135,70 @@ IL2CPP_EXTERN_C  bool Color_get_IsKnownColor_mDE5232E7F4367FD7055F468772188EC1C6
 	_thisAdjusted = reinterpret_cast<Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661*>(__this + _offset);
 	bool _returnValue;
 	_returnValue = Color_get_IsKnownColor_mDE5232E7F4367FD7055F468772188EC1C6576198(_thisAdjusted, method);
+	return _returnValue;
+}
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* Color_get_NameAndARGBValue_m95C91B9588C731AC546868DBD1F1C4F2B95D44AF (Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661* __this, const RuntimeMethod* method) 
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Byte_t94D9231AC217BE4D2E004C4CD32DF6D099EA41A3_il2cpp_TypeInfo_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918_il2cpp_TypeInfo_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteralB243E266B4DBD4EC5C0B7CCF9C3B261EA0914EDC);
+		s_Il2CppMethodInitialized = true;
+	}
+	{
+		ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918* L_0 = (ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918*)(ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918*)SZArrayNew(ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918_il2cpp_TypeInfo_var, (uint32_t)5);
+		ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918* L_1 = L_0;
+		String_t* L_2;
+		L_2 = Color_get_Name_m82B674D6BA69AE386BB798DD78DB116307F3B876(__this, NULL);
+		NullCheck(L_1);
+		ArrayElementTypeCheck (L_1, L_2);
+		(L_1)->SetAt(static_cast<il2cpp_array_size_t>(0), (RuntimeObject*)L_2);
+		ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918* L_3 = L_1;
+		uint8_t L_4;
+		L_4 = Color_get_A_m20373E97C1E01A1B27CD551E4FB1CB62DD381230(__this, NULL);
+		uint8_t L_5 = L_4;
+		RuntimeObject* L_6 = Box(Byte_t94D9231AC217BE4D2E004C4CD32DF6D099EA41A3_il2cpp_TypeInfo_var, &L_5);
+		NullCheck(L_3);
+		ArrayElementTypeCheck (L_3, L_6);
+		(L_3)->SetAt(static_cast<il2cpp_array_size_t>(1), (RuntimeObject*)L_6);
+		ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918* L_7 = L_3;
+		uint8_t L_8;
+		L_8 = Color_get_R_mA69925F53F4EF7AC1A3B4A94B9F4ABEA72662951(__this, NULL);
+		uint8_t L_9 = L_8;
+		RuntimeObject* L_10 = Box(Byte_t94D9231AC217BE4D2E004C4CD32DF6D099EA41A3_il2cpp_TypeInfo_var, &L_9);
+		NullCheck(L_7);
+		ArrayElementTypeCheck (L_7, L_10);
+		(L_7)->SetAt(static_cast<il2cpp_array_size_t>(2), (RuntimeObject*)L_10);
+		ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918* L_11 = L_7;
+		uint8_t L_12;
+		L_12 = Color_get_G_m8BBF290336C0D938F2546AB296B002C9995B3BAA(__this, NULL);
+		uint8_t L_13 = L_12;
+		RuntimeObject* L_14 = Box(Byte_t94D9231AC217BE4D2E004C4CD32DF6D099EA41A3_il2cpp_TypeInfo_var, &L_13);
+		NullCheck(L_11);
+		ArrayElementTypeCheck (L_11, L_14);
+		(L_11)->SetAt(static_cast<il2cpp_array_size_t>(3), (RuntimeObject*)L_14);
+		ObjectU5BU5D_t8061030B0A12A55D5AD8652A20C922FE99450918* L_15 = L_11;
+		uint8_t L_16;
+		L_16 = Color_get_B_mC668C85173CDC211AC0E2FEB3E6C36E9C57DCC61(__this, NULL);
+		uint8_t L_17 = L_16;
+		RuntimeObject* L_18 = Box(Byte_t94D9231AC217BE4D2E004C4CD32DF6D099EA41A3_il2cpp_TypeInfo_var, &L_17);
+		NullCheck(L_15);
+		ArrayElementTypeCheck (L_15, L_18);
+		(L_15)->SetAt(static_cast<il2cpp_array_size_t>(4), (RuntimeObject*)L_18);
+		String_t* L_19;
+		L_19 = String_Format_m918500C1EFB475181349A79989BB79BB36102894(_stringLiteralB243E266B4DBD4EC5C0B7CCF9C3B261EA0914EDC, L_15, NULL);
+		return L_19;
+	}
+}
+IL2CPP_EXTERN_C  String_t* Color_get_NameAndARGBValue_m95C91B9588C731AC546868DBD1F1C4F2B95D44AF_AdjustorThunk (RuntimeObject* __this, const RuntimeMethod* method)
+{
+	Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661* _thisAdjusted;
+	int32_t _offset = 1;
+	_thisAdjusted = reinterpret_cast<Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661*>(__this + _offset);
+	String_t* _returnValue;
+	_returnValue = Color_get_NameAndARGBValue_m95C91B9588C731AC546868DBD1F1C4F2B95D44AF(_thisAdjusted, method);
 	return _returnValue;
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* Color_get_Name_m82B674D6BA69AE386BB798DD78DB116307F3B876 (Color_t677510AC0B9290AFBF973DC2AD88ABBD71691661* __this, const RuntimeMethod* method) 

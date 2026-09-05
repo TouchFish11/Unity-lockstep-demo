@@ -2,7 +2,7 @@ using Core.DI;
 using Core.GlobalEvent;
 using Core.Net.SyncModule.Interface;
 
-namespace Net.Protocols
+namespace Core.Net.Protocols
 {
     /// <summary>
     /// 消息处理器基类

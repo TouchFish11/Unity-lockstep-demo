@@ -1,4 +1,4 @@
-namespace Net.Protocols
+namespace Core.Net.Protocols
 {
     /// <summary>
     /// 消息处理器

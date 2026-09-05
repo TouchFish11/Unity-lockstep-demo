@@ -1,7 +1,7 @@
 using System;
 using Core.Exceptions;
 
-namespace Net.Protocols
+namespace Core.Net.Protocols
 {
     /// <summary>
     /// 默认消息解析器
@@ -16,13 +16,11 @@ namespace Net.Protocols
             
             // 可靠的需要解析消息头，为了区分消息类型
             var index = 0;
-            // 添加自定义消息头
-            var data = new byte[4 + 4 + message.GetMsgLength()];
-            // 添加消息ID
+            // 添加自定义消息头[消息ID][消息体长度]
+            var data = new byte[sizeof(int) + sizeof(int) + message.GetMsgLength()];
             var msgID = MessageFactory.GetMessageID(message);
             Array.Copy(BitConverter.GetBytes(msgID), 0, data, index, 4);
             index += 4;
-            // 添加消息体长度
             var msgLength = message.GetMsgLength();
             Array.Copy(BitConverter.GetBytes(msgLength), 0, data, index, 4);
             index += 4;

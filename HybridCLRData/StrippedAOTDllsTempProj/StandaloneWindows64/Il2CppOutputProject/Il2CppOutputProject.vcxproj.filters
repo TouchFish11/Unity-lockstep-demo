@@ -547,6 +547,12 @@
     <ClCompile Include="Source\CoreModule__1.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\CoreModule__2.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CoreModule__3.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Source\GameModule.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -880,6 +886,12 @@
     <ClCompile Include="Source\Generics__87.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Generics__88.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Generics__89.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Generics__9.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -1195,6 +1207,12 @@
     <ClCompile Include="Source\Unity.InputSystem__11.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Unity.InputSystem__12.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Unity.InputSystem__13.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Unity.InputSystem__2.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -1240,6 +1258,9 @@
     <ClCompile Include="Source\Unity.TextMeshPro__6.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Unity.TextMeshPro__7.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Unity.VisualScripting.Core.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -1259,6 +1280,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\Unity.VisualScripting.Core__6.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Unity.VisualScripting.Core__7.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\UnityEngine.AIModule.cpp">
@@ -1283,6 +1307,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\UnityEngine.CoreModule__2.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UnityEngine.CoreModule__3.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\UnityEngine.cpp">
@@ -1415,6 +1442,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\UnityEngine.UI__3.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UnityEngine.UI__4.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\UnityEngine.UnityAnalyticsModule.cpp">

@@ -1,5 +1,3 @@
-using Net.Protocols;
-
 namespace Core.Net.Protocols.Tcp
 {
     /// <summary>
@@ -12,30 +10,23 @@ namespace Core.Net.Protocols.Tcp
         /// </summary>
         public int SessionID { get; set; }
         
+        /// <summary>
+        /// 获取消息唯一ID
+        /// </summary>
+        /// <returns></returns>
         public abstract int GetMsgID();
         
         public sealed override int GetMsgLength()
         {
-            // [消息ID][消息体长度][消息体]
-            // [消息体] <=> [客户端ID][子类消息体]
-            return 4 + 4 + GetBodyLength();
-        }
-
-        /// <summary>
-        /// 消息体长度，不包含消息头
-        /// </summary>
-        /// <returns></returns>
-        private int GetBodyLength()
-        {
-            // 包含客户端ID
-            return sizeof(int) + OnGetBodyLength();
+            // 客户端ID + [子类消息体]
+            return sizeof(int) + GetBodyLength();
         }
         
         /// <summary>
-        /// 子类消息体长度，不包含消息头和客户端ID
+        /// 子类消息体长度，不包含客户端ID（由基类负责统一序列化）
         /// </summary>
         /// <returns></returns>
-        protected abstract int OnGetBodyLength();
+        protected abstract int GetBodyLength();
 
         /// <summary>
         /// 序列化
@@ -45,15 +36,8 @@ namespace Core.Net.Protocols.Tcp
         {
             var index = 0;
             var bytes = new byte[GetMsgLength()];
-
-            // 序列化消息ID
-            MessageUtil.WriteField(bytes, GetMsgID(), ref index);
-            // 序列化消息体长度
-            MessageUtil.WriteField(bytes, GetBodyLength(), ref index);
-            // 序列化客户端ID
-            MessageUtil.WriteField(bytes, SessionID, ref index);
-            // 序列化消息体
-            SerializeBody(bytes, ref index);
+            MessageUtil.WriteField(bytes, SessionID, ref index);    // 序列化客户端ID
+            SerializeBody(bytes, ref index);                        // 序列化子消息体
             return bytes;
         }
 
@@ -73,8 +57,8 @@ namespace Core.Net.Protocols.Tcp
         public sealed override int Deserialize(byte[] bytes, int beginIndex = 0)
         {
             var index = beginIndex;
-            SessionID = MessageUtil.ReadInt(bytes, ref index);
-            DeserializeBody(bytes, ref index);
+            SessionID = MessageUtil.ReadInt(bytes, ref index);      // 反序列化客户端ID
+            DeserializeBody(bytes, ref index);                      // 反序列化子消息体
             return index - beginIndex;
         }
 

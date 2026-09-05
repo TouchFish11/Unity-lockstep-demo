@@ -7,7 +7,7 @@ using HotUpdate.UI;
 using UnityEngine;
 using Logger = Core.Log.Logger;
 
-namespace HotUpdate.Entry
+namespace HotUpdate.Update
 {
     /// <summary>
     /// 热更新入口

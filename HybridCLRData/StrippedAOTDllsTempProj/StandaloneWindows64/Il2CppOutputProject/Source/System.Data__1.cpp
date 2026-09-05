@@ -185,7 +185,6 @@ struct ArgumentException_tAD90411542A20A9C72D5CDA3A84181D8B947A263;
 struct ArgumentNullException_t327031E412FAB2351B0022DD5DAD47E67E597129;
 struct ArgumentOutOfRangeException_tEA2822DAF62B10EEED00E0E3A341D4BAF78CF85F;
 struct ArrayList_t7A8E5AF0C4378015B5731ABE2BED8F2782FEEF8A;
-struct AsyncCallback_t7FEF460CBDCFB9C5FA2EF776984778B9A4145F4C;
 struct Attribute_tFDA8EFEFB0711976D22474794576DAF28F7440AA;
 struct AttributeCollection_tD55D3E17234E299E07B6071F31FEEB993C9AD8CA;
 struct AutoIncrementBigInteger_tAAD6FA93B80FC7044741284466A29DBBE81AA71E;
@@ -251,7 +250,6 @@ struct FormatException_tCD210E92627903FFEDAAA706C08FB6222B4D012B;
 struct Function_tAC32D286B7613834FFF024AD86D93B70554173BF;
 struct FunctionNode_tC8525D61DE7B727405041623289EB5ECA7A9C762;
 struct Hashtable_tEFC3B6496E6747787D8BB761B51F2AE3A8CFFE2D;
-struct IAsyncResult_t7B9B5A0ECB35DCEC31B8A8122C37D687369253B5;
 struct ICollection_t37E7B9DC5B4EF41D190D607F92835BF1171C0E8E;
 struct IDictionary_t6D03155AF1FA9083817AA5B6AD7DEEACC26AB220;
 struct IDisposable_t030E0496B4E0E4E4F086825007979AF51F7248C5;
@@ -9887,7 +9885,7 @@ IL_00b1:
 		PropertyCollection_t531D3CA9714C3D7818C1B1C139A9C4F04B73EE7C* L_40 = __this->____extendedProperties;
 		NullCheck(L_40);
 		RuntimeObject* L_41;
-		L_41 = VirtualFuncInvoker0< RuntimeObject* >::Invoke(37, L_40);
+		L_41 = VirtualFuncInvoker0< RuntimeObject* >::Invoke(38, L_40);
 		NullCheck(L_41);
 		RuntimeObject* L_42;
 		L_42 = InterfaceFuncInvoker0< RuntimeObject* >::Invoke(0, IEnumerable_t6331596D5DD37C462B1B8D49CF6B319B00AB7131_il2cpp_TypeInfo_var, L_41);
@@ -9942,9 +9940,9 @@ IL_010d_1:
 				RuntimeObject* L_52 = V_2;
 				NullCheck(L_51);
 				RuntimeObject* L_53;
-				L_53 = VirtualFuncInvoker1< RuntimeObject*, RuntimeObject* >::Invoke(29, L_51, L_52);
+				L_53 = VirtualFuncInvoker1< RuntimeObject*, RuntimeObject* >::Invoke(30, L_51, L_52);
 				NullCheck(L_49);
-				VirtualActionInvoker2< RuntimeObject*, RuntimeObject* >::Invoke(30, L_49, L_50, L_53);
+				VirtualActionInvoker2< RuntimeObject*, RuntimeObject* >::Invoke(31, L_49, L_50, L_53);
 			}
 
 IL_012c_1:
@@ -20427,7 +20425,7 @@ IL_01c5_1:
 				PropertyCollection_t531D3CA9714C3D7818C1B1C139A9C4F04B73EE7C* L_94 = __this->____extendedProperties;
 				NullCheck(L_94);
 				RuntimeObject* L_95;
-				L_95 = VirtualFuncInvoker0< RuntimeObject* >::Invoke(37, L_94);
+				L_95 = VirtualFuncInvoker0< RuntimeObject* >::Invoke(38, L_94);
 				NullCheck(L_95);
 				RuntimeObject* L_96;
 				L_96 = InterfaceFuncInvoker0< RuntimeObject* >::Invoke(0, IEnumerable_t6331596D5DD37C462B1B8D49CF6B319B00AB7131_il2cpp_TypeInfo_var, L_95);
@@ -20482,9 +20480,9 @@ IL_01eb_2:
 						RuntimeObject* L_106 = V_13;
 						NullCheck(L_105);
 						RuntimeObject* L_107;
-						L_107 = VirtualFuncInvoker1< RuntimeObject*, RuntimeObject* >::Invoke(29, L_105, L_106);
+						L_107 = VirtualFuncInvoker1< RuntimeObject*, RuntimeObject* >::Invoke(30, L_105, L_106);
 						NullCheck(L_103);
-						VirtualActionInvoker2< RuntimeObject*, RuntimeObject* >::Invoke(30, L_103, L_104, L_107);
+						VirtualActionInvoker2< RuntimeObject*, RuntimeObject* >::Invoke(31, L_103, L_104, L_107);
 					}
 
 IL_020e_2:

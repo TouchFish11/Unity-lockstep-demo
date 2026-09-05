@@ -7,17 +7,17 @@ namespace HotUpdate.UI.Loading
     {
         protected override Task OnInit()
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         protected override Task OnActive()
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         protected override Task OnInactivate()
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

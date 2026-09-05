@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1687526320
+CRC: 1116849951
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cb473ec499b703d2f5b21b35a456d895
+    Hash: 6ea83e17513aad5312978d106a7fd67c
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b5772d341a96f4c4fbefa6b8e3e12566
+    Hash: 388d62d841afd42eb4f361547699b0ef
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: cb473ec499b703d2f5b21b35a456d895
+    Hash: 6ea83e17513aad5312978d106a7fd67c
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -95,21 +95,23 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 6f9fcc93b38c7dc458863f93298c7433, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 44d13e5e5e174ce458c8c8e80b564734, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 03f5a95d722c76c478690342ca4da8e9, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: a9f20106dbbb8ab47afbeee617b8703d, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: c20f8d159f491154d83f07f513454e16, type: 3}
+  Script: {fileID: 11500000, guid: b560eed1c7da1bc48ade909970262009, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 302787513cfa9204585928b60c1f01d5, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: b560eed1c7da1bc48ade909970262009, type: 3}
+  Script: {fileID: 11500000, guid: c20f8d159f491154d83f07f513454e16, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a9f20106dbbb8ab47afbeee617b8703d, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 18396f4cc05d04041b27277259f25d18, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 2f3d3d26cbe22b44aa0c77d277fe4f50, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 44d13e5e5e174ce458c8c8e80b564734, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 03f5a95d722c76c478690342ca4da8e9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f9f928953ed4ebc4999c1eb83d716bee, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -148,8 +150,6 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.KerningTable
 - AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_Character
-- AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_Dropdown/DropdownEvent
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_Dropdown/OptionData
@@ -159,12 +159,6 @@ SerializeReferenceClassIdentifiers:
   ClassName: TMPro.TMP_FontFeatureTable
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_FontWeightPair
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_GlyphAdjustmentRecord
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_GlyphPairAdjustmentRecord
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_GlyphValueRecord
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_InputField/OnChangeEvent
 - AssemblyName: Unity.TextMeshPro
@@ -183,10 +177,6 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.RectOffset
 - AssemblyName: UnityEngine.TextCoreFontEngineModule
   ClassName: UnityEngine.TextCore.FaceInfo
-- AssemblyName: UnityEngine.TextCoreFontEngineModule
-  ClassName: UnityEngine.TextCore.Glyph
-- AssemblyName: UnityEngine.TextCoreFontEngineModule
-  ClassName: UnityEngine.TextCore.GlyphMetrics
 - AssemblyName: UnityEngine.TextCoreFontEngineModule
   ClassName: UnityEngine.TextCore.GlyphRect
 - AssemblyName: UnityEngine.UI
@@ -226,6 +216,7 @@ Assets:
 - Assets/Editor/ArtRes/UI/Inventory/ItemCell.prefab
 - Assets/Editor/ArtRes/UI/Main/Main_Chat_Panel.prefab
 - Assets/Editor/ArtRes/UI/Tip/Content/DeleteItemConfirmContent.prefab
+- Assets/Editor/ArtRes/UI/Net/StatusHUD.prefab
 - Assets/Editor/ArtRes/UI/Tip/TipPanel.prefab
 - Assets/Editor/ArtRes/UI/Inventory/DetailPanel/WeaponDetailPanel.prefab
 - Assets/Editor/ArtRes/UI/Main/Chat/Chat_UI.prefab
@@ -233,4 +224,5 @@ Assets:
 - Assets/Editor/ArtRes/UI/Net/ConnectPlayerObjUI.prefab
 - Assets/Editor/ArtRes/UI/Main/Main_Panel.prefab
 - Assets/Editor/ArtRes/UI/Battle/Battle_Panel.prefab
-Dependencies: []
+Dependencies:
+- D:/UnityProject/AnimationSystem/Assets/AssetBundles/StandaloneWindows64/tmpasset

@@ -1,4 +1,4 @@
-namespace Net.Protocols
+namespace Core.Net.Protocols
 {
     /// <summary>
     /// 统一的消息基类

@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Core.Exceptions;
+using Core.Net.Protocols.Configs;
 using Core.Net.Protocols.FSync.Messages;
 using Core.Net.Protocols.Tcp;
 using Core.Net.Protocols.Tcp.Messages.Battle.S2C;
 using Core.Net.Protocols.Tcp.Messages.Common;
-using Net.Protocols.Configs;
 
-namespace Net.Protocols
+namespace Core.Net.Protocols
 {
     /// <summary>
     /// 消息工厂
@@ -55,9 +56,9 @@ namespace Net.Protocols
             return message switch
             {
                 TcpMessage tcpMessage => tcpMessage.GetMsgID(),
-                C2S_NextFrameMessage => C2S_NextFrameMessage.FrameMessageID,
-                S2C_FrameMessage => S2C_FrameMessage.FrameMessageID,
-                _ => throw new ArgumentOutOfRangeException(message.ToString())
+                C2S_NextFrameMessage c2SNextFrameMessage => c2SNextFrameMessage.FrameMessageID,
+                S2C_FrameMessage s2CFrameMessage => s2CFrameMessage.FrameMessageID,
+                _ => throw ExceptionHelper.Throw($"Unknown message id: {message}")
             };
         }
     }

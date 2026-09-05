@@ -1,4 +1,4 @@
-namespace Net.Protocols
+namespace Core.Net.Protocols
 {
     /// <summary>
     /// 消息解析器接口

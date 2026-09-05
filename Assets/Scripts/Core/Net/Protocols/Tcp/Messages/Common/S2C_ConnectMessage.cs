@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using Net.Protocols;
-using Net.Protocols.Configs;
+using Core.Net.Protocols.Configs;
 
 namespace Core.Net.Protocols.Tcp.Messages.Common
 {
@@ -22,7 +21,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Common
             return MessageIDConfig.S2C_Connect_ID;
         }
         
-        protected override int OnGetBodyLength()
+        protected override int GetBodyLength()
         {
             return sizeof(int) + sizeof(int) * ClientIds.Count;    // ClientIds
         }

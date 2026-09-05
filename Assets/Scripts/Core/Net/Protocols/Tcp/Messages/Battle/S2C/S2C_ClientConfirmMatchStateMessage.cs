@@ -1,5 +1,4 @@
-using Net.Protocols;
-using Net.Protocols.Configs;
+using Core.Net.Protocols.Configs;
 
 namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
 {
@@ -15,7 +14,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
             return MessageIDConfig.S2C_Notice_MatchConfirmState_ID;
         }
 
-        protected override int OnGetBodyLength()
+        protected override int GetBodyLength()
         {
             return sizeof(bool);
         }

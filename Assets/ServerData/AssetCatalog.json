@@ -2102,6 +2102,14 @@
       "assetType": "Object",
       "assetSize": 27838
     },
+    "StatusHUD": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "StatusHUD",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\StatusHUD.prefab",
+      "assetType": "Object",
+      "assetSize": 8704
+    },
     "LoadingPanel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "LoadingPanel",
@@ -2117,14 +2125,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\GameView.prefab",
       "assetType": "Object",
       "assetSize": 75401
-    },
-    "ConnectPlayerObjUI": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ConnectPlayerObjUI",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\ConnectPlayerObjUI.prefab",
-      "assetType": "Object",
-      "assetSize": 8394
     },
     "领带": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2518,53 +2518,53 @@
       "assetType": "Object",
       "assetSize": 1333
     },
-    "HotUpdateAssemblySettings": {
+    "ConnectPlayerObjUI": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "HotUpdateAssemblySettings",
-      "bundleName": "hotupdate",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdateAssemblySettings.json",
+      "key": "ConnectPlayerObjUI",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\ConnectPlayerObjUI.prefab",
       "assetType": "Object",
-      "assetSize": 351
+      "assetSize": 8394
     },
-    "HotUpdate.Update.dll": {
+    "ConfirmView": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "HotUpdate.Update.dll",
-      "bundleName": "hotupdate",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Update.dll.bytes",
+      "key": "ConfirmView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\ConfirmView.prefab",
       "assetType": "Object",
-      "assetSize": 19456
+      "assetSize": 32068
     },
-    "HotUpdate.UI.dll": {
+    "BloodUIObj": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "HotUpdate.UI.dll",
-      "bundleName": "hotupdate",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.UI.dll.bytes",
+      "key": "BloodUIObj",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\BloodUIObj.prefab",
       "assetType": "Object",
-      "assetSize": 7168
+      "assetSize": 5940
     },
-    "HotUpdate.Game.dll": {
+    "Friend_UI": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "HotUpdate.Game.dll",
-      "bundleName": "hotupdate",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Game.dll.bytes",
+      "key": "Friend_UI",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Friend_UI.prefab",
       "assetType": "Object",
-      "assetSize": 30208
+      "assetSize": 9042
     },
-    "HotUpdate.Common.dll": {
+    "Chat_UI": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "HotUpdate.Common.dll",
-      "bundleName": "hotupdate",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Common.dll.bytes",
+      "key": "Chat_UI",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Chat_UI.prefab",
       "assetType": "Object",
-      "assetSize": 10752
+      "assetSize": 7662
     },
-    "HotUpdate.Base.dll": {
+    "Main_Panel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "HotUpdate.Base.dll",
-      "bundleName": "hotupdate",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Base.dll.bytes",
+      "key": "Main_Panel",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Panel.prefab",
       "assetType": "Object",
-      "assetSize": 14336
+      "assetSize": 73694
     },
     "PlayerControls": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2836,61 +2836,21 @@
       "assetType": "Texture",
       "assetSize": 394
     },
-    "MSYH SDF FallBack": {
+    "mscorlib.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MSYH SDF FallBack",
-      "bundleName": "tmpasset",
-      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH SDF FallBack.asset",
+      "key": "mscorlib.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAot\\mscorlib.dll.bytes",
       "assetType": "Object",
-      "assetSize": 2113341
+      "assetSize": 2336768
     },
-    "MSYH_SDF": {
+    "CoreModule.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MSYH_SDF",
-      "bundleName": "tmpasset",
-      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
+      "key": "CoreModule.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAot\\CoreModule.dll.bytes",
       "assetType": "Object",
-      "assetSize": 16948305
-    },
-    "ConfirmView": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ConfirmView",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\ConfirmView.prefab",
-      "assetType": "Object",
-      "assetSize": 32068
-    },
-    "BloodUIObj": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "BloodUIObj",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\BloodUIObj.prefab",
-      "assetType": "Object",
-      "assetSize": 5940
-    },
-    "Friend_UI": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Friend_UI",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Friend_UI.prefab",
-      "assetType": "Object",
-      "assetSize": 9042
-    },
-    "Chat_UI": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Chat_UI",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Chat\\Chat_UI.prefab",
-      "assetType": "Object",
-      "assetSize": 7662
-    },
-    "Main_Panel": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Main_Panel",
-      "bundleName": "ui",
-      "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Panel.prefab",
-      "assetType": "Object",
-      "assetSize": 73694
+      "assetSize": 411648
     },
     "Main_Chat_Panel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2972,13 +2932,53 @@
       "assetType": "Object",
       "assetSize": 13381
     },
+    "MSYH_SDF": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MSYH_SDF",
+      "bundleName": "tmpasset",
+      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
+      "assetType": "Object",
+      "assetSize": 8171
+    },
+    "MSYH SDF FallBack": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MSYH SDF FallBack",
+      "bundleName": "tmpasset",
+      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH SDF FallBack.asset",
+      "assetType": "Object",
+      "assetSize": 7584
+    },
+    "HotUpdateAssemblySettings": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "HotUpdateAssemblySettings",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdateAssemblySettings.json",
+      "assetType": "Object",
+      "assetSize": 505
+    },
+    "HotUpdate.Update.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "HotUpdate.Update.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Update.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 8704
+    },
+    "HotUpdate.UI.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "HotUpdate.UI.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.UI.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 20480
+    },
     "NetTestScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "NetTestScene",
       "bundleName": "scenes",
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\NetTestScene.unity",
       "assetType": "Scene",
-      "assetSize": 31144
+      "assetSize": 13174
     },
     "MainScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3019,6 +3019,54 @@
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
       "assetType": "Scene",
       "assetSize": 24890
+    },
+    "HotUpdate.Game.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "HotUpdate.Game.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Game.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 9728
+    },
+    "HotUpdate.Common.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "HotUpdate.Common.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Common.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 24064
+    },
+    "System.Core.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "System.Core.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAot\\System.Core.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 427008
+    },
+    "Unity.InputSystem.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Unity.InputSystem.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAot\\Unity.InputSystem.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 1244672
+    },
+    "UnityEngine.CoreModule.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "UnityEngine.CoreModule.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAot\\UnityEngine.CoreModule.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 442368
+    },
+    "HotUpdate.Base.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "HotUpdate.Base.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Base.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 8192
     }
   },
   "abPackageCollection": {
@@ -3060,8 +3108,8 @@
       "hotupdate": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate",
-        "size": 39023,
-        "hash": "0ec693e35d6baf2cd88b81d90e418b9283ac224de6b32a99a814034f6a2bed54",
+        "size": 35596,
+        "hash": "d68389cd1de3c206d2c671ea35f947df5791a02e040ee784ec5d085af3b30042",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3070,8 +3118,8 @@
       "hotupdate_entry": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate_entry",
-        "size": 2320,
-        "hash": "81d566b8cabfd511daac7b1c2da5d85b10ec3b03daec5d72f74fab0b3355dcde",
+        "size": 2318,
+        "hash": "85501b49113e4c12c817b270873bb22d9a749133f1be8ce9a1b388e6c67bc8cf",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3110,13 +3158,11 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 29615552,
-        "hash": "0eaf40dfaa6a413e68c6eea4522d4d896224e2abaabaf3f1fb6805a45d490ee1",
+        "size": 27745028,
+        "hash": "0a48a4fd5b1c7f2e6c60f18d74ad270156cc8a82095af742a44513aba56a43e8",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": [
-            "ui"
-          ]
+          "$values": []
         }
       },
       "spriteatlas": {
@@ -3132,20 +3178,30 @@
       "tmpasset": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
-        "size": 1934043,
-        "hash": "09aa9d33c3dfee8770bf3babed24c87de3afdb56add2375bb02db9f5418d94de",
+        "size": 13665602,
+        "hash": "10a2ede77d03f95cdf4c0efcdcfd9f05d676e255d7b6f26ac2156da6a3f6ed18",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": [
-            "fonts"
-          ]
+          "$values": []
         }
       },
       "ui": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
-        "size": 17948526,
-        "hash": "8d1cefab0cd1588366f0220222ce6eb18551de75af2ca47e7c7425ca7fa2ce80",
+        "size": 2391771,
+        "hash": "ad60f4b506311f8d230085ba7252b686d74e927b12a7efc7df946f2fa62aa391",
+        "dependencies": {
+          "$type": "System.String[], mscorlib",
+          "$values": [
+            "tmpasset"
+          ]
+        }
+      },
+      "hotupdateaot": {
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
+        "name": "hotupdateaot",
+        "size": 2251824,
+        "hash": "c7e89e59cec5056f31d75cd271bef413fef4cdda625d03800890f86ffc47f25b",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3530,9 +3586,20 @@
         "ConnectPlayerObjUI",
         "GameView",
         "LoadingPanel",
+        "StatusHUD",
         "TipPanel",
         "UpdateTipView",
         "DeleteItemConfirmContent"
+      ]
+    },
+    "hotupdateaot": {
+      "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+      "$values": [
+        "CoreModule.dll",
+        "mscorlib.dll",
+        "System.Core.dll",
+        "Unity.InputSystem.dll",
+        "UnityEngine.CoreModule.dll"
       ]
     }
   }

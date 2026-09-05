@@ -12,6 +12,11 @@ public static class AssetKeys
     public const string HotUpdate_UI = "HotUpdate.UI.dll";
     public const string HotUpdate_Update = "HotUpdate.Update.dll";
     public const string HotUpdateAssemblySettings = "HotUpdateAssemblySettings";
+    public const string CoreModule = "CoreModule.dll";
+    public const string mscorlib = "mscorlib.dll";
+    public const string System_Core = "System.Core.dll";
+    public const string Unity_InputSystem = "Unity.InputSystem.dll";
+    public const string UnityEngine_CoreModule = "UnityEngine.CoreModule.dll";
     public const string HotUpdateEntry = "HotUpdateEntry";
     public const string Bot_Mask = "Bot_Mask";
     public const string Gray = "Gray";
@@ -324,6 +329,7 @@ public static class AssetKeys
     public const string ConnectPlayerObjUI = "ConnectPlayerObjUI";
     public const string GameView = "GameView";
     public const string LoadingPanel = "LoadingPanel";
+    public const string StatusHUD = "StatusHUD";
     public const string TipPanel = "TipPanel";
     public const string UpdateTipView = "UpdateTipView";
     public const string DeleteItemConfirmContent = "DeleteItemConfirmContent";

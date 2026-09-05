@@ -315,6 +315,8 @@ struct Binder_t91BFCE95A7057FADF4D8A1A342AFE52872246235;
 struct Byte_t94D9231AC217BE4D2E004C4CD32DF6D099EA41A3;
 struct COMException_t5F7851B41A1B121A563AA1ACF64196EFF5FE8D64;
 struct Calendar_t0A117CC7532A54C17188C2EFEA1F79DB20DF3A3B;
+struct CallerFilePathAttribute_tD13D8EAC572E95B7402C8EC7664A47F168F7AFDE;
+struct CallerLineNumberAttribute_t21BA63DB7FCD06715801032B1F4DCDA89CBDFFA2;
 struct CallerMemberNameAttribute_t98FA769866FC316444A25ADFCE620E8005A751C2;
 struct CancellationTokenSource_tAAE1E0033BCFC233801F8CB4CED5C852B350CB7B;
 struct ClassInterfaceAttribute_t80A22EA49AEE8A331C5412515685CBE522A7FAB5;
@@ -1519,6 +1521,12 @@ struct Boolean_t09A6377A54BE2F9E6985A8149F19234FD7DDFE22
 struct Byte_t94D9231AC217BE4D2E004C4CD32DF6D099EA41A3 
 {
 	uint8_t ___m_value;
+};
+struct CallerFilePathAttribute_tD13D8EAC572E95B7402C8EC7664A47F168F7AFDE  : public Attribute_tFDA8EFEFB0711976D22474794576DAF28F7440AA
+{
+};
+struct CallerLineNumberAttribute_t21BA63DB7FCD06715801032B1F4DCDA89CBDFFA2  : public Attribute_tFDA8EFEFB0711976D22474794576DAF28F7440AA
+{
 };
 struct CallerMemberNameAttribute_t98FA769866FC316444A25ADFCE620E8005A751C2  : public Attribute_tFDA8EFEFB0711976D22474794576DAF28F7440AA
 {
@@ -12101,6 +12109,13 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ComVisibleAttribute__ctor_m6E1C0A650CB90
 		return;
 	}
 }
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool ComVisibleAttribute_get_Value_m954B3ACE27FA6219A7AAAE99AE7B2D1DF8FF7880 (ComVisibleAttribute_t039A2E3C8496DA11AE47C2AE362DE1EF75F18A94* __this, const RuntimeMethod* method) 
+{
+	{
+		bool L_0 = __this->____val;
+		return L_0;
+	}
+}
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
@@ -16713,6 +16728,36 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void AsyncStateMachineAttribute__ctor_m542251
 #pragma clang diagnostic ignored "-Winvalid-offsetof"
 #pragma clang diagnostic ignored "-Wunused-variable"
 #endif
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winvalid-offsetof"
+#pragma clang diagnostic ignored "-Wunused-variable"
+#endif
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CallerFilePathAttribute__ctor_m798D631BBE03A4DC2300CFDE1FB6EC125F2CCE24 (CallerFilePathAttribute_tD13D8EAC572E95B7402C8EC7664A47F168F7AFDE* __this, const RuntimeMethod* method) 
+{
+	{
+		Attribute__ctor_m79ED1BF1EE36D1E417BA89A0D9F91F8AAD8D19E2(__this, NULL);
+		return;
+	}
+}
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winvalid-offsetof"
+#pragma clang diagnostic ignored "-Wunused-variable"
+#endif
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CallerLineNumberAttribute__ctor_mFEF28AB5C7807EA38B7F0C9CC96A502844B0947D (CallerLineNumberAttribute_t21BA63DB7FCD06715801032B1F4DCDA89CBDFFA2* __this, const RuntimeMethod* method) 
+{
+	{
+		Attribute__ctor_m79ED1BF1EE36D1E417BA89A0D9F91F8AAD8D19E2(__this, NULL);
+		return;
+	}
+}
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
@@ -25420,7 +25465,7 @@ IL_0234:
 		int32_t L_121 = V_1;
 		NullCheck(L_119);
 		String_t* L_122;
-		L_122 = VirtualFuncInvoker3< String_t*, ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A82613DF9031*, int32_t, int32_t >::Invoke(34, L_119, L_120, 0, L_121);
+		L_122 = VirtualFuncInvoker3< String_t*, ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A82613DF9031*, int32_t, int32_t >::Invoke(35, L_119, L_120, 0, L_121);
 		return L_122;
 	}
 
@@ -28408,7 +28453,7 @@ IL_001a:
 	{
 		NullCheck(G_B2_0);
 		RuntimeObject* L_4;
-		L_4 = VirtualFuncInvoker0< RuntimeObject* >::Invoke(31, G_B2_0);
+		L_4 = VirtualFuncInvoker0< RuntimeObject* >::Invoke(32, G_B2_0);
 		return L_4;
 	}
 }
@@ -28673,7 +28718,7 @@ IL_0028:
 		String_t* L_6 = ___0_name;
 		NullCheck(G_B4_0);
 		RuntimeObject* L_7;
-		L_7 = VirtualFuncInvoker1< RuntimeObject*, RuntimeObject* >::Invoke(29, G_B4_0, L_6);
+		L_7 = VirtualFuncInvoker1< RuntimeObject*, RuntimeObject* >::Invoke(30, G_B4_0, L_6);
 		return L_7;
 	}
 }
@@ -28728,7 +28773,7 @@ IL_001b:
 		Hashtable_tEFC3B6496E6747787D8BB761B51F2AE3A8CFFE2D* L_8 = V_0;
 		NullCheck(L_8);
 		RuntimeObject* L_9;
-		L_9 = VirtualFuncInvoker0< RuntimeObject* >::Invoke(31, L_8);
+		L_9 = VirtualFuncInvoker0< RuntimeObject* >::Invoke(32, L_8);
 		V_2 = L_9;
 		goto IL_004b;
 	}
@@ -28771,7 +28816,7 @@ IL_005a:
 		String_t* L_19 = ___0_name;
 		NullCheck(L_18);
 		RuntimeObject* L_20;
-		L_20 = VirtualFuncInvoker1< RuntimeObject*, RuntimeObject* >::Invoke(29, L_18, L_19);
+		L_20 = VirtualFuncInvoker1< RuntimeObject*, RuntimeObject* >::Invoke(30, L_18, L_19);
 		return L_20;
 	}
 }

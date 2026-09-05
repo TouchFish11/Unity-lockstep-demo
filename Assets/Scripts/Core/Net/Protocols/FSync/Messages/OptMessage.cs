@@ -1,5 +1,3 @@
-using Net.Protocols;
-
 namespace Core.Net.Protocols.FSync.Messages
 {
     /// <summary>

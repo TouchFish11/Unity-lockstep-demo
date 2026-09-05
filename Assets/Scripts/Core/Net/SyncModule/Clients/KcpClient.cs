@@ -1,8 +1,6 @@
 using System;
-using Core.Log;
 using Core.Net.Protocols;
 using kcp2k;
-using Net.Protocols;
 
 namespace Core.Net.SyncModule.Clients
 {
@@ -48,20 +46,17 @@ namespace Core.Net.SyncModule.Clients
 
         private void OnDataReceive(ArraySegment<byte> rawData, KcpChannel channel)
         {
-            Logger.LogDebug(ELogTags.Network,$"[KcpClient] 收到数据包");
             // 直接返回原始数据给上层即可
             OnDataReceived?.Invoke(rawData.Array, EProtocolChannel.Resolve);
         }
 
         private void OnConnect()
         {
-            Logger.LogDebug(ELogTags.Network, $"[KcpClient] 连接成功!");
             OnConnected?.Invoke();
         }
 
         private void OnDisconnect()
         {
-            Logger.LogDebug(ELogTags.Network, "[KcpClient] 断开连接");
             OnDisconnected?.Invoke();
         }
 

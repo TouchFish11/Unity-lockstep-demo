@@ -277,6 +277,8 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR MonoScriptData_t95B8B802411068E6C7D9FC7A72705
 	}
 	MonoScriptData_t95B8B802411068E6C7D9FC7A72705507C93F8EC4 V_0;
 	memset((&V_0), 0, sizeof(V_0));
+	MonoScriptData_t95B8B802411068E6C7D9FC7A72705507C93F8EC4 V_1;
+	memset((&V_1), 0, sizeof(V_1));
 	{
 		il2cpp_codegen_initobj((&V_0), sizeof(MonoScriptData_t95B8B802411068E6C7D9FC7A72705507C93F8EC4));
 		ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A82613DF9031* L_0 = (ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A82613DF9031*)(ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A82613DF9031*)SZArrayNew(ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A82613DF9031_il2cpp_TypeInfo_var, (uint32_t)((int32_t)214));
@@ -295,7 +297,14 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR MonoScriptData_t95B8B802411068E6C7D9FC7A72705
 		(&V_0)->___TotalTypes = 2;
 		(&V_0)->___IsEditorOnly = (bool)0;
 		MonoScriptData_t95B8B802411068E6C7D9FC7A72705507C93F8EC4 L_6 = V_0;
-		return L_6;
+		V_1 = L_6;
+		goto IL_005a;
+	}
+
+IL_005a:
+	{
+		MonoScriptData_t95B8B802411068E6C7D9FC7A72705507C93F8EC4 L_7 = V_1;
+		return L_7;
 	}
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_m1189DC5CB59CB5457FF5C53122B23B46CCD7A3D6 (UnitySourceGeneratedAssemblyMonoScriptTypes_v1_tE7E077CEF9D26C7C1E63E77642F2E0508DCBBAB8* __this, const RuntimeMethod* method) 
@@ -464,10 +473,18 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool RuntimeApi_PreJitClass_mC233A0F2A387A9C0
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int32_t RuntimeApi_GetInterpreterThreadObjectStackSize_m14F7A9B2189031E90AF86604ED7C1A51206BE13B (const RuntimeMethod* method) 
 {
+	int32_t V_0 = 0;
 	{
 		int32_t L_0;
 		L_0 = RuntimeApi_GetRuntimeOption_m050B3408C95C5D700A12893A54D952D64B54CBE8(1, NULL);
-		return L_0;
+		V_0 = L_0;
+		goto IL_000a;
+	}
+
+IL_000a:
+	{
+		int32_t L_1 = V_0;
+		return L_1;
 	}
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void RuntimeApi_SetInterpreterThreadObjectStackSize_m979FCC41260D4408BB9DFA200A9C0A2F9010C2C5 (int32_t ___0_size, const RuntimeMethod* method) 
@@ -480,10 +497,18 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void RuntimeApi_SetInterpreterThreadObjectSta
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int32_t RuntimeApi_GetInterpreterThreadFrameStackSize_m455CC0C9D87B847CAEB778E9A0E1588D9506F1D4 (const RuntimeMethod* method) 
 {
+	int32_t V_0 = 0;
 	{
 		int32_t L_0;
 		L_0 = RuntimeApi_GetRuntimeOption_m050B3408C95C5D700A12893A54D952D64B54CBE8(2, NULL);
-		return L_0;
+		V_0 = L_0;
+		goto IL_000a;
+	}
+
+IL_000a:
+	{
+		int32_t L_1 = V_0;
+		return L_1;
 	}
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void RuntimeApi_SetInterpreterThreadFrameStackSize_mFAF106800174ED6F6BC7FA25832081B21A4CAD97 (int32_t ___0_size, const RuntimeMethod* method) 

@@ -92,7 +92,7 @@ namespace Core.Editor.AssetBundle.Core
                 }
                 else
                 {
-                    if (!serverCatalog.ABPackageCollection.TryGetValue(fileName, out var serverInfo) || serverInfo.Hash != localAbInfo.Hash)
+                    if (!serverCatalog.ABPackageCollection.TryGetValue(bundleName, out var serverInfo) || serverInfo.Hash != localAbInfo.Hash)
                     {
                         filesToUpload.Add(filePath);
                         Log($"需上传：{fileName} (哈希不同或新增)");

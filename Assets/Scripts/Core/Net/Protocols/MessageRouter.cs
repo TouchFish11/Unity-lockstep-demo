@@ -8,7 +8,7 @@ using Core.Net.Protocols.Tcp.Handlers.S2C;
 using Core.Net.Protocols.Tcp.Messages.Battle.S2C;
 using Core.Net.Protocols.Tcp.Messages.Common;
 
-namespace Net.Protocols
+namespace Core.Net.Protocols
 {
     /// <summary>
     /// 消息路由器

@@ -1,7 +1,6 @@
 using System;
 using System.Net.Sockets;
 using Core.Net.Protocols;
-using Net.Protocols;
 
 namespace Core.Net.SyncModule.Clients
 {
