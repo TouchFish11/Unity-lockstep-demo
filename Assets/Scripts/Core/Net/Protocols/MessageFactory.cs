@@ -58,6 +58,7 @@ namespace Core.Net.Protocols
                 TcpMessage tcpMessage => tcpMessage.GetMsgID(),
                 C2S_NextFrameMessage c2SNextFrameMessage => c2SNextFrameMessage.FrameMessageID,
                 S2C_FrameMessage s2CFrameMessage => s2CFrameMessage.FrameMessageID,
+                C2S_RequestFramesMessage c2SRequestFramesMessage => c2SRequestFramesMessage.FrameMessageID,
                 _ => throw ExceptionHelper.Throw($"Unknown message id: {message}")
             };
         }

@@ -32,10 +32,9 @@ namespace Core.Net.Protocols.FSync.Messages
         public override byte[] Serialize()
         {
             var index = 0;
-            var length = GetMsgLength();
-            var bytes = new byte[length];
+            var bytes = new byte[GetMsgLength()];
             // 写入消息列表长度
-            MessageUtil.WriteField(bytes, length, ref index);
+            MessageUtil.WriteField(bytes, FrameMessages.Count, ref index);
             // 写入消息内容
             foreach (var oneFrameMessage in FrameMessages)
             {
@@ -47,10 +46,10 @@ namespace Core.Net.Protocols.FSync.Messages
         public override int Deserialize(byte[] bytes, int beginIndex = 0)
         {
             var index = beginIndex;
-            var length = MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息内容长度
-            FrameMessages = new List<S2C_OneFrameMessage>(length);
+            var count = MessageUtil.ReadInt(bytes, ref index);  // 反序列化消息内容长度
+            FrameMessages = new List<S2C_OneFrameMessage>(count);
             // 反序列化消息内容
-            for (var i = 0; i < length; i++)
+            for (var i = 0; i < count; i++)
             {
                 FrameMessages.Add(MessageUtil.ReadFrameMessage<S2C_OneFrameMessage>(bytes, ref index));
             }

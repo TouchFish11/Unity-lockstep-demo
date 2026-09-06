@@ -45,6 +45,7 @@ namespace HotUpdate.UI
             _eventCenter.SubscribeEvent<MatchSuccessEvent>(MatchSuccess);
             _eventCenter.SubscribeEvent<PrepareRaceEvent>(PrepareRace);
             _eventCenter.SubscribeEvent<StartRaceEvent>(StartRace);
+            _eventCenter.SubscribeEvent<OtherPlayerJoinEvent>(OtherPlayerJoin);
             return Task.CompletedTask;
         }
         
@@ -135,6 +136,13 @@ namespace HotUpdate.UI
             _isConnected = false;
             view.btnConnect.GetComponentInChildren<Text>().text = "连接服务器";
             Logger.LogDebug(ELogTags.Network, $"[Net] 网络连接已断开");
+        }
+
+        private async void OtherPlayerJoin(OtherPlayerJoinEvent otherPlayerJoinEvent)
+        {
+            var playerObjUI = await _objectSpawner.SpawnAsync<ConnectPlayerObjUI>(AssetKeys.ConnectPlayerObjUI, view.svOnline.content);
+            playerObjUI.Init(otherPlayerJoinEvent.OtherClientId);
+            view.ConnectPlayers.Add(otherPlayerJoinEvent.OtherClientId, playerObjUI);
         }
 
         private void PlayerDisconnected(PlayerDisconnectedEvent playerDisconnectedEvent)

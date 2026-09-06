@@ -10,7 +10,6 @@ namespace Core.Net.Protocols
     /// <typeparam name="T"></typeparam>
     public abstract class MessageHandler<T> : IMessageHandler where T : Message, new()
     {
-        [Inject] protected INetGameProxy netGameProxy;
         [Inject] protected INetManager netManager;
         [Inject] protected IEventCenter eventCenter;
         

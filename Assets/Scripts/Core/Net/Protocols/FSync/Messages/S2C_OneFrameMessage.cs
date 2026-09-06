@@ -20,7 +20,6 @@ namespace Core.Net.Protocols.FSync.Messages
         public override int GetMsgLength()
         {
             var length = 0;
-            length += sizeof(int);    // 客户端ID
             length += sizeof(int);    // 帧ID
             length += sizeof(int);    // 列表长度
             // 累加所有消息的长度

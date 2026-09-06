@@ -3108,8 +3108,8 @@
       "hotupdate": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate",
-        "size": 35596,
-        "hash": "d68389cd1de3c206d2c671ea35f947df5791a02e040ee784ec5d085af3b30042",
+        "size": 35590,
+        "hash": "e1d187dbea3a46b1cc3fbd4632671af0f8ecd13bab31470974dcec452c99bda0",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []

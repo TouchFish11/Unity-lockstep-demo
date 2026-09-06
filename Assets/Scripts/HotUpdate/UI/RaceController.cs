@@ -41,7 +41,9 @@ namespace HotUpdate.UI
 
         private void OnUpdate()
         {
-            view.txtFrameRateInfo.text = Application.targetFrameRate.ToString();
+            var frameRate = Application.targetFrameRate;
+            var frameRateText = frameRate != -1 ? frameRate.ToString() : "无限制";
+            view.txtFrameRateInfo.text = frameRateText;
         }
         
         private void OnTcpRtt(long rttMs)

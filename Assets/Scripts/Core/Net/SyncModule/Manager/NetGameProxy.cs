@@ -55,10 +55,8 @@ namespace Core.Net.SyncModule.Manager
         
         public void Send(Message message, EProtocolChannel channel)
         {
-            if(channel == EProtocolChannel.Resolve)
-                ((TcpMessage)message).SessionID = _netManager.SessionId;
-            else
-                ((C2S_NextFrameMessage)message).OptMessage.SessionID = _netManager.SessionId;   // 冗余的赋值
+            if(channel == EProtocolChannel.Resolve && message is TcpMessage tcpMessage)
+                tcpMessage.SessionID = _netManager.SessionId;
             _netManager.Send(message, channel);
         }
 

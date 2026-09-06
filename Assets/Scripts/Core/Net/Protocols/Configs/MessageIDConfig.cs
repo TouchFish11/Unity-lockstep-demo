@@ -87,5 +87,10 @@ namespace Core.Net.Protocols.Configs
         /// 服务器发送给客户端的下一帧消息的ID
         /// </summary>
         public const int S2C_Frame_ID = 3002;
+        
+        /// <summary>
+        /// 客户端请求补发帧消息的ID
+        /// </summary>
+        public const int C2S_RequestFrames_ID = 3003;
     }
 }

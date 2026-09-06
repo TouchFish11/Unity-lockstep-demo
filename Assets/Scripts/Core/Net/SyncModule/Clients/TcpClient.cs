@@ -170,9 +170,7 @@ namespace Core.Net.SyncModule.Clients
         {
             if (!IsConnected)
                 return;
-
-            _tcpSocket.Shutdown(SocketShutdown.Send);
-            _tcpSocket.Disconnect(false);
+            
             _tcpSocket.Close();
             _tcpSocket = null;
             OnDisconnected?.Invoke();

@@ -1,3 +1,5 @@
+using Core.GlobalEvent;
+using Core.GlobalEvent.Events.Net;
 using Core.Net.Protocols.Tcp.Messages.Common;
 
 namespace Core.Net.Protocols.Tcp.Handlers.S2C
@@ -8,7 +10,9 @@ namespace Core.Net.Protocols.Tcp.Handlers.S2C
     
         protected override void OnHandle()
         {
-            
+            var otherPlayerJoinEvent = EventSource.Get<OtherPlayerJoinEvent>();
+            otherPlayerJoinEvent.OtherClientId = Message.SessionID;
+            eventCenter.TriggerEvent(otherPlayerJoinEvent);
         }
     }
 }

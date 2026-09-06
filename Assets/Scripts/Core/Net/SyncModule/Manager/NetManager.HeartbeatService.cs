@@ -41,7 +41,6 @@ namespace Core.Net.SyncModule.Manager
                         throw ExceptionHelper.Throw($"连接超时（心跳阈值：{Interval}；最近心跳时间：{LastHeartbeatUtc}");
                     
                     SendHeartbeatAsync();
-                    Logger.LogDebug(ELogTags.Network, $"已发送心跳消息");
                     await Task.Delay(Interval);
                 }
             }

@@ -47,7 +47,7 @@ namespace Core.Net.SyncModule.Clients
         private void OnDataReceive(ArraySegment<byte> rawData, KcpChannel channel)
         {
             // 直接返回原始数据给上层即可
-            OnDataReceived?.Invoke(rawData.Array, EProtocolChannel.Resolve);
+            OnDataReceived?.Invoke(rawData.ToArray(), EProtocolChannel.Resolve);
         }
 
         private void OnConnect()
