@@ -2,7 +2,6 @@ using System;
 using Core.DI;
 using Core.Mono;
 using Core.Net.Protocols;
-using Core.Net.Protocols.FSync.Messages;
 using Core.Net.Protocols.Tcp;
 using Core.Net.SyncModule.Interface;
 

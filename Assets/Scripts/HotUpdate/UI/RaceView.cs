@@ -11,6 +11,6 @@ namespace HotUpdate.UI
         [InjectUI] public Text txtFrameIDInfo;
         [InjectUI] public Text txtRenderPosInfo;
         [InjectUI] public Text txtLogicPosInfo;
-        [InjectUI] public Toggle togLeaveOrReConnect;
+        [InjectUI] public Button btnLeaveOrReConnect;
     }
 }

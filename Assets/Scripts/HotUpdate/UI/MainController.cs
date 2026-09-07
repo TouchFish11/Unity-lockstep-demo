@@ -6,6 +6,7 @@ using Core.GlobalEvent;
 using Core.GlobalEvent.Events.Net;
 using Core.Inputs;
 using Core.Log;
+using Core.Math;
 using Core.Net.Protocols;
 using Core.Net.Protocols.Tcp.Messages.Battle.C2S;
 using Core.Net.SyncModule.Interface;
@@ -13,6 +14,8 @@ using Core.Net.SyncModule.Manager;
 using Core.UI;
 using Core.UI.ViewController;
 using HotUpdate.Game.Race;
+using HotUpdate.Game.Race.Logic;
+using HotUpdate.Game.Race.View;
 using HotUpdate.UI.Loading;
 using kcp2k;
 using UnityEngine;
@@ -41,6 +44,23 @@ namespace HotUpdate.UI
         
         protected override Task OnInit()
         {
+            var config = new NetConfig
+            {
+                ServerIp = "127.0.0.1",
+                ServerPort = 8080,
+                Resolver = MessageSerializerSource.DefaultMessageResolver,
+                ClientType = EClientType.Kcp,
+                KcpConfig = new KcpConfig(Timeout: 15000)
+            };
+            _netProxy.Init(config);
+            return Task.CompletedTask;
+        }
+        
+        protected override Task OnActive()
+        {
+            _netProxy.OnConnected += OnConnected;
+            _netProxy.OnDisconnected += OnDisconnected;
+            _netProxy.TcpRtt += rtt => view.SetTcpRtt(rtt);
             _eventCenter.SubscribeEvent<PlayerDisconnectedEvent>(PlayerDisconnected);
             _eventCenter.SubscribeEvent<MatchSuccessEvent>(MatchSuccess);
             _eventCenter.SubscribeEvent<PrepareRaceEvent>(PrepareRace);
@@ -48,14 +68,17 @@ namespace HotUpdate.UI
             _eventCenter.SubscribeEvent<OtherPlayerJoinEvent>(OtherPlayerJoin);
             return Task.CompletedTask;
         }
-        
-        protected override Task OnActive()
-        {
-            return Task.CompletedTask;
-        }
 
         protected override Task OnInactivate()
         {
+            _netProxy.OnConnected -= OnConnected;
+            _netProxy.OnDisconnected -= OnDisconnected;
+            _netProxy.TcpRtt -= OnRtt;
+            _eventCenter.UnsubscribeEvent<PlayerDisconnectedEvent>(PlayerDisconnected);
+            _eventCenter.UnsubscribeEvent<MatchSuccessEvent>(MatchSuccess);
+            _eventCenter.UnsubscribeEvent<PrepareRaceEvent>(PrepareRace);
+            _eventCenter.UnsubscribeEvent<StartRaceEvent>(StartRace);
+            _eventCenter.UnsubscribeEvent<OtherPlayerJoinEvent>(OtherPlayerJoin);
             return Task.CompletedTask;
         }
         
@@ -94,27 +117,13 @@ namespace HotUpdate.UI
                 return;
             }
             
-            var config = new NetConfig
-            {
-                ServerIp = "127.0.0.1",
-                ServerPort = 8080,
-                Resolver = MessageSerializerSource.DefaultMessageResolver,
-                ClientType = EClientType.Kcp,
-                KcpConfig = new KcpConfig(Timeout: 15000)
-            };
-                        
             view.btnConnect.enabled = false;
-            _netProxy.Init(config);
-            _netProxy.OnConnected += OnConnected;
-            _netProxy.OnDisconnected += OnDisconnected;
-            _netProxy.TcpRtt += rtt => view.SetTcpRtt(rtt);
             _netProxy.Connect();
         }
 
         private async void OnConnected(int clientId, int[] clientIds)
         {
             view.SetSelfClientId(clientId);
-            
             foreach (var id in clientIds)
             {
                 if (!view.ConnectPlayers.TryGetValue(clientId, out _) && id != clientId)
@@ -134,8 +143,15 @@ namespace HotUpdate.UI
         private void OnDisconnected()
         {
             _isConnected = false;
+            ClearUI();
+            view.btnConnect.enabled = true;
             view.btnConnect.GetComponentInChildren<Text>().text = "连接服务器";
             Logger.LogDebug(ELogTags.Network, $"[Net] 网络连接已断开");
+        }
+
+        private void OnRtt(long rtt)
+        {
+            view.SetTcpRtt(rtt);
         }
 
         private async void OtherPlayerJoin(OtherPlayerJoinEvent otherPlayerJoinEvent)
@@ -166,59 +182,65 @@ namespace HotUpdate.UI
         private async void PrepareRace(PrepareRaceEvent prepareRaceEvent)
         {
             // 创建加载界面
-            await _uiManager.CreateViewAsync<LoadingView, LoadingController>(AssetKeys.LoadingPanel, E_UILayer.Bot);
-            // 隐藏确认UI，主界面
-            _objectSpawner.Release(_confirmPanelUI);
-            _confirmPanelUI = null;
-            await _uiManager.SetViewActive(panelId, false);
+            await _uiManager.CreateViewAsync<LoadingView, LoadingController>(AssetKeys.LoadingPanel, E_UILayer.Mid);
             // 创建游戏界面
             var raceController = await _uiManager.CreateViewAsync<RaceView, RaceController>(AssetKeys.GameView, E_UILayer.Bot);
             
+            var logicWorld = new LogicWorld(_eventCenter);
+            
             foreach (var raceClientId in prepareRaceEvent.RaceClientIds)
             {
-                var roleController = await _objectSpawner.SpawnAsync<RaceRoleController>(AssetKeys.RolePrefab);
-                roleController.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                var logicAvatar = new LogicAvatar(raceClientId, Fixed64.FromFloat(3f));
+                logicWorld.AddAvatar(logicAvatar);
+                
+                var viewAvatar = await _objectSpawner.SpawnAsync<ViewAvatar>(AssetKeys.RolePrefab);
+                viewAvatar.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                viewAvatar.Bind(logicAvatar);
+                
                 // 自身客户端角色，添加输入
                 var self = _netProxy.ClientId == raceClientId;
                 if (self)
                 {
                     // 添加输入组件
-                    roleController.gameObject.AddComponent<PlayerInput>();
+                    var playerInput = viewAvatar.gameObject.AddComponent<PlayerInput>();
+                    viewAvatar.InitInput(_iInputSystem, playerInput);
                 }
                 
-                roleController.Init(raceClientId, _iInputSystem, self);
-                _netGameManager.AddPlayer(raceClientId, roleController);
+                _netGameManager.AddPlayer(raceClientId, viewAvatar);
                 
                 // 创建UI
                 var statusHUD = await _objectSpawner.SpawnAsync<StatusHUD>(AssetKeys.StatusHUD);
-                statusHUD.Init(roleController, raceController.View);
+                statusHUD.Init(viewAvatar, raceController.View);
                 _huds.Add(statusHUD);
             }
             
             _netProxy.Send(new C2S_ReadyMessage(), EProtocolChannel.Resolve);
         }
 
-        private void StartRace(StartRaceEvent startRaceEvent)
+        private async void StartRace(StartRaceEvent startRaceEvent)
         {
+            // 隐藏确认UI，主界面
+            _objectSpawner.Release(_confirmPanelUI);
+            _confirmPanelUI = null;
+            await _uiManager.SetViewActive(panelId, false);
             var controller = _uiManager.GetController<LoadingController>();
-            _uiManager.DestroyView(controller.PanelId);
+            await _uiManager.DestroyView(controller.PanelId);
         }
-        
-        protected override Task OnDispose()
+
+        private void ClearUI()
         {
-            _netProxy.OnConnected -= OnConnected;
-            _eventCenter.UnsubscribeEvent<PlayerDisconnectedEvent>(PlayerDisconnected);
-            
             foreach (var connectPlayerObjUI in view.ConnectPlayers.Values)
             {
                 _objectSpawner.Release(connectPlayerObjUI);
             }
-
-            _objectSpawner.Release(_huds);
-            
-            _objectSpawner.Clear();
             view.ConnectPlayers.Clear();
-            
+        }
+        
+        protected override Task OnDispose()
+        {
+            ClearUI();
+            _objectSpawner.Release(_huds);
+            _objectSpawner.Clear();
             return base.OnDispose();
         }
     }

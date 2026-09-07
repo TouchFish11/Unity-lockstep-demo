@@ -49,27 +49,27 @@ MonoBehaviour:
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Base.dll.bytes
       size: 8192
       name: HotUpdate.Base.dll.bytes
-      hash: 4259ebb048643b7531181899765875a5dcd4450d9d58b4e437c0f965c58d5a5c
+      hash: 941bf3e078457b95411f1a672edbbffae8350d5a02981400bf166efe6211aeb5
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Common.dll.bytes
       size: 24064
       name: HotUpdate.Common.dll.bytes
-      hash: 442af2afd55b68c9a023341be689a4d64d3ece4c1dcceec8d3f5d804763f1390
+      hash: 4a7e64cf48b047fe53683ebbfde51485b1c55a142ae3776abd3f78708ff4e164
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Game.dll.bytes
-      size: 9728
+      size: 11776
       name: HotUpdate.Game.dll.bytes
-      hash: 68872576762f12e638ecfe0f09a1977ce4eb3ee9fe70f371c9074d7af6e0e638
+      hash: e526bbc36786a6d815021179d738af93dc4286cf959bb37ab900738f394ef4d8
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.UI.dll.bytes
-      size: 20480
+      size: 23040
       name: HotUpdate.UI.dll.bytes
-      hash: 336e3118265c16acccd5f6537bd2eabe79cd3a30abd6a3d63b1be7e92f5fe3b6
+      hash: 08887fbfe436e04a14c20c613d27edcd00fa3df71eed796bf3d612300030e1c4
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Update.dll.bytes
       size: 8704
       name: HotUpdate.Update.dll.bytes
-      hash: ae2b55cbc8138bfb27ee92b916a4a2b4c0282768a5a0b14da44eed2698442549
+      hash: ce60dc661ccb213fbea74fc1ca1dcde292d3c781d7abaaf612ab2383f3ed7acc
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdateAssemblySettings.json
       size: 505
@@ -127,9 +127,9 @@ MonoBehaviour:
   - assetBundleName: prefab
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Prefab\RolePrefab.prefab
-      size: 3449
+      size: 3436
       name: RolePrefab.prefab
-      hash: 7c697f727ae68e7bca92bd117aa9b9d9d47339c484ff859a294cf4f108513a8e
+      hash: 4a48ad2e3c5e1e3e8932e15be976ec8a5b944bb7cb265e0deda64423a3e7dca3
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\Prefab\Sphere.prefab
       size: 3425
@@ -479,11 +479,6 @@ MonoBehaviour:
       name: Friend_UI.prefab
       hash: 3248bdc42d6fc8f19d4a077eb34150f39f3bb1e4532cbd711203e7aa4ec932eb
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Net\BloodUIObj.prefab
-      size: 5940
-      name: BloodUIObj.prefab
-      hash: 0a3f1d2876917875e84c7b4b920e264ff74dd1d68c8ab8283c31e1817bb3191c
-      assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Net\ConfirmView.prefab
       size: 32068
       name: ConfirmView.prefab
@@ -495,9 +490,9 @@ MonoBehaviour:
       hash: aa24340f1a685f777d97a64a254d393e868341d1374e6ecb0e72e0f8c1364525
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Net\GameView.prefab
-      size: 75401
+      size: 73775
       name: GameView.prefab
-      hash: c941d9f41e559ba04ea19c9582503f1e5fbf82538589d50149e8a13c9429d8ff
+      hash: 3892b29157dad74502c958acb8b9093f2f4bd7d3e02d01d82ed36f3e9759495d
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Net\LoadingPanel.prefab
       size: 1069146

@@ -63,7 +63,6 @@ namespace Core.Net.SyncModule.Manager
             _client.OnError += (code, error) => OnError?.Invoke(code, error);
             _client.OnDataReceived += OnDataReceived;
             _config = config;
-            
             _monoAdapter.AddUpdateListener(OnUpdate);
         }
 
@@ -109,7 +108,6 @@ namespace Core.Net.SyncModule.Manager
                 return;
             
             _client.Disconnect();
-            _monoAdapter.RemoveUpdateListener(OnUpdate);
         }
     }
 }

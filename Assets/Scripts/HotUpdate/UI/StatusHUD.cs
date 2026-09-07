@@ -1,6 +1,7 @@
 using Core.DI;
 using Core.UI;
 using HotUpdate.Game.Race;
+using HotUpdate.Game.Race.View;
 using TMPro;
 using UnityEngine;
 
@@ -13,12 +14,12 @@ namespace HotUpdate.UI
 
         [SerializeField] private Vector3 _offset;
         
-        private RaceRoleController _raceRoleController;
+        private ViewAvatar _viewAvatar;
         private Transform _parent;
 
-        public void Init(RaceRoleController raceRoleController, Transform parent)
+        public void Init(ViewAvatar viewAvatar, Transform parent)
         {
-            _raceRoleController = raceRoleController;
+            _viewAvatar = viewAvatar;
             _parent = parent;
         }
 
@@ -29,10 +30,10 @@ namespace HotUpdate.UI
         
         private void Update()
         {
-            if(!_raceRoleController)
+            if(!_viewAvatar)
                 return;
             
-            var pos = _raceRoleController.transform.position;
+            var pos = _viewAvatar.transform.position;
             txtWorldPos.text = $"Pos:({pos.x:F2},{pos.y:F2},{pos.z:F2})";
             FollowTarget(pos + _offset);
         }

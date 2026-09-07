@@ -1,4 +1,5 @@
 using System;
+using Core.Log;
 using Core.Net.Protocols;
 using kcp2k;
 
@@ -27,7 +28,7 @@ namespace Core.Net.SyncModule.Clients
                 OnConnect, 
                 OnDataReceive,
                 OnDisconnect,
-                (code, msg) => OnError?.Invoke((EErrorCode)(int)code, msg),
+                Error,
                 kcp2kConfig);
             _kcp2kConfig = kcp2kConfig;
         }
@@ -58,6 +59,12 @@ namespace Core.Net.SyncModule.Clients
         private void OnDisconnect()
         {
             OnDisconnected?.Invoke();
+        }
+
+        private void Error(ErrorCode code, string message)
+        {
+            OnError?.Invoke((EErrorCode)(int)code, message);
+            Logger.LogError(ELogTags.Network, $"Code:{code},Error: {message}");
         }
 
         public void Tick()
