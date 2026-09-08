@@ -35,6 +35,8 @@ namespace Core.Inputs
         private string _overrideJsonInputData;
         // 玩家输入组件引用，关联InputActionAsset
         private PlayerInput _playerInput;
+        // 
+        private InputActionAsset _inputActionAsset;
         
         private InputSystem(IMonoAdapter monoAdapter)
         {
@@ -51,6 +53,7 @@ namespace Core.Inputs
             if (provider.TryGetData(out var defaultJson, out var overrideJson))
             {
                 _defaultJsonInputData = defaultJson;
+                _inputActionAsset = InputActionAsset.FromJson(_defaultJsonInputData);
                 if(string.IsNullOrEmpty(overrideJson))
                 {
                     var messageEvent = EventSource.Get<GlobalMessageEvent>();
@@ -61,6 +64,7 @@ namespace Core.Inputs
                 else
                 {
                     _overrideJsonInputData = overrideJson;
+                    _inputActionAsset.LoadBindingOverridesFromJson(_overrideJsonInputData);
                 }
             }
             else
@@ -105,6 +109,11 @@ namespace Core.Inputs
         public void Disable()
         {
             _playerInput.actions?.Disable();
+        }
+
+        public void SwitchScheme(string scheme)
+        {
+            _playerInput.SwitchCurrentControlScheme(scheme);
         }
 
         /// <summary>
@@ -245,24 +254,28 @@ namespace Core.Inputs
             if (playerInput)
             {
                 // 赋值新的InputActionAsset并更新引用
-                playerInput.actions = InputActionAsset.FromJson(_defaultJsonInputData);
-                
-                if(!string.IsNullOrEmpty(_overrideJsonInputData))
-                    playerInput.actions.LoadBindingOverridesFromJson(_overrideJsonInputData);
+                playerInput.actions = _inputActionAsset;
                 _playerInput = playerInput;
             }
             else if (_playerInput)
             {
                 // 刷新现有PlayerInput的动作配置
-                _playerInput.actions = InputActionAsset.FromJson(_defaultJsonInputData);
-                if(!string.IsNullOrEmpty(_overrideJsonInputData))
-                    _playerInput.actions.LoadBindingOverridesFromJson(_overrideJsonInputData);
+                _playerInput.actions = _inputActionAsset;
                 Logger.LogDebug(ELogTags.Input, $"Input configuration update successful,{_playerInput.actions}");
             }
             else
             {
                 // 日志：PlayerInput为空，更新失败
                 Logger.LogError(ELogTags.Input, $"Input configuration acquisition failed,{playerInput}");
+            }
+
+            if (_playerInput)
+            {
+#if UNITY_STANDALONE_WIN
+                SwitchScheme("PC");
+#elif UNITY_ANDROID
+                SwitchScheme("Android");
+#endif
             }
         }
 

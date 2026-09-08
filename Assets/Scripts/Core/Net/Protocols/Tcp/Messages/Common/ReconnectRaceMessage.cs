@@ -5,6 +5,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Common
     /// <summary>
     /// 重新连接比赛消息
     /// </summary>
+    [MessageDir(EMessageHandle.Both)]
     public class ReconnectRaceMessage : TcpMessage
     {
         /// <summary>

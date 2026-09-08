@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-namespace kcp2k
+namespace Core.Net.kcp2k.highlevel
 {
     public static class Extensions
     {

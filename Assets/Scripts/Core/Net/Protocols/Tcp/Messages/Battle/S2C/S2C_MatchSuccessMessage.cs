@@ -8,6 +8,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
     /// ID：<see cref="MessageIDConfig.S2C_MatchSuccess_ID"/>
     /// </remarks>
     /// </summary>
+    [MessageDir(EMessageHandle.Resolve)]
     public class S2C_MatchSuccessMessage : TcpMessage
     {
         /// <summary>

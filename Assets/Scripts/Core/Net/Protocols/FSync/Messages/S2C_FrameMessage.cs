@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using Core.Net.Protocols.Configs;
+using Core.Net.Protocols.Tcp;
 
 namespace Core.Net.Protocols.FSync.Messages
 {
     /// <summary>
     /// 服务器发送给客户端的帧消息
     /// </summary>
+    [MessageDir(EMessageHandle.Resolve)]
     public class S2C_FrameMessage : FrameMessage
     {
         public int FrameMessageID => MessageIDConfig.S2C_Frame_ID;

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Core.Exceptions;
+using Core.Global.Configs;
 using Core.Log;
 using Core.Net.Protocols;
 using Core.Net.Protocols.Tcp.Messages.Common;
@@ -13,13 +14,13 @@ namespace Core.Net.SyncModule.Manager
         private bool _isRunning;
         private readonly HeartMessage _heartMessage;
 
-        public int Interval { get; set; } = 5000;
+        public int Interval { get; }
         
         public long LastRttMilliseconds { get; private set; }
         
         public DateTime? LastHeartbeatUtc { get; private set; }
         
-        public TimeSpan TimeoutThreshold { get; set; } = TimeSpan.FromMinutes(1);
+        public TimeSpan TimeoutThreshold { get; }
         
         public event Action<long> OnRttCalc;
 
@@ -28,6 +29,8 @@ namespace Core.Net.SyncModule.Manager
         private NetManager()
         {
             _heartMessage = new HeartMessage();
+            Interval = GlobalSettings.Instance.netModuleConfig.heartMsgSendIntervalTime;
+            TimeoutThreshold = TimeSpan.FromMilliseconds(GlobalSettings.Instance.netModuleConfig.heartTimeoutThreshold);
         }
         
         public async void Start()
@@ -38,7 +41,7 @@ namespace Core.Net.SyncModule.Manager
                 while (_client.IsConnected && _isRunning)
                 {
                     if (!IsAlive && LastHeartbeatUtc != null)
-                        throw ExceptionHelper.Throw($"连接超时（心跳阈值：{Interval}；最近心跳时间：{LastHeartbeatUtc}");
+                        throw ExceptionHelper.Throw($"连接超时（超时阈值:{TimeoutThreshold}，心跳间隔:{Interval}ms；上次心跳时间:{LastHeartbeatUtc}");
                     
                     SendHeartbeatAsync();
                     await Task.Delay(Interval);

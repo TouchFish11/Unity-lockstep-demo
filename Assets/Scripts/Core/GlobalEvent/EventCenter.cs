@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Core.Exceptions;
 using Core.Global;
+using Core.Global.Configs;
 using Core.Log;
 using Core.Mono;
 using Core.Pool;

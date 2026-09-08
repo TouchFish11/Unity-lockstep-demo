@@ -9,6 +9,7 @@ using Core.AssetBundles.Update.Exception;
 using Core.DI;
 using Core.Extensions;
 using Core.Global;
+using Core.Global.Configs;
 using Core.Mono;
 using Core.Tasks;
 using Core.Utility;

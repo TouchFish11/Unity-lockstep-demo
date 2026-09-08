@@ -1,17 +1,10 @@
 ManifestFileVersion: 0
-CRC: 3903708933
+CRC: 533453670
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: ui
-      Dependencies:
-        Dependency_0: tmpasset
+      Name: scenes
+      Dependencies: {}
     Info_1:
-      Name: hotupdate
-      Dependencies: {}
-    Info_2:
-      Name: prefab
-      Dependencies: {}
-    Info_3:
-      Name: tmpasset
+      Name: gameconfig
       Dependencies: {}

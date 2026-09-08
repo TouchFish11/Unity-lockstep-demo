@@ -3,6 +3,7 @@ using System.Collections;
 using System.Threading;
 using Core.DI;
 using Core.Global;
+using Core.Global.Configs;
 using Core.Log;
 using Core.Mono;
 using Core.Pool;

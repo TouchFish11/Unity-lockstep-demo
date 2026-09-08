@@ -1,3 +1,4 @@
+using System;
 using Core.DI;
 using Core.GlobalEvent;
 using Core.Net.SyncModule.Interface;
@@ -14,7 +15,9 @@ namespace Core.Net.Protocols
         [Inject] protected IEventCenter eventCenter;
         
         public abstract T Message { get; protected set; }
-    
+
+        public Type MessageType => typeof(T);
+
         public void HandleMessage(Message message)
         {
             Message = (T)message;

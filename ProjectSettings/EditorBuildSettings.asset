@@ -8,4 +8,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Editor/ArtRes/Scenes/NetTestScene.unity
     guid: 018376d974e52e54196ad7bdc0f171f3
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: e264b06f9b017be4ba98d1d04e762704, type: 3}

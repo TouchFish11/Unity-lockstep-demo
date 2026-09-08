@@ -5,6 +5,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Common
     /// <summary>
     /// 心跳消息
     /// </summary>
+    [MessageDir(EMessageHandle.Both)]
     public class HeartMessage : TcpMessage
     {
         /// <summary>

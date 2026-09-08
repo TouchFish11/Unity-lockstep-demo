@@ -12,25 +12,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ea9e8f3715bb5a4fbd80d03411434d0, type: 3}
   m_Name: GlobalSettings
   m_EditorClassIdentifier: 
-  hotUpdateLoadPath: 
-  filterLevel: 23
-  writeLogMaxIntervalTime: 30
-  isOpenLayout: 1
-  uploadServerIp: http://ip:port/...
-  resServerIp: http://192.168.0.6:8080/Test/
-  reDownloadCompareFileMaxNum: 5
-  reDownloadAbMaxNum: 5
-  maxConcurrencyNum: 8
-  connectTimeout: 60
-  maxRetryCount: 5
-  maxRetryWaitSeconds: 5
-  speedUpdateInterval: 1
-  abLoadPath: 1
-  userDataPath: 1
-  criticalActiveThreshold: 2
-  bundleSlidingWindowMaxCount: 10
-  maxDurationPerWindow: 30
-  udpReceiveBufferSize: 8192
-  tcpReceiveTempBufferSize: 1024
-  tcpReceiveBufferSize: 1024
-  heartMsgSendIntervalTime: 3000
+  logModuleConfig:
+    tag: -1
+    writeLogMaxIntervalTime: 30
+    filterLevel: 255
+  eventModuleConfig:
+    eventTriggerMaxNumPerFrame: 10
+  poolModuleConfig:
+    isOpenLayout: 1
+    activeTimeThreshold: 60
+    poolMinSize: 10
+    poolMaxSize: 50
+  resourcesModuleConfig:
+    abLoadPath: 0
+    criticalActiveThreshold: 8
+    bundleSlidingWindowMaxCount: 10
+    maxDurationPerWindow: 30
+  uploadModuleConfig:
+    uploadServerIp: http://ip:port/...
+  updateModuleConfig:
+    resServerIp: http://ip:port/...
+    reDownloadCompareFileMaxNum: 5
+    reDownloadAbMaxNum: 5
+    maxConcurrencyNum: 8
+    connectTimeout: 60
+    maxRetryCount: 5
+    maxRetryWaitSeconds: 5
+    speedUpdateInterval: 1
+  netModuleConfig:
+    netConfig:
+      serverIp: 127.0.0.1
+      serverPort: 8080
+      resolver:
+        rid: 1694531220504838155
+      clientType: 1
+      kcpConfig:
+        DualMode: 1
+        RecvBufferSize: 7340032
+        SendBufferSize: 7340032
+        Mtu: 1200
+        NoDelay: 1
+        Interval: 10
+        FastResend: 0
+        CongestionWindow: 0
+        SendWindowSize: 32
+        ReceiveWindowSize: 128
+        Timeout: 15000
+        MaxRetransmits: 20
+    udpReceiveBufferSize: 8192
+    tcpReceiveTempBufferSize: 1024
+    tcpReceiveBufferSize: 1024
+    heartMsgSendIntervalTime: 5000
+    heartTimeoutThreshold: 15000
+  userModuleConfig:
+    userDataPath: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1694531220504838155
+      type: {class: DefaultMessageResolver, ns: Core.Net.Protocols, asm: CoreModule}
+      data: 

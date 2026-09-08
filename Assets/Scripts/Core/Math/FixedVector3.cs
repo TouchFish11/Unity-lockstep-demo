@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace Core.Math
 {
-    public struct FixedVector3
+    public struct FixedVector3 : IEquatable<FixedVector3>
     {
         public Fixed64 x, y, z;
 
@@ -23,6 +24,10 @@ namespace Core.Math
         public static FixedVector3 operator *(FixedVector3 a, Fixed64 scalar) => new FixedVector3(a.x * scalar, a.y * scalar, a.z * scalar);
         public static FixedVector3 operator /(FixedVector3 a, Fixed64 scalar) => new FixedVector3(a.x / scalar, a.y / scalar, a.z / scalar);
 
+        public static bool operator ==(FixedVector3 a, FixedVector3 b) => a.x == b.x && a.y == b.y && a.z == b.z;
+
+        public static bool operator !=(FixedVector3 a, FixedVector3 b) => !(a == b);
+
         // 点积
         public Fixed64 Dot(FixedVector3 other) => x * other.x + y * other.y + z * other.z;
 
@@ -42,22 +47,32 @@ namespace Core.Math
         }
 
         // 叉积
-        public static FixedVector3 Cross(FixedVector3 a, FixedVector3 b) 
-            => new FixedVector3(
-                a.y * b.z - a.z * b.y,
-                a.z * b.x - a.x * b.z,
-                a.x * b.y - a.y * b.x);
+        public static FixedVector3 Cross(FixedVector3 a, FixedVector3 b) => new(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
 
         // 距离
-        public static Fixed64 Distance(FixedVector3 a, FixedVector3 b)
-            => (a - b).Magnitude();
+        public static Fixed64 Distance(FixedVector3 a, FixedVector3 b) => (a - b).Magnitude();
 
         // 转换为 Unity Vector3（仅渲染用）
-        public Vector3 ToVector3() => new Vector3(x.ToFloat(), y.ToFloat(), z.ToFloat());
+        public Vector3 ToVector3() => new(x.ToFloat(), y.ToFloat(), z.ToFloat());
 
         public override string ToString()
         {
             return $"({x}, {y}, {z})";
+        }
+
+        public bool Equals(FixedVector3 other)
+        {
+            return x.Equals(other.x) && y.Equals(other.y) && z.Equals(other.z);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is FixedVector3 other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(x, y, z);
         }
     }
 }

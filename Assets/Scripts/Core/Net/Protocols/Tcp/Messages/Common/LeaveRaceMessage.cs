@@ -5,6 +5,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Common
     /// <summary>
     /// 离开比赛消息
     /// </summary>
+    [MessageDir(EMessageHandle.Both)]
     public class LeaveRaceMessage : TcpMessage
     {
         public override int GetMsgID()

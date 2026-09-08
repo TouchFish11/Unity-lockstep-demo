@@ -1,9 +1,9 @@
 using System;
-using kcp2k;
+using Core.Net.kcp2k.highlevel;
 using UnityEngine;
-using KcpClient = kcp2k.KcpClient;
+using KcpClient = Core.Net.kcp2k.highlevel.KcpClient;
 
-namespace Net.Test
+namespace Core.Net.Test
 {
     public class KcpClientTest : MonoBehaviour
     {

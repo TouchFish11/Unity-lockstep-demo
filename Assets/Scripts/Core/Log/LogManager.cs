@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using Core.Global;
+using Core.Global.Configs;
 using Core.Mono;
 using Core.Net;
 using Core.Utility;

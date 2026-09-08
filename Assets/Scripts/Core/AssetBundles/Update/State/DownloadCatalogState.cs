@@ -5,6 +5,7 @@ using Core.AssetBundles.Update.Core;
 using Core.AssetBundles.Update.Exception;
 using Core.DI;
 using Core.Global;
+using Core.Global.Configs;
 using Core.Log;
 using Core.Mono;
 using Core.Utility;

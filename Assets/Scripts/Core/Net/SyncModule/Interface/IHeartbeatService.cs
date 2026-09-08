@@ -10,7 +10,7 @@ namespace Core.Net.SyncModule.Interface
         /// <summary>
         /// 两次心跳之间的时间间隔（毫秒）
         /// </summary>
-        int Interval { get; set; }
+        int Interval { get; }
         
         /// <summary>
         /// 记录最近一次成功心跳的往返时间（RTT），单位毫秒

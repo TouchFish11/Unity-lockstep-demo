@@ -2,11 +2,13 @@
 // timeouts, authentication, state, etc.
 //
 // still IO agnostic to work with udp, nonalloc, relays, native, etc.
+
 using System;
 using System.Diagnostics;
 using System.Net.Sockets;
+using Core.Net.kcp2k.kcp;
 
-namespace kcp2k
+namespace Core.Net.kcp2k.highlevel
 {
     public abstract class KcpPeer
     {
@@ -121,7 +123,7 @@ namespace kcp2k
         //   WND_RCV * 2 gives 255 fragments.
         // so we can limit max message size by limiting rcv_wnd parameter.
         public static int ReliableMaxMessageSize(int mtu, uint rcv_wnd) =>
-            ReliableMaxMessageSize_Unconstrained(mtu, Math.Min(rcv_wnd, Kcp.FRG_MAX));
+            ReliableMaxMessageSize_Unconstrained(mtu, System.Math.Min(rcv_wnd, Kcp.FRG_MAX));
 
         // unreliable max message size is simply MTU - channel header - kcp header
         public static int UnreliableMaxMessageSize(int mtu) =>

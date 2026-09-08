@@ -8,6 +8,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Common
     /// ID：<see cref="MessageIDConfig.S2C_ClientJoin_ID"/>
     /// </remarks>
     /// </summary>
+    [MessageDir(EMessageHandle.Resolve)]
     public class S2C_ClientJoinMessage : TcpMessage
     {
         public override int GetMsgID()

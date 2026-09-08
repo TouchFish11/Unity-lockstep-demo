@@ -1,5 +1,6 @@
 using System.IO;
 using Core.Global;
+using Core.Global.Configs;
 using UnityEngine;
 
 namespace Core.Utility

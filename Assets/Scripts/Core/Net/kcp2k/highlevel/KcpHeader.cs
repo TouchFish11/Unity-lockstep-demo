@@ -1,6 +1,6 @@
 using System;
 
-namespace kcp2k
+namespace Core.Net.kcp2k.highlevel
 {
     // header for messages processed by kcp.
     // this is NOT for the raw receive messages(!) because handshake/disconnect

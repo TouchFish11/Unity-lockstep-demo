@@ -69,5 +69,11 @@ namespace Core.Inputs
         /// <param name="bindingIndex"></param>
         /// <returns></returns>
         BindingInfo GetCurrentBinding(string actionName, int bindingIndex);
+
+        /// <summary>
+        /// 切换控制方案
+        /// </summary>
+        /// <param name="scheme"></param>
+        void SwitchScheme(string scheme);
     }
 }

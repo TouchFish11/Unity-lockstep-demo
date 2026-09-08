@@ -7,13 +7,14 @@ namespace HotUpdate.Game.Race.Logic
     {
         private static readonly Fixed64 LogicDeltaTime = Fixed64.FromFloat(0.066f); // 66ms
 
+        private readonly Fixed64 _speed;
+        
         public int PlayerId { get; }
         public FixedVector3 Position { get; private set; }
         public FixedVector3 PrevPosition { get; private set; }
         public ELogicAnimState AnimState { get; private set; }
         public int Version { get; private set; }
-        private readonly Fixed64 _speed;
-
+        
         public LogicAvatar(int playerId, Fixed64 speed)
         {
             PlayerId = playerId;

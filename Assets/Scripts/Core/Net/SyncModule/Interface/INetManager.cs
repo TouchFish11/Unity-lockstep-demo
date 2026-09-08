@@ -1,6 +1,6 @@
 using System;
+using Core.Global.Configs;
 using Core.Net.Protocols;
-using Core.Net.SyncModule.Manager;
 
 namespace Core.Net.SyncModule.Interface
 {
@@ -9,8 +9,6 @@ namespace Core.Net.SyncModule.Interface
     /// </summary>
     public interface INetManager
     {
-        event Action<Message, EProtocolChannel> OnMessageReceived;
-        
         event Action<int, int[]> OnConnected;
         
         event Action OnDisconnected;

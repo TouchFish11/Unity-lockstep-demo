@@ -7,5 +7,7 @@ namespace Core.Inputs
 	{
 		public const string Move = "Move";
 
+		public const string Attack = "Attack";
+
 	}
 }

@@ -3,7 +3,7 @@ using Core.AssetBundles.Management;
 using Core.AssetBundles.Update.Core;
 using Core.DI;
 using Core.EditorRes;
-using Core.Global;
+using Core.Global.Configs;
 using Core.GlobalEvent;
 using Core.HotUpdate;
 using Core.Inputs;
@@ -40,7 +40,6 @@ namespace Core.Registration
             DIContainer.BindSingleton<IMonoAdapter, MonoAdapter>();
             DIContainer.BindSingleton<IMemoryMonitor, MemoryMonitor>();
             DIContainer.BindSingleton<IUWRManager, UWRManager>();
-            DIContainer.BindSingleton<INetGameProxy, NetGameProxy>();
             DIContainer.BindSingleton<IPoolManager, PoolManager>();
             DIContainer.BindSingleton<IUIManager, UIManager>();
             DIContainer.BindSingleton<IAssetBundleManager, AssetBundleManager>();

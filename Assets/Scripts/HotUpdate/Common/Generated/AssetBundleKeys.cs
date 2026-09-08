@@ -2,6 +2,7 @@
 public static class AssetBundleKeys
 {
     public const string Animation = "animation";
+    public const string Animator = "animator";
     public const string Fonts = "fonts";
     public const string Gameconfig = "gameconfig";
     public const string Hotupdate = "hotupdate";

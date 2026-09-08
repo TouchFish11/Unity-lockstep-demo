@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
+using Core.Global.Configs;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events.Net;
 using Core.Inputs;
@@ -13,11 +14,9 @@ using Core.Net.SyncModule.Interface;
 using Core.Net.SyncModule.Manager;
 using Core.UI;
 using Core.UI.ViewController;
-using HotUpdate.Game.Race;
 using HotUpdate.Game.Race.Logic;
 using HotUpdate.Game.Race.View;
 using HotUpdate.UI.Loading;
-using kcp2k;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -27,7 +26,7 @@ namespace HotUpdate.UI
 {
     public class MainController : UIController<MainView>
     {
-        [Inject] private INetGameProxy _netProxy;
+        [Inject] private INetManager _netManager;
         [Inject] private IEventCenter _eventCenter;
         [Inject] private ObjectSpawner _objectSpawner;
         [Inject] private IUIManager _uiManager;
@@ -38,29 +37,24 @@ namespace HotUpdate.UI
         private bool isMatching;
         // 是否已经连接服务器
         private bool _isConnected;
+        // 逻辑世界
+        private LogicWorld logicWorld;
         private ConfirmPanelUI _confirmPanelUI;
 
         private readonly List<StatusHUD> _huds = new();
         
         protected override Task OnInit()
         {
-            var config = new NetConfig
-            {
-                ServerIp = "127.0.0.1",
-                ServerPort = 8080,
-                Resolver = MessageSerializerSource.DefaultMessageResolver,
-                ClientType = EClientType.Kcp,
-                KcpConfig = new KcpConfig(Timeout: 15000)
-            };
-            _netProxy.Init(config);
+            var config = GlobalSettings.Instance.netModuleConfig.netConfig;
+            _netManager.Init(config);
             return Task.CompletedTask;
         }
         
         protected override Task OnActive()
         {
-            _netProxy.OnConnected += OnConnected;
-            _netProxy.OnDisconnected += OnDisconnected;
-            _netProxy.TcpRtt += rtt => view.SetTcpRtt(rtt);
+            _netManager.OnConnected += OnConnected;
+            _netManager.OnDisconnected += OnDisconnected;
+            ((IHeartbeatService)_netManager).OnRttCalc += rtt => view.SetTcpRtt(rtt);
             _eventCenter.SubscribeEvent<PlayerDisconnectedEvent>(PlayerDisconnected);
             _eventCenter.SubscribeEvent<MatchSuccessEvent>(MatchSuccess);
             _eventCenter.SubscribeEvent<PrepareRaceEvent>(PrepareRace);
@@ -71,9 +65,9 @@ namespace HotUpdate.UI
 
         protected override Task OnInactivate()
         {
-            _netProxy.OnConnected -= OnConnected;
-            _netProxy.OnDisconnected -= OnDisconnected;
-            _netProxy.TcpRtt -= OnRtt;
+            _netManager.OnConnected -= OnConnected;
+            _netManager.OnDisconnected -= OnDisconnected;
+            ((IHeartbeatService)_netManager).OnRttCalc -= OnRtt;
             _eventCenter.UnsubscribeEvent<PlayerDisconnectedEvent>(PlayerDisconnected);
             _eventCenter.UnsubscribeEvent<MatchSuccessEvent>(MatchSuccess);
             _eventCenter.UnsubscribeEvent<PrepareRaceEvent>(PrepareRace);
@@ -99,11 +93,11 @@ namespace HotUpdate.UI
         {
             var matchMessage = new C2S_MatchMessage
             {
-                SessionID = _netProxy.ClientId,
+                SessionID = _netManager.SessionId,
                 MatchRequest = !isMatching
             };
 
-            _netProxy.Send(matchMessage, EProtocolChannel.Resolve);
+            _netManager.Send(matchMessage, EProtocolChannel.Resolve);
             isMatching = !isMatching;
             view.btnMatch.GetComponentInChildren<Text>().text = isMatching ? "取消匹配" : "开始匹配";
         }
@@ -113,12 +107,12 @@ namespace HotUpdate.UI
             if (_isConnected)
             {
                 view.btnConnect.enabled = false;
-                _netProxy.Disconnect();
+                _netManager.Disconnect();
                 return;
             }
             
             view.btnConnect.enabled = false;
-            _netProxy.Connect();
+            _netManager.Connect();
         }
 
         private async void OnConnected(int clientId, int[] clientIds)
@@ -182,23 +176,24 @@ namespace HotUpdate.UI
         private async void PrepareRace(PrepareRaceEvent prepareRaceEvent)
         {
             // 创建加载界面
-            await _uiManager.CreateViewAsync<LoadingView, LoadingController>(AssetKeys.LoadingPanel, E_UILayer.Mid);
+            await _uiManager.CreateViewAsync<LoadingView, LoadingController>(AssetKeys.LoadingPanel, E_UILayer.Bot);
             // 创建游戏界面
-            var raceController = await _uiManager.CreateViewAsync<RaceView, RaceController>(AssetKeys.GameView, E_UILayer.Bot);
+            var raceController = await _uiManager.CreateViewAsync<RaceView, RaceController>(AssetKeys.GameView, E_UILayer.Mid);
             
-            var logicWorld = new LogicWorld(_eventCenter);
+            logicWorld = new LogicWorld(_eventCenter);
             
             foreach (var raceClientId in prepareRaceEvent.RaceClientIds)
             {
                 var logicAvatar = new LogicAvatar(raceClientId, Fixed64.FromFloat(3f));
                 logicWorld.AddAvatar(logicAvatar);
-                
-                var viewAvatar = await _objectSpawner.SpawnAsync<ViewAvatar>(AssetKeys.RolePrefab);
+
+                using var handle = await GameAsset.LoadAssetAsync<RuntimeAnimatorController>(AssetKeys.Role1_Animator);
+                var viewAvatar = await _objectSpawner.SpawnAsync<ViewAvatar>(AssetKeys.Role1);
                 viewAvatar.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-                viewAvatar.Bind(logicAvatar);
+                viewAvatar.Bind(logicAvatar, handle.Asset);
                 
                 // 自身客户端角色，添加输入
-                var self = _netProxy.ClientId == raceClientId;
+                var self = _netManager.SessionId == raceClientId;
                 if (self)
                 {
                     // 添加输入组件
@@ -214,7 +209,7 @@ namespace HotUpdate.UI
                 _huds.Add(statusHUD);
             }
             
-            _netProxy.Send(new C2S_ReadyMessage(), EProtocolChannel.Resolve);
+            _netManager.Send(new C2S_ReadyMessage(), EProtocolChannel.Resolve);
         }
 
         private async void StartRace(StartRaceEvent startRaceEvent)

@@ -13,6 +13,8 @@ namespace HotUpdate.UI
 {
     public class ConfirmPanelUI : UIBehaviourBase
     {
+        [Inject] private INetManager _netManager;
+        
         [InjectUI] private TextMeshProUGUI txtConfirmInfo;
         [InjectUI] private Button btnConfirm;
         [InjectUI] private Button btnRefuse;
@@ -52,16 +54,14 @@ namespace HotUpdate.UI
         /// </summary>
         private void Confirm()
         {
-            var proxy = DIContainer.GetInstance<INetGameProxy>();
-            proxy.Send(new C2S_MatchConfirmMessage { IsMatch = true }, EProtocolChannel.Resolve);
+            _netManager.Send(new C2S_MatchConfirmMessage { IsMatch = true }, EProtocolChannel.Resolve);
             btnConfirm.enabled = false;
             btnRefuse.enabled = false;
         }
 
         private void Refuse()
         {
-            var proxy = DIContainer.GetInstance<INetGameProxy>();
-            proxy.Send(new C2S_MatchConfirmMessage { IsMatch = false }, EProtocolChannel.Resolve);
+            _netManager.Send(new C2S_MatchConfirmMessage { IsMatch = false }, EProtocolChannel.Resolve);
             btnConfirm.enabled = false;
             btnRefuse.enabled = false;
         }

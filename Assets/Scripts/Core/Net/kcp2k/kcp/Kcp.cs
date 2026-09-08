@@ -1,9 +1,10 @@
 // Kcp based on https://github.com/skywind3000/kcp
 // Kept as close to original as possible.
+
 using System;
 using System.Collections.Generic;
 
-namespace kcp2k
+namespace Core.Net.kcp2k.kcp
 {
     public class Kcp
     {
@@ -345,7 +346,7 @@ namespace kcp2k
                 rx_srtt   = (7 * rx_srtt + rtt) / 8;
                 if (rx_srtt < 1) rx_srtt = 1;
             }
-            int rto = rx_srtt + Math.Max((int)interval, 4 * rx_rttval);
+            int rto = rx_srtt + System.Math.Max((int)interval, 4 * rx_rttval);
             rx_rto = Utils.Clamp(rto, rx_minrto, RTO_MAX);
         }
 
@@ -800,7 +801,7 @@ namespace kcp2k
             // calculate the window size which is currently safe to send.
             // it's send window, or remote window, whatever is smaller.
             // for our max
-            uint cwnd_ = Math.Min(snd_wnd, rmt_wnd);
+            uint cwnd_ = System.Math.Min(snd_wnd, rmt_wnd);
 
             // double negative: if congestion window is enabled:
             // limit window size to cwnd.
@@ -808,7 +809,7 @@ namespace kcp2k
             // note this may heavily limit window sizes.
             // for our max message size test with super large windows of 32k,
             // 'congestion window' limits it down from 32.000 to 2.
-            if (!nocwnd) cwnd_ = Math.Min(cwnd, cwnd_);
+            if (!nocwnd) cwnd_ = System.Math.Min(cwnd, cwnd_);
 
             // move cwnd_ 'window size' messages from snd_queue to snd_buf
             //   'snd_nxt' is what we want to send.
@@ -860,7 +861,7 @@ namespace kcp2k
                     xmit++;
                     if (nodelay == 0)
                     {
-                        segment.rto += Math.Max(segment.rto, rx_rto);
+                        segment.rto += System.Math.Max(segment.rto, rx_rto);
                     }
                     else
                     {
@@ -1111,7 +1112,7 @@ namespace kcp2k
             if (receiveWindow > 0)
             {
                 // must >= max fragment size
-                rcv_wnd = Math.Max(receiveWindow, WND_RCV);
+                rcv_wnd = System.Math.Max(receiveWindow, WND_RCV);
             }
         }
     }

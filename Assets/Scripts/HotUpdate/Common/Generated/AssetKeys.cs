@@ -3,6 +3,7 @@ public static class AssetKeys
 {
     public const string Bot = "Bot";
     public const string Role_Controller = "Role_Controller";
+    public const string Role1_Animator = "Role1_Animator";
     public const string MSYH = "MSYH";
     public const string ItemConfigs = "ItemConfigs";
     public const string PlayerControls = "PlayerControls";
@@ -20,7 +21,7 @@ public static class AssetKeys
     public const string HotUpdateEntry = "HotUpdateEntry";
     public const string Bot_Mask = "Bot_Mask";
     public const string Gray = "Gray";
-    public const string RolePrefab = "RolePrefab";
+    public const string Role1 = "Role1";
     public const string Sphere = "Sphere";
     public const string mc1 = "mc1";
     public const string mc3 = "mc3";
@@ -324,7 +325,6 @@ public static class AssetKeys
     public const string Main_Panel = "Main_Panel";
     public const string Chat_UI = "Chat_UI";
     public const string Friend_UI = "Friend_UI";
-    public const string BloodUIObj = "BloodUIObj";
     public const string ConfirmView = "ConfirmView";
     public const string ConnectPlayerObjUI = "ConnectPlayerObjUI";
     public const string GameView = "GameView";

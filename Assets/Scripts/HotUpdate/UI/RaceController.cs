@@ -16,7 +16,7 @@ namespace HotUpdate.UI
 {
     public class RaceController : UIController<RaceView>
     {
-        [Inject] private INetGameProxy _proxy;
+        [Inject] private INetManager _netManager;
         [Inject] private IEventCenter _eventCenter;
         [Inject] private IMonoAdapter _monoAdapter;
         [Inject] private IInputSystem _inputSystem;
@@ -32,7 +32,7 @@ namespace HotUpdate.UI
             await _inputSystem.InitSystem(new InputDataDefaultProvider(AssetKeys.PlayerControls));
             _eventCenter.SubscribeEvent<FrameHandleEvent>(HandleFrameEvent);
             _monoAdapter.AddUpdateListener(OnUpdate);
-            _proxy.TcpRtt += OnTcpRtt;
+            ((IHeartbeatService)_netManager).OnRttCalc += OnTcpRtt;
         }
 
         protected override Task OnActive()
@@ -65,7 +65,7 @@ namespace HotUpdate.UI
                 {
                     view.btnLeaveOrReConnect.GetComponentInChildren<TextMeshProUGUI>().text = "重新连接";
                     // 发送离开消息
-                    _proxy.Send(new C2S_RequestDisConnectMessage(), EProtocolChannel.Resolve);
+                    _netManager.Send(new C2S_RequestDisConnectMessage(), EProtocolChannel.Resolve);
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace HotUpdate.UI
         {
             _eventCenter.UnsubscribeEvent<FrameHandleEvent>(HandleFrameEvent);
             _monoAdapter.RemoveUpdateListener(OnUpdate);
-            _proxy.TcpRtt -= OnTcpRtt;
+            ((IHeartbeatService)_netManager).OnRttCalc -= OnTcpRtt;
             return Task.CompletedTask;
         }
     }

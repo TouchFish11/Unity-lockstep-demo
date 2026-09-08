@@ -5,6 +5,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
     /// <summary>
     /// 开始比赛消息
     /// </summary>
+    [MessageDir(EMessageHandle.Resolve)]
     public class S2C_StartRaceMessage : TcpMessage
     {
         public override int GetMsgID()

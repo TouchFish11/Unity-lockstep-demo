@@ -9,6 +9,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Common
     /// 服务器发送给所有客户端，需要设置<see cref="TcpMessage.SessionID"/>，并 携带其它客户端的ID<see cref="ClientIds"/>。
     /// </remarks>
     /// </summary>
+    [MessageDir(EMessageHandle.Resolve)]
     public class S2C_ConnectMessage : TcpMessage
     {
         /// <summary>

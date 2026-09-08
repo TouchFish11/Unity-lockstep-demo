@@ -1,7 +1,7 @@
 using System;
 using Core.Log;
+using Core.Net.kcp2k.highlevel;
 using Core.Net.Protocols;
-using kcp2k;
 
 namespace Core.Net.SyncModule.Clients
 {
@@ -11,7 +11,7 @@ namespace Core.Net.SyncModule.Clients
     internal class KcpClient : IProtocolClient
     {
         // kcp2k
-        private readonly kcp2k.KcpClient _kcp2kClient;
+        private readonly kcp2k.highlevel.KcpClient _kcp2kClient;
         // kcp配置
         private KcpConfig _kcp2kConfig;
 
@@ -24,7 +24,7 @@ namespace Core.Net.SyncModule.Clients
 
         public KcpClient(KcpConfig kcp2kConfig)
         {
-            _kcp2kClient = new kcp2k.KcpClient(
+            _kcp2kClient = new kcp2k.highlevel.KcpClient(
                 OnConnect, 
                 OnDataReceive,
                 OnDisconnect,

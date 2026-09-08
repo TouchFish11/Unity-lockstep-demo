@@ -6,6 +6,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
     /// <summary>
     /// 准备比赛消息，客户端加载、初始化比赛相关资源
     /// </summary>
+    [MessageDir(EMessageHandle.Resolve)]
     public class S2C_PrepareRaceMessage : TcpMessage
     {
         // 当前同一比赛的所有客户端ID

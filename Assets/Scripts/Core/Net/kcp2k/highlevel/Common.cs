@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 
-namespace kcp2k
+namespace Core.Net.kcp2k.highlevel
 {
     public static class Common
     {

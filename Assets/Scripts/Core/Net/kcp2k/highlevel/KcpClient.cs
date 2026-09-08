@@ -1,10 +1,12 @@
 // kcp client logic abstracted into a class.
 // for use in Mirror, DOTSNET, testing, etc.
+
 using System;
 using System.Net;
 using System.Net.Sockets;
+using Core.Net.kcp2k.kcp;
 
-namespace kcp2k
+namespace Core.Net.kcp2k.highlevel
 {
     public class KcpClient : KcpPeer
     {

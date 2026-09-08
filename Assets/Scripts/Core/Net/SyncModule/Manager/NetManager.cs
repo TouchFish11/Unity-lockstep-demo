@@ -1,10 +1,11 @@
 using System;
 using Core.DI;
 using Core.Mono;
+using Core.Net.kcp2k.highlevel;
 using Core.Net.Protocols;
+using Core.Net.Protocols.Tcp;
 using Core.Net.SyncModule.Clients;
 using Core.Net.SyncModule.Interface;
-using kcp2k;
 using KcpClient = Core.Net.SyncModule.Clients.KcpClient;
 
 namespace Core.Net.SyncModule.Manager
@@ -12,28 +13,23 @@ namespace Core.Net.SyncModule.Manager
     /// <summary>
     /// 网络管理器
     /// </summary>
-    internal partial class NetManager : INetManager
+    internal partial class NetManager : INetManager, IApplicationExitNotify
     {
-        [Inject] private IMonoAdapter _monoAdapter;
-        
         /// <summary>
         /// 默认配置
         /// </summary>
         private static readonly NetConfig DefaultConfig = new()
         {
-            Resolver = MessageSerializerSource.DefaultMessageResolver,
-            ClientType = EClientType.Kcp,
-            KcpConfig = new KcpConfig()
+            resolver = MessageSerializerSource.DefaultMessageResolver,
+            clientType = EClientType.Kcp,
+            kcpConfig = new KcpConfig()
         };
         
-        // 客户端
-        private IProtocolClient _client;
-        // 消息序列化器
-        private IMessageResolver _messageResolver;
-        // 当前网络配置
-        private NetConfig _config;
-        
-        public event Action<Message, EProtocolChannel> OnMessageReceived;
+        private readonly IMonoAdapter _monoAdapter;     // Mono适配器
+        private MessageRouter _router;                  // 消息路由处理
+        private IProtocolClient _client;                // 客户端
+        private IMessageResolver _messageResolver;      // 消息序列化器
+        private NetConfig _config;                      // 当前网络配置
         
         public event Action<int, int[]> OnConnected;
         
@@ -42,6 +38,12 @@ namespace Core.Net.SyncModule.Manager
         public event Action<EErrorCode, string> OnError;
         
         public int SessionId { get; private set; }
+        
+        private NetManager(IMonoAdapter monoAdapter) : this()
+        {
+            monoAdapter.AddApplicationExitNotify(this);
+            _monoAdapter = monoAdapter;
+        }
 
         public void Init(NetConfig config)
         {
@@ -49,11 +51,11 @@ namespace Core.Net.SyncModule.Manager
                 throw new ArgumentNullException(nameof(config));
             
             // 初始化
-            _messageResolver = config.Resolver ?? DefaultConfig.Resolver;
-            _client = config.ClientType switch
+            _messageResolver = config.resolver ?? DefaultConfig.resolver;
+            _client = config.clientType switch
             {
                 EClientType.Dual => new DualChannelClient(),
-                EClientType.Kcp => new KcpClient(config.KcpConfig ?? DefaultConfig.KcpConfig),
+                EClientType.Kcp => new KcpClient(config.kcpConfig ?? DefaultConfig.kcpConfig),
                 EClientType.Tcp => new TcpClient(),
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -63,6 +65,7 @@ namespace Core.Net.SyncModule.Manager
             _client.OnError += (code, error) => OnError?.Invoke(code, error);
             _client.OnDataReceived += OnDataReceived;
             _config = config;
+            _router = DIContainer.Create<MessageRouter>();
             _monoAdapter.AddUpdateListener(OnUpdate);
         }
 
@@ -71,7 +74,7 @@ namespace Core.Net.SyncModule.Manager
         /// </summary>
         public void Connect()
         {
-            _client.Connect(_config.ServerIp, _config.ServerPort);
+            _client.Connect(_config.serverIp, _config.serverPort);
         }
         
         public void SetSessionToken(int sessionId, int[] clientIds)
@@ -83,6 +86,8 @@ namespace Core.Net.SyncModule.Manager
 
         public void Send(Message message, EProtocolChannel channel)
         {
+            if(channel == EProtocolChannel.Resolve && message is TcpMessage tcpMessage)
+                tcpMessage.SessionID = SessionId;
             var messageBytes = _messageResolver.Serialize(message, channel);
             _client.SendAsync(messageBytes, channel);
         }
@@ -94,7 +99,8 @@ namespace Core.Net.SyncModule.Manager
         
         private void OnDataReceived(byte[] msgData, EProtocolChannel channel)
         {
-            OnMessageReceived?.Invoke(_messageResolver.Deserialize(msgData, channel), channel);
+            var message = _messageResolver.Deserialize(msgData, channel);
+            _router.Dispatch(message);
         }
 
         public void OnUpdate()
@@ -108,6 +114,13 @@ namespace Core.Net.SyncModule.Manager
                 return;
             
             _client.Disconnect();
+        }
+
+        public int QuitPriority => 1;
+        
+        public void OnAppQuit()
+        {
+            Disconnect();
         }
     }
 }

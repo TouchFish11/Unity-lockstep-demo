@@ -1,9 +1,11 @@
 // server needs to store a separate KcpPeer for each connection.
 // as well as remoteEndPoint so we know where to send data to.
+
 using System;
 using System.Net;
+using Core.Net.kcp2k.kcp;
 
-namespace kcp2k
+namespace Core.Net.kcp2k.highlevel
 {
     public class KcpServerConnection : KcpPeer
     {

@@ -5,6 +5,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Common
     /// <summary>
     /// 断开连接消息
     /// </summary>
+    [MessageDir(EMessageHandle.Resolve)]
     public class S2C_DisConnectMessage : TcpMessage
     {
         public override int GetMsgID()
