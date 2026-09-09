@@ -1,5 +1,6 @@
 using System;
 using Core.DI;
+using Core.Log;
 using Core.Mono;
 using Core.Net.kcp2k.highlevel;
 using Core.Net.Protocols;
@@ -31,7 +32,7 @@ namespace Core.Net.SyncModule.Manager
         private IMessageResolver _messageResolver;      // 消息序列化器
         private NetConfig _config;                      // 当前网络配置
         
-        public event Action<int, int[]> OnConnected;
+        public event Action<ConnectResult> OnConnected;
         
         public event Action OnDisconnected;
         
@@ -49,6 +50,8 @@ namespace Core.Net.SyncModule.Manager
         {
             if (config == null) 
                 throw new ArgumentNullException(nameof(config));
+            
+            Logger.LogDebug(ELogTags.Network, config.ToString());
             
             // 初始化
             _messageResolver = config.resolver ?? DefaultConfig.resolver;
@@ -77,11 +80,11 @@ namespace Core.Net.SyncModule.Manager
             _client.Connect(_config.serverIp, _config.serverPort);
         }
         
-        public void SetSessionToken(int sessionId, int[] clientIds)
+        internal void SetConnectStatus(ConnectResult connectResult)
         {
             // 获取到ID才去通知业务层连接成功
-            SessionId = sessionId;
-            OnConnected?.Invoke(sessionId, clientIds);
+            SessionId = connectResult.SessionId;
+            OnConnected?.Invoke(connectResult);
         }
 
         public void Send(Message message, EProtocolChannel channel)
@@ -110,10 +113,10 @@ namespace Core.Net.SyncModule.Manager
 
         public void Disconnect()
         {
-            if(_client == null) 
-                return;
-            
-            _client.Disconnect();
+            if (_client != null && _client.IsConnected)
+            {
+                _client?.Disconnect();
+            }
         }
 
         public int QuitPriority => 1;

@@ -74,7 +74,8 @@ namespace Core.UI.ViewController
         /// </summary>
         public virtual Task Destroy()
         {
-            return TaskUtility.WaitUntil(() => _isHide);
+            //return TaskUtility.WaitUntil(() => _isHide);
+            return Task.CompletedTask;
         }
     }
 }

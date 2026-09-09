@@ -831,7 +831,6 @@ IL2CPP_EXTERN_C const RuntimeMethod* Socket_Send_mF846BE4031BE538814BC497FFDC8BB
 IL2CPP_EXTERN_C const RuntimeMethod* Socket_SetIPProtectionLevel_mC243CFB942D4DA0F2A148A0DAD3B5559DB005CDB_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* Socket_SetSocketOption_m19085C1856DE21260294680B7725610D71D66A58_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* Socket_SetSocketOption_m4939E9F69DFA288DD47E2CBF18D1762C7E171350_RuntimeMethod_var;
-IL2CPP_EXTERN_C const RuntimeMethod* Socket_Shutdown_mA7D259CF81614B311DD97C3748144FB1284683E3_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* Socket_SocketOperationToSocketAsyncOperation_mA3A0B1DB1F7A834F100915D3507DFFF381A5B6F4_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* Socket_ThrowIfBufferNull_m80732B6CF5F7BFA314905627BF1B9D28D4E2A41F_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* Socket_ThrowIfBufferOutOfRange_m22646D99174E99B57B816E260C93D959CE4FB143_RuntimeMethod_var;
@@ -18373,65 +18372,6 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Socket_Close_icall_mD2A065D0EA71E9007587
 	typedef void (*Socket_Close_icall_mD2A065D0EA71E9007587C22A8B6C3A95B8F5812A_ftn) (intptr_t, int32_t*);
 	using namespace il2cpp::icalls;
 	((Socket_Close_icall_mD2A065D0EA71E9007587C22A8B6C3A95B8F5812A_ftn)System::System::Net::Sockets::Socket::Close_icall) (___0_socket, ___1_error);
-}
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Socket_Shutdown_mA7D259CF81614B311DD97C3748144FB1284683E3 (Socket_t1F49472CDA22B581C29A258225ABF3ADA9DED67E* __this, int32_t ___0_how, const RuntimeMethod* method) 
-{
-	static bool s_Il2CppMethodInitialized;
-	if (!s_Il2CppMethodInitialized)
-	{
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Socket_t1F49472CDA22B581C29A258225ABF3ADA9DED67E_il2cpp_TypeInfo_var);
-		s_Il2CppMethodInitialized = true;
-	}
-	int32_t V_0 = 0;
-	{
-		Socket_ThrowIfDisposedAndClosed_m93567578970C10A4E56C7DF84D7D18A1E5AB8CE5(__this, NULL);
-		bool L_0 = __this->___is_connected;
-		if (L_0)
-		{
-			goto IL_0019;
-		}
-	}
-	{
-		SocketException_t6D10102A62EA871BD31748E026A372DB6804083B* L_1 = (SocketException_t6D10102A62EA871BD31748E026A372DB6804083B*)il2cpp_codegen_object_new(((RuntimeClass*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&SocketException_t6D10102A62EA871BD31748E026A372DB6804083B_il2cpp_TypeInfo_var)));
-		SocketException__ctor_mC09AA11941DA13359416179634B151A3FE2B9A64(L_1, ((int32_t)10057), NULL);
-		IL2CPP_RAISE_MANAGED_EXCEPTION(L_1, ((RuntimeMethod*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&Socket_Shutdown_mA7D259CF81614B311DD97C3748144FB1284683E3_RuntimeMethod_var)));
-	}
-
-IL_0019:
-	{
-		SafeSocketHandle_t5A597D30D951E736B750ED09D5B3AB72F98407EE* L_2 = __this->___m_Handle;
-		int32_t L_3 = ___0_how;
-		il2cpp_codegen_runtime_class_init_inline(Socket_t1F49472CDA22B581C29A258225ABF3ADA9DED67E_il2cpp_TypeInfo_var);
-		Socket_Shutdown_internal_m61B9B0024222104099DFB5952D64F102F954C68F(L_2, L_3, (&V_0), NULL);
-		int32_t L_4 = V_0;
-		if ((!(((uint32_t)L_4) == ((uint32_t)((int32_t)10057)))))
-		{
-			goto IL_0030;
-		}
-	}
-	{
-		return;
-	}
-
-IL_0030:
-	{
-		int32_t L_5 = V_0;
-		if (!L_5)
-		{
-			goto IL_003a;
-		}
-	}
-	{
-		int32_t L_6 = V_0;
-		SocketException_t6D10102A62EA871BD31748E026A372DB6804083B* L_7 = (SocketException_t6D10102A62EA871BD31748E026A372DB6804083B*)il2cpp_codegen_object_new(((RuntimeClass*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&SocketException_t6D10102A62EA871BD31748E026A372DB6804083B_il2cpp_TypeInfo_var)));
-		SocketException__ctor_mC09AA11941DA13359416179634B151A3FE2B9A64(L_7, L_6, NULL);
-		IL2CPP_RAISE_MANAGED_EXCEPTION(L_7, ((RuntimeMethod*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&Socket_Shutdown_mA7D259CF81614B311DD97C3748144FB1284683E3_RuntimeMethod_var)));
-	}
-
-IL_003a:
-	{
-		return;
-	}
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Socket_Shutdown_internal_m61B9B0024222104099DFB5952D64F102F954C68F (SafeSocketHandle_t5A597D30D951E736B750ED09D5B3AB72F98407EE* ___0_safeHandle, int32_t ___1_how, int32_t* ___2_error, const RuntimeMethod* method) 
 {

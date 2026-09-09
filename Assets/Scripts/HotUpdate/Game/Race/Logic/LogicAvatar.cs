@@ -15,10 +15,21 @@ namespace HotUpdate.Game.Race.Logic
         public ELogicAnimState AnimState { get; private set; }
         public int Version { get; private set; }
         
-        public LogicAvatar(int playerId, Fixed64 speed)
+        /// <summary>
+        /// 碰撞半径
+        /// </summary>
+        public Fixed64 Radius { get; }
+        
+        public LogicAvatar(int playerId, Fixed64 speed) : this(playerId, speed, Fixed64.FromFloat(0.5f))
+        {
+
+        }
+        
+        public LogicAvatar(int playerId, Fixed64 speed, Fixed64 radius)
         {
             PlayerId = playerId;
             _speed = speed;
+            Radius = radius;
             AnimState = ELogicAnimState.Idle;
         }
 
@@ -50,12 +61,20 @@ namespace HotUpdate.Game.Race.Logic
             Position += dir * _speed * LogicDeltaTime;
             AnimState = ELogicAnimState.Move;
             // 位置变了，版本号 +1
-            Version++;                              
+            Version++;          
         }
 
         public void Attack(int targetId)
         {
             AnimState = ELogicAnimState.Attack; // 本期只切状态
+        }
+
+        /// <summary>
+        /// 碰撞修正：只平移 Position，不改 PrevPosition/Version（插值目标跟随最终位置）
+        /// </summary>
+        public void Nudge(FixedVector3 delta)
+        {
+            Position += delta;
         }
     }
 }

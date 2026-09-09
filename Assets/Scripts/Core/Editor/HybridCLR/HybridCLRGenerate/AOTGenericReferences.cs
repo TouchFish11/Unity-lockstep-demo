@@ -20,14 +20,16 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// Core.AssetBundles.Management.GameAsset.<>c__DisplayClass10_0<object>
 	// Core.AssetBundles.Management.GameAsset.<LoadAssetAsync>d__10<object>
 	// Core.AssetBundles.Management.ObjectSpawner.<SpawnAsync>d__6<object>
+	// Core.Singleton.SingletonSOBase<object>
 	// Core.UI.ViewController.UIController.<Activate>d__12<object>
 	// Core.UI.ViewController.UIController.<Dispose>d__30<object>
 	// Core.UI.ViewController.UIController.<InActivate>d__13<object>
 	// Core.UI.ViewController.UIController.<Init>d__11<object>
 	// Core.UI.ViewController.UIController<object>
 	// System.Action<Core.AssetBundles.Management.AssetHandle>
+	// System.Action<Core.Net.Protocols.FSync.InputCommand>
+	// System.Action<Core.Net.Protocols.Tcp.ConnectResult>
 	// System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>
-	// System.Action<int,object>
 	// System.Action<long>
 	// System.Action<object,UnityEngine.Vector2>
 	// System.Action<object,byte>
@@ -36,8 +38,10 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Action<object,object>
 	// System.Action<object>
 	// System.Collections.Generic.ArraySortHelper<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.ArraySortHelper<Core.Net.Protocols.FSync.InputCommand>
 	// System.Collections.Generic.ArraySortHelper<object>
 	// System.Collections.Generic.Comparer<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.Comparer<Core.Net.Protocols.FSync.InputCommand>
 	// System.Collections.Generic.Comparer<object>
 	// System.Collections.Generic.Dictionary.Enumerator<byte,object>
 	// System.Collections.Generic.Dictionary.Enumerator<int,object>
@@ -77,6 +81,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Collections.Generic.HashSet.Enumerator<object>
 	// System.Collections.Generic.HashSet<object>
 	// System.Collections.Generic.ICollection<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.ICollection<Core.Net.Protocols.FSync.InputCommand>
 	// System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<byte,object>>
 	// System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<int,object>>
 	// System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle<object>>>
@@ -84,8 +89,10 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object,object>>
 	// System.Collections.Generic.ICollection<object>
 	// System.Collections.Generic.IComparer<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.IComparer<Core.Net.Protocols.FSync.InputCommand>
 	// System.Collections.Generic.IComparer<object>
 	// System.Collections.Generic.IEnumerable<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.IEnumerable<Core.Net.Protocols.FSync.InputCommand>
 	// System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<byte,object>>
 	// System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<int,object>>
 	// System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle<object>>>
@@ -93,6 +100,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<object,object>>
 	// System.Collections.Generic.IEnumerable<object>
 	// System.Collections.Generic.IEnumerator<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.IEnumerator<Core.Net.Protocols.FSync.InputCommand>
 	// System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<byte,object>>
 	// System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<int,object>>
 	// System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle<object>>>
@@ -103,17 +111,22 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Collections.Generic.IEqualityComparer<int>
 	// System.Collections.Generic.IEqualityComparer<object>
 	// System.Collections.Generic.IList<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.IList<Core.Net.Protocols.FSync.InputCommand>
 	// System.Collections.Generic.IList<object>
+	// System.Collections.Generic.IReadOnlyDictionary<int,object>
 	// System.Collections.Generic.KeyValuePair<byte,object>
 	// System.Collections.Generic.KeyValuePair<int,object>
 	// System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle>
 	// System.Collections.Generic.KeyValuePair<object,object>
 	// System.Collections.Generic.List.Enumerator<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.List.Enumerator<Core.Net.Protocols.FSync.InputCommand>
 	// System.Collections.Generic.List.Enumerator<object>
 	// System.Collections.Generic.List<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.List<Core.Net.Protocols.FSync.InputCommand>
 	// System.Collections.Generic.List<object>
 	// System.Collections.Generic.ObjectComparer<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.ObjectComparer<Core.Net.Protocols.FSync.InputCommand>
 	// System.Collections.Generic.ObjectComparer<object>
 	// System.Collections.Generic.ObjectEqualityComparer<Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Collections.Generic.ObjectEqualityComparer<Core.AssetBundles.Management.AssetHandle>
@@ -125,8 +138,10 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Collections.Generic.Stack.Enumerator<object>
 	// System.Collections.Generic.Stack<object>
 	// System.Collections.ObjectModel.ReadOnlyCollection<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.ObjectModel.ReadOnlyCollection<Core.Net.Protocols.FSync.InputCommand>
 	// System.Collections.ObjectModel.ReadOnlyCollection<object>
 	// System.Comparison<Core.AssetBundles.Management.AssetHandle>
+	// System.Comparison<Core.Net.Protocols.FSync.InputCommand>
 	// System.Comparison<object>
 	// System.Converter<Core.AssetBundles.Management.AssetHandle,object>
 	// System.Func<Core.AssetBundles.Management.AssetHandle<object>>
@@ -136,7 +151,9 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Func<object,object,object>
 	// System.Func<object,object>
 	// System.Func<object>
+	// System.Nullable<int>
 	// System.Predicate<Core.AssetBundles.Management.AssetHandle>
+	// System.Predicate<Core.Net.Protocols.FSync.InputCommand>
 	// System.Predicate<object>
 	// System.Runtime.CompilerServices.AsyncTaskMethodBuilder<Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Runtime.CompilerServices.AsyncTaskMethodBuilder<System.Threading.Tasks.VoidTaskResult>
@@ -172,13 +189,20 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	{
 		// System.Threading.Tasks.Task<Core.AssetBundles.Management.AssetHandle<object>> Core.AssetBundles.Management.GameAsset.LoadAssetAsync<object>(string)
 		// bool Core.AssetBundles.Management.ObjectSpawner.Release<object>(object,bool)
+		// int Core.AssetBundles.Management.ObjectSpawner.Release<object>(System.Collections.Generic.IEnumerable<object>,bool)
 		// System.Threading.Tasks.Task<object> Core.AssetBundles.Management.ObjectSpawner.SpawnAsync<object>(string,UnityEngine.Transform,UnityEngine.Vector3,UnityEngine.Quaternion,bool)
+		// object Core.GlobalEvent.EventSource.Get<object>()
 		// System.Void Core.Pool.IPoolManager.PushObj<object>(object)
 		// System.Threading.Tasks.Task<object> Core.UI.IUIManager.CreateViewAsync<object,object>(string,Core.UI.E_UILayer,UnityEngine.Vector2,UnityEngine.Quaternion)
 		// object Core.UI.IUIManager.GetController<object>()
+		// object[] System.Array.Empty<object>()
+		// object System.Collections.Generic.CollectionExtensions.GetValueOrDefault<int,object>(System.Collections.Generic.IReadOnlyDictionary<int,object>,int)
+		// object System.Collections.Generic.CollectionExtensions.GetValueOrDefault<int,object>(System.Collections.Generic.IReadOnlyDictionary<int,object>,int,object)
 		// System.Void System.Runtime.CompilerServices.AsyncTaskMethodBuilder.AwaitUnsafeOnCompleted<System.Runtime.CompilerServices.TaskAwaiter,object>(System.Runtime.CompilerServices.TaskAwaiter&,object&)
+		// System.Void System.Runtime.CompilerServices.AsyncTaskMethodBuilder.AwaitUnsafeOnCompleted<System.Runtime.CompilerServices.TaskAwaiter<Core.AssetBundles.Management.AssetHandle<object>>,object>(System.Runtime.CompilerServices.TaskAwaiter<Core.AssetBundles.Management.AssetHandle<object>>&,object&)
 		// System.Void System.Runtime.CompilerServices.AsyncTaskMethodBuilder.AwaitUnsafeOnCompleted<System.Runtime.CompilerServices.TaskAwaiter<object>,object>(System.Runtime.CompilerServices.TaskAwaiter<object>&,object&)
 		// System.Void System.Runtime.CompilerServices.AsyncTaskMethodBuilder<System.Threading.Tasks.VoidTaskResult>.AwaitUnsafeOnCompleted<System.Runtime.CompilerServices.TaskAwaiter,object>(System.Runtime.CompilerServices.TaskAwaiter&,object&)
+		// System.Void System.Runtime.CompilerServices.AsyncTaskMethodBuilder<System.Threading.Tasks.VoidTaskResult>.AwaitUnsafeOnCompleted<System.Runtime.CompilerServices.TaskAwaiter<Core.AssetBundles.Management.AssetHandle<object>>,object>(System.Runtime.CompilerServices.TaskAwaiter<Core.AssetBundles.Management.AssetHandle<object>>&,object&)
 		// System.Void System.Runtime.CompilerServices.AsyncTaskMethodBuilder<System.Threading.Tasks.VoidTaskResult>.AwaitUnsafeOnCompleted<System.Runtime.CompilerServices.TaskAwaiter<object>,object>(System.Runtime.CompilerServices.TaskAwaiter<object>&,object&)
 		// System.Void System.Runtime.CompilerServices.AsyncTaskMethodBuilder<object>.AwaitUnsafeOnCompleted<System.Runtime.CompilerServices.TaskAwaiter<Core.AssetBundles.Management.AssetHandle<object>>,object>(System.Runtime.CompilerServices.TaskAwaiter<Core.AssetBundles.Management.AssetHandle<object>>&,object&)
 		// System.Void System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start<object>(object&)
@@ -189,10 +213,9 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// System.Void System.Runtime.CompilerServices.AsyncVoidMethodBuilder.Start<object>(object&)
 		// System.Void* Unity.Collections.LowLevel.Unsafe.UnsafeUtility.AddressOf<UnityEngine.Vector2>(UnityEngine.Vector2&)
 		// int Unity.Collections.LowLevel.Unsafe.UnsafeUtility.SizeOf<UnityEngine.Vector2>()
-		// object UnityEngine.Component.GetComponent<object>()
 		// object UnityEngine.Component.GetComponentInChildren<object>()
 		// object UnityEngine.GameObject.AddComponent<object>()
-		// UnityEngine.Vector2 UnityEngine.InputSystem.InputAction.ReadValue<UnityEngine.Vector2>()
+		// UnityEngine.Vector2 UnityEngine.InputSystem.InputAction.CallbackContext.ReadValue<UnityEngine.Vector2>()
 		// UnityEngine.Vector2 UnityEngine.InputSystem.InputActionState.ApplyProcessors<UnityEngine.Vector2>(int,UnityEngine.Vector2,UnityEngine.InputSystem.InputControl<UnityEngine.Vector2>)
 		// UnityEngine.Vector2 UnityEngine.InputSystem.InputActionState.ReadValue<UnityEngine.Vector2>(int,int,bool)
 	}

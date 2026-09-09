@@ -2,90 +2,114 @@
   "$type": "Core.AssetBundles.Management.AssetCatalog, CoreModule",
   "assetMap": {
     "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Core.AssetBundles.Management.AssetEntry, CoreModule]], mscorlib",
-    "ItemConfigs": {
+    "HotUpdate.Base.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ItemConfigs",
-      "bundleName": "gameconfig",
-      "assetName": "Assets\\Editor\\ArtRes\\GameConfig\\ItemConfigs.json",
+      "key": "HotUpdate.Base.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Base.dll.bytes",
       "assetType": "Object",
-      "assetSize": 2224
+      "assetSize": 8192
     },
-    "PlayerControls": {
+    "HotUpdate.Common.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "PlayerControls",
-      "bundleName": "gameconfig",
-      "assetName": "Assets\\Editor\\ArtRes\\GameConfig\\PlayerControls.json",
+      "key": "HotUpdate.Common.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Common.dll.bytes",
       "assetType": "Object",
-      "assetSize": 6880
+      "assetSize": 24064
     },
-    "ABTestScene": {
+    "HotUpdate.Game.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ABTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
-      "assetType": "Scene",
-      "assetSize": 24890
+      "key": "HotUpdate.Game.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Game.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 15360
     },
-    "GameScene": {
+    "HotUpdate.UI.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "GameScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
-      "assetType": "Scene",
-      "assetSize": 131567
+      "key": "HotUpdate.UI.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.UI.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 27648
     },
-    "InventoryMainTestScene": {
+    "HotUpdate.Update.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "InventoryMainTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
-      "assetType": "Scene",
-      "assetSize": 34620
+      "key": "HotUpdate.Update.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Update.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 7680
     },
-    "InventoryTestScene": {
+    "HotUpdateAssemblySettings": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "InventoryTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryTestScene.unity",
-      "assetType": "Scene",
-      "assetSize": 8115
+      "key": "HotUpdateAssemblySettings",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdateAssemblySettings.json",
+      "assetType": "Object",
+      "assetSize": 505
     },
-    "MainScene": {
+    "CoreModule.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MainScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\MainScene.unity",
-      "assetType": "Scene",
-      "assetSize": 13745
+      "key": "CoreModule.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\CoreModule.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 404992
     },
-    "NetTestScene": {
+    "mscorlib.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "NetTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\NetTestScene.unity",
-      "assetType": "Scene",
-      "assetSize": 17090
+      "key": "mscorlib.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\mscorlib.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 2338304
+    },
+    "System.Core.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "System.Core.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\System.Core.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 427008
+    },
+    "Unity.InputSystem.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Unity.InputSystem.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\Unity.InputSystem.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 1244672
+    },
+    "UnityEngine.CoreModule.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "UnityEngine.CoreModule.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\UnityEngine.CoreModule.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 481792
     }
   },
   "abPackageCollection": {
     "$type": "Core.AssetBundles.Collection.ABPackageCollection, CoreModule",
     "keyToValueMap": {
       "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Core.AssetBundles.Collection.ABPackageInfo, CoreModule]], mscorlib",
-      "gameconfig": {
+      "hotupdate": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
-        "name": "gameconfig",
-        "size": 3287,
-        "hash": "5d0d9f3fa3d4f2939e1e56b8ca2b68f979eedba5540cbd01ac4cc84a3c2971d6",
+        "name": "hotupdate",
+        "size": 41760,
+        "hash": "5eab1db5f87ce6cd4d8059ec50718cd8b8e54b5907635753b8e10c15731043bb",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
         }
       },
-      "scenes": {
+      "hotupdateaot": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
-        "name": "scenes",
-        "size": 27783684,
-        "hash": "f332681dc3c6196a9f5a610dc7bf6669d4a92d1802bf888a850821c7aec09fa4",
+        "name": "hotupdateaot",
+        "size": 2268356,
+        "hash": "2c9c7c17c81e5aa200cbb05df1092e3f3b437b40e295a1c67113f2ad551c72f9",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -95,22 +119,25 @@
   },
   "bundleToAssetKeys": {
     "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib]], mscorlib",
-    "gameconfig": {
+    "hotupdate": {
       "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
       "$values": [
-        "ItemConfigs",
-        "PlayerControls"
+        "HotUpdate.Base.dll",
+        "HotUpdate.Common.dll",
+        "HotUpdate.Game.dll",
+        "HotUpdate.UI.dll",
+        "HotUpdate.Update.dll",
+        "HotUpdateAssemblySettings"
       ]
     },
-    "scenes": {
+    "hotupdateaot": {
       "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
       "$values": [
-        "ABTestScene",
-        "GameScene",
-        "InventoryMainTestScene",
-        "InventoryTestScene",
-        "MainScene",
-        "NetTestScene"
+        "CoreModule.dll",
+        "mscorlib.dll",
+        "System.Core.dll",
+        "Unity.InputSystem.dll",
+        "UnityEngine.CoreModule.dll"
       ]
     }
   }

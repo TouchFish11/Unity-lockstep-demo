@@ -7,7 +7,7 @@ namespace Core.Net.Protocols.FSync
     /// </summary>
     public struct InputCommand
     {
-        public int playerId;
+        public int raceId;
         public EOptType optType;
         public FixedVector3 dir;
         public int targetId;

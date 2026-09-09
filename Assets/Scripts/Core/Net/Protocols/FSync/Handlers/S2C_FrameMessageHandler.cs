@@ -1,13 +1,17 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Core.DI;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events.Net;
+using Core.Log;
 using Core.Mono;
 using Core.Net.Protocols.FSync.Messages;
+using Core.Net.Protocols.Tcp;
 using Core.Net.Protocols.Tcp.Messages.Common;
 using Core.Net.SyncModule.Interface;
 using Core.Net.SyncModule.Manager;
 using Core.Time;
+using UnityEngine;
 
 namespace Core.Net.Protocols.FSync.Handlers
 {
@@ -18,12 +22,13 @@ namespace Core.Net.Protocols.FSync.Handlers
     {
         [Inject] private NetGameManager _netGameManager;
         private readonly INetManager _netManager;
+        
+        // 逻辑帧时间
+        private const float LogicTime = 0.066f;
         // 输入发送提前量
         private const int preSendInput = 1;
         // 本地逻辑帧号，可以理解为是发送的下一个帧的帧号，稳定等于服务器帧ID + 1
         private int _localFrame;         
-        // 稳定玩家ID：首帧对齐时从 SessionId 取一次，重连后不变
-        private int _playerId;
         // 帧缓冲：帧ID -> 一帧所有输入。TCP/KCP 是有序到达，这里主要做「暂存 + 按序取」
         private readonly SortedDictionary<int, S2C_OneFrameMessage> _frameBuffer = new();
         // 是否已对齐到服务器第一帧
@@ -36,6 +41,8 @@ namespace Core.Net.Protocols.FSync.Handlers
         private bool _isReconnecting;
         // 已经执行到的帧号。初始 -1，让第 0 帧能被正确执行。
         public int _frameId = -1;
+        // 是否正在追帧
+        private bool _chasingFrame;
         
         public override S2C_FrameMessage Message { get; protected set; }
         
@@ -48,11 +55,6 @@ namespace Core.Net.Protocols.FSync.Handlers
             monoAdapter.AddUpdateListener(OnUpdate);
             _netManager = netManager;
         }
-        
-        /// <summary>
-        /// 逻辑帧时间
-        /// </summary>
-        private const float LogicTime = 0.066f;
         
         protected override void OnHandle()
         {
@@ -69,10 +71,10 @@ namespace Core.Net.Protocols.FSync.Handlers
 
         private void OnRequestReconnectRace(RequestReconnectRaceEvent requestReconnectRaceEvent)
         {
-            _netManager.Connect();
+            ReconnectToRace();
         }
 
-        private void OnConnected(int clientId, int[] clientIds)
+        private void OnConnected(ConnectResult connectResult)
         {
             if (_isReconnecting)
             {
@@ -106,14 +108,14 @@ namespace Core.Net.Protocols.FSync.Handlers
         /// </summary>
         private void SendFrameInput(int targetFrameId)
         {
-            var cmd = new InputCommand { playerId = _playerId };
-            if (_netGameManager.TryGetPlayer(_playerId, out var netObject))
+            var cmd = new InputCommand { raceId = _netGameManager.RaceId.Value };
+            if (_netGameManager.TryGetPlayer(_netGameManager.RaceId.Value, out var netObject))
             {
                 netObject.CollectInput(ref cmd);
                 var c2SNextFrameMessage = new C2S_NextFrameMessage
                 {
                     FrameID = targetFrameId,
-                    OptMessage = CommandCodec.Encode(_playerId, cmd)
+                    OptMessage = CommandCodec.Encode(_netGameManager.RaceId.Value, cmd)
                 };
                 _netManager.Send(c2SNextFrameMessage, EProtocolChannel.Resolve);
             }
@@ -122,14 +124,14 @@ namespace Core.Net.Protocols.FSync.Handlers
         /// <summary>
         /// 收到服务器广播的帧数据
         /// </summary>
-        public void InputServerCommand(S2C_FrameMessage s2CFrameMessage)
+        public async void InputServerCommand(S2C_FrameMessage s2CFrameMessage)
         {
             // 把收到的所有帧放进缓冲
             foreach (var frame in s2CFrameMessage.FrameMessages)
             {
                 _frameBuffer[frame.FrameID] = frame;
             }
-
+            
             // 从「已执行帧 + 1」开始，只要缓冲里有，就按顺序执行
             while (_frameBuffer.TryGetValue(_frameId + 1, out var nextFrame))
             {
@@ -139,13 +141,17 @@ namespace Core.Net.Protocols.FSync.Handlers
                 var frameHandleEvent = EventSource.Get<FrameHandleEvent>();
                 frameHandleEvent.FrameId = _frameId;
                 eventCenter.TriggerEvent(frameHandleEvent);
+                
+                if (_chasingFrame)
+                {
+                    await Task.Yield();
+                }
             }
             
             // 首次收到帧：把本地帧号锚到服务器帧号，并立刻发第 FrameId+K 帧
             if (!_isAligned)
             {
                 _isAligned = true;
-                _playerId = _netManager.SessionId;
                 _localFrame = _frameId;
                 accumulator = 0;
                 SendFrameInput(_localFrame + preSendInput);
@@ -155,13 +161,17 @@ namespace Core.Net.Protocols.FSync.Handlers
             else if (_localFrame <= _frameId)
             {
                 _localFrame = _frameId + 1;
-                accumulator = 0;
+                accumulator = 0;    // 为什么要置0？？？
             }
             
             // 缺口检测：缓冲里还有帧，说明 FrameId+1 缺失，请求补发
             if (_isAligned && _frameBuffer.Count > 0)
             {
                 RequestMissingFrames();
+            }
+            else
+            {
+                _chasingFrame = false;
             }
         }
         
@@ -182,8 +192,9 @@ namespace Core.Net.Protocols.FSync.Handlers
                 StartFrame = startFrame
             };
             _netManager.Send(msg, EProtocolChannel.Resolve);
+            _chasingFrame = true;
         }
-
+        
         /// <summary>
         /// 执行帧
         /// </summary>
@@ -206,8 +217,8 @@ namespace Core.Net.Protocols.FSync.Handlers
         /// </summary>
         public void ReconnectToRace()
         {
-            // 发重连认领消息（SessionID 自动填新连接ID，PlayerID 填稳定身份）
-            var reconnectMsg = new ReconnectRaceMessage { PlayerID = _playerId };
+            // 发重连认领消息（SessionID 自动填新连接ID，RaceId 填稳定身份）
+            var reconnectMsg = new ReconnectRaceMessage { RaceId = _netGameManager.RaceId.Value };
             _netManager.Send(reconnectMsg, EProtocolChannel.Resolve);
 
             _localFrame = _frameId;

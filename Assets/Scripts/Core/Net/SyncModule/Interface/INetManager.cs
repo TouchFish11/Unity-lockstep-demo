@@ -1,6 +1,7 @@
 using System;
 using Core.Global.Configs;
 using Core.Net.Protocols;
+using Core.Net.Protocols.Tcp;
 
 namespace Core.Net.SyncModule.Interface
 {
@@ -9,7 +10,7 @@ namespace Core.Net.SyncModule.Interface
     /// </summary>
     public interface INetManager
     {
-        event Action<int, int[]> OnConnected;
+        event Action<ConnectResult> OnConnected;
         
         event Action OnDisconnected;
         
@@ -21,13 +22,6 @@ namespace Core.Net.SyncModule.Interface
         int SessionId { get; }
 
         void Init(NetConfig config);
-
-        /// <summary>
-        /// 设置会话ID，外部无需调用
-        /// </summary>
-        /// <param name="sessionToken"></param>
-        /// <param name="clientIds"></param>
-        void SetSessionToken(int sessionToken, int[] clientIds);
         
         void Connect();
         

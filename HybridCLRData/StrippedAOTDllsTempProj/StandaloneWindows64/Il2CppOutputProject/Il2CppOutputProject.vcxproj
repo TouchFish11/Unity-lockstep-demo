@@ -280,6 +280,8 @@
     </ClCompile>
     <ClCompile Include="Source\Generics__9.cpp">
     </ClCompile>
+    <ClCompile Include="Source\Generics__90.cpp">
+    </ClCompile>
     <ClCompile Include="Source\HybridCLR.Runtime.cpp">
     </ClCompile>
     <ClCompile Include="Source\Il2CppCCalculateFieldValues.cpp">

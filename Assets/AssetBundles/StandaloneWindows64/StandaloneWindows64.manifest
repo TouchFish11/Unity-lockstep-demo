@@ -1,10 +1,10 @@
 ManifestFileVersion: 0
-CRC: 533453670
+CRC: 3296561179
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: scenes
+      Name: hotupdate
       Dependencies: {}
     Info_1:
-      Name: gameconfig
+      Name: hotupdateaot
       Dependencies: {}

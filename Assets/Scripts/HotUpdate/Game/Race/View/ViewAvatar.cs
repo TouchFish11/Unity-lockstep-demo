@@ -44,7 +44,6 @@ namespace HotUpdate.Game.Race.View
         {
             inputSystem.InitPlayerInput(playerInput, InputCallback);
             inputSystem.Enable();
-            inputSystem.SwitchScheme("Android");
         }
         
         private void InputCallback(InputAction.CallbackContext context)

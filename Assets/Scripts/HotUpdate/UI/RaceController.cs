@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.AssetBundles.Management;
 using Core.DI;
 using Core.GlobalEvent;
 using Core.GlobalEvent.Events.Net;
@@ -9,6 +11,7 @@ using Core.Net.Protocols;
 using Core.Net.Protocols.Tcp.Messages.Common;
 using Core.Net.SyncModule.Interface;
 using Core.UI.ViewController;
+using HotUpdate.Game.Race.View;
 using TMPro;
 using UnityEngine;
 
@@ -20,11 +23,11 @@ namespace HotUpdate.UI
         [Inject] private IEventCenter _eventCenter;
         [Inject] private IMonoAdapter _monoAdapter;
         [Inject] private IInputSystem _inputSystem;
+        [Inject] private ObjectSpawner _objectSpawner;
 
         // 是否已离开比赛
         private bool _isLeave;
-        
-        public Transform View => view.transform;
+        private readonly List<StatusHUD> _huds = new();
         
         protected override async Task OnInit()
         {
@@ -43,6 +46,13 @@ namespace HotUpdate.UI
         private void HandleFrameEvent(FrameHandleEvent frameHandleEvent)
         {
             view.txtFrameIDInfo.text = frameHandleEvent.FrameId.ToString();
+        }
+
+        public async Task CreateHUD(ViewAvatar viewAvatar)
+        {
+            var statusHUD = await _objectSpawner.SpawnAsync<StatusHUD>(AssetKeys.StatusHUD);
+            statusHUD.Init(viewAvatar, view.transform);
+            _huds.Add(statusHUD);
         }
 
         private void OnUpdate()
@@ -71,8 +81,7 @@ namespace HotUpdate.UI
                 {
                     view.btnLeaveOrReConnect.GetComponentInChildren<TextMeshProUGUI>().text = "离开比赛";
                     // 发送重连消息
-                    var requestReconnectRaceEvent = EventSource.Get<RequestReconnectRaceEvent>();
-                    eventCenter.TriggerEvent(requestReconnectRaceEvent);
+                    _netManager.Connect();
                 }
                 
                 _isLeave = !_isLeave;
@@ -84,6 +93,8 @@ namespace HotUpdate.UI
             _eventCenter.UnsubscribeEvent<FrameHandleEvent>(HandleFrameEvent);
             _monoAdapter.RemoveUpdateListener(OnUpdate);
             ((IHeartbeatService)_netManager).OnRttCalc -= OnTcpRtt;
+            _objectSpawner.Release(_huds);
+            _objectSpawner.Clear();
             return Task.CompletedTask;
         }
     }

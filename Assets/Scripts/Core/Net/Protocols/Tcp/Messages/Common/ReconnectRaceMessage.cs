@@ -9,9 +9,9 @@ namespace Core.Net.Protocols.Tcp.Messages.Common
     public class ReconnectRaceMessage : TcpMessage
     {
         /// <summary>
-        /// 重连认领：玩家旧 ID（稳定身份）。SessionID 是自动填的新连接ID
+        /// 当前比赛的ID，用于重连
         /// </summary>
-        public int PlayerID { get; set; }
+        public int RaceId { get; set; }
         
         public override int GetMsgID()
         {
@@ -20,17 +20,17 @@ namespace Core.Net.Protocols.Tcp.Messages.Common
 
         protected override int GetBodyLength()
         {
-            return sizeof(int);
+            return 4;
         }
 
         protected override void SerializeBody(byte[] bytes, ref int index)
         {
-            MessageUtil.WriteField(bytes, PlayerID, ref index);
+            MessageUtil.WriteField(bytes, RaceId, ref index);
         }
 
         protected override void DeserializeBody(byte[] bytes, ref int index)
         {
-            PlayerID = MessageUtil.ReadInt(bytes, ref index);
+            RaceId = MessageUtil.ReadInt(bytes, ref index);
         }
     }
 }

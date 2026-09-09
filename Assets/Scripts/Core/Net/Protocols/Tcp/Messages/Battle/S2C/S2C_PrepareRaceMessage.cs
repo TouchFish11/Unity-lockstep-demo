@@ -9,6 +9,11 @@ namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
     [MessageDir(EMessageHandle.Resolve)]
     public class S2C_PrepareRaceMessage : TcpMessage
     {
+        /// <summary>
+        /// 比赛ID，客户端可以本地缓存比赛ID，用于断线重连时重新加入比赛
+        /// </summary>
+        public int RaceID { get; set; }
+        
         // 当前同一比赛的所有客户端ID
         public List<int> clientIds;
 
@@ -19,12 +24,13 @@ namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
 
         protected override int GetBodyLength()
         {
-            // clientIds长度 + clientIds主体
-            return 4 + 4 * clientIds.Count;
+            // 比赛ID + clientIds长度 + clientIds主体
+            return 4 + 4 + 4 * clientIds.Count;
         }
 
         protected override void SerializeBody(byte[] bytes, ref int index)
         {
+            MessageUtil.WriteField(bytes, RaceID, ref index);
             MessageUtil.WriteField(bytes, clientIds.Count, ref index);
             foreach (var clientId in clientIds)
             {
@@ -34,6 +40,7 @@ namespace Core.Net.Protocols.Tcp.Messages.Battle.S2C
 
         protected override void DeserializeBody(byte[] bytes, ref int index)
         {
+            RaceID = MessageUtil.ReadInt(bytes, ref index);
             var length = MessageUtil.ReadInt(bytes, ref index);
             clientIds = new List<int>(length);
             for (var i = 0; i < length; i++)

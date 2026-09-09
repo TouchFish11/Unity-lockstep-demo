@@ -11,6 +11,7 @@ namespace Core.Net.Protocols.Tcp.Handlers.S2C
         protected override void OnHandle()
         {
             var prepareRaceEvent = EventSource.Get<PrepareRaceEvent>();
+            prepareRaceEvent.RaceId = Message.RaceID;
             prepareRaceEvent.RaceClientIds = Message.clientIds.ToArray();
             eventCenter.TriggerEvent(prepareRaceEvent);
         }

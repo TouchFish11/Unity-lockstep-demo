@@ -13,7 +13,7 @@ namespace Core.Net.Protocols.FSync
         {
             var optMessage = new OptMessage
             {
-                SessionID = playerId,
+                RaceID = playerId,
                 OptType = (byte)inputCommand.optType
             };
             
@@ -43,7 +43,7 @@ namespace Core.Net.Protocols.FSync
         {
             var inputCommand = new InputCommand
             {
-                playerId = optMessage.SessionID
+                raceId = optMessage.RaceID
             };
             switch ((EOptType)optMessage.OptType)
             {

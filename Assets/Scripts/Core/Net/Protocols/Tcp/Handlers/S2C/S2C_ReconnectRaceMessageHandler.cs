@@ -11,11 +11,7 @@ namespace Core.Net.Protocols.Tcp.Handlers.S2C
         
         protected override void OnHandle()
         {
-            // if (Message.ClientID == NetManager.Instance.ClientID)
-            // {
-            //     //GameHandler.Instance.IsStop = false;
-            // }
-            //Debug.Log($"��ң�{Message.ClientID}����������");
+            
         }
     }
 }

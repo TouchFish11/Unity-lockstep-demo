@@ -5,6 +5,6 @@ namespace Core.Net.Protocols.FSync.Messages
     /// </summary>
     public abstract class FrameMessage : Message
     {
-        //public static int FrameMessageID { get; protected set; }
+
     }
 }

@@ -1,0 +1,25 @@
+ManifestFileVersion: 0
+CRC: 3035500789
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 9486451b174408ac03713f1a2b0126c1
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 9486451b174408ac03713f1a2b0126c1
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Editor/ArtRes/HotUpdate/HotUpdate.Base.dll.bytes
+- Assets/Editor/ArtRes/HotUpdate/HotUpdateAssemblySettings.json
+- Assets/Editor/ArtRes/HotUpdate/HotUpdate.Common.dll.bytes
+- Assets/Editor/ArtRes/HotUpdate/HotUpdate.Game.dll.bytes
+- Assets/Editor/ArtRes/HotUpdate/HotUpdate.Update.dll.bytes
+- Assets/Editor/ArtRes/HotUpdate/HotUpdate.UI.dll.bytes
+Dependencies: []

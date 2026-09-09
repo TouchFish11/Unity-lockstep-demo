@@ -33,5 +33,11 @@ namespace Core.Net
         /// 专属Kcp配置，其它协议忽略此属性，当协议类型为Kcp时使用此属性，若为空则使用默认的kcp配置
         /// </summary>
         public KcpConfig kcpConfig;
+
+        public override string ToString()
+        {
+            string kcp = $"{kcpConfig.Interval}";
+            return $"{serverIp}:{serverPort},{clientType},{kcp}";
+        }
     }
 }

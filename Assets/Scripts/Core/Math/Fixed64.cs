@@ -19,19 +19,35 @@ namespace Core.Math
             _rawValue = raw;
         }
 
-        // 从原始定点值创建（内部使用）
+        /// <summary>
+        /// 从原始定点值创建（内部使用）
+        /// </summary>
+        /// <param name="raw"></param>
+        /// <returns></returns>
         public static Fixed64 FromRaw(long raw) => new(raw);
 
-        // 从 int 创建（自动转换为定点数）
+        /// <summary>
+        /// 从 int 创建（自动转换为定点数）
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static Fixed64 FromInt(int value) => new((long)value << FractionalBits);
 
-        // 从 float 创建（仅用于配置，逻辑中禁止使用）
+        /// <summary>
+        /// 从 float 创建（仅用于配置，逻辑中禁止使用）
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static Fixed64 FromFloat(float value)
         {
             return new Fixed64((long)(value * OneRaw));
         }
 
-        // 从 double 创建（同上）
+        /// <summary>
+        /// 从 double 创建
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static Fixed64 FromDouble(double value)
         {
             return new Fixed64((long)(value * OneRaw));
@@ -56,14 +72,14 @@ namespace Core.Math
             // 64位 * 64位 = 128位，右移16位保留精度
             // 使用 long 乘法可能溢出，因此拆分为两个部分处理或使用 Math.BigMul
             // 简单起见，这里假设输入范围不会导致溢出，直接相乘再右移
-            long product = a._rawValue * b._rawValue;
+            var product = a._rawValue * b._rawValue;
             return new Fixed64(product >> FractionalBits);
         }
 
         public static Fixed64 operator /(Fixed64 a, Fixed64 b)
         {
             // 先左移16位提升精度，再除法
-            long numerator = a._rawValue << FractionalBits;
+            var numerator = a._rawValue << FractionalBits;
             return new Fixed64(numerator / b._rawValue);
         }
 
@@ -80,21 +96,36 @@ namespace Core.Math
         public int CompareTo(Fixed64 other) => _rawValue.CompareTo(other._rawValue);
         public override string ToString() => ToDouble().ToString();
         
+        /// <summary>
+        /// 绝对值
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static Fixed64 Abs(Fixed64 value) => new(System.Math.Abs(value._rawValue));
+        
+        /// <summary>
+        /// 开方
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static Fixed64 Sqrt(Fixed64 value)
         {
-            if (value._rawValue < 0) throw new ArgumentOutOfRangeException();
-            if (value._rawValue == 0) return Zero;
+            if (value._rawValue < 0) 
+                throw new ArgumentOutOfRangeException();
+            if (value._rawValue == 0) 
+                return Zero;
             // 牛顿迭代法
-            long x = value._rawValue;
-            long result = x;
+            var x = value._rawValue;
+            var result = x;
             while (true)
             {
-                long next = (result + x / result) >> 1;
-                if (next >= result) break;
+                var next = (result + x / result) >> 1;
+                if (next >= result) 
+                    break;
                 result = next;
             }
-            return new Fixed64(result);
+            return new Fixed64(result << 8);
         }
         // 三角函数可先用查表法或近似多项式，此处省略
     }

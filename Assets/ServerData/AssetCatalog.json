@@ -2124,7 +2124,7 @@
       "bundleName": "ui",
       "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\GameView.prefab",
       "assetType": "Object",
-      "assetSize": 73652
+      "assetSize": 73998
     },
     "ConnectPlayerObjUI": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2252,7 +2252,7 @@
       "bundleName": "tmpasset",
       "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
       "assetType": "Object",
-      "assetSize": 8399993
+      "assetSize": 8171
     },
     "MSYH SDF FallBack": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2268,7 +2268,7 @@
       "bundleName": "scenes",
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\NetTestScene.unity",
       "assetType": "Scene",
-      "assetSize": 17090
+      "assetSize": 18851
     },
     "MainScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2293,30 +2293,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
       "assetType": "Scene",
       "assetSize": 34620
-    },
-    "GameScene": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "GameScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
-      "assetType": "Scene",
-      "assetSize": 131567
-    },
-    "领带": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "领带",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\领带.mat",
-      "assetType": "Object",
-      "assetSize": 2249
-    },
-    "鞋子饰内侧": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "鞋子饰内侧",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\鞋子饰内侧.mat",
-      "assetType": "Object",
-      "assetSize": 2267
     },
     "鞋子饰": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2486,6 +2462,22 @@
       "assetType": "Object",
       "assetSize": 2261
     },
+    "背带": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "背带",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\背带.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "肩带": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "肩带",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\肩带.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
     "Gray": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "Gray",
@@ -2509,22 +2501,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\HotUpdate_Entry\\HotUpdateEntry.prefab",
       "assetType": "Object",
       "assetSize": 1333
-    },
-    "背带": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "背带",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\背带.mat",
-      "assetType": "Object",
-      "assetSize": 2249
-    },
-    "肩带": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "肩带",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\肩带.mat",
-      "assetType": "Object",
-      "assetSize": 2249
     },
     "眼睛1": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2558,6 +2534,30 @@
       "assetType": "Object",
       "assetSize": 2249
     },
+    "皮肤": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "皮肤",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\皮肤.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "牙齿": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "牙齿",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\牙齿.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "GameScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "GameScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
+      "assetType": "Scene",
+      "assetSize": 131567
+    },
     "ABTestScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "ABTestScene",
@@ -2565,14 +2565,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
       "assetType": "Scene",
       "assetSize": 24890
-    },
-    "HotUpdateAssemblySettings": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "HotUpdateAssemblySettings",
-      "bundleName": "hotupdate",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdateAssemblySettings.json",
-      "assetType": "Object",
-      "assetSize": 505
     },
     "MSYH": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2828,37 +2820,21 @@
       "assetType": "Texture",
       "assetSize": 394
     },
-    "mscorlib.dll": {
+    "UnityEngine.CoreModule.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "mscorlib.dll",
+      "key": "UnityEngine.CoreModule.dll",
       "bundleName": "hotupdateaot",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAot\\mscorlib.dll.bytes",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\UnityEngine.CoreModule.dll.bytes",
       "assetType": "Object",
-      "assetSize": 2336768
+      "assetSize": 481792
     },
-    "CoreModule.dll": {
+    "Unity.InputSystem.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "CoreModule.dll",
+      "key": "Unity.InputSystem.dll",
       "bundleName": "hotupdateaot",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAot\\CoreModule.dll.bytes",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\Unity.InputSystem.dll.bytes",
       "assetType": "Object",
-      "assetSize": 411648
-    },
-    "皮肤": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "皮肤",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\皮肤.mat",
-      "assetType": "Object",
-      "assetSize": 2249
-    },
-    "牙齿": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "牙齿",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\牙齿.mat",
-      "assetType": "Object",
-      "assetSize": 2249
+      "assetSize": 1244672
     },
     "流萤3.0": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2940,30 +2916,6 @@
       "assetType": "Object",
       "assetSize": 5628
     },
-    "HotUpdate.Update.dll": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "HotUpdate.Update.dll",
-      "bundleName": "hotupdate",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Update.dll.bytes",
-      "assetType": "Object",
-      "assetSize": 7680
-    },
-    "HotUpdate.UI.dll": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "HotUpdate.UI.dll",
-      "bundleName": "hotupdate",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.UI.dll.bytes",
-      "assetType": "Object",
-      "assetSize": 23552
-    },
-    "HotUpdate.Game.dll": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "HotUpdate.Game.dll",
-      "bundleName": "hotupdate",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Game.dll.bytes",
-      "assetType": "Object",
-      "assetSize": 12800
-    },
     "toon2": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "toon2",
@@ -3004,6 +2956,46 @@
       "assetType": "Object",
       "assetSize": 88415
     },
+    "AIRole": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "AIRole",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\AIRole.prefab",
+      "assetType": "Object",
+      "assetSize": 88448
+    },
+    "System.Core.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "System.Core.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\System.Core.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 427008
+    },
+    "mscorlib.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "mscorlib.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\mscorlib.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 2338304
+    },
+    "CoreModule.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "CoreModule.dll",
+      "bundleName": "hotupdateaot",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\CoreModule.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 404992
+    },
+    "HotUpdateAssemblySettings": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "HotUpdateAssemblySettings",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdateAssemblySettings.json",
+      "assetType": "Object",
+      "assetSize": 505
+    },
     "Role1_Animator": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "Role1_Animator",
@@ -3011,6 +3003,30 @@
       "assetName": "Assets\\Editor\\ArtRes\\Animator\\Role1_Animator.controller",
       "assetType": "Object",
       "assetSize": 7818
+    },
+    "HotUpdate.Update.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "HotUpdate.Update.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Update.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 7680
+    },
+    "HotUpdate.UI.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "HotUpdate.UI.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.UI.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 27648
+    },
+    "HotUpdate.Game.dll": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "HotUpdate.Game.dll",
+      "bundleName": "hotupdate",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Game.dll.bytes",
+      "assetType": "Object",
+      "assetSize": 15360
     },
     "HotUpdate.Common.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3028,37 +3044,13 @@
       "assetType": "Object",
       "assetSize": 8192
     },
-    "System.Core.dll": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "System.Core.dll",
-      "bundleName": "hotupdateaot",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAot\\System.Core.dll.bytes",
-      "assetType": "Object",
-      "assetSize": 427008
-    },
-    "Unity.InputSystem.dll": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Unity.InputSystem.dll",
-      "bundleName": "hotupdateaot",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAot\\Unity.InputSystem.dll.bytes",
-      "assetType": "Object",
-      "assetSize": 1244672
-    },
-    "UnityEngine.CoreModule.dll": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "UnityEngine.CoreModule.dll",
-      "bundleName": "hotupdateaot",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAot\\UnityEngine.CoreModule.dll.bytes",
-      "assetType": "Object",
-      "assetSize": 442368
-    },
     "PlayerControls": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "PlayerControls",
       "bundleName": "gameconfig",
       "assetName": "Assets\\Editor\\ArtRes\\GameConfig\\PlayerControls.json",
       "assetType": "Object",
-      "assetSize": 6880
+      "assetSize": 6879
     },
     "ItemConfigs": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3067,6 +3059,22 @@
       "assetName": "Assets\\Editor\\ArtRes\\GameConfig\\ItemConfigs.json",
       "assetType": "Object",
       "assetSize": 2224
+    },
+    "鞋子饰内侧": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "鞋子饰内侧",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\鞋子饰内侧.mat",
+      "assetType": "Object",
+      "assetSize": 2267
+    },
+    "领带": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "领带",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\领带.mat",
+      "assetType": "Object",
+      "assetSize": 2249
     }
   },
   "abPackageCollection": {
@@ -3099,7 +3107,7 @@
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "gameconfig",
         "size": 3287,
-        "hash": "5d0d9f3fa3d4f2939e1e56b8ca2b68f979eedba5540cbd01ac4cc84a3c2971d6",
+        "hash": "6ebf92bab0c6961c3592fd94486a0a459053a3803073672a19383572dbd7a2a0",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3108,8 +3116,8 @@
       "hotupdate": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate",
-        "size": 38269,
-        "hash": "bc6791cc07d0a356df5d4431a599912719b4c9e04d5b325120728224bda980e1",
+        "size": 41760,
+        "hash": "5eab1db5f87ce6cd4d8059ec50718cd8b8e54b5907635753b8e10c15731043bb",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3148,8 +3156,8 @@
       "prefab": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "prefab",
-        "size": 4839648,
-        "hash": "d55f8db7b920cb484c3fb501d9f74bf6dc9ab756b7fe808a4d2025c45d14e2f5",
+        "size": 4868235,
+        "hash": "ea324f5e8126b930a312c2d5052b336e2ecece1fd6d464587f1f8c7e5119e708",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3158,8 +3166,8 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 27783684,
-        "hash": "f332681dc3c6196a9f5a610dc7bf6669d4a92d1802bf888a850821c7aec09fa4",
+        "size": 27783793,
+        "hash": "5dc11069f911a70469d983201ea41da291d658301e26d1975cf230b872e1055d",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3178,8 +3186,8 @@
       "tmpasset": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
-        "size": 13726888,
-        "hash": "4133c0612418b5d047178ae3e9690843778330ae380ede40f7264a295e44449d",
+        "size": 13665602,
+        "hash": "10a2ede77d03f95cdf4c0efcdcfd9f05d676e255d7b6f26ac2156da6a3f6ed18",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3188,20 +3196,18 @@
       "ui": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
-        "size": 2391743,
-        "hash": "3dcb9a473226b308f560caa851943c0d19ebf9419c541a8bf2a9e4ba3374db67",
+        "size": 16129963,
+        "hash": "c4df7d8004917813fe153175da1941cba7307f3692e5431dc0233ef8ce8d506d",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": [
-            "tmpasset"
-          ]
+          "$values": []
         }
       },
       "hotupdateaot": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdateaot",
-        "size": 2251824,
-        "hash": "c7e89e59cec5056f31d75cd271bef413fef4cdda625d03800890f86ffc47f25b",
+        "size": 2268356,
+        "hash": "2c9c7c17c81e5aa200cbb05df1092e3f3b437b40e295a1c67113f2ad551c72f9",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3273,6 +3279,7 @@
     "prefab": {
       "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
       "$values": [
+        "AIRole",
         "Role1",
         "Sphere",
         "mc1",

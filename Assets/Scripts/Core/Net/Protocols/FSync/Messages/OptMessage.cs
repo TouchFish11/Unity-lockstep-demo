@@ -6,9 +6,9 @@ namespace Core.Net.Protocols.FSync.Messages
     public class OptMessage : FrameMessage
     {
         /// <summary>
-        /// 发送消息的客户端唯一ID，由服务器下发
+        /// 发送消息的客户端唯一比赛ID，由服务器下发
         /// </summary>
-        public int SessionID { get; set; }
+        public int RaceID { get; set; }
         
         /// <summary>
         /// 操作类型，不同字节数代表不同的游戏操作
@@ -49,7 +49,7 @@ namespace Core.Net.Protocols.FSync.Messages
             var index = 0;
             var bytes = new byte[GetMsgLength()];
             // 序列化所有字段
-            MessageUtil.WriteField(bytes, SessionID, ref index);
+            MessageUtil.WriteField(bytes, RaceID, ref index);
             MessageUtil.WriteField(bytes, OptType, ref index);
             MessageUtil.WriteField(bytes, Arg1, ref index);
             MessageUtil.WriteField(bytes, Arg2, ref index);
@@ -61,7 +61,7 @@ namespace Core.Net.Protocols.FSync.Messages
         {
             var index = beginIndex;
             // 赋值所有字段
-            SessionID = MessageUtil.ReadInt(bytes, ref index);
+            RaceID = MessageUtil.ReadInt(bytes, ref index);
             OptType = MessageUtil.ReadByte(bytes, ref index);
             Arg1 = MessageUtil.ReadInt(bytes, ref index);
             Arg2 = MessageUtil.ReadInt(bytes, ref index);

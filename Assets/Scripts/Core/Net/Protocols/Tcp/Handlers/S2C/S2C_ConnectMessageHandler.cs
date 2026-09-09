@@ -1,6 +1,7 @@
 using Core.DI;
 using Core.Net.Protocols.Tcp.Messages.Common;
 using Core.Net.SyncModule.Interface;
+using Core.Net.SyncModule.Manager;
 
 namespace Core.Net.Protocols.Tcp.Handlers.S2C
 {
@@ -15,8 +16,15 @@ namespace Core.Net.Protocols.Tcp.Handlers.S2C
         
         protected override void OnHandle()
         {
-            // 记录ID
-            netManager.SetSessionToken(Message.SessionID, Message.ClientIds.ToArray());
+            var connectResult = new ConnectResult
+            {
+                SessionId = Message.SessionID,
+                SessionIds = Message.ClientIds.ToArray(),
+                RaceExist = Message.RaceExist,
+                RaceIds = Message.CurrentRaceIds.ToArray(),
+            };
+            
+            ((NetManager)netManager).SetConnectStatus(connectResult);
             // 发送心跳
             _heartbeatService.Start();
         }

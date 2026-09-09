@@ -12,7 +12,6 @@ public static class AssetKeys
     public const string HotUpdate_Game = "HotUpdate.Game.dll";
     public const string HotUpdate_UI = "HotUpdate.UI.dll";
     public const string HotUpdate_Update = "HotUpdate.Update.dll";
-    public const string HotUpdateAssemblySettings = "HotUpdateAssemblySettings";
     public const string CoreModule = "CoreModule.dll";
     public const string mscorlib = "mscorlib.dll";
     public const string System_Core = "System.Core.dll";
@@ -21,6 +20,7 @@ public static class AssetKeys
     public const string HotUpdateEntry = "HotUpdateEntry";
     public const string Bot_Mask = "Bot_Mask";
     public const string Gray = "Gray";
+    public const string AIRole = "AIRole";
     public const string Role1 = "Role1";
     public const string Sphere = "Sphere";
     public const string mc1 = "mc1";
