@@ -1,7 +1,7 @@
 using System;
 using Core.DI;
 using Core.GlobalEvent;
-using Core.GlobalEvent.Events.Net;
+using Core.Net.Events;
 using Core.Net.Protocols;
 using Core.Net.Protocols.Tcp.Messages.Battle.C2S;
 using Core.Net.SyncModule.Interface;

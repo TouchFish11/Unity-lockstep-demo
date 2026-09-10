@@ -2,16 +2,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.DI;
 using Core.GlobalEvent;
-using Core.GlobalEvent.Events.Net;
-using Core.Log;
 using Core.Mono;
+using Core.Net.Events;
 using Core.Net.Protocols.FSync.Messages;
-using Core.Net.Protocols.Tcp;
 using Core.Net.Protocols.Tcp.Messages.Common;
 using Core.Net.SyncModule.Interface;
 using Core.Net.SyncModule.Manager;
 using Core.Time;
-using UnityEngine;
 
 namespace Core.Net.Protocols.FSync.Handlers
 {
@@ -37,8 +34,6 @@ namespace Core.Net.Protocols.FSync.Handlers
         private float accumulator;
         // 上次请求补发的起始帧，避免同一缺口重复请求
         private int _lastRequestedFrame = -1;
-        // 是否重新连接
-        private bool _isReconnecting;
         // 已经执行到的帧号。初始 -1，让第 0 帧能被正确执行。
         public int _frameId = -1;
         // 是否正在追帧
@@ -48,8 +43,6 @@ namespace Core.Net.Protocols.FSync.Handlers
         
         private S2C_FrameMessageHandler(IEventCenter eventCenter, IMonoAdapter monoAdapter, INetManager netManager)
         {
-            netManager.OnConnected += OnConnected;
-            netManager.OnDisconnected += OnDisConnected;
             eventCenter.SubscribeEvent<StartRaceEvent>(OnStartRace);
             eventCenter.SubscribeEvent<RequestReconnectRaceEvent>(OnRequestReconnectRace);
             monoAdapter.AddUpdateListener(OnUpdate);
@@ -72,20 +65,6 @@ namespace Core.Net.Protocols.FSync.Handlers
         private void OnRequestReconnectRace(RequestReconnectRaceEvent requestReconnectRaceEvent)
         {
             ReconnectToRace();
-        }
-
-        private void OnConnected(ConnectResult connectResult)
-        {
-            if (_isReconnecting)
-            {
-                _isReconnecting = false;
-                ReconnectToRace();   // 这时候才发认领 + 追帧
-            }
-        }
-
-        private void OnDisConnected()
-        {
-            _isReconnecting = true;
         }
 
         private void OnUpdate()

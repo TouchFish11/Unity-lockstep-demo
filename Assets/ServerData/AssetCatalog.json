@@ -2108,7 +2108,7 @@
       "bundleName": "ui",
       "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\StatusHUD.prefab",
       "assetType": "Object",
-      "assetSize": 8704
+      "assetSize": 20436
     },
     "LoadingPanel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2252,7 +2252,7 @@
       "bundleName": "tmpasset",
       "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
       "assetType": "Object",
-      "assetSize": 8171
+      "assetSize": 8418900
     },
     "MSYH SDF FallBack": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2268,7 +2268,7 @@
       "bundleName": "scenes",
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\NetTestScene.unity",
       "assetType": "Scene",
-      "assetSize": 18851
+      "assetSize": 16702
     },
     "MainScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2996,14 +2996,6 @@
       "assetType": "Object",
       "assetSize": 505
     },
-    "Role1_Animator": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Role1_Animator",
-      "bundleName": "animator",
-      "assetName": "Assets\\Editor\\ArtRes\\Animator\\Role1_Animator.controller",
-      "assetType": "Object",
-      "assetSize": 7818
-    },
     "HotUpdate.Update.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "HotUpdate.Update.dll",
@@ -3018,7 +3010,7 @@
       "bundleName": "hotupdate",
       "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.UI.dll.bytes",
       "assetType": "Object",
-      "assetSize": 27648
+      "assetSize": 29696
     },
     "HotUpdate.Game.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3026,7 +3018,7 @@
       "bundleName": "hotupdate",
       "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Game.dll.bytes",
       "assetType": "Object",
-      "assetSize": 15360
+      "assetSize": 16384
     },
     "HotUpdate.Common.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3043,6 +3035,14 @@
       "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Base.dll.bytes",
       "assetType": "Object",
       "assetSize": 8192
+    },
+    "Role1_Animator": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Role1_Animator",
+      "bundleName": "animator",
+      "assetName": "Assets\\Editor\\ArtRes\\Animator\\Role1_Animator.controller",
+      "assetType": "Object",
+      "assetSize": 7820
     },
     "PlayerControls": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3116,8 +3116,8 @@
       "hotupdate": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate",
-        "size": 41760,
-        "hash": "5eab1db5f87ce6cd4d8059ec50718cd8b8e54b5907635753b8e10c15731043bb",
+        "size": 43843,
+        "hash": "87ffa625748b5bb356428d537351d23712fdc9d2d6bd4592e5e848d344856013",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3166,8 +3166,8 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 27783793,
-        "hash": "5dc11069f911a70469d983201ea41da291d658301e26d1975cf230b872e1055d",
+        "size": 27744929,
+        "hash": "aebdb2c4990f30d0d6291f31d1d403e314cb127b5138990cd3eb291b003b4bd9",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3186,8 +3186,8 @@
       "tmpasset": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
-        "size": 13665602,
-        "hash": "10a2ede77d03f95cdf4c0efcdcfd9f05d676e255d7b6f26ac2156da6a3f6ed18",
+        "size": 13798639,
+        "hash": "4c7dcff775bc6bfdff14c050a0015d495667d3fec3621e4ac1e2ec5a0374e88f",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3196,11 +3196,13 @@
       "ui": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
-        "size": 16129963,
-        "hash": "c4df7d8004917813fe153175da1941cba7307f3692e5431dc0233ef8ce8d506d",
+        "size": 2392116,
+        "hash": "9f5c6df5cd47fc07a4466fbecff13620e04adadd1b523066f55c8c6c7554a53e",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": []
+          "$values": [
+            "tmpasset"
+          ]
         }
       },
       "hotupdateaot": {
@@ -3216,8 +3218,8 @@
       "animator": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "animator",
-        "size": 33317,
-        "hash": "ee3105bb27b8e88f89a3f0f76d46f072dda0efdf12a598630e3212b2bd5f70ec",
+        "size": 33298,
+        "hash": "537512557d80e3b18b3adf315c77c3026036be8b22c88604c76b12ce4b358b9d",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []

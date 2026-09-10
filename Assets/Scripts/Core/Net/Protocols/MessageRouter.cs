@@ -17,11 +17,20 @@ namespace Core.Net.Protocols
     /// <summary>
     /// 消息路由器
     /// </summary>
-    public class MessageRouter
+    internal class MessageRouter
     {
+        private readonly IHotUpdateManager _hotUpdateManager;
         private readonly Dictionary<Type, IMessageHandler> _handlers = new();
 
         public MessageRouter(IHotUpdateManager hotUpdateManager)
+        {
+            _hotUpdateManager = hotUpdateManager;
+        }
+
+        /// <summary>
+        /// 注册所有的消息处理器
+        /// </summary>
+        public void RegisterHandlers()
         {
             // foreach (var type in hotUpdateManager.GetCoreModule().GetTypes())
             // {

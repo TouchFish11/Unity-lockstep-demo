@@ -1,3 +1,4 @@
+using System;
 using Core.Inputs;
 using Core.Math;
 using Core.Net.Protocols.FSync;
@@ -17,7 +18,6 @@ namespace HotUpdate.Game.Race.View
         [SerializeField] private float rotateSpeed = 20f;
         
         private Animator _animator;
-        private EOptType _currentOpt;
         private LogicAvatar _logic;
         private float _lerpTime;
         private int _lastVersion = -1;
@@ -25,9 +25,11 @@ namespace HotUpdate.Game.Race.View
         
         private FixedVector3 _pendingDir;   // 本地玩家当前移动方向
 
-        private bool isAttacking;
-        private bool _isTriggerAttack;
+        private bool _pendingAttack;    // 一次按键发一次攻击
+        private bool _attackTriggered;  // 检测 AnimState 从非 Attack 跳入 Attack，只 SetTrigger 一次
 
+        public float CurrentHp => _logic.Hp;
+        
         private void Awake()
         {
             _animator = this.GetComponentInChildren<Animator>();
@@ -59,7 +61,6 @@ namespace HotUpdate.Game.Race.View
         {
             if (context.action.name == ActionConfigs.Move)
             {
-                _currentOpt = EOptType.Move;
                 if (context.phase == InputActionPhase.Performed)
                 {
                     var value = context.ReadValue<Vector2>();
@@ -74,7 +75,7 @@ namespace HotUpdate.Game.Race.View
             {
                 if (context.phase == InputActionPhase.Started)
                 {
-                    _currentOpt = EOptType.Attack;
+                    _pendingAttack = true;
                 }
             }
         }
@@ -83,7 +84,6 @@ namespace HotUpdate.Game.Race.View
         {
             if (context.action.name == ActionConfigs.Move)
             {
-                _currentOpt = EOptType.Move;
                 if (context.phase == InputActionPhase.Performed)
                 {
                     var value = context.ReadValue<Vector2>();
@@ -94,7 +94,7 @@ namespace HotUpdate.Game.Race.View
             {
                 if (context.phase == InputActionPhase.Started)
                 {
-                    _currentOpt = EOptType.Attack;
+                    _pendingAttack = true;
                 }
             }
         }
@@ -103,6 +103,12 @@ namespace HotUpdate.Game.Race.View
         {
             if (_logic == null) 
                 return;
+            
+            if (_logic.IsDead)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
 
             if (_logic.Version != _lastVersion) // 逻辑位置更新了，重置插值
             {
@@ -126,15 +132,16 @@ namespace HotUpdate.Game.Race.View
             {
                 case ELogicAnimState.Idle:
                     _animator.SetBool(Move, false);
+                    _attackTriggered = false;
                     break;
                 case ELogicAnimState.Move:
                     _animator.SetBool(Move, true);
+                    _attackTriggered = false;
                     break;
                 case ELogicAnimState.Attack:
-                    if (!_isTriggerAttack)
+                    if (!_attackTriggered)
                     {
-                        _isTriggerAttack = true;
-                        isAttacking = true;
+                        _attackTriggered = true;
                         _animator.SetTrigger(Attack);
                     }
                     break;
@@ -143,25 +150,62 @@ namespace HotUpdate.Game.Race.View
 
         public void CollectInput(ref InputCommand cmd)
         {
-            FixedVector3 sendDir;
-            if (isAttacking)
+            if (_pendingAttack)
             {
-                _currentOpt = EOptType.Move;
-                sendDir =  FixedVector3.Zero;
+                _pendingAttack = false;
+                cmd.optType = EOptType.Attack;
+                cmd.dir = FixedVector3.Zero;       // 方向攻击不带方向，逻辑用 Facing
             }
             else
             {
-                sendDir = _pendingDir;
+                cmd.optType = EOptType.Move;
+                cmd.dir = _pendingDir;
             }
-            
-            cmd.optType = _currentOpt;
-            cmd.dir = sendDir;
         }
 
-        public void OnAttackEnd()
+        private void OnDrawGizmos()
         {
-            _isTriggerAttack = false;
-            isAttacking = false;
+            Gizmos.color = Color.red;
+            var radius = LogicAvatar.AttackRange.ToInt();
+            var angle = 120;
+            var segments = 48;      // 弧线分段数
+            
+            Vector3 origin = transform.position;
+
+            // 把 forward 压到 XZ 平面
+            Vector3 forward = transform.forward;
+            forward.y = 0f;
+            if (forward.sqrMagnitude < 1e-6f) forward = Vector3.forward;
+            forward.Normalize();
+
+            // XZ 平面上的旋转轴固定是世界的 Y 轴
+            Vector3 axis = Vector3.up;
+
+            float half = angle * 0.5f;
+
+            // 左右两条边
+            Vector3 leftDir  = Quaternion.AngleAxis(-half, axis) * forward;
+            Vector3 rightDir = Quaternion.AngleAxis( half, axis) * forward;
+
+            Gizmos.DrawLine(origin, origin + leftDir  * radius);
+            Gizmos.DrawLine(origin, origin + rightDir * radius);
+
+            // 画弧
+            Vector3 prev = origin + leftDir * radius;
+            for (int i = 1; i <= segments; i++)
+            {
+                float t = i / (float)segments;
+                float a = Mathf.Lerp(-half, half, t);
+                Vector3 dir = Quaternion.AngleAxis(a, axis) * forward;
+                Vector3 cur = origin + dir * radius;
+
+                Gizmos.DrawLine(prev, cur);
+                prev = cur;
+            }
+
+            // 可选：补上两条半径，把扇形封起来（如果只想看边框就删掉）
+            Gizmos.DrawLine(origin, origin + leftDir * radius);
+            Gizmos.DrawLine(origin, origin + rightDir * radius);
         }
     }
 }

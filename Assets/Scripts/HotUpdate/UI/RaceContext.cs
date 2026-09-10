@@ -3,9 +3,11 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.GlobalEvent;
-using Core.GlobalEvent.Events.Net;
 using Core.Inputs;
 using Core.Math;
+using Core.Net.Events;
+using Core.Net.Protocols.Tcp;
+using Core.Net.SyncModule.Interface;
 using Core.Net.SyncModule.Manager;
 using Core.UI;
 using HotUpdate.Game.Race.Logic;
@@ -19,11 +21,12 @@ namespace HotUpdate.UI
     /// <summary>
     /// 一场比赛的上下文：封装逻辑世界 + 玩家/AI 表现 + HUD 的完整生命周期
     /// </summary>
-    public class RaceContext : MonoBehaviour
+    public class RaceContext
     {
         private readonly IEventCenter _eventCenter;
         private readonly ObjectSpawner _objectSpawner;
         private readonly NetGameManager _netGameManager;
+        private readonly INetManager _netManager;
         private readonly IInputSystem _inputSystem;
         private readonly IUIManager _uiManager;
 
@@ -33,11 +36,12 @@ namespace HotUpdate.UI
         public ERaceState State { get; private set; } = ERaceState.None;
         public LogicWorld World => _logicWorld;
 
-        public RaceContext(IEventCenter eventCenter, ObjectSpawner objectSpawner, NetGameManager netGameManager, IInputSystem inputSystem, IUIManager uiManager)
+        public RaceContext(IEventCenter eventCenter, ObjectSpawner objectSpawner, NetGameManager netGameManager, IInputSystem inputSystem, IUIManager uiManager, INetManager netManager)
         {
             _eventCenter = eventCenter;
             _objectSpawner = objectSpawner;
             _netGameManager = netGameManager;
+            _netManager = netManager;
             _inputSystem = inputSystem;
             _uiManager = uiManager;
         }
@@ -80,8 +84,13 @@ namespace HotUpdate.UI
                 await raceController.CreateHUD(viewAvatar);
             }
 
-            // 4. AI
+            // AI
             await SpawnAi();
+            
+            // 监听连接事件：比赛期间的同进程重连由这里处理（MainController 隐藏后不再监听）
+            _netManager.OnConnected += OnConnected;
+            // 监听比赛结束
+            _eventCenter.SubscribeEvent<RaceEndEvent>(OnRaceEnd);
         }
         
         /// <summary>
@@ -99,9 +108,23 @@ namespace HotUpdate.UI
         /// </summary>
         public void Reconnect()
         {
+            // 显示提示UI
+            // 正在重新连接到到比赛...
+            
             State = ERaceState.Reconnecting;
             var evt = EventSource.Get<RequestReconnectRaceEvent>();
             _eventCenter.TriggerEvent(evt);
+        }
+        
+        /// <summary>
+        /// 比赛期间连接事件：同进程重连（服务器仍有比赛）时触发追帧
+        /// </summary>
+        private void OnConnected(ConnectResult connectResult)
+        {
+            if (connectResult.RaceExist)
+            {
+                Reconnect();
+            }
         }
         
         /// <summary>
@@ -111,14 +134,45 @@ namespace HotUpdate.UI
         {
             if (State == ERaceState.Ended)
                 return;
+            
             State = ERaceState.Ended;
             _logicWorld?.Unsubscribe();
+            _netManager.OnConnected -= OnConnected;
+            _eventCenter.UnsubscribeEvent<RaceEndEvent>(OnRaceEnd);
             _objectSpawner.Release(_viewAvatars);
+        }
+        
+        /// <summary>
+        /// 比赛结束：返回主界面并清理比赛
+        /// </summary>
+        private async void OnRaceEnd(RaceEndEvent evt)
+        {
+            if (State == ERaceState.Ended)
+                return;
+
+            Debug.Log($"[Race] 比赛结束：{(evt.Win ? "胜利" : "失败")}");
+
+            // 关闭战斗界面（RaceView，会顺带释放 HUD）
+            var raceController = _uiManager.GetController<RaceController>();
+            if (raceController != null)
+            {
+                await _uiManager.DestroyView(raceController.PanelId);
+            }
+            
+            // 返回主界面
+            var mainController = _uiManager.GetController<MainController>();
+            if (mainController != null)
+            {
+                await _uiManager.SetViewActive(mainController.PanelId, true);
+            }
+
+            // 清理比赛
+            Leave();
         }
         
         private async Task SpawnAi()
         {
-            const int AiCount = 2;
+            const int AiCount = 1;
             for (var i = 0; i < AiCount; i++)
             {
                 var aiId = -1000 - i;
@@ -126,15 +180,16 @@ namespace HotUpdate.UI
                 _logicWorld.AddAvatar(logicAvatar);
 
                 var random = new DeterministicRandom((uint)(10000 + i));
-                _logicWorld.AddAi(new AiController(logicAvatar, random,
-                    new FixedVector3(Fixed64.FromFloat(-8f), Fixed64.Zero, Fixed64.FromFloat(-8f)),
-                    new FixedVector3(Fixed64.FromFloat(8f), Fixed64.Zero, Fixed64.FromFloat(8f))));
+                _logicWorld.AddAi(new AiController(logicAvatar));
 
                 using var handle = await GameAsset.LoadAssetAsync<RuntimeAnimatorController>(AssetKeys.Role1_Animator);
                 var viewAvatar = await _objectSpawner.SpawnAsync<ViewAvatar>(AssetKeys.AIRole);
                 viewAvatar.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
                 viewAvatar.Bind(logicAvatar, handle.Asset);
                 _viewAvatars.Add(viewAvatar);
+                
+                // HUD 是 UI 显示，交给 RaceController（它内部用 view.transform 做父节点）
+                await _uiManager.GetController<RaceController>().CreateHUD(viewAvatar);
             }
         }
     }

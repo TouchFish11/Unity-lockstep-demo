@@ -24,7 +24,7 @@
       "bundleName": "hotupdate",
       "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Game.dll.bytes",
       "assetType": "Object",
-      "assetSize": 15360
+      "assetSize": 16384
     },
     "HotUpdate.UI.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -32,7 +32,7 @@
       "bundleName": "hotupdate",
       "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.UI.dll.bytes",
       "assetType": "Object",
-      "assetSize": 27648
+      "assetSize": 29696
     },
     "HotUpdate.Update.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -49,46 +49,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdateAssemblySettings.json",
       "assetType": "Object",
       "assetSize": 505
-    },
-    "CoreModule.dll": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "CoreModule.dll",
-      "bundleName": "hotupdateaot",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\CoreModule.dll.bytes",
-      "assetType": "Object",
-      "assetSize": 404992
-    },
-    "mscorlib.dll": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "mscorlib.dll",
-      "bundleName": "hotupdateaot",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\mscorlib.dll.bytes",
-      "assetType": "Object",
-      "assetSize": 2338304
-    },
-    "System.Core.dll": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "System.Core.dll",
-      "bundleName": "hotupdateaot",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\System.Core.dll.bytes",
-      "assetType": "Object",
-      "assetSize": 427008
-    },
-    "Unity.InputSystem.dll": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Unity.InputSystem.dll",
-      "bundleName": "hotupdateaot",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\Unity.InputSystem.dll.bytes",
-      "assetType": "Object",
-      "assetSize": 1244672
-    },
-    "UnityEngine.CoreModule.dll": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "UnityEngine.CoreModule.dll",
-      "bundleName": "hotupdateaot",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdateAOT\\UnityEngine.CoreModule.dll.bytes",
-      "assetType": "Object",
-      "assetSize": 481792
     }
   },
   "abPackageCollection": {
@@ -98,18 +58,8 @@
       "hotupdate": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate",
-        "size": 41760,
-        "hash": "5eab1db5f87ce6cd4d8059ec50718cd8b8e54b5907635753b8e10c15731043bb",
-        "dependencies": {
-          "$type": "System.String[], mscorlib",
-          "$values": []
-        }
-      },
-      "hotupdateaot": {
-        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
-        "name": "hotupdateaot",
-        "size": 2268356,
-        "hash": "2c9c7c17c81e5aa200cbb05df1092e3f3b437b40e295a1c67113f2ad551c72f9",
+        "size": 43843,
+        "hash": "87ffa625748b5bb356428d537351d23712fdc9d2d6bd4592e5e848d344856013",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -128,16 +78,6 @@
         "HotUpdate.UI.dll",
         "HotUpdate.Update.dll",
         "HotUpdateAssemblySettings"
-      ]
-    },
-    "hotupdateaot": {
-      "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
-      "$values": [
-        "CoreModule.dll",
-        "mscorlib.dll",
-        "System.Core.dll",
-        "Unity.InputSystem.dll",
-        "UnityEngine.CoreModule.dll"
       ]
     }
   }

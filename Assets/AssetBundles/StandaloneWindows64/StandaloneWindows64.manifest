@@ -1,10 +1,7 @@
 ManifestFileVersion: 0
-CRC: 3296561179
+CRC: 2649305611
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: hotupdate
-      Dependencies: {}
-    Info_1:
-      Name: hotupdateaot
       Dependencies: {}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Core.Math;
 
 namespace HotUpdate.Game.Race.Logic
@@ -8,44 +9,53 @@ namespace HotUpdate.Game.Race.Logic
     public class AiController
     {
         private readonly LogicAvatar _avatar;
-        private readonly DeterministicRandom _random;
-        private readonly Fixed64 _reachThreshold;
-        private readonly Fixed64 _minX, _maxX, _minZ, _maxZ;
-        private FixedVector3 _target;
-        private bool _hasTarget;
 
-        public AiController(LogicAvatar avatar, DeterministicRandom random, FixedVector3 minBounds, FixedVector3 maxBounds)
+        public AiController(LogicAvatar avatar)
         {
             _avatar = avatar;
-            _random = random;
-            _reachThreshold = Fixed64.FromFloat(0.2f);
-            _minX = minBounds.x; 
-            _maxX = maxBounds.x;
-            _minZ = minBounds.z; 
-            _maxZ = maxBounds.z;
         }
 
-        public void Tick()
+        public void Tick(IReadOnlyList<LogicAvatar> avatars)
         {
-            // 没目标，或已走到目标附近 → 重新选点
-            if (!_hasTarget || (_target - _avatar.Position).SqrMagnitude() <= _reachThreshold * _reachThreshold)
+            // 死怪物不再行动
+            if (_avatar.IsDead || _avatar.IsAttacking)
+                return; 
+            
+            // 找最近的存活玩家
+            LogicAvatar nearest = null;
+            var nearestDistSq = Fixed64.MaxValue;
+            foreach (var other in avatars)
             {
-                PickNewTarget();
+                // 只打玩家，跳过怪物和自己
+                if (!other.IsPlayer || other.IsDead)
+                    continue;
+                
+                var d = (other.Position - _avatar.Position).SqrMagnitude();
+                if (d < nearestDistSq)
+                {
+                    nearestDistSq = d;
+                    nearest = other;
+                }
+                
+                // 没有存活玩家
+                if (nearest == null)
+                {
+                    _avatar.Move(FixedVector3.Zero);
+                }
+                
+                var dir = nearest.Position - _avatar.Position;
+                var rangeSq = LogicAvatar.AttackRange * LogicAvatar.AttackRange;
+                if (dir.SqrMagnitude() <= rangeSq)
+                {
+                    _avatar.FaceToward(dir);
+                    _avatar.StartAttack();
+                }
+                else
+                {
+                    // 归一化后交给 Move，恒定速度
+                    _avatar.Move(dir.Normalized());
+                }
             }
-
-            var dir = _target - _avatar.Position;
-            if (dir.SqrMagnitude() == Fixed64.Zero)
-            {
-                _avatar.Move(FixedVector3.Zero);   // 已在目标点 → 站定(Idle)
-                return;
-            }
-            _avatar.Move(dir.Normalized());         // 归一化后交给 Move，恒定速度
-        }
-
-        private void PickNewTarget()
-        {
-            _target = new FixedVector3(_random.Range(_minX, _maxX), Fixed64.Zero, _random.Range(_minZ, _maxZ));
-            _hasTarget = true;
         }
     }
 }

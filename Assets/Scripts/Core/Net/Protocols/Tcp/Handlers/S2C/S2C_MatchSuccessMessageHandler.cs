@@ -1,5 +1,5 @@
 using Core.GlobalEvent;
-using Core.GlobalEvent.Events.Net;
+using Core.Net.Events;
 using Core.Net.Protocols.Tcp.Messages.Battle.S2C;
 
 namespace Core.Net.Protocols.Tcp.Handlers.S2C

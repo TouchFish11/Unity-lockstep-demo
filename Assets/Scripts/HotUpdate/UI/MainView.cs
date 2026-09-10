@@ -19,6 +19,11 @@ namespace HotUpdate.UI
         public Dictionary<int, ConnectPlayerObjUI> ConnectPlayers { get; } = new();
         
         /// <summary>
+        /// 确认UI
+        /// </summary>
+        public ConfirmPanelUI ConfirmPanelUI { get; set; }
+        
+        /// <summary>
         /// 设置自己客户端ID
         /// </summary>
         /// <param name="clientId"></param>
@@ -27,9 +32,13 @@ namespace HotUpdate.UI
             txtSelfId.text = $"{clientId}";
         }
 
+        /// <summary>
+        /// 设置延迟
+        /// </summary>
+        /// <param name="clientRtt">-1为未连接，显示∞</param>
         public void SetTcpRtt(long clientRtt)
         {
-            txtRtt.text = $"{clientRtt}ms";
+            txtRtt.text = clientRtt != -1 ? $"{clientRtt}ms" : "∞";
         }
     }
 }
