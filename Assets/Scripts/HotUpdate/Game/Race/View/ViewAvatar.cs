@@ -17,6 +17,7 @@ namespace HotUpdate.Game.Race.View
 
         [SerializeField] private float rotateSpeed = 20f;
         
+        private IInputSystem _inputSystem;
         private Animator _animator;
         private LogicAvatar _logic;
         private float _lerpTime;
@@ -46,6 +47,7 @@ namespace HotUpdate.Game.Race.View
         {
             inputSystem.InitPlayerInput(playerInput, InputCallback);
             inputSystem.Enable();
+            _inputSystem = inputSystem;
         }
         
         private void InputCallback(InputAction.CallbackContext context)
@@ -161,6 +163,11 @@ namespace HotUpdate.Game.Race.View
                 cmd.optType = EOptType.Move;
                 cmd.dir = _pendingDir;
             }
+        }
+
+        private void OnDestroy()
+        {
+            _inputSystem?.ResetPlayerInput();
         }
 
         private void OnDrawGizmos()

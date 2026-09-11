@@ -14,6 +14,7 @@ namespace HotUpdate.UI
     public class ConfirmPanelUI : UIBehaviourBase
     {
         [Inject] private INetManager _netManager;
+        [Inject] private IEventCenter _eventCenter;
         
         [InjectUI] private TextMeshProUGUI txtConfirmInfo;
         [InjectUI] private Button btnConfirm;
@@ -26,7 +27,7 @@ namespace HotUpdate.UI
 
         protected override void OnEnable()
         {
-            DIContainer.GetInstance<IEventCenter>().SubscribeEvent<ClientConfirmMatchStateEvent>(ClientConfirmMatchStateEvent);
+            _eventCenter.SubscribeEvent<ClientConfirmMatchStateEvent>(ClientConfirmMatchStateEvent);
         }
 
         protected override void OnButtonClick(string btnName)
@@ -85,7 +86,11 @@ namespace HotUpdate.UI
 
         protected override void OnDisable()
         {
-            DIContainer.GetInstance<IEventCenter>().UnsubscribeEvent<ClientConfirmMatchStateEvent>(ClientConfirmMatchStateEvent);
+            _eventCenter.UnsubscribeEvent<ClientConfirmMatchStateEvent>(ClientConfirmMatchStateEvent);
+            btnConfirm.enabled = true;
+            btnRefuse.enabled = true;
+            matchPlayerCount = 0;
+            confirmedCount = 0;
         }
     }
 }

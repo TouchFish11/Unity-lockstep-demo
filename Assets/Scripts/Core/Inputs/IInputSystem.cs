@@ -75,5 +75,10 @@ namespace Core.Inputs
         /// </summary>
         /// <param name="scheme"></param>
         void SwitchScheme(string scheme);
+
+        /// <summary>
+        /// 重置玩家输入
+        /// </summary>
+        void ResetPlayerInput();
     }
 }

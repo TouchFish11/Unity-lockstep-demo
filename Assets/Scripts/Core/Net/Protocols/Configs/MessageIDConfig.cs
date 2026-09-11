@@ -79,6 +79,11 @@ namespace Core.Net.Protocols.Configs
         public const int S2C_Notice_MatchConfirmState_ID = 2009;
         
         /// <summary>
+        /// 客户端通知服务器比赛结束（胜负已定）
+        /// </summary>
+        public const int C2S_RaceEnd_ID = 2010;
+        
+        /// <summary>
         /// 客户端发送给服务器的下一帧消息的ID
         /// </summary>
         public const int C2S_NextFrame_ID = 3001;

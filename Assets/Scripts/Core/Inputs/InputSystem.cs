@@ -94,6 +94,14 @@ namespace Core.Inputs
         }
 
         /// <summary>
+        /// 重置玩家输入
+        /// </summary>
+        public void ResetPlayerInput()
+        {
+            _playerInput = null;
+        }
+
+        /// <summary>
         /// 启用所有输入动作
         /// 使输入系统响应玩家输入
         /// </summary>

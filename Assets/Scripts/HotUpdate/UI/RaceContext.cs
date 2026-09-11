@@ -6,7 +6,9 @@ using Core.GlobalEvent;
 using Core.Inputs;
 using Core.Math;
 using Core.Net.Events;
+using Core.Net.Protocols;
 using Core.Net.Protocols.Tcp;
+using Core.Net.Protocols.Tcp.Messages.Common;
 using Core.Net.SyncModule.Interface;
 using Core.Net.SyncModule.Manager;
 using Core.UI;
@@ -139,7 +141,7 @@ namespace HotUpdate.UI
             _logicWorld?.Unsubscribe();
             _netManager.OnConnected -= OnConnected;
             _eventCenter.UnsubscribeEvent<RaceEndEvent>(OnRaceEnd);
-            _objectSpawner.Release(_viewAvatars);
+            _objectSpawner.Release(_viewAvatars, true);
         }
         
         /// <summary>
@@ -151,6 +153,9 @@ namespace HotUpdate.UI
                 return;
 
             Debug.Log($"[Race] 比赛结束：{(evt.Win ? "胜利" : "失败")}");
+            
+            // 通知服务器比赛结束，允许重新匹配
+            _netManager.Send(new C2S_RaceEndMessage(), EProtocolChannel.Resolve);
 
             // 关闭战斗界面（RaceView，会顺带释放 HUD）
             var raceController = _uiManager.GetController<RaceController>();

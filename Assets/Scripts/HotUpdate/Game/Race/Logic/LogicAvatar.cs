@@ -11,7 +11,7 @@ namespace HotUpdate.Game.Race.Logic
         public const int AttackDuration = 8;                  // 攻击总时长（逻辑帧）≈ 533ms
         public const int AttackHitFrame = 3;                  // 命中帧：133ms（StartAttack 后 Tick 已 +1，故 3 = 攻击指令后第 2 帧）
         public const int Damage = 10;                         // 伤害
-        public const int MaxHp = 300;                         // 最大生命
+        public const int MaxHp = 50;                         // 最大生命
         public static readonly Fixed64 AttackRange = Fixed64.FromFloat(2f);   // 圆心到圆心
         public static readonly Fixed64 HalfAngleCos = Fixed64.Half;             // cos60° = 0.5，扇面 120°
         

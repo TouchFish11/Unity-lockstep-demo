@@ -193,6 +193,8 @@ namespace HotUpdate.UI
         {
             _objectSpawner.Release(view.ConfirmPanelUI);
             view.ConfirmPanelUI = null;
+            isMatching = !isMatching;
+            view.btnMatch.GetComponentInChildren<Text>().text = isMatching ? "取消匹配" : "开始匹配";
             // 隐藏主界面
             await _uiManager.SetViewActive(panelId, false);
             await _raceContext.StartRace();
