@@ -8,7 +8,7 @@ namespace Core.Net.Protocols.FSync.Messages
     public class C2S_NextFrameMessage : FrameMessage
     {
         /// <summary>
-        /// ֡下一帧帧ID
+        /// 下一帧帧ID
         /// </summary>
         public int FrameID { get; set; }
 

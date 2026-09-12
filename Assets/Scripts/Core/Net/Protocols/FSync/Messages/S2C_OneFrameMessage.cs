@@ -8,7 +8,7 @@ namespace Core.Net.Protocols.FSync.Messages
     public class S2C_OneFrameMessage : FrameMessage
     {
         /// <summary>
-        /// ֡当前帧ID
+        /// 当前帧ID
         /// </summary>
         public int FrameID { get; set; }
 

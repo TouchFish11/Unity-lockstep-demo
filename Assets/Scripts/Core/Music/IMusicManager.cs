@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 namespace Core.Music
 {
     /// <summary>
-    /// ���ֹ������ӿ�
+    /// 音乐管理器接口
     /// </summary>
     public interface IMusicManager
     {

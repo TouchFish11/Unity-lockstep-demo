@@ -3,7 +3,7 @@ using UnityEngine.Events;
 namespace Core.Time
 {
     /// <summary>
-    /// ʱ�������ӿ�
+    /// 时间校验接口
     /// </summary>
     public interface ITimeChecker
     {

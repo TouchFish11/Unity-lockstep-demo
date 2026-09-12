@@ -4,30 +4,30 @@ using UnityEngine.Events;
 namespace Core.Service.Login
 {
     /// <summary>
-    /// ��¼����ӿ�
+    /// 登录服务接口
     /// </summary>
     public interface ILoginService
     {
         /// <summary>
-        /// �Զ���¼����¼�
+        /// 自动登录完成事件
         /// </summary>
         public event UnityAction<bool> OnAutoLoginCompleted;
 
         /// <summary>
-        /// �첽��¼
+        /// 异步登录
         /// </summary>
         /// <returns></returns>
         Task LoginAsync(LoginData loginData);
 
         /// <summary>
-        /// �����¼����
+        /// 保存登录数据
         /// </summary>
         /// <param name="account"></param>
         /// <param name="password"></param>
         void SaveLoginData(LoginData loginData);
 
         /// <summary>
-        /// ���ص�¼����
+        /// 加载登录数据
         /// </summary>
         Task<LoginData> LoadLoginData();
     }

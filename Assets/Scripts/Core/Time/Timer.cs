@@ -4,35 +4,35 @@ using UnityEngine.Events;
 namespace Core.Time
 {
     /// <summary>
-    /// ��ʱ��
+    /// 定时器
     /// </summary>
     public class Timer : IPoolData
     {
-        //��ʱ��ΨһID
+        // 定时器唯一ID
         private int _id;
-        //ʣ��ʱ��(ms)
+        // 剩余时间(ms)
         private int _nowTime;
-        //���ʱ��(ms)
+        // 总时长(ms)
         private int _maxTime;
-        //���ʣ��ʱ��(ms)
+        // 当前剩余间隔时间(ms)
         private int _nowIntervalTime;
-        //�����ʱ��(ms)
+        // 最大间隔时间(ms)
         private int _maxIntervalTime;
-        //��ʱ������ص�
+        // 定时到时的回调
         private  UnityAction _allTimeOverCallBack;
-        //���ʱ������ص�
+        // 间隔到时的回调
         private  UnityAction _intervalTimeOverCallBack;
-        //�Ƿ����ڼ�ʱ
+        // 是否正在计时
         private bool _isRunning;
 
         /// <summary>
-        /// ��ʼ����ʱ��
+        /// 初始化定时器
         /// </summary>
-        /// <param name="id">ΨһID</param>
-        /// <param name="maxTime">���ʱ��</param>
-        /// <param name="timeOverCallBack">ʱ������ص�</param>
-        /// <param name="maxIntervalTime">��ѡ�����ʱ��</param>
-        /// <param name="intervalTimeOverCallBack">��ѡ�����ʱ��ص�</param>
+        /// <param name="id">唯一ID</param>
+        /// <param name="maxTime">总时长</param>
+        /// <param name="timeOverCallBack">到时回调</param>
+        /// <param name="maxIntervalTime">可选的间隔时长</param>
+        /// <param name="intervalTimeOverCallBack">可选的间隔到时回调</param>
         public void InitTimer(int id, int maxTime, UnityAction timeOverCallBack, int maxIntervalTime = 0, UnityAction intervalTimeOverCallBack = null)
         {
             _id = id;
@@ -44,7 +44,7 @@ namespace Core.Time
         }
 
         /// <summary>
-        /// ���ü�ʱ��
+        /// 重置定时器
         /// </summary>
         public void ResetTimer()
         {
@@ -54,7 +54,7 @@ namespace Core.Time
         }
 
         /// <summary>
-        /// ��ʱ�������ص�
+        /// 定时到时的回调
         /// </summary>
         public void OverInvoke()
         {
@@ -62,7 +62,7 @@ namespace Core.Time
         }
 
         /// <summary>
-        /// ��ʱ�����ʱ��ص�
+        /// 间隔到时的回调
         /// </summary>
         public void IntervalInvoke()
         {
@@ -76,28 +76,28 @@ namespace Core.Time
             _nowTime = _maxTime = 0;
             _nowIntervalTime = _maxIntervalTime = 0;
             IsRunning = false;
-            //���ί��
+            // 清空委托
             _allTimeOverCallBack = null;
             _intervalTimeOverCallBack = null;
         }
 
         /// <summary>
-        /// �Ƿ����ڼ�ʱ
+        /// 是否正在计时
         /// </summary>
         public bool IsRunning { get => _isRunning; set => _isRunning = value; }
 
         /// <summary>
-        /// ʣ�����ʱ��
+        /// 剩余总时长
         /// </summary>
         public int NowTime { get => _nowTime; set => _nowTime = value; }
 
         /// <summary>
-        /// ʣ��ļ��ʱ��
+        /// 剩余的间隔时长
         /// </summary>
         public int NowIntervalTime { get => _nowIntervalTime; set => _nowIntervalTime = value; }
 
         /// <summary>
-        /// ��ʱ��ΨһID
+        /// 定时器唯一ID
         /// </summary>
         public int Id { get => _id; }
     }

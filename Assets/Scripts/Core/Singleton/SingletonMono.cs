@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Core.Singleton
 {
     /// <summary>
-    /// �̳�Mono�ĵ���(�ֶ�����)
+    /// 继承Mono的单例基类（手动创建）
     /// </summary>
     public abstract class SingletonMono<T> : MonoBehaviour where T : MonoBehaviour
     {
@@ -11,7 +11,7 @@ namespace Core.Singleton
         public static T Instance => _instance;
 
         /// <summary>
-        /// �����Ƿ����
+        /// 当前是否存活
         /// </summary>
         public bool IsLive
         {
@@ -26,7 +26,7 @@ namespace Core.Singleton
 
         protected virtual void Awake()
         {
-            //�Ѿ����ڸõ�������Ϊ�˱������л�����ʱ�ظ�����
+            // 已经存在该单例，为了避免切换场景时重复创建
             if (_instance != null)
             {
                 Destroy(gameObject);

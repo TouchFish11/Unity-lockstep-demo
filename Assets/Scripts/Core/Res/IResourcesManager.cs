@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace Core.Res
 {
     /// <summary>
-    /// ��Դ�������ӿ�
+    /// 资源管理器接口
     /// </summary>
     public interface IResourcesManager
     {

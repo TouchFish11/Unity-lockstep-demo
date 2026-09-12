@@ -4,36 +4,36 @@ using UnityEngine.Events;
 namespace Core.Utility
 {
     /// <summary>
-    /// ��ѧ���㹤����
+    /// 数学计算工具类
     /// </summary>
     public static class MathUtility
     {
         /// <summary>
-        /// �Ƕ�ת����
+        /// 角度转弧度
         /// </summary>
-        /// <param name="deg">�Ƕ�</param>
-        /// <returns>����</returns>
+        /// <param name="deg">角度</param>
+        /// <returns>弧度</returns>
         public static float Deg2Rad(float deg)
         {
             return Mathf.Deg2Rad * deg;
         }
 
         /// <summary>
-        /// ����ת�Ƕ�
+        /// 弧度转角度
         /// </summary>
-        /// <param name="deg">����</param>
-        /// <returns>�Ƕ�</returns>
+        /// <param name="rad">弧度</param>
+        /// <returns>角度</returns>
         public static float Rad2Deg(float rad)
         {
             return Mathf.Rad2Deg * rad;
         }
 
         /// <summary>
-        /// ��ȡXZƽ������ľ���
+        /// 获取XZ平面上的距离
         /// </summary>
-        /// <param name="scrPos">Դ��</param>
-        /// <param name="targetPos">Ŀ���</param>
-        /// <returns>XZƽ����������</returns>
+        /// <param name="scrPos">源点</param>
+        /// <param name="targetPos">目标点</param>
+        /// <returns>XZ平面上的距离</returns>
         public static float GetDistanceXZ(Vector3 scrPos, Vector3 targetPos)
         {
             scrPos.y = 0;
@@ -42,23 +42,23 @@ namespace Core.Utility
         }
 
         /// <summary>
-        /// �ж�XZƽ����������Ƿ�С�ڵ��ڸ�������
+        /// 判断XZ平面上两点的距离是否小于等于给定距离
         /// </summary>
-        /// <param name="scrPos">Դ��</param>
-        /// <param name="targetPos">Ŀ���</param>
-        /// <param name="dis">��������</param>
-        /// <returns>true��С�ڸ������룻false�����ڸ�������</returns>
+        /// <param name="scrPos">源点</param>
+        /// <param name="targetPos">目标点</param>
+        /// <param name="dis">给定距离</param>
+        /// <returns>true：小于等于给定距离；false：大于给定距离</returns>
         public static bool CheckXZ2PosDisIsLessDis(Vector3 scrPos, Vector3 targetPos, float dis)
         {
             return GetDistanceXZ(scrPos, targetPos) <= dis;
         }
 
         /// <summary>
-        /// ��ȡXYƽ������ľ���
+        /// 获取XY平面上的距离
         /// </summary>
-        /// <param name="scrPos">Դ��</param>
-        /// <param name="targetPos">Ŀ���</param>
-        /// <returns>XYƽ����������</returns>
+        /// <param name="scrPos">源点</param>
+        /// <param name="targetPos">目标点</param>
+        /// <returns>XY平面上的距离</returns>
         public static float GetDistanceXY(Vector3 scrPos, Vector3 targetPos)
         {
             scrPos.z = 0;
@@ -67,26 +67,26 @@ namespace Core.Utility
         }
 
         /// <summary>
-        /// �ж�XYƽ����������Ƿ�С�ڵ��ڸ�������
+        /// 判断XY平面上两点的距离是否小于等于给定距离
         /// </summary>
-        /// <param name="scrPos">Դ��</param>
-        /// <param name="targetPos">Ŀ���</param>
-        /// <param name="dis">��������</param>
-        /// <returns>true��С�ڸ������룻false�����ڸ�������</returns>
+        /// <param name="scrPos">源点</param>
+        /// <param name="targetPos">目标点</param>
+        /// <param name="dis">给定距离</param>
+        /// <returns>true：小于等于给定距离；false：大于给定距离</returns>
         public static bool CheckDistanceXY(Vector3 scrPos, Vector3 targetPos, float dis)
         {
             return GetDistanceXY(scrPos, targetPos) <= dis;
         }
 
         /// <summary>
-        /// �ж���������ϵ���Ƿ�����Ļ��
+        /// 判断世界坐标系点是否在屏幕外
         /// </summary>
-        /// <param name="worldPos">��������ϵ��</param>
-        /// <returns>true������Ļ�⣻false������Ļ��</returns>
+        /// <param name="worldPos">世界坐标系点</param>
+        /// <returns>true：在屏幕外；false：在屏幕内</returns>
         public static bool CheckWorldPosIsOutScreen(Vector3 worldPos)
         {
             Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
-            //�ж��Ƿ�����Ļ��
+            // 判断是否在屏幕外
             if (screenPos.x >= 0 && screenPos.x <= Screen.width &&
                 screenPos.y >= 0 && screenPos.y <= Screen.height)
                 return false;
@@ -94,14 +94,14 @@ namespace Core.Utility
         }
 
         /// <summary>
-        /// �ж�ĳ�����Ƿ���XZƽ������η�Χ��
+        /// 判断某个点是否在XZ平面扇形范围内
         /// </summary>
-        /// <param name="censterPos">���ĵ�</param>
-        /// <param name="forward">�泯��</param>
-        /// <param name="targetPos">Ŀ���</param>
-        /// <param name="radius">�뾶</param>
-        /// <param name="angle">�Ƕ�</param>
-        /// <returns>true�������η�Χ�ڣ�false���������η�Χ��</returns>
+        /// <param name="censterPos">中心点</param>
+        /// <param name="forward">面朝向</param>
+        /// <param name="targetPos">目标点</param>
+        /// <param name="radius">半径</param>
+        /// <param name="angle">角度</param>
+        /// <returns>true：在扇形范围内；false：不在扇形范围内</returns>
         public static bool CheckPosIsInSectorRangeXZ(Vector3 censterPos, Vector3 forward, Vector3 targetPos, float radius, float angle)
         {
             censterPos.y = 0;
@@ -113,13 +113,13 @@ namespace Core.Utility
 
 
         /// <summary>
-        /// ���߼��-��ȡRaycastHit
+        /// 射线检测-获取RaycastHit
         /// </summary>
-        /// <param name="ray">����</param>
-        /// <param name="callBack">�ص�����</param>
-        /// <param name="maxDistance">������</param>
-        /// <param name="layerMask">ָ���㼶</param>
-        /// <param name="queryTriggerInteraction">�Ƿ���Դ�����</param>
+        /// <param name="ray">射线</param>
+        /// <param name="callBack">回调函数</param>
+        /// <param name="maxDistance">最大距离</param>
+        /// <param name="layerMask">指定层级</param>
+        /// <param name="queryTriggerInteraction">是否允许触发器检测</param>
         public static void RayCast(Ray ray, UnityAction<RaycastHit> callBack, float maxDistance, int layerMask, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
         {
             RaycastHit hitInfo;
@@ -128,13 +128,13 @@ namespace Core.Utility
         }
 
         /// <summary>
-        /// ���߼��-��ȡGameObject
+        /// 射线检测-获取GameObject
         /// </summary>
-        /// <param name="ray">����</param>
-        /// <param name="callBack">�ص�����</param>
-        /// <param name="maxDistance">������</param>
-        /// <param name="layerMask">ָ���㼶</param>
-        /// <param name="queryTriggerInteraction">�Ƿ���Դ�����</param>
+        /// <param name="ray">射线</param>
+        /// <param name="callBack">回调函数</param>
+        /// <param name="maxDistance">最大距离</param>
+        /// <param name="layerMask">指定层级</param>
+        /// <param name="queryTriggerInteraction">是否允许触发器检测</param>
         public static void RayCast(Ray ray, UnityAction<GameObject> callBack, float maxDistance, int layerMask, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
         {
             RaycastHit hitInfo;
@@ -143,13 +143,13 @@ namespace Core.Utility
         }
 
         /// <summary>
-        /// ���߼��-��ȡ�ű�
+        /// 射线检测-获取脚本
         /// </summary>
-        /// <param name="ray">����</param>
-        /// <param name="callBack">�ص�����</param>
-        /// <param name="maxDistance">������</param>
-        /// <param name="layerMask">ָ���㼶</param>
-        /// <param name="queryTriggerInteraction">�Ƿ���Դ�����</param>
+        /// <param name="ray">射线</param>
+        /// <param name="callBack">回调函数</param>
+        /// <param name="maxDistance">最大距离</param>
+        /// <param name="layerMask">指定层级</param>
+        /// <param name="queryTriggerInteraction">是否允许触发器检测</param>
         public static void RayCast<T>(Ray ray, UnityAction<T> callBack, float maxDistance, int layerMask, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
         {
             RaycastHit hitInfo;
@@ -158,13 +158,13 @@ namespace Core.Utility
         }
 
         /// <summary>
-        /// ���߼��-��ȡ���RaycastHit
+        /// 射线检测-获取所有RaycastHit
         /// </summary>
-        /// <param name="ray">����</param>
-        /// <param name="callBack">�ص�����</param>
-        /// <param name="maxDistance">������</param>
-        /// <param name="layerMask">ָ���㼶</param>
-        /// <param name="queryTriggerInteraction">�Ƿ���Դ�����</param>
+        /// <param name="ray">射线</param>
+        /// <param name="callBack">回调函数</param>
+        /// <param name="maxDistance">最大距离</param>
+        /// <param name="layerMask">指定层级</param>
+        /// <param name="queryTriggerInteraction">是否允许触发器检测</param>
         public static void RayCastAll(Ray ray, UnityAction<RaycastHit> callBack, float maxDistance, int layerMask, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
         {
             RaycastHit[] raycastHits = Physics.RaycastAll(ray, maxDistance, layerMask, queryTriggerInteraction);
@@ -175,13 +175,13 @@ namespace Core.Utility
         }
 
         /// <summary>
-        /// ���߼��-��ȡ���GameObject
+        /// 射线检测-获取所有GameObject
         /// </summary>
-        /// <param name="ray">����</param>
-        /// <param name="callBack">�ص�����</param>
-        /// <param name="maxDistance">������</param>
-        /// <param name="layerMask">ָ���㼶</param>
-        /// <param name="queryTriggerInteraction">�Ƿ���Դ�����</param>
+        /// <param name="ray">射线</param>
+        /// <param name="callBack">回调函数</param>
+        /// <param name="maxDistance">最大距离</param>
+        /// <param name="layerMask">指定层级</param>
+        /// <param name="queryTriggerInteraction">是否允许触发器检测</param>
         public static void RayCastAll(Ray ray, UnityAction<GameObject> callBack, float maxDistance, int layerMask, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
         {
             RaycastHit[] raycastHits = Physics.RaycastAll(ray, maxDistance, layerMask, queryTriggerInteraction);
@@ -192,13 +192,13 @@ namespace Core.Utility
         }
 
         /// <summary>
-        /// ���߼��-��ȡ����ű�
+        /// 射线检测-获取所有脚本
         /// </summary>
-        /// <param name="ray">����</param>
-        /// <param name="callBack">�ص�����</param>
-        /// <param name="maxDistance">������</param>
-        /// <param name="layerMask">ָ���㼶</param>
-        /// <param name="queryTriggerInteraction">�Ƿ���Դ�����</param>
+        /// <param name="ray">射线</param>
+        /// <param name="callBack">回调函数</param>
+        /// <param name="maxDistance">最大距离</param>
+        /// <param name="layerMask">指定层级</param>
+        /// <param name="queryTriggerInteraction">是否允许触发器检测</param>
         public static void RayCastAll<T>(Ray ray, UnityAction<T> callBack, float maxDistance, int layerMask, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
         {
             RaycastHit[] raycastHits = Physics.RaycastAll(ray, maxDistance, layerMask, queryTriggerInteraction);

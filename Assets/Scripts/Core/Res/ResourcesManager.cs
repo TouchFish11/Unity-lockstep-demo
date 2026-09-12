@@ -23,7 +23,7 @@ namespace Core.Res
         
         public T Load<T>(string resPath) where T : Object
         {
-            //�Զ���洢����
+            // 自动生成存储名
             var cacheName = $"{resPath}_{typeof(T).Name}";
             ResourcesInfo<T> info = null;
             if (_nameToResInfoMap.TryGetValue(cacheName, out var value))
@@ -32,11 +32,11 @@ namespace Core.Res
                 if (info != null && !info.Asset)
                 {
                     _monoAdapter.StopCoroutine(info.ResCoroutine);
-                    //�ÿ�Э��
+                    // 清空协程
                     info.ResCoroutine = null;
-                    //ͬ�����أ���¼��Դ
+                    // 同步加载，记录资源
                     info.Asset = Resources.Load<T>(resPath);
-                    //ִ�лص�
+                    // 执行回调
                     info.Invoke();
                 }
 
@@ -44,31 +44,31 @@ namespace Core.Res
             }
 
             info = new ResourcesInfo<T>(null);
-            //�洢���ֵ���
+            // 存储到字典
             _nameToResInfoMap.Add(cacheName, info);
-            //ͬ�����أ���¼��Դ
+            // 同步加载，记录资源
             info.Asset = Resources.Load<T>(resPath);
             return info.Asset;
         }
 
         /// <summary>
-        /// �첽������Դ
+        /// 异步加载资源
         /// </summary>
-        /// <typeparam name="T">��Դ����</typeparam>
-        /// <param name="resName">��Դ·��</param>
-        /// <param name="callBack">�ص�����</param>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <param name="resName">资源路径</param>
+        /// <param name="callBack">回调函数</param>
         public void LoadAsync<T>(string resName, UnityAction<T> callBack) where T : Object
         {
-            //�Զ���洢����
+            // 自动生成存储名
             string cacheName = $"{resName}_{typeof(T).Name}";
 
             ResourcesInfo<T> info;
             if (_nameToResInfoMap.ContainsKey(cacheName))
             {
                 info = _nameToResInfoMap[cacheName] as ResourcesInfo<T>;
-                //�������ü���
+                // 增加引用计数
                 ++info.RefCount;
-                //�����첽������Դ
+                // 等待异步加载资源
                 if (info.Asset == null)
                     info.ResCallBack += callBack;
                 else
@@ -79,71 +79,70 @@ namespace Core.Res
             info = new ResourcesInfo<T>(callBack);
             _nameToResInfoMap.Add(cacheName, info);
 
-            //ͨ��Mono����������Э��
+            // 通过Mono适配器开启协程
             info.ResCoroutine = _monoAdapter.StartCoroutine(LoadAsync_Cor());
 
             IEnumerator LoadAsync_Cor()
             {
-                //�첽������Դ
+                // 异步加载资源
                 ResourceRequest req = Resources.LoadAsync<T>(resName);
                 yield return req;
                 ResourcesInfo<T> info = _nameToResInfoMap[cacheName] as ResourcesInfo<T>;
-                //�����ڴ�ɾ����ִ����Դ�ص�
+                // 如果没被删除，记录资源并执行回调
                 if (!info.IsDelete)
                 {
-                    //��¼��Դ
+                    // 记录资源
                     info.Asset = req.asset as T;
-                    //���ûص�
+                    // 执行回调
                     info.Invoke();
                 }
-                //����Ͳ���¼��Դ��ж����Դ�����ֵ����Ƴ�
+                // 否则不记录资源，卸载资源并从字典移除
                 else
                     UnloadAsset<T>(resName);
             }
         }
 
         /// <summary>
-        /// ж��ָ����Դ
+        /// 卸载指定资源
         /// </summary>
-        /// <typeparam name="T">��Դ����</typeparam>
-        /// <param name="resName">��Դ��</param>
-        /// <param name="callBack">�Ƴ��Ļص�����, �ⲿ���ú��Դ˲���</param>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <param name="resName">资源名</param>
         public void UnloadAsset<T>(string resName) where T : Object
         {
-            //�Զ���洢����
+            // 自动生成存储名
             string cacheName = $"{resName}_{typeof(T).Name}";
             ResourcesInfo<T> info;
 
-            //�ֵ��д�������Դ��˵����Դ�����첽���ػ�������
+            // 如果字典中存在该资源，说明资源正在异步加载或已加载
             if (_nameToResInfoMap.ContainsKey(cacheName))
             {
                 info = _nameToResInfoMap[cacheName] as ResourcesInfo<T>;
                 if(!info.IsDelete)
-                    //���Ǵ�ɾ����Դ���ż������ü���
+                    // 如果不是已删除的资源，才减少引用计数
                     --info.RefCount;
-                //���ü���Ϊ0��������Դ��Ϊ��ɾ����Դ
+                // 引用计数为0时，标记资源为待删除资源
                 if(info.RefCount == 0 && !info.IsDelete)
                     info.IsDelete = true;
-                //��Դ�������
+                // 资源已加载完成
                 if (info.Asset != null && info.IsDelete)
                 {
                     if (info.Asset is not GameObject)
-                        //ж����Դ
+                        // 卸载资源
                         Resources.UnloadAsset(info.Asset);
 
-                    //�����ÿ�
+                    // 清空资源引用
                     info.Asset = null;
-                    //���ֵ����Ƴ�
+                    // 从字典移除
                     _nameToResInfoMap.Remove(cacheName);
                 }
-                //�������Դ�����첽���أ����������ﴦ��
+                // 如果资源正在异步加载，会在回调里处理
             }
         }
 
         /// <summary>
-        /// ж������δʹ�õ���Դ
+        /// 卸载所有未使用的资源
         /// </summary>
-        /// <param name="callBack">ж����ɻص�</param>
+        /// <param name="callBack">卸载完成回调</param>
         public void UnloadUnusedAssets(UnityAction callBack = null)
         {
             _monoAdapter.StartCoroutine(UnLoadUnusedAssets_Cor(callBack));
@@ -158,7 +157,7 @@ namespace Core.Res
         }
 
         /// <summary>
-        /// ���������Դ
+        /// 清空所有资源
         /// </summary>
         public void Clear()
         {

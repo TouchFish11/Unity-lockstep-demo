@@ -127,7 +127,7 @@ namespace Core.Editor.Menu
             // 创建资源
             AssetDatabase.CreateAsset(mesh, "Assets/Editor/ArtRes/Mesh/MergedMesh.asset");
 
-            #region ����ʱ�߼�
+            #region 运行时逻辑
             // 可添加网格过滤器
             //MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
             // 设置网格

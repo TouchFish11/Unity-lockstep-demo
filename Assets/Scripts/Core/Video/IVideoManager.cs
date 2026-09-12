@@ -5,7 +5,7 @@ using UnityEngine.Video;
 namespace Core.Video
 {
     /// <summary>
-    /// ��Ƶ�������ӿ�
+    /// 视频播放管理器接口
     /// </summary>
     public interface IVideoManager
     {

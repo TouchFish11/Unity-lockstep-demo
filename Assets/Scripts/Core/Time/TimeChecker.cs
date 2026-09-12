@@ -7,56 +7,56 @@ using UnityEngine.Events;
 namespace Core.Time
 {
     /// <summary>
-    /// ʱ������(����)
+    /// 时间校验（定时）
     /// </summary>
     public class TimeChecker : ITimeChecker
     {
         [Inject] private IPoolManager _poolManager;
-        // �洢ʱ������ֵ� Key��Ψһ����Value��ʱ�����
+        // 存储定时时间：Key 为唯一标识，Value 为定时时间
         private Dictionary<int, DateTime> _dateTimeDic = new();
 
         /// <summary>
-        /// ʱ�����Ψһ��
+        /// 定时时间的唯一标识
         /// </summary>
         private static int TIME_KEY;
 
         /// <summary>
-        /// ����Ŀ��ʱ��
+        /// 创建目标时间
         /// </summary>
-        /// <param name="currentTime">��ǰʱ��ṹ��</param>
-        /// <param name="targetDay">ָ������</param>
-        /// <param name="targetHour">ָ��Сʱ</param>
-        /// <param name="targetMin">ָ������</param>
-        /// <param name="targetSec">ָ������</param>
-        /// <returns>ʱ������ӦKey</returns>
+        /// <param name="currentTime">当前时间结构体</param>
+        /// <param name="targetDay">指定天数</param>
+        /// <param name="targetHour">指定小时</param>
+        /// <param name="targetMin">指定分钟</param>
+        /// <param name="targetSec">指定秒</param>
+        /// <returns>定时时间对应的Key</returns>
         public int CreateTargetTime(System.DateTime currentTime, int targetDay, int targetHour, int targetMin, int targetSec)
         {
-            // ��������ָ��ʱ��� DateTime ����
+            // 从对象池获取 DateTime 实例
             var tagetTime = _poolManager.GetData<DateTime>();
-            //��ʼ��ʱ�����
+            // 初始化定时时间
             tagetTime = tagetTime.Init(currentTime, targetDay, targetHour, targetMin, targetSec);
-            //�洢���ֵ�
+            // 存储到字典
             _dateTimeDic.Add(++TIME_KEY, tagetTime);
-            //����ֵʱ���Ӧ�ļ�
+            // 返回定时时间对应的Key
             return TIME_KEY;
         }
 
         /// <summary>
-        /// ����ʱ���������
+        /// 添加定时时间监听
         /// </summary>
-        /// <param name="key">ʱ������Ӧ�ļ�</param>
-        /// <param name="overCallBack">�����ص�</param>
+        /// <param name="key">定时时间对应的Key</param>
+        /// <param name="overCallBack">超时回调</param>
         public void AddListener(int key, UnityAction overCallBack)
         {
             GetDateTime(key).OverCallBack += overCallBack;
         }
 
         /// <summary>
-        /// ����ʣ��ʱ��
+        /// 计算剩余时间
         /// </summary>
-        /// <param name="current">��ǰʱ��</param>
-        /// <param name="key">ʱ�����Key</param>
-        /// <returns>��ǰʣ��ʱ�䣨�룩</returns>
+        /// <param name="current">当前时间</param>
+        /// <param name="key">定时时间Key</param>
+        /// <returns>当前剩余时间（秒）</returns>
         public long CalcRemainTime(System.DateTime current, int key)
         {
             if (_dateTimeDic.ContainsKey(key))
@@ -64,15 +64,15 @@ namespace Core.Time
                 return _dateTimeDic[key].CalcRemainTime(current);
             }
 
-            Logger.LogError(ELogTags.Time, $"δ�ҵ���ָ����ʱ�����KEY��{key}");
+            Logger.LogError(ELogTags.Time, $"未找到指定的定时时间KEY：{key}");
             return 0;
         }
 
         /// <summary>
-        /// ��ȡ����Ӧ��ʱ�����
+        /// 获取Key对应的定时时间
         /// </summary>
-        /// <param name="key">ʱ�����Key</param>
-        /// <returns>ʱ�����</returns>
+        /// <param name="key">定时时间Key</param>
+        /// <returns>定时时间</returns>
         public DateTime GetDateTime(int key)
         {
             if (_dateTimeDic.TryGetValue(key, out var dateTime))
@@ -80,12 +80,12 @@ namespace Core.Time
                 return dateTime;
             }
 
-            Logger.LogError(ELogTags.Time, $"δ�ҵ���ָ����ʱ�����KEY��{key}");
+            Logger.LogError(ELogTags.Time, $"未找到指定的定时时间KEY：{key}");
             return null;
         }
 
         /// <summary>
-        /// ���
+        /// 清空
         /// </summary>
         public void Clear()
         {

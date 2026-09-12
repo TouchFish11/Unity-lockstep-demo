@@ -10,12 +10,12 @@ namespace Core.Net.Protocols
     public static class MessageUtil
     {
         /// <summary>
-        /// д���ֶ�
+        /// 写入字段
         /// </summary>
-        /// <typeparam name="T">֧��byte��shout��int��long��float��double��char��bool��string��BaseMessage</typeparam>
-        /// <param name="bytes">�ֽ�����</param>
-        /// <param name="value">�ֶ�ֵ</param>
-        /// <param name="index">��ǰд��λ��</param>
+        /// <typeparam name="T">支持byte、short、int、long、float、double、bool、char、string、FrameMessage</typeparam>
+        /// <param name="bytes">字节数组</param>
+        /// <param name="value">字段值</param>
+        /// <param name="index">当前写入位置</param>
         public static void WriteField<T>(byte[] bytes, T value, ref int index)
         {
             switch (value)
@@ -70,7 +70,7 @@ namespace Core.Net.Protocols
         }
 
         /// <summary>
-        /// ��ȡbyte����
+        /// 读取byte数据
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="index"></param>
@@ -83,7 +83,7 @@ namespace Core.Net.Protocols
         }
 
         /// <summary>
-        /// ��ȡshort����
+        /// 读取short数据
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="index"></param>
@@ -96,7 +96,7 @@ namespace Core.Net.Protocols
         }
 
         /// <summary>
-        /// ��ȡint����
+        /// 读取int数据
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="index"></param>
@@ -109,7 +109,7 @@ namespace Core.Net.Protocols
         }
 
         /// <summary>
-        /// ��ȡlong����
+        /// 读取long数据
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="index"></param>
@@ -122,7 +122,7 @@ namespace Core.Net.Protocols
         }
 
         /// <summary>
-        /// ��ȡfloat����
+        /// 读取float数据
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="index"></param>
@@ -135,7 +135,7 @@ namespace Core.Net.Protocols
         }
 
         /// <summary>
-        /// ��ȡdouble����
+        /// 读取double数据
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="index"></param>
@@ -148,7 +148,7 @@ namespace Core.Net.Protocols
         }
 
         /// <summary>
-        /// ��ȡchar����
+        /// 读取char数据
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="index"></param>
@@ -161,7 +161,7 @@ namespace Core.Net.Protocols
         }
 
         /// <summary>
-        /// ��ȡbool����
+        /// 读取bool数据
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="index"></param>
@@ -174,7 +174,7 @@ namespace Core.Net.Protocols
         }
 
         /// <summary>
-        /// ��ȡstring����
+        /// 读取string数据
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="index"></param>
@@ -188,7 +188,7 @@ namespace Core.Net.Protocols
         }
 
         /// <summary>
-        /// ��ȡFrameCommand����
+        /// 读取FrameMessage数据
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="bytes"></param>

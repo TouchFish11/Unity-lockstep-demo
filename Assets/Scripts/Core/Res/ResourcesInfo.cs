@@ -4,32 +4,32 @@ using UnityEngine.Events;
 namespace Core.Res
 {
     /// <summary>
-    /// ��Դ��Ϣ��
+    /// 资源信息类
     /// </summary>
-    /// <typeparam name="T">��Դ����</typeparam>
+    /// <typeparam name="T">资源类型</typeparam>
     public class ResourcesInfo<T> : BaseResourcesInfo where T : Object
     {
-        //�洢����Դ����
+        // 存储加载的资源对象
         private T _asset;
-        //�Ƿ�Ҫɾ���ı�ʶ
+        // 是否要删除的标识
         private bool _isDelete;
-        //��ԴЭ�̶���
+        // 资源协程对象
         private Coroutine _resCoroutine;
-        //��Դ�ص�����
+        // 资源回调事件
         public event UnityAction<T> ResCallBack;
 
         /// <summary>
-        /// ��Դ
+        /// 资源
         /// </summary>
         public T Asset { get { return _asset; } set { _asset = value; } }
 
         /// <summary>
-        /// �Ƿ�ɾ��
+        /// 是否删除
         /// </summary>
         public bool IsDelete { get { return _isDelete; } set { _isDelete = value; } }
 
         /// <summary>
-        /// Э�̶���
+        /// 协程对象
         /// </summary>
         public Coroutine ResCoroutine { get { return _resCoroutine; } set { _resCoroutine = value; } }
 
@@ -40,7 +40,7 @@ namespace Core.Res
         }
 
         /// <summary>
-        /// ִ�лص�
+        /// 执行回调
         /// </summary>
         public void Invoke()
         {

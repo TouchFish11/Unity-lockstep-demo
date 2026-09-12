@@ -18,7 +18,7 @@ namespace Core.Net.Protocols.Tcp.Handlers.S2C
             //     {
             //         GameHandler.Instance.IsStop = true;
             //     }
-            //     Debug.Log($"��ң�{TcpMessage.ClientID}���˳���Ϸ");
+            //     Debug.Log($"玩家：{TcpMessage.ClientID}退出游戏");
             // } 
         }
     }

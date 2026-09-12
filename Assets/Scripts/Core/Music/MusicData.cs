@@ -4,37 +4,37 @@ using UnityEngine;
 namespace Core.Music
 {
     /// <summary>
-    /// ��������
+    /// 音乐数据
     /// </summary>
     [Serializable]
     public class MusicData
     {
-        //���ִ�С
+        // 音乐音量
         [SerializeField] private float _musicValue = 1f;
-        //��Ч��С
+        // 音效音量
         [SerializeField] private float _soundValue = 1f;
-        //�����Ƿ���
+        // 音乐是否开启
         [SerializeField] private bool _musicIsOpen = true;
-        //��Ч�Ƿ���
+        // 音效是否开启
         [SerializeField] private bool _soundIsOpen = true;
 
         /// <summary>
-        /// ���ִ�С
+        /// 音乐音量
         /// </summary>
         public float MusicValue { get => _musicValue; set => _musicValue = value; }
 
         /// <summary>
-        /// ��Ч��С
+        /// 音效音量
         /// </summary>
         public float SoundValue { get => _soundValue; set => _soundValue = value; }
 
         /// <summary>
-        /// �����Ƿ���
+        /// 音乐是否开启
         /// </summary>
         public bool MusicIsOpen { get => _musicIsOpen; set => _musicIsOpen = value; }
 
         /// <summary>
-        /// ��Ч�Ƿ���
+        /// 音效是否开启
         /// </summary>
         public bool SoundIsOpen { get => _soundIsOpen; set => _soundIsOpen = value; }
     }
