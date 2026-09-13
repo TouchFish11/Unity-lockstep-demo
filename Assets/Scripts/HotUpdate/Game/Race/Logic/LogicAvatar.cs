@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Core.Math;
 using Core.Net.Protocols.FSync;
 
@@ -7,16 +8,10 @@ namespace HotUpdate.Game.Race.Logic
     {
         private static readonly Fixed64 LogicDeltaTime = Fixed64.FromFloat(0.066f); // 66ms
         
-        // 攻击配置（对齐攻击动画：16帧@30fps=533ms，命中≈第4帧=133ms）
-        public const int AttackDuration = 8;                  // 攻击总时长（逻辑帧）≈ 533ms
-        public const int AttackHitFrame = 3;                  // 命中帧：133ms（StartAttack 后 Tick 已 +1，故 3 = 攻击指令后第 2 帧）
-        public const int Damage = 10;                         // 伤害
-        public const int MaxHp = 50;                         // 最大生命
-        public static readonly Fixed64 AttackRange = Fixed64.FromFloat(2f);   // 圆心到圆心
-        public static readonly Fixed64 HalfAngleCos = Fixed64.Half;             // cos60° = 0.5，扇面 120°
-        
-        private readonly Fixed64 _speed;
-        private int _attackTimer = -1;                        // -1=不在攻击中
+        private readonly CharacterConfig _config;
+        private int _abilityTimer = -1;                       // -1=不在施法中
+        private AbilityConfig _currentAbility;                // 当前施放的能力，null=无
+        private readonly Dictionary<int, int> _cooldowns = new(); // abilityId → 剩余冷却帧
         
         /// <summary>
         /// 玩家比赛ID，AI也复用
@@ -42,35 +37,64 @@ namespace HotUpdate.Game.Race.Logic
         /// 移动位置版本号，碰撞导致的位移不影响
         /// </summary>
         public int Version { get; private set; }
-        
+
         /// <summary>
         /// 碰撞半径
         /// </summary>
-        public Fixed64 Radius { get; }
+        public Fixed64 Radius => _config.radius;
         
         /// <summary>
         /// 朝向，非零移动时更新
         /// </summary>
         public FixedVector3 Facing { get; private set; }      
+        
+        /// <summary>
+        /// 最大血量
+        /// </summary>
+        public int MaxHp => _config.maxHp;
+        
+        /// <summary>
+        /// 当前血量
+        /// </summary>
         public int Hp { get; private set; }
-        public bool IsAttacking => _attackTimer >= 0;
-        public bool IsHitFrame => _attackTimer == AttackHitFrame;
+        
+        /// <summary>
+        /// 是否正在释放攻击
+        /// </summary>
+        public bool IsCasting  => _abilityTimer >= 0;
+        
+        /// <summary>
+        /// 技能正在冷却
+        /// </summary>
+        public bool IsCooling => _cooldowns.TryGetValue(AbilityTable.AoeSkillId, out var cd) && cd > 0;
+        
+        /// <summary>
+        /// 是否处于命中帧
+        /// </summary>
+        public bool IsHitFrame => _currentAbility != null && _abilityTimer == _currentAbility.HitFrame;
+        
+        /// <summary>
+        /// 当前技能配置
+        /// </summary>
+        public AbilityConfig CurrentAbility => _currentAbility;
+        
+        /// <summary>
+        /// 是否死亡
+        /// </summary>
         public bool IsDead => Hp <= 0;
-        public bool IsPlayer => PlayerId >= 0;
         
-        public LogicAvatar(int playerId, Fixed64 speed) : this(playerId, speed, Fixed64.FromFloat(0.5f))
-        {
-
-        }
+        /// <summary>
+        /// 是否是玩家/怪物
+        /// </summary>
+        public bool IsPlayer => _config.isPlayer;
         
-        public LogicAvatar(int playerId, Fixed64 speed, Fixed64 radius)
+        public LogicAvatar(int playerId, CharacterConfig config) 
         {
             PlayerId = playerId;
-            _speed = speed;
-            Radius = radius;
+            _config = config;
             AnimState = ELogicAnimState.Idle;
             Facing = new FixedVector3(Fixed64.Zero, Fixed64.Zero, Fixed64.One);
-            Hp = MaxHp;
+            Hp = config.maxHp;
         }
 
         public void Execute(in InputCommand cmd)
@@ -81,10 +105,11 @@ namespace HotUpdate.Game.Race.Logic
                     Move(cmd.dir);
                     break;
                 case EOptType.Attack:
-                    StartAttack();
+                    StartAbility(AbilityTable.AttackId);
                     break;
                 case EOptType.UseSkill:
-                    break; // 本期不实现
+                    StartAbility(cmd.skillId);
+                    break;
             }
         }
 
@@ -95,7 +120,7 @@ namespace HotUpdate.Game.Race.Logic
                 return;
             
             // 攻击中锁移动
-            if (IsAttacking)
+            if (IsCasting)
                 return;
             
             if (dir.SqrMagnitude() == Fixed64.Zero)
@@ -106,21 +131,30 @@ namespace HotUpdate.Game.Race.Logic
 
             PrevPosition = Position;
             // 收到的dir已经是单位向量的定点数，是否还需要归一化这里？
-            Position += dir * _speed * LogicDeltaTime;
+            Position += dir * _config.speed * LogicDeltaTime;
             Facing = dir.Normalized();
             AnimState = ELogicAnimState.Move;
             // 位置变了，版本号 +1
             Version++;          
         }
 
-        public void StartAttack()
+        public void StartAbility(int abilityId)
         {
-            // 死亡/攻击中 都不能再起手
-            if (IsDead || IsAttacking)
+            if (IsDead || IsCasting)
                 return;
-            
-            _attackTimer = 0;
-            AnimState = ELogicAnimState.Attack;
+
+            var cfg = AbilityTable.Get(abilityId);
+            if (cfg == null)
+                return;
+
+            if (_cooldowns.TryGetValue(abilityId, out var cd) && cd > 0)
+                return;
+
+            _currentAbility = cfg;
+            _abilityTimer = 0;
+            AnimState = cfg.AnimState;
+            if (cfg.Cooldown > 0)
+                _cooldowns[abilityId] = cfg.Cooldown;
         }
         
         /// <summary>
@@ -134,22 +168,35 @@ namespace HotUpdate.Game.Race.Logic
             }
         }
         
-        /// <summary>
-        /// 每逻辑帧推进攻击状态机（命中帧由 IsHitFrame 暴露，供 World 结算）
-        /// </summary>
         public void Tick()
         {
             if (IsDead)
                 return;
-            
-            if (_attackTimer < 0)
+
+            TickCooldowns();
+
+            if (_abilityTimer < 0)
                 return;
-            
-            _attackTimer++;
-            if (_attackTimer >= AttackDuration)
+
+            _abilityTimer++;
+            if (_abilityTimer >= _currentAbility.Duration)
             {
-                _attackTimer = -1;
+                _abilityTimer = -1;
+                _currentAbility = null;
                 AnimState = ELogicAnimState.Idle;
+            }
+        }
+        
+        private void TickCooldowns()
+        {
+            if (_cooldowns.Count == 0)
+                return;
+
+            // 快照键，避免迭代中改字典
+            foreach (var key in new List<int>(_cooldowns.Keys))
+            {
+                if (_cooldowns[key] > 0)
+                    _cooldowns[key]--;
             }
         }
         

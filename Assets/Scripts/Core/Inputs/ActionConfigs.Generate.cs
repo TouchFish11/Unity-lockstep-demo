@@ -9,5 +9,7 @@ namespace Core.Inputs
 
 		public const string Attack = "Attack";
 
+		public const string Skill = "Skill";
+
 	}
 }

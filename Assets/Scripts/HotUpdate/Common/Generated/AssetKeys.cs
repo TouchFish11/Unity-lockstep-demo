@@ -12,6 +12,7 @@ public static class AssetKeys
     public const string HotUpdate_Game = "HotUpdate.Game.dll";
     public const string HotUpdate_UI = "HotUpdate.UI.dll";
     public const string HotUpdate_Update = "HotUpdate.Update.dll";
+    public const string HotUpdateAssemblySettings = "HotUpdateAssemblySettings";
     public const string CoreModule = "CoreModule.dll";
     public const string mscorlib = "mscorlib.dll";
     public const string System_Core = "System.Core.dll";
@@ -329,8 +330,11 @@ public static class AssetKeys
     public const string ConnectPlayerObjUI = "ConnectPlayerObjUI";
     public const string GameView = "GameView";
     public const string LoadingPanel = "LoadingPanel";
+    public const string ResultView = "ResultView";
     public const string StatusHUD = "StatusHUD";
     public const string TipPanel = "TipPanel";
     public const string UpdateTipView = "UpdateTipView";
     public const string DeleteItemConfirmContent = "DeleteItemConfirmContent";
+    public const string AoeAttack = "AoeAttack";
+    public const string Attack1 = "Attack1";
 }

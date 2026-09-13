@@ -16,4 +16,5 @@ public static class AssetBundleKeys
     public const string Texture = "texture";
     public const string Tmpasset = "tmpasset";
     public const string Ui = "ui";
+    public const string Vfx = "vfx";
 }

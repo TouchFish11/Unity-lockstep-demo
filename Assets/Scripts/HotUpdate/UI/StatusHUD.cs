@@ -47,10 +47,9 @@ namespace HotUpdate.UI
             txtWorldPos.text = $"Pos:({pos.x:F2},{pos.y:F2},{pos.z:F2})";
             
             // 血量
-            imgTop.fillAmount = _viewAvatar.CurrentHp / LogicAvatar.MaxHp;
+            imgTop.fillAmount = _viewAvatar.CurrentHp / _viewAvatar.MaxHp;
             imgFade.fillAmount = imgTop.fillAmount;
-            txtBlood.text = $"{(int)_viewAvatar.CurrentHp}/{LogicAvatar.MaxHp}";
-            
+            txtBlood.text = $"{(int)_viewAvatar.CurrentHp}/{_viewAvatar.MaxHp}";
             // 跟随
             FollowTarget(pos + _offset);
         }

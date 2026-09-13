@@ -5,5 +5,6 @@ namespace HotUpdate.Game.Race.Logic
         Idle = 0,
         Move = 1,
         Attack = 2,
+        Skill = 3,
     }
 }

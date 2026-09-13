@@ -14,6 +14,7 @@ namespace HotUpdate.Game.Race.View
     {
         private static readonly int Move = Animator.StringToHash(nameof(Move));
         private static readonly int Attack = Animator.StringToHash(nameof(Attack));
+        private static readonly int Skill = Animator.StringToHash(nameof(Skill)); // 占位，改成 Animator 参数名
 
         [SerializeField] private float rotateSpeed = 20f;
         
@@ -28,8 +29,12 @@ namespace HotUpdate.Game.Race.View
 
         private bool _pendingAttack;    // 一次按键发一次攻击
         private bool _attackTriggered;  // 检测 AnimState 从非 Attack 跳入 Attack，只 SetTrigger 一次
+        private bool _pendingSkill;     // 一次按键发一次技能
+        private bool _skillTriggered;   // 检测 AnimState 从非 Skill 跳入 Skill，只 SetTrigger 一次
 
         public float CurrentHp => _logic.Hp;
+        
+        public int MaxHp => _logic.MaxHp;
         
         private void Awake()
         {
@@ -80,6 +85,13 @@ namespace HotUpdate.Game.Race.View
                     _pendingAttack = true;
                 }
             }
+            else if (context.action.name == ActionConfigs.Skill)
+            {
+                if (context.phase == InputActionPhase.Started && !_logic.IsCasting && !_logic.IsCooling)
+                {
+                    _pendingSkill = true;
+                }
+            }
         }
 
         private void OnAndroidControl(InputAction.CallbackContext context)
@@ -97,6 +109,13 @@ namespace HotUpdate.Game.Race.View
                 if (context.phase == InputActionPhase.Started)
                 {
                     _pendingAttack = true;
+                }
+            }
+            else if (context.action.name == ActionConfigs.Skill)
+            {
+                if (context.phase == InputActionPhase.Started && !_logic.IsCasting && !_logic.IsCooling)
+                {
+                    _pendingSkill = true;
                 }
             }
         }
@@ -135,10 +154,12 @@ namespace HotUpdate.Game.Race.View
                 case ELogicAnimState.Idle:
                     _animator.SetBool(Move, false);
                     _attackTriggered = false;
+                    _skillTriggered = false;
                     break;
                 case ELogicAnimState.Move:
                     _animator.SetBool(Move, true);
                     _attackTriggered = false;
+                    _skillTriggered = false;
                     break;
                 case ELogicAnimState.Attack:
                     if (!_attackTriggered)
@@ -147,16 +168,30 @@ namespace HotUpdate.Game.Race.View
                         _animator.SetTrigger(Attack);
                     }
                     break;
+                case ELogicAnimState.Skill:
+                    if (!_skillTriggered)
+                    {
+                        _skillTriggered = true;
+                        _animator.SetTrigger(Skill);
+                    }
+                    break;
             }
         }
-
+        
         public void CollectInput(ref InputCommand cmd)
         {
-            if (_pendingAttack)
+            if (_pendingSkill)
+            {
+                _pendingSkill = false;
+                cmd.optType = EOptType.UseSkill;
+                cmd.skillId = AbilityTable.AoeSkillId;
+                cmd.dir = FixedVector3.Zero;
+            }
+            else if (_pendingAttack)
             {
                 _pendingAttack = false;
                 cmd.optType = EOptType.Attack;
-                cmd.dir = FixedVector3.Zero;       // 方向攻击不带方向，逻辑用 Facing
+                cmd.dir = FixedVector3.Zero;    // 方向攻击不带方向，逻辑用 Facing
             }
             else
             {
@@ -173,7 +208,7 @@ namespace HotUpdate.Game.Race.View
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            var radius = LogicAvatar.AttackRange.ToInt();
+            var radius = AbilityTable.Get(AbilityTable.AttackId).Range.ToInt();
             var angle = 120;
             var segments = 48;      // 弧线分段数
             

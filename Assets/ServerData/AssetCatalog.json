@@ -2110,6 +2110,14 @@
       "assetType": "Object",
       "assetSize": 20436
     },
+    "ResultView": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "ResultView",
+      "bundleName": "ui",
+      "assetName": "Assets\\Editor\\ArtRes\\UI\\Net\\ResultView.prefab",
+      "assetType": "Object",
+      "assetSize": 21441
+    },
     "LoadingPanel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "LoadingPanel",
@@ -2164,7 +2172,7 @@
       "bundleName": "ui",
       "assetName": "Assets\\Editor\\ArtRes\\UI\\Main\\Main_Panel.prefab",
       "assetType": "Object",
-      "assetSize": 73694
+      "assetSize": 79817
     },
     "Main_Chat_Panel": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2252,7 +2260,7 @@
       "bundleName": "tmpasset",
       "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
       "assetType": "Object",
-      "assetSize": 8418900
+      "assetSize": 8451490
     },
     "MSYH SDF FallBack": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2268,7 +2276,7 @@
       "bundleName": "scenes",
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\NetTestScene.unity",
       "assetType": "Scene",
-      "assetSize": 16702
+      "assetSize": 13174
     },
     "MainScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2285,14 +2293,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryTestScene.unity",
       "assetType": "Scene",
       "assetSize": 8115
-    },
-    "InventoryMainTestScene": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "InventoryMainTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
-      "assetType": "Scene",
-      "assetSize": 34620
     },
     "鞋子饰": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2550,6 +2550,14 @@
       "assetType": "Object",
       "assetSize": 2249
     },
+    "InventoryMainTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "InventoryMainTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
+      "assetType": "Scene",
+      "assetSize": 34620
+    },
     "GameScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "GameScene",
@@ -2557,14 +2565,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
       "assetType": "Scene",
       "assetSize": 131567
-    },
-    "ABTestScene": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ABTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
-      "assetType": "Scene",
-      "assetSize": 24890
     },
     "MSYH": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3010,7 +3010,7 @@
       "bundleName": "hotupdate",
       "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.UI.dll.bytes",
       "assetType": "Object",
-      "assetSize": 29696
+      "assetSize": 41472
     },
     "HotUpdate.Game.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3018,7 +3018,7 @@
       "bundleName": "hotupdate",
       "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Game.dll.bytes",
       "assetType": "Object",
-      "assetSize": 16384
+      "assetSize": 22528
     },
     "HotUpdate.Common.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3036,21 +3036,13 @@
       "assetType": "Object",
       "assetSize": 8192
     },
-    "Role1_Animator": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Role1_Animator",
-      "bundleName": "animator",
-      "assetName": "Assets\\Editor\\ArtRes\\Animator\\Role1_Animator.controller",
-      "assetType": "Object",
-      "assetSize": 7820
-    },
     "PlayerControls": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "PlayerControls",
       "bundleName": "gameconfig",
       "assetName": "Assets\\Editor\\ArtRes\\GameConfig\\PlayerControls.json",
       "assetType": "Object",
-      "assetSize": 6879
+      "assetSize": 7651
     },
     "ItemConfigs": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3059,6 +3051,14 @@
       "assetName": "Assets\\Editor\\ArtRes\\GameConfig\\ItemConfigs.json",
       "assetType": "Object",
       "assetSize": 2224
+    },
+    "Role1_Animator": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Role1_Animator",
+      "bundleName": "animator",
+      "assetName": "Assets\\Editor\\ArtRes\\Animator\\Role1_Animator.controller",
+      "assetType": "Object",
+      "assetSize": 12674
     },
     "鞋子饰内侧": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3075,6 +3075,30 @@
       "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\领带.mat",
       "assetType": "Object",
       "assetSize": 2249
+    },
+    "AoeAttack": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "AoeAttack",
+      "bundleName": "vfx",
+      "assetName": "Assets\\Editor\\ArtRes\\VFX\\Role\\AoeAttack.prefab",
+      "assetType": "Object",
+      "assetSize": 355824
+    },
+    "Attack1": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Attack1",
+      "bundleName": "vfx",
+      "assetName": "Assets\\Editor\\ArtRes\\VFX\\Role\\Attack1.prefab",
+      "assetType": "Object",
+      "assetSize": 474272
+    },
+    "ABTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "ABTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
+      "assetType": "Scene",
+      "assetSize": 24890
     }
   },
   "abPackageCollection": {
@@ -3106,8 +3130,8 @@
       "gameconfig": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "gameconfig",
-        "size": 3287,
-        "hash": "6ebf92bab0c6961c3592fd94486a0a459053a3803073672a19383572dbd7a2a0",
+        "size": 3388,
+        "hash": "4ad032034c22fd8606a404c2446f581581823ec1cf24db9cd5eb1decdd75df28",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3116,8 +3140,8 @@
       "hotupdate": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate",
-        "size": 43843,
-        "hash": "87ffa625748b5bb356428d537351d23712fdc9d2d6bd4592e5e848d344856013",
+        "size": 53499,
+        "hash": "415b9692bc2c36422ce272cb82fcf93b8fbb9145878a97703fda0af3c8602d55",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3166,11 +3190,14 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 27744929,
-        "hash": "aebdb2c4990f30d0d6291f31d1d403e314cb127b5138990cd3eb291b003b4bd9",
+        "size": 14056999,
+        "hash": "3ac7f5c407ae5137f09f5f40ff4fc34f4272abfbf45354aa245bae2620e334eb",
         "dependencies": {
           "$type": "System.String[], mscorlib",
-          "$values": []
+          "$values": [
+            "tmpasset",
+            "ui"
+          ]
         }
       },
       "spriteatlas": {
@@ -3186,8 +3213,8 @@
       "tmpasset": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
-        "size": 13798639,
-        "hash": "4c7dcff775bc6bfdff14c050a0015d495667d3fec3621e4ac1e2ec5a0374e88f",
+        "size": 14228404,
+        "hash": "213a121eb52b0104b1877e1b83d0bb60cbc69547632d276134d89974b9ef300a",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3196,8 +3223,8 @@
       "ui": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
-        "size": 2392116,
-        "hash": "9f5c6df5cd47fc07a4466fbecff13620e04adadd1b523066f55c8c6c7554a53e",
+        "size": 2394069,
+        "hash": "08ab596ffc1cab9e9a27daea0be4eab9a3127140a21d124cfda3fc8de8dceff0",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
@@ -3218,8 +3245,18 @@
       "animator": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "animator",
-        "size": 33298,
-        "hash": "537512557d80e3b18b3adf315c77c3026036be8b22c88604c76b12ce4b358b9d",
+        "size": 40614,
+        "hash": "cbf7b7670206922d05cefe4c5e241925b9f6f1b916a4a26e363997ebfcc6d37a",
+        "dependencies": {
+          "$type": "System.String[], mscorlib",
+          "$values": []
+        }
+      },
+      "vfx": {
+        "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
+        "name": "vfx",
+        "size": 267745,
+        "hash": "cd9a6ba90b05b297fbc8d8454f56d41ea903eb555586c14a2c881c487662cd45",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3604,6 +3641,7 @@
         "ConnectPlayerObjUI",
         "GameView",
         "LoadingPanel",
+        "ResultView",
         "StatusHUD",
         "TipPanel",
         "UpdateTipView",
@@ -3624,6 +3662,13 @@
       "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
       "$values": [
         "Role1_Animator"
+      ]
+    },
+    "vfx": {
+      "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+      "$values": [
+        "AoeAttack",
+        "Attack1"
       ]
     }
   }

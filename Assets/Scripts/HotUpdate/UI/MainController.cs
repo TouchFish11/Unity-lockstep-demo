@@ -11,6 +11,7 @@ using Core.Net.SyncModule.Interface;
 using Core.Net.SyncModule.Manager;
 using Core.UI;
 using Core.UI.ViewController;
+using HotUpdate.Game.Race.Logic;
 using UnityEngine.UI;
 using Logger = Core.Log.Logger;
 
@@ -38,6 +39,7 @@ namespace HotUpdate.UI
         
         protected override Task OnActive()
         {
+            view.btnReplay.enabled = ReplayRecorder.HasRecording();
             _netManager.OnConnected += OnConnected;
             _netManager.OnDisconnected += OnDisconnected;
             ((IHeartbeatService)_netManager).OnRttCalc += OnRtt;
@@ -72,7 +74,20 @@ namespace HotUpdate.UI
                 case nameof(view.btnConnect):
                     RequestServer();
                     break;
+                case nameof(view.btnReplay):
+                    StartReplay();
+                    break;
             }
+        }
+        
+        private async void StartReplay()
+        {
+            if (!ReplayRecorder.HasRecording())
+                return;
+            
+            var replayContext = DIContainer.Create<ReplayContext>();
+            await replayContext.PrepareAsync();
+            await _uiManager.SetViewActive(panelId, false);   // 隐藏主界面，进入回放
         }
         
         /// <summary>

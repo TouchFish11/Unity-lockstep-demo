@@ -8,6 +8,7 @@ namespace HotUpdate.UI
 {
     public class MainView : UIView
     {
+        [InjectUI] public Button btnReplay;
         [InjectUI] public Button btnInventory;
         [InjectUI] public Button btnAddItem;
         [InjectUI] public Button btnConnect;

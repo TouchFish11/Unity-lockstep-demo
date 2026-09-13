@@ -24,7 +24,7 @@
       "bundleName": "hotupdate",
       "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.Game.dll.bytes",
       "assetType": "Object",
-      "assetSize": 16384
+      "assetSize": 22528
     },
     "HotUpdate.UI.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -32,7 +32,7 @@
       "bundleName": "hotupdate",
       "assetName": "Assets\\Editor\\ArtRes\\HotUpdate\\HotUpdate.UI.dll.bytes",
       "assetType": "Object",
-      "assetSize": 29696
+      "assetSize": 41472
     },
     "HotUpdate.Update.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -58,8 +58,8 @@
       "hotupdate": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate",
-        "size": 43843,
-        "hash": "87ffa625748b5bb356428d537351d23712fdc9d2d6bd4592e5e848d344856013",
+        "size": 53499,
+        "hash": "415b9692bc2c36422ce272cb82fcf93b8fbb9145878a97703fda0af3c8602d55",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []

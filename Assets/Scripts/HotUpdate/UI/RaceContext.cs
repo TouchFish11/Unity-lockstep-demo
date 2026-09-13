@@ -12,7 +12,9 @@ using Core.Net.Protocols.Tcp.Messages.Common;
 using Core.Net.SyncModule.Interface;
 using Core.Net.SyncModule.Manager;
 using Core.UI;
+using Game.Vfx;
 using HotUpdate.Game.Race.Logic;
+using HotUpdate.Game.Race.Present;
 using HotUpdate.Game.Race.View;
 using HotUpdate.UI.Loading;
 using UnityEngine;
@@ -34,6 +36,12 @@ namespace HotUpdate.UI
 
         private LogicWorld _logicWorld;
         private readonly List<ViewAvatar> _viewAvatars = new();
+        // effectId → 资源 key
+        private readonly Dictionary<int, string> _effectKeyMap = new()
+        {
+            {0, AssetKeys.Attack1},
+            { 1, AssetKeys.AoeAttack },
+        }; 
         
         public ERaceState State { get; private set; } = ERaceState.None;
         public LogicWorld World => _logicWorld;
@@ -61,11 +69,12 @@ namespace HotUpdate.UI
 
             // 逻辑世界
             _logicWorld = DIContainer.Create<LogicWorld>();
+            ReplayRecorder.Start(raceIds);   // 开始录制本局
 
             // 玩家（逻辑 + 表现 + HUD）
             foreach (var raceId in raceIds)
             {
-                var logicAvatar = new LogicAvatar(raceId, Fixed64.FromFloat(3f));
+                var logicAvatar = new LogicAvatar(raceId, CharacterTable.Get(CharacterTable.PlayerId));
                 _logicWorld.AddAvatar(logicAvatar);
 
                 using var handle = await GameAsset.LoadAssetAsync<RuntimeAnimatorController>(AssetKeys.Role1_Animator);
@@ -93,6 +102,8 @@ namespace HotUpdate.UI
             _netManager.OnConnected += OnConnected;
             // 监听比赛结束
             _eventCenter.SubscribeEvent<RaceEndEvent>(OnRaceEnd);
+            // 监听特效播放
+            _eventCenter.SubscribeEvent<PresentEventsEvent>(OnPresentEvents);
         }
         
         /// <summary>
@@ -141,6 +152,7 @@ namespace HotUpdate.UI
             _logicWorld?.Unsubscribe();
             _netManager.OnConnected -= OnConnected;
             _eventCenter.UnsubscribeEvent<RaceEndEvent>(OnRaceEnd);
+            _eventCenter.UnsubscribeEvent<PresentEventsEvent>(OnPresentEvents);
             _objectSpawner.Release(_viewAvatars, true);
         }
         
@@ -151,11 +163,10 @@ namespace HotUpdate.UI
         {
             if (State == ERaceState.Ended)
                 return;
-
-            Debug.Log($"[Race] 比赛结束：{(evt.Win ? "胜利" : "失败")}");
             
             // 通知服务器比赛结束，允许重新匹配
             _netManager.Send(new C2S_RaceEndMessage(), EProtocolChannel.Resolve);
+            ReplayRecorder.Stop();   // 停止录制，保留供回放
 
             // 关闭战斗界面（RaceView，会顺带释放 HUD）
             var raceController = _uiManager.GetController<RaceController>();
@@ -164,15 +175,40 @@ namespace HotUpdate.UI
                 await _uiManager.DestroyView(raceController.PanelId);
             }
             
+            // 显示结果面板，点"返回大厅"才回主界面
+            var resultPanel = await _objectSpawner.SpawnAsync<ResultPanelUI>(AssetKeys.ResultView, _uiManager.GetLayer(E_UILayer.Mid));
+            resultPanel.Init(evt.Win, () =>
+            {
+                _objectSpawner.Release(resultPanel);
+                ReturnToLobby();
+            });
+        }
+        
+        private async void ReturnToLobby()
+        {
             // 返回主界面
             var mainController = _uiManager.GetController<MainController>();
             if (mainController != null)
-            {
                 await _uiManager.SetViewActive(mainController.PanelId, true);
-            }
 
             // 清理比赛
             Leave();
+        }
+        
+        private async void OnPresentEvents(PresentEventsEvent evt)
+        {
+            foreach (var e in evt.Events.ToArray())
+            {
+                if (e.Type != EPresentEventType.SpawnEffect)
+                    continue;
+                if (!_effectKeyMap.TryGetValue(e.Id, out var key) || string.IsNullOrEmpty(key))
+                    continue;
+                var timer = await _objectSpawner.SpawnAsync<VfxTimer>(key, null, e.Pos.ToVector3(), Quaternion.identity);
+                timer.overCallback += () =>
+                {
+                    _objectSpawner.Release(timer);
+                };
+            }
         }
         
         private async Task SpawnAi()
@@ -181,7 +217,7 @@ namespace HotUpdate.UI
             for (var i = 0; i < AiCount; i++)
             {
                 var aiId = -1000 - i;
-                var logicAvatar = new LogicAvatar(aiId, Fixed64.FromFloat(2f));
+                var logicAvatar = new LogicAvatar(aiId, CharacterTable.Get(CharacterTable.MonsterId));
                 _logicWorld.AddAvatar(logicAvatar);
 
                 var random = new DeterministicRandom((uint)(10000 + i));
@@ -189,7 +225,7 @@ namespace HotUpdate.UI
 
                 using var handle = await GameAsset.LoadAssetAsync<RuntimeAnimatorController>(AssetKeys.Role1_Animator);
                 var viewAvatar = await _objectSpawner.SpawnAsync<ViewAvatar>(AssetKeys.AIRole);
-                viewAvatar.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                viewAvatar.transform.SetPositionAndRotation(new Vector3(5, i * 3, 0), Quaternion.identity);
                 viewAvatar.Bind(logicAvatar, handle.Asset);
                 _viewAvatars.Add(viewAvatar);
                 

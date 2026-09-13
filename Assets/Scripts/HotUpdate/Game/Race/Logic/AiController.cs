@@ -18,7 +18,7 @@ namespace HotUpdate.Game.Race.Logic
         public void Tick(IReadOnlyList<LogicAvatar> avatars)
         {
             // 死怪物不再行动
-            if (_avatar.IsDead || _avatar.IsAttacking)
+            if (_avatar.IsDead || _avatar.IsCasting)
                 return; 
             
             // 找最近的存活玩家
@@ -44,11 +44,12 @@ namespace HotUpdate.Game.Race.Logic
                 }
                 
                 var dir = nearest.Position - _avatar.Position;
-                var rangeSq = LogicAvatar.AttackRange * LogicAvatar.AttackRange;
+                var attackRange  = AbilityTable.Get(AbilityTable.AttackId).Range;
+                var rangeSq = attackRange * attackRange;
                 if (dir.SqrMagnitude() <= rangeSq)
                 {
                     _avatar.FaceToward(dir);
-                    _avatar.StartAttack();
+                    _avatar.StartAbility(AbilityTable.AttackId);
                 }
                 else
                 {
