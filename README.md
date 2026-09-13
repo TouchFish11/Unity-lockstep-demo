@@ -1,10 +1,10 @@
 # Unity-Lockstep-Demo — Unity 帧同步（Lockstep）战斗 Demo
 
-一个**专门用于实践帧同步（Lockstep）**的项目，由 **Unity 客户端 + .NET 8 服务器**两端协同。它在同一套自研客户端框架（HybridCLR 热更新、DI、事件中心、AssetBundle、MVC/MVVM UI 等）之上，
+一个**专门用于实践帧同步（Lockstep）**的项目，由 **Unity 客户端 + 服务器**两端协同。它在同一套自研客户端框架（HybridCLR 热更新、DI、事件中心、AssetBundle、MVC/MVVM UI 等）之上，
 实现了一条完整的**确定性帧同步链路**：定点数数学库 → 帧同步协议 → 服务器定帧广播 → 客户端帧循环（缓冲/对齐/纠偏/补帧/追帧）→ 逻辑与表现分离 → 断线重连，
 并在其上落地了一个"玩家 + 确定性 AI"的 PVE 战斗玩法（普攻/AOE 技能、扇形与圆形命中、碰撞分离、胜负判定），以及**帧输入录制回放**。
 
-> 开发环境：Unity 2022.3 LTS（2022.3.57f1c2）｜ C# / .NET 8 ｜ 独立开发 ｜ 仓库：Unity-lockstep-demo
+> 开发环境：Unity 2022.3 LTS（2022.3.57f1c2）｜ 独立开发
 
 ---
 
@@ -55,7 +55,7 @@
 | **`IHeartbeatService`** | 心跳保活 + RTT 计算（`OnRttCalc` 回调），UI 实时显示 TCP RTT |
 | **`NetGameManager`** | 维护"比赛 ID（RaceId）↔ 玩家对象"，并把 RaceId 持久化到本地 JSON，**用于断线重连认领身份** |
 
-### 5. 服务器端（`FrameSyncServer/Server`，独立 .NET 8 项目）
+### 5. 服务器端
 
 | 模块 | 做了什么 |
 | --- | --- |
@@ -197,5 +197,4 @@ Server/
 ├── Protocols/                # 消息协议 + 序列化 + 路由（与客户端对称）
 │   └── FSync/                #   RaceHandleComponent（定帧/广播/补发/重连）
 ├── kcp2k/                    # KCP 传输库
-└── UDP/                      # UDP Socket 封装
 ```
