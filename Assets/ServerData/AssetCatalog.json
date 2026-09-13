@@ -2254,30 +2254,6 @@
       "assetType": "Object",
       "assetSize": 13381
     },
-    "MSYH_SDF": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MSYH_SDF",
-      "bundleName": "tmpasset",
-      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
-      "assetType": "Object",
-      "assetSize": 8451490
-    },
-    "MSYH SDF FallBack": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "MSYH SDF FallBack",
-      "bundleName": "tmpasset",
-      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH SDF FallBack.asset",
-      "assetType": "Object",
-      "assetSize": 7584
-    },
-    "NetTestScene": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "NetTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\NetTestScene.unity",
-      "assetType": "Scene",
-      "assetSize": 13174
-    },
     "MainScene": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "MainScene",
@@ -2293,6 +2269,70 @@
       "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryTestScene.unity",
       "assetType": "Scene",
       "assetSize": 8115
+    },
+    "InventoryMainTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "InventoryMainTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
+      "assetType": "Scene",
+      "assetSize": 34620
+    },
+    "GameScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "GameScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
+      "assetType": "Scene",
+      "assetSize": 131567
+    },
+    "ABTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "ABTestScene",
+      "bundleName": "scenes",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
+      "assetType": "Scene",
+      "assetSize": 24890
+    },
+    "Wall": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Wall",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Scene\\Wall.prefab",
+      "assetType": "Object",
+      "assetSize": 2985
+    },
+    "Obstacle": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Obstacle",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Scene\\Obstacle.prefab",
+      "assetType": "Object",
+      "assetSize": 3050
+    },
+    "Floor": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Floor",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Scene\\Floor.prefab",
+      "assetType": "Object",
+      "assetSize": 3042
+    },
+    "领带": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "领带",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\领带.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "鞋子饰内侧": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "鞋子饰内侧",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\鞋子饰内侧.mat",
+      "assetType": "Object",
+      "assetSize": 2267
     },
     "鞋子饰": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2438,6 +2478,30 @@
       "assetType": "Object",
       "assetSize": 2243
     },
+    "Gray": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Gray",
+      "bundleName": "material",
+      "assetName": "Assets\\Editor\\ArtRes\\Material\\Gray.mat",
+      "assetType": "Object",
+      "assetSize": 2202
+    },
+    "Bot_Mask": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "Bot_Mask",
+      "bundleName": "mask",
+      "assetName": "Assets\\Editor\\ArtRes\\Mask\\Bot\\Bot_Mask.mask",
+      "assetType": "Object",
+      "assetSize": 352
+    },
+    "HotUpdateEntry": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "HotUpdateEntry",
+      "bundleName": "hotupdate_entry",
+      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate_Entry\\HotUpdateEntry.prefab",
+      "assetType": "Object",
+      "assetSize": 1333
+    },
     "脖饰": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "脖饰",
@@ -2478,30 +2542,6 @@
       "assetType": "Object",
       "assetSize": 2249
     },
-    "Gray": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Gray",
-      "bundleName": "material",
-      "assetName": "Assets\\Editor\\ArtRes\\Material\\Gray.mat",
-      "assetType": "Object",
-      "assetSize": 2202
-    },
-    "Bot_Mask": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Bot_Mask",
-      "bundleName": "mask",
-      "assetName": "Assets\\Editor\\ArtRes\\Mask\\Bot\\Bot_Mask.mask",
-      "assetType": "Object",
-      "assetSize": 352
-    },
-    "HotUpdateEntry": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "HotUpdateEntry",
-      "bundleName": "hotupdate_entry",
-      "assetName": "Assets\\Editor\\ArtRes\\HotUpdate_Entry\\HotUpdateEntry.prefab",
-      "assetType": "Object",
-      "assetSize": 1333
-    },
     "眼睛1": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "眼睛1",
@@ -2525,46 +2565,6 @@
       "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\眼白.mat",
       "assetType": "Object",
       "assetSize": 2249
-    },
-    "眉毛": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "眉毛",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\眉毛.mat",
-      "assetType": "Object",
-      "assetSize": 2249
-    },
-    "皮肤": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "皮肤",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\皮肤.mat",
-      "assetType": "Object",
-      "assetSize": 2249
-    },
-    "牙齿": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "牙齿",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\牙齿.mat",
-      "assetType": "Object",
-      "assetSize": 2249
-    },
-    "InventoryMainTestScene": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "InventoryMainTestScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\InventoryMainTestScene.unity",
-      "assetType": "Scene",
-      "assetSize": 34620
-    },
-    "GameScene": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "GameScene",
-      "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\GameScene.unity",
-      "assetType": "Scene",
-      "assetSize": 131567
     },
     "MSYH": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -2836,6 +2836,30 @@
       "assetType": "Object",
       "assetSize": 1244672
     },
+    "眉毛": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "眉毛",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\眉毛.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "皮肤": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "皮肤",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\皮肤.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
+    "牙齿": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "牙齿",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\牙齿.mat",
+      "assetType": "Object",
+      "assetSize": 2249
+    },
     "流萤3.0": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "流萤3.0",
@@ -2940,30 +2964,6 @@
       "assetType": "Object",
       "assetSize": 64509
     },
-    "Sphere": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Sphere",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Sphere.prefab",
-      "assetType": "Object",
-      "assetSize": 3425
-    },
-    "Role1": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "Role1",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Role1.prefab",
-      "assetType": "Object",
-      "assetSize": 88415
-    },
-    "AIRole": {
-      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "AIRole",
-      "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\AIRole.prefab",
-      "assetType": "Object",
-      "assetSize": 88448
-    },
     "System.Core.dll": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
       "key": "System.Core.dll",
@@ -3060,21 +3060,21 @@
       "assetType": "Object",
       "assetSize": 12674
     },
-    "鞋子饰内侧": {
+    "Sphere": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "鞋子饰内侧",
+      "key": "Sphere",
       "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\鞋子饰内侧.mat",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Sphere.prefab",
       "assetType": "Object",
-      "assetSize": 2267
+      "assetSize": 3425
     },
-    "领带": {
+    "Role1": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "领带",
+      "key": "Role1",
       "bundleName": "prefab",
-      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\领带.mat",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\Role1.prefab",
       "assetType": "Object",
-      "assetSize": 2249
+      "assetSize": 88415
     },
     "AoeAttack": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3092,13 +3092,37 @@
       "assetType": "Object",
       "assetSize": 474272
     },
-    "ABTestScene": {
+    "AIRole": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
-      "key": "ABTestScene",
+      "key": "AIRole",
+      "bundleName": "prefab",
+      "assetName": "Assets\\Editor\\ArtRes\\Prefab\\AIRole.prefab",
+      "assetType": "Object",
+      "assetSize": 88448
+    },
+    "NetTestScene": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "NetTestScene",
       "bundleName": "scenes",
-      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\ABTestScene.unity",
+      "assetName": "Assets\\Editor\\ArtRes\\Scenes\\NetTestScene.unity",
       "assetType": "Scene",
-      "assetSize": 24890
+      "assetSize": 9428
+    },
+    "MSYH SDF FallBack": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MSYH SDF FallBack",
+      "bundleName": "tmpasset",
+      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH SDF FallBack.asset",
+      "assetType": "Object",
+      "assetSize": 7584
+    },
+    "MSYH_SDF": {
+      "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
+      "key": "MSYH_SDF",
+      "bundleName": "tmpasset",
+      "assetName": "Assets\\Editor\\ArtRes\\TMPAsset\\MSYH_SDF.asset",
+      "assetType": "Object",
+      "assetSize": 8171
     }
   },
   "abPackageCollection": {
@@ -3180,8 +3204,8 @@
       "prefab": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "prefab",
-        "size": 4868235,
-        "hash": "ea324f5e8126b930a312c2d5052b336e2ecece1fd6d464587f1f8c7e5119e708",
+        "size": 4874913,
+        "hash": "bb3be6706cdb5543511ef40c8bc8e48b021803d555a15fd416c5819b2a6d4378",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3190,13 +3214,12 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 14056999,
-        "hash": "3ac7f5c407ae5137f09f5f40ff4fc34f4272abfbf45354aa245bae2620e334eb",
+        "size": 14054876,
+        "hash": "c333207e3affba7c35e434013ea42eb462bb0e977566bd3c545c5c498bb07447",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
-            "tmpasset",
-            "ui"
+            "tmpasset"
           ]
         }
       },
@@ -3213,8 +3236,8 @@
       "tmpasset": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
-        "size": 14228404,
-        "hash": "213a121eb52b0104b1877e1b83d0bb60cbc69547632d276134d89974b9ef300a",
+        "size": 13665602,
+        "hash": "10a2ede77d03f95cdf4c0efcdcfd9f05d676e255d7b6f26ac2156da6a3f6ed18",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3364,7 +3387,10 @@
         "鞋子",
         "鞋子饰",
         "鞋子饰内侧",
-        "领带"
+        "领带",
+        "Floor",
+        "Obstacle",
+        "Wall"
       ]
     },
     "scenes": {

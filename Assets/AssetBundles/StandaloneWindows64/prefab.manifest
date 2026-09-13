@@ -1,0 +1,105 @@
+ManifestFileVersion: 0
+CRC: 135990898
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 34e2fa894663c8bb67506750024ec6d6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2b74595a9264cbe9a7163958a4369766
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 34e2fa894663c8bb67506750024ec6d6
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0e759dbe8d2e77245b35af78304a9a0c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c1ebc8bbee766124c88da6f84c8071e9, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u8868\u60C5.png"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u5934\u53D1.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u978B\u5B50.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u978B\u5B50\u9970.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u80CC\u5E26.mat"
+- Assets/Editor/ArtRes/Prefab/FireFly/toon2.png
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u8868\u60C5.mat"
+- Assets/Editor/ArtRes/Prefab/Sphere.prefab
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u53D1\u9970.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u80CC\u9970\u94C3\u94DB.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u5916\u5957.mat"
+- Assets/Editor/ArtRes/Prefab/Scene/Wall.prefab
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u8863\u9886.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u53E3\u8154.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u773C\u775B.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u8863\u670D.png"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u9886\u5E26.mat"
+- Assets/Editor/ArtRes/Prefab/Role1.prefab
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u7259\u9F7F.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u624B\u5957.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u88D9\u9970\u94C1.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u80F8\u9970.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u8138.png"
+- Assets/Editor/ArtRes/Prefab/FireFly/mc3.png
+- Assets/Editor/ArtRes/Prefab/FireFly/mc1.png
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u6B66\u5668.png"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u88D9\u5B50.mat"
+- Assets/Editor/ArtRes/Prefab/FireFly/toon3.png
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u7709\u6BDB.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u4F7F\u7528\u89C4\u5219.txt"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u88D9\u5B50\u5185\u4FA7.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u8896\u5B50.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u773C\u775B1.mat"
+- Assets/Editor/ArtRes/Prefab/Scene/Floor.prefab
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u820C\u5934.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u88D9\u5B501.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u8863\u9970\u94C1.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u6D41\u84243.0.fbx"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u8116\u9970.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u889C\u5B50.mat"
+- Assets/Editor/ArtRes/Prefab/AIRole.prefab
+- Assets/Editor/ArtRes/Prefab/Scene/Obstacle.prefab
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u978B\u5B50\u9970\u5185\u4FA7.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u80A9\u5E26.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u76AE\u80A4.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u8896\u5B50\u9970.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u773C\u767D.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u8896\u5B50\u5185\u4FA7.mat"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u5934\u53D1.png"
+- "Assets/Editor/ArtRes/Prefab/FireFly/\u8138.mat"
+Dependencies: []

@@ -368,6 +368,21 @@ MonoBehaviour:
       name: "\u9886\u5E26.mat"
       hash: c594c9dde5ed68241d844d8aaafcc0d2047698f77675a90db01f2d1eea3c54c9
       assetType: 0
+    - assetPath: Assets\Editor\ArtRes\Prefab\Scene\Floor.prefab
+      size: 3042
+      name: Floor.prefab
+      hash: 3bf0ad73322a60c222482973be40c9b4e218e341c41ed51638d46fc2f528914f
+      assetType: 0
+    - assetPath: Assets\Editor\ArtRes\Prefab\Scene\Obstacle.prefab
+      size: 3050
+      name: Obstacle.prefab
+      hash: 480983210a66b0f1f79d5f1ff88d01414c17bba990e737f3d6cb879c4c0f226c
+      assetType: 0
+    - assetPath: Assets\Editor\ArtRes\Prefab\Scene\Wall.prefab
+      size: 2985
+      name: Wall.prefab
+      hash: 7c5f037836db9359ef92bcdcf236cadeb802c2fe25d5e71346440544f15de742
+      assetType: 0
   - assetBundleName: scenes
     assetInfos:
     - assetPath: Assets\Editor\ArtRes\Scenes\ABTestScene.unity
@@ -396,9 +411,9 @@ MonoBehaviour:
       hash: 8eee0432e96aaa894b810adc9c1bf40bb90280055bf61f1595cb69916dae7b07
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\NetTestScene.unity
-      size: 13174
+      size: 9428
       name: NetTestScene.unity
-      hash: 07f3983a1e9dae42e66b378684c96af9111afed610e8859fd211537d65f694f3
+      hash: fe63f9f039d994d05d763a318d1533051d60f85254a23161c75dd2d8918c1c4c
       assetType: 1
   - assetBundleName: spriteatlas
     assetInfos:
@@ -420,9 +435,9 @@ MonoBehaviour:
       hash: a5820bb197187e3c800be3356ec01169ca4a812134b9a8785e7697d216c86109
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH_SDF.asset
-      size: 8451490
+      size: 8171
       name: MSYH_SDF.asset
-      hash: 386213b6e88a081ff3444d3cb04377def23b830c46ff5984f37d223d01c5a2ec
+      hash: 58845cbedec0df7eef2c63ab5f441815fd035a7ae1a38d8b2943920159ad22fe
       assetType: 0
   - assetBundleName: ui
     assetInfos:

@@ -65,6 +65,9 @@ public static class AssetKeys
     public const string 鞋子饰 = "鞋子饰";
     public const string 鞋子饰内侧 = "鞋子饰内侧";
     public const string 领带 = "领带";
+    public const string Floor = "Floor";
+    public const string Obstacle = "Obstacle";
+    public const string Wall = "Wall";
     public const string ABTestScene = "ABTestScene";
     public const string GameScene = "GameScene";
     public const string InventoryMainTestScene = "InventoryMainTestScene";

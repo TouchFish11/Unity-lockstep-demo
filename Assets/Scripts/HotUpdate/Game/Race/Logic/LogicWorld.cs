@@ -15,6 +15,7 @@ namespace HotUpdate.Game.Race.Logic
         private readonly IEventCenter _eventCenter;
         private bool _raceEnded;
         private PresentEventsEvent _presentEvent;
+        private LevelConfig _level;
 
         public LogicWorld(IEventCenter eventCenter)
         {
@@ -28,7 +29,15 @@ namespace HotUpdate.Game.Race.Logic
             _byId[avatar.PlayerId] = avatar;
         }
 
-        public void AddAi(AiController ai) => _aiControllers.Add(ai);
+        public void AddAi(AiController ai)
+        {
+            _aiControllers.Add(ai);
+        }
+
+        public void SetLevel(LevelConfig level)
+        {
+            _level = level;
+        }
 
         public LogicAvatar GetAvatar(int playerId) => _byId.GetValueOrDefault(playerId);
 
@@ -92,6 +101,9 @@ namespace HotUpdate.Game.Race.Logic
             // 碰撞
             ResolveCollisions();
         
+            // 环境碰撞（边界 clamp + 推出障碍物）
+            ResolveEnvironment();
+            
             // 胜负判定
             CheckMatchEnd();
             
@@ -225,6 +237,69 @@ namespace HotUpdate.Game.Race.Logic
             var correction = dir * (overlap / Fixed64.FromInt(2));    // 各推一半
             a.Nudge(FixedVector3.Zero - correction); // FixedVector3 无一元负号，用 Zero 减
             b.Nudge(correction);
+        }
+        
+        private void ResolveEnvironment()
+        {
+            if (_level == null)
+                return;
+
+            foreach (var avatar in _avatars)
+            {
+                if (avatar.IsDead)
+                    continue;
+
+                // clamp 到边界（带半径余量）
+                var clamped = ClampToBounds(avatar.Position, avatar.Radius);
+                // clamped是<=avatar.Position
+                avatar.Nudge(clamped - avatar.Position);
+
+                // 推出障碍物（角色全量推出，障碍物不动）
+                foreach (var ob in _level.Obstacles)
+                {
+                    SeparateFromObstacle(avatar, ob);
+                }
+            }
+        }
+        
+        private FixedVector3 ClampToBounds(FixedVector3 pos, Fixed64 radius)
+        {
+            var loX = _level.BoundsMin.x + radius;
+            var hiX = _level.BoundsMax.x - radius;
+            var loZ = _level.BoundsMin.z + radius;
+            var hiZ = _level.BoundsMax.z - radius;
+            return new FixedVector3(Clamp(pos.x, loX, hiX), pos.y, Clamp(pos.z, loZ, hiZ));
+        }
+        
+        private static Fixed64 Clamp(Fixed64 v, Fixed64 lo, Fixed64 hi)
+        {
+            if (v < lo)
+                return lo;
+            if (v > hi)
+                return hi;
+            return v;
+        }
+        
+        private static void SeparateFromObstacle(LogicAvatar a, LevelObstacle ob)
+        {
+            var delta = a.Position - ob.Center;
+            var distSq = delta.SqrMagnitude();
+            var minDist = a.Radius + ob.Radius;
+            // 不重叠
+            if (distSq >= minDist * minDist)
+                return;
+
+            if (distSq == Fixed64.Zero)
+            {
+                // 完全重合：沿 +X 推开
+                a.Nudge(new FixedVector3(minDist, Fixed64.Zero, Fixed64.Zero));
+                return;
+            }
+
+            var dist = Fixed64.Sqrt(distSq);
+            var overlap = minDist - dist;
+            var dir = delta / dist;          // 障碍物 → 角色
+            a.Nudge(dir * overlap);          // 角色全量推出，障碍物不动
         }
     }
 }

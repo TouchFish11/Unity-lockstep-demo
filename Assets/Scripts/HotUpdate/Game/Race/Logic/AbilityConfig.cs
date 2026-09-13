@@ -36,7 +36,7 @@ namespace HotUpdate.Game.Race.Logic
             Shape = EAbilityShape.Fan,
             Range = Fixed64.FromFloat(2f), 
             HalfAngleCos = Fixed64.Half,
-            Damage = 5, 
+            Damage = 0, 
             Duration = 8, 
             HitFrame = 3, 
             Cooldown = 0,

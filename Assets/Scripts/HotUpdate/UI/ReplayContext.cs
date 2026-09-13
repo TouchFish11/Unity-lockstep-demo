@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Core.AssetBundles.Management;
 using Core.DI;
 using Core.GlobalEvent;
+using Core.Math;
 using Core.Mono;
 using Core.Time;
 using Core.UI;
@@ -25,6 +26,7 @@ namespace HotUpdate.UI
             {0, AssetKeys.Attack1},
             { 1, AssetKeys.AoeAttack },
         }; 
+        private readonly List<GameObject> _levelVisuals = new();
 
         private LogicWorld _logicWorld;
         private readonly List<ViewAvatar> _viewAvatars = new();
@@ -44,37 +46,43 @@ namespace HotUpdate.UI
         public async Task PrepareAsync()
         {
             _logicWorld = DIContainer.Create<LogicWorld>();
+            var level = LevelTable.Default; 
+            _logicWorld.SetLevel(level); 
+            await SpawnLevelVisuals(level);
+            
             _eventCenter.SubscribeEvent<PresentEventsEvent>(OnPresentEvents);
 
-            foreach (var raceId in ReplayRecorder.PlayerRaceIds)
+            for (var i = 0; i < ReplayRecorder.PlayerRaceIds.Length; i++)
             {
+                var raceId = ReplayRecorder.PlayerRaceIds[i];
                 var logicAvatar = new LogicAvatar(raceId, CharacterTable.Get(CharacterTable.PlayerId));
+                logicAvatar.Spawn(level.PlayerSpawnPoints[i]);
                 _logicWorld.AddAvatar(logicAvatar);
                 using var handle = await GameAsset.LoadAssetAsync<RuntimeAnimatorController>(AssetKeys.Role1_Animator);
                 var viewAvatar = await _objectSpawner.SpawnAsync<ViewAvatar>(AssetKeys.Role1);
-                viewAvatar.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
                 viewAvatar.Bind(logicAvatar, handle.Asset);
                 _viewAvatars.Add(viewAvatar);
                 await SpawnHud(viewAvatar);
             }
 
-            await SpawnAi();
+            await SpawnAi(level);
 
             _monoAdapter.AddUpdateListener(OnUpdate);
         }
 
-        private async Task SpawnAi()
+        private async Task SpawnAi(LevelConfig level)
         {
             const int AiCount = 1;
             for (var i = 0; i < AiCount; i++)
             {
                 var aiId = -1000 - i;
                 var logicAvatar = new LogicAvatar(aiId, CharacterTable.Get(CharacterTable.MonsterId));
+                logicAvatar.Spawn(level.MonsterSpawnPoints[i]);
                 _logicWorld.AddAvatar(logicAvatar);
                 _logicWorld.AddAi(new AiController(logicAvatar));
+                
                 using var handle = await GameAsset.LoadAssetAsync<RuntimeAnimatorController>(AssetKeys.Role1_Animator);
                 var viewAvatar = await _objectSpawner.SpawnAsync<ViewAvatar>(AssetKeys.AIRole);
-                viewAvatar.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
                 viewAvatar.Bind(logicAvatar, handle.Asset);
                 _viewAvatars.Add(viewAvatar);
                 await SpawnHud(viewAvatar);
@@ -128,9 +136,47 @@ namespace HotUpdate.UI
             _logicWorld?.Unsubscribe();
             _objectSpawner.Release(_huds);
             _objectSpawner.Release(_viewAvatars, true);
+            _objectSpawner.Release(_levelVisuals, true);
             var mainController = _uiManager.GetController<MainController>();
             if (mainController != null)
                 await _uiManager.SetViewActive(mainController.PanelId, true);
+        }
+        
+        private async Task SpawnLevelVisuals(LevelConfig level)
+        {
+            float minX = level.BoundsMin.x.ToFloat(), maxX = level.BoundsMax.x.ToFloat();
+            float minZ = level.BoundsMin.z.ToFloat(), maxZ = level.BoundsMax.z.ToFloat();
+            float cx = (minX + maxX) / 2f, cz = (minZ + maxZ) / 2f;
+            float lenX = maxX - minX, lenZ = maxZ - minZ;
+
+            // 地板（单位平面，缩放铺满边界；若场景已有地面可省）
+            var floor = await _objectSpawner.SpawnAsync<GameObject>(AssetKeys.Floor, null, new Vector3(cx, 0f, cz), Quaternion.identity);
+            floor.transform.localScale = new Vector3(lenX, 1f, lenZ);
+            _levelVisuals.Add(floor);
+
+            // 面墙（单位立方体，pivot 中心，边长 1；sx/sz 是沿世界 X/Z 的缩放）
+            const float thickness = 0.5f;
+            await SpawnWall(cx, minZ - thickness / 2f, lenX + 2f * thickness, thickness);  // 底边（沿 X 长）
+            await SpawnWall(cx, maxZ + thickness / 2f, lenX + 2f * thickness, thickness);  // 顶边（沿 X 长）
+            await SpawnWall(minX - thickness / 2f, cz, thickness, lenZ + 2f * thickness);  // 左边（沿 Z 长）
+            await SpawnWall(maxX + thickness / 2f, cz, thickness, lenZ + 2f * thickness);  // 右边（沿 Z 长）
+
+            // 障碍物（prefab 自然直径约 1，scale = 2 * radius）
+            foreach (var ob in level.Obstacles)
+            {
+                var obj = await _objectSpawner.SpawnAsync<GameObject>(AssetKeys.Obstacle, null, ob.Center.ToVector3(), Quaternion.identity);
+                var d = (ob.Radius * Fixed64.FromInt(2)).ToFloat();
+                obj.transform.localScale = new Vector3(d, d, d);
+                _levelVisuals.Add(obj);
+            }
+        }
+
+        private async Task SpawnWall(float x, float z, float sx, float sz)
+        {
+            const float height = 1.5f;   // 墙高，世界单位
+            var wall = await _objectSpawner.SpawnAsync<GameObject>(AssetKeys.Wall, null, new Vector3(x, height / 2f, z), Quaternion.identity);
+            wall.transform.localScale = new Vector3(sx, height, sz);
+            _levelVisuals.Add(wall);
         }
     }
 }

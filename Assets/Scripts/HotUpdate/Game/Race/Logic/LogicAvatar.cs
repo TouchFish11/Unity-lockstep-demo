@@ -97,6 +97,12 @@ namespace HotUpdate.Game.Race.Logic
             Hp = config.maxHp;
         }
 
+        public void Spawn(FixedVector3 pos)
+        {
+            Position = pos;
+            PrevPosition = pos;   // 同时设，避免开局从原点"滑"到出生点
+        }
+        
         public void Execute(in InputCommand cmd)
         {
             switch (cmd.optType)

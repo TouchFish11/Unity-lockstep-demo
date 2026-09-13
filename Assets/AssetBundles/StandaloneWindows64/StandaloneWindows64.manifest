@@ -1,7 +1,14 @@
 ManifestFileVersion: 0
-CRC: 3809291947
+CRC: 109257837
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: hotupdate
+      Name: scenes
+      Dependencies:
+        Dependency_0: tmpasset
+    Info_1:
+      Name: prefab
+      Dependencies: {}
+    Info_2:
+      Name: tmpasset
       Dependencies: {}
