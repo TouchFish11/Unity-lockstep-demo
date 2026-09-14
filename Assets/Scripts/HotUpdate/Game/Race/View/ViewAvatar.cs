@@ -59,7 +59,7 @@ namespace HotUpdate.Game.Race.View
         {
 #if UNITY_STANDALONE_WIN
             OnPCControl(context);
-#elif Unity_ANDROID
+#elif UNITY_ANDROID
             OnAndroidControl(context);
 #endif
         }
@@ -87,9 +87,9 @@ namespace HotUpdate.Game.Race.View
             }
             else if (context.action.name == ActionConfigs.Skill)
             {
-                if (context.phase == InputActionPhase.Started && !_logic.IsCasting && !_logic.IsCooling)
+                if (context.phase == InputActionPhase.Started)
                 {
-                    _pendingSkill = true;
+                    TryCastSkill();
                 }
             }
         }
@@ -103,6 +103,10 @@ namespace HotUpdate.Game.Race.View
                     var value = context.ReadValue<Vector2>();
                     _pendingDir = new FixedVector3(Fixed64.FromFloat(value.x), Fixed64.Zero, Fixed64.FromFloat(value.y));
                 }
+                else if(context.phase == InputActionPhase.Canceled)
+                {
+                    _pendingDir = FixedVector3.Zero;
+                }
             }
             else if(context.action.name == ActionConfigs.Attack)
             {
@@ -113,9 +117,9 @@ namespace HotUpdate.Game.Race.View
             }
             else if (context.action.name == ActionConfigs.Skill)
             {
-                if (context.phase == InputActionPhase.Started && !_logic.IsCasting && !_logic.IsCooling)
+                if (context.phase == InputActionPhase.Started)
                 {
-                    _pendingSkill = true;
+                    TryCastSkill();
                 }
             }
         }
@@ -197,6 +201,14 @@ namespace HotUpdate.Game.Race.View
             {
                 cmd.optType = EOptType.Move;
                 cmd.dir = _pendingDir;
+            }
+        }
+
+        public void TryCastSkill()
+        {
+            if (_logic != null && !_logic.IsCasting && !_logic.IsCooling)
+            {
+                _pendingSkill = true;
             }
         }
 

@@ -26,6 +26,14 @@ namespace HotUpdate.UI
             _viewAvatar = viewAvatar;
         }
 
+        protected override void OnButtonClick(string btnName)
+        {
+            if (btnName == nameof(btnSkill) && _viewAvatar != null)
+            {
+                _viewAvatar.TryCastSkill();
+            }
+        }
+
         private void Update()
         {
             SetCooldown();
