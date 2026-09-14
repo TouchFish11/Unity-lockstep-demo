@@ -6,7 +6,7 @@ namespace HotUpdate.Game.Race.Logic
 {
     public class LogicAvatar
     {
-        private static readonly Fixed64 LogicDeltaTime = Fixed64.FromFloat(0.066f); // 66ms
+        private static readonly Fixed64 LogicDeltaTime = Fixed64.FromFloat(FrameSyncConfig.LogicFrameSeconds); // 66ms
         
         private readonly CharacterConfig _config;
         private int _abilityTimer = -1;                       // -1=不在施法中
@@ -221,6 +221,16 @@ namespace HotUpdate.Game.Race.Logic
         public void Nudge(FixedVector3 delta)
         {
             Position += delta;
+        }
+
+        /// <summary>
+        /// 剩余冷却帧数，0 = 不在冷却中
+        /// </summary>
+        /// <param name="abilityId"></param>
+        /// <returns></returns>
+        public int GetCooldown(int abilityId)
+        {
+            return _cooldowns.GetValueOrDefault(abilityId);
         }
     }
 }

@@ -96,6 +96,7 @@ namespace HotUpdate.UI
                     var playerInput = viewAvatar.gameObject.AddComponent<PlayerInput>();
                     viewAvatar.InitInput(_inputSystem, playerInput);
                     _netGameManager.SetCurrentRaceId(selfRaceId);
+                    raceController.SetCurrentAvatar(viewAvatar);
                 }
                 _netGameManager.AddPlayer(raceId, viewAvatar);
 
@@ -250,12 +251,13 @@ namespace HotUpdate.UI
             float cx = (minX + maxX) / 2f, cz = (minZ + maxZ) / 2f;
             float lenX = maxX - minX, lenZ = maxZ - minZ;
 
-            // 地板（单位平面，缩放铺满边界；若场景已有地面可省）
+            // 地板（按实际 mesh 尺寸缩放铺满边界；若场景已有地面可省）
             var floor = await _objectSpawner.SpawnAsync<GameObject>(AssetKeys.Floor, null, new Vector3(cx, 0f, cz), Quaternion.identity);
-            floor.transform.localScale = new Vector3(lenX, 1f, lenZ);
+            var floorSize = GetMeshSize(floor);
+            floor.transform.localScale = new Vector3(lenX / floorSize.x, 1f, lenZ / floorSize.z);
             _levelVisuals.Add(floor);
 
-            // 面墙（单位立方体，pivot 中心，边长 1；sx/sz 是沿世界 X/Z 的缩放）
+            // 4面墙（单位立方体，pivot 中心，边长 1；sx/sz 是沿世界 X/Z 的缩放）
             const float thickness = 0.5f;
             await SpawnWall(cx, minZ - thickness / 2f, lenX + 2f * thickness, thickness);  // 底边（沿 X 长）
             await SpawnWall(cx, maxZ + thickness / 2f, lenX + 2f * thickness, thickness);  // 顶边（沿 X 长）
@@ -276,8 +278,22 @@ namespace HotUpdate.UI
         {
             const float height = 1.5f;   // 墙高，世界单位
             var wall = await _objectSpawner.SpawnAsync<GameObject>(AssetKeys.Wall, null, new Vector3(x, height / 2f, z), Quaternion.identity);
-            wall.transform.localScale = new Vector3(sx, height, sz);
+            var wallSize = GetMeshSize(wall);
+            wall.transform.localScale = new Vector3(sx / wallSize.x, height / wallSize.y, sz / wallSize.z);
             _levelVisuals.Add(wall);
+        }
+        
+        /// <summary>
+        /// 读 prefab 实际 mesh 尺寸（local 未缩放），避免假设单位尺寸
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private static Vector3 GetMeshSize(GameObject obj)
+        {
+            var mf = obj.GetComponentInChildren<MeshFilter>();
+            if (mf && mf.sharedMesh)
+                return mf.sharedMesh.bounds.size;
+            return Vector3.one;
         }
     }
 }

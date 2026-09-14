@@ -56,27 +56,27 @@ MonoBehaviour:
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Base.dll.bytes
       size: 8192
       name: HotUpdate.Base.dll.bytes
-      hash: 6813bd1a7f9f926a50715505de04dbee17c0c22f955917e74caaacda9955defe
+      hash: 9a1e62d6195925c68d0ff3127cf51d394ab5abfd9c2cf62baa33eeea3f42683e
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Common.dll.bytes
       size: 24064
       name: HotUpdate.Common.dll.bytes
-      hash: 6a022c21ee1181032f98ddf2062a8fd7eb586fc71fd5a3f705dd0731f71e19d0
+      hash: 7e20addf84f156aac6ea7b8f74cf7acac75231a0414b8f66cd717df50f7b7688
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Game.dll.bytes
-      size: 22528
+      size: 24576
       name: HotUpdate.Game.dll.bytes
-      hash: 1d5d8af86c94d49290cf62db0d824c965f811a9ad4b526fff147be863f028d55
+      hash: 1d5edfdf4794da5377d17e961ee678a6e95523d3bd5382664bb33a0e68d3ca09
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.UI.dll.bytes
-      size: 41472
+      size: 49152
       name: HotUpdate.UI.dll.bytes
-      hash: f168b44037bf9ffdf1501fc68f8082c1dfcae85c774365d67e3b59a138324f82
+      hash: 923b89489022cabb65bb323d3379818ac72a49541cd19422ad0ed6e4cdce4c74
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Update.dll.bytes
       size: 7680
       name: HotUpdate.Update.dll.bytes
-      hash: 8bc4c66b1ab9fd640a81df2b2b8438dfd80755b6921889733ea7d25b1be38dd7
+      hash: 59dbd059400537922be42024b581db0232026fb9fc9f7a2c59980f1581b50da8
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdateAssemblySettings.json
       size: 505
@@ -411,9 +411,9 @@ MonoBehaviour:
       hash: 8eee0432e96aaa894b810adc9c1bf40bb90280055bf61f1595cb69916dae7b07
       assetType: 1
     - assetPath: Assets\Editor\ArtRes\Scenes\NetTestScene.unity
-      size: 9428
+      size: 9429
       name: NetTestScene.unity
-      hash: fe63f9f039d994d05d763a318d1533051d60f85254a23161c75dd2d8918c1c4c
+      hash: 9589d9ceaee14044326f6157d5e6def1ee078a68b404981b4998f574c44fa585
       assetType: 1
   - assetBundleName: spriteatlas
     assetInfos:
@@ -435,9 +435,9 @@ MonoBehaviour:
       hash: a5820bb197187e3c800be3356ec01169ca4a812134b9a8785e7697d216c86109
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH_SDF.asset
-      size: 8171
+      size: 8413568
       name: MSYH_SDF.asset
-      hash: 58845cbedec0df7eef2c63ab5f441815fd035a7ae1a38d8b2943920159ad22fe
+      hash: 588d8a46d73440322c0e0ad7b4cf42b3a2b420fd4b0d747a1700b3dcde49efd9
       assetType: 0
   - assetBundleName: ui
     assetInfos:
@@ -517,9 +517,9 @@ MonoBehaviour:
       hash: aa24340f1a685f777d97a64a254d393e868341d1374e6ecb0e72e0f8c1364525
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Net\GameView.prefab
-      size: 73998
+      size: 70509
       name: GameView.prefab
-      hash: 427e3dfe5d32f6e1951ba0e12ac5f51818e2a4512ada161db3d8cfc6a6018892
+      hash: 3922482573589c58905b487c8f71a1e640d77c9eb654cd17650ee6822f078b5a
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Net\LoadingPanel.prefab
       size: 1069146
@@ -530,6 +530,11 @@ MonoBehaviour:
       size: 21441
       name: ResultView.prefab
       hash: 3c8681f79639f8c8af40d967b71ac4c576f9e5c721ed871946cdc88802a559e4
+      assetType: 0
+    - assetPath: Assets\Editor\ArtRes\UI\Net\Skill.prefab
+      size: 11342
+      name: Skill.prefab
+      hash: 14102d04967b09ae1f7cabb5c0d2402a01c84796678e0d6e85aa00b4894f39de
       assetType: 0
     - assetPath: Assets\Editor\ArtRes\UI\Net\StatusHUD.prefab
       size: 20436

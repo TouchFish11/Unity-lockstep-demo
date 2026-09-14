@@ -55,6 +55,11 @@ namespace HotUpdate.UI
             _huds.Add(statusHUD);
         }
 
+        public void SetCurrentAvatar(ViewAvatar viewAvatar)
+        {
+            view.Init(viewAvatar);
+        }
+
         private void OnUpdate()
         {
             var frameRate = Application.targetFrameRate;

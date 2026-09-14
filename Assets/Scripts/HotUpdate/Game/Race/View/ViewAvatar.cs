@@ -200,6 +200,11 @@ namespace HotUpdate.Game.Race.View
             }
         }
 
+        public int GetCooldown(int abilityId)
+        {
+            return _logic.GetCooldown(abilityId);
+        }
+
         private void OnDestroy()
         {
             _inputSystem?.ResetPlayerInput();

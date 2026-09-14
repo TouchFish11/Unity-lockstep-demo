@@ -33,7 +33,7 @@ namespace HotUpdate.UI
         private readonly List<StatusHUD> _huds = new();
         private int _frameIndex;
         private float _accumulator;
-        private const float LogicTime = 0.066f;
+
 
         public ReplayContext(IEventCenter eventCenter, ObjectSpawner objectSpawner, IMonoAdapter monoAdapter, IUIManager uiManager)
         {
@@ -100,9 +100,9 @@ namespace HotUpdate.UI
         private void OnUpdate()
         {
             _accumulator += TimeUtil.DeltaTime;
-            if (_accumulator < LogicTime)
+            if (_accumulator < FrameSyncConfig.LogicFrameSeconds)
                 return;
-            _accumulator -= LogicTime;
+            _accumulator -= FrameSyncConfig.LogicFrameSeconds;
 
             if (_frameIndex >= ReplayRecorder.Frames.Count)
             {
@@ -149,24 +149,30 @@ namespace HotUpdate.UI
             float cx = (minX + maxX) / 2f, cz = (minZ + maxZ) / 2f;
             float lenX = maxX - minX, lenZ = maxZ - minZ;
 
-            // 地板（单位平面，缩放铺满边界；若场景已有地面可省）
-            var floor = await _objectSpawner.SpawnAsync<GameObject>(AssetKeys.Floor, null, new Vector3(cx, 0f, cz), Quaternion.identity);
-            floor.transform.localScale = new Vector3(lenX, 1f, lenZ);
+            // 地板（按实际 mesh 尺寸缩放铺满边界；若场景已有地面可省）
+            var floor = await _objectSpawner.SpawnAsync<GameObject>(AssetKeys.Floor, null,
+                new Vector3(cx, 0f, cz), Quaternion.identity);
+            var floorSize = GetMeshSize(floor);
+            floor.transform.localScale = new Vector3(lenX / floorSize.x, 1f, lenZ / floorSize.z);
             _levelVisuals.Add(floor);
 
-            // 面墙（单位立方体，pivot 中心，边长 1；sx/sz 是沿世界 X/Z 的缩放）
+            // 4面墙（按实际 mesh 尺寸缩放；sx/sz 是沿世界 X/Z 的目标长度）
             const float thickness = 0.5f;
             await SpawnWall(cx, minZ - thickness / 2f, lenX + 2f * thickness, thickness);  // 底边（沿 X 长）
             await SpawnWall(cx, maxZ + thickness / 2f, lenX + 2f * thickness, thickness);  // 顶边（沿 X 长）
             await SpawnWall(minX - thickness / 2f, cz, thickness, lenZ + 2f * thickness);  // 左边（沿 Z 长）
             await SpawnWall(maxX + thickness / 2f, cz, thickness, lenZ + 2f * thickness);  // 右边（沿 Z 长）
 
-            // 障碍物（prefab 自然直径约 1，scale = 2 * radius）
+            // 障碍物（按实际 mesh 尺寸，均匀缩放到直径 = 2 * radius）
             foreach (var ob in level.Obstacles)
             {
-                var obj = await _objectSpawner.SpawnAsync<GameObject>(AssetKeys.Obstacle, null, ob.Center.ToVector3(), Quaternion.identity);
-                var d = (ob.Radius * Fixed64.FromInt(2)).ToFloat();
-                obj.transform.localScale = new Vector3(d, d, d);
+                var obj = await _objectSpawner.SpawnAsync<GameObject>(AssetKeys.Obstacle, null,
+                    ob.Center.ToVector3(), Quaternion.identity);
+                var obSize = GetMeshSize(obj);
+                var targetDiam = (ob.Radius * Fixed64.FromInt(2)).ToFloat();
+                var naturalDiam = Mathf.Max(obSize.x, Mathf.Max(obSize.y, obSize.z));
+                var s = targetDiam / naturalDiam;
+                obj.transform.localScale = new Vector3(s, s, s);
                 _levelVisuals.Add(obj);
             }
         }
@@ -175,8 +181,18 @@ namespace HotUpdate.UI
         {
             const float height = 1.5f;   // 墙高，世界单位
             var wall = await _objectSpawner.SpawnAsync<GameObject>(AssetKeys.Wall, null, new Vector3(x, height / 2f, z), Quaternion.identity);
-            wall.transform.localScale = new Vector3(sx, height, sz);
+            var wallSize = GetMeshSize(wall);
+            wall.transform.localScale = new Vector3(sx / wallSize.x, height / wallSize.y, sz / wallSize.z);
             _levelVisuals.Add(wall);
+        }
+
+        // 读 prefab 实际 mesh 尺寸（local 未缩放），避免假设单位尺寸
+        private static Vector3 GetMeshSize(GameObject obj)
+        {
+            var mf = obj.GetComponentInChildren<MeshFilter>();
+            if (mf && mf.sharedMesh)
+                return mf.sharedMesh.bounds.size;
+            return Vector3.one;
         }
     }
 }

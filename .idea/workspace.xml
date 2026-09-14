@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakeProjectFlavorService">
+    <option name="flavorId" value="CMakePlainProjectFlavor" />
+  </component>
+  <component name="CMakeSettings">
+    <configurations />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bb342741-f7db-4943-b3f1-9481851adbd7" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/CommonDef.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/CommonDef.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/Il2CppCompatibleDef.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/Il2CppCompatibleDef.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/Runtime.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/Runtime.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/RuntimeApi.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/RuntimeApi.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/RuntimeConfig.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/RuntimeConfig.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/generated/AssemblyManifest.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/generated/MethodBridge.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/generated/UnityVersion.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/Engine.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/Engine.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/InstrinctDef.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/Instruction.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/Instruction.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/Interpreter.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/Interpreter.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/InterpreterDefs.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/InterpreterDefs.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/InterpreterModule.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/InterpreterModule.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/InterpreterUtil.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/InterpreterUtil.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/Interpreter_Execute.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/MemoryUtil.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/MethodBridge.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/interpreter/MethodBridge.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/AOTHomologousImage.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/AOTHomologousImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/Assembly.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/Assembly.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/BlobReader.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/ClassFieldLayoutCalculator.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/ClassFieldLayoutCalculator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/Coff.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/ConsistentAOTHomologousImage.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/ConsistentAOTHomologousImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/CustomAttributeDataWriter.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/Image.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/Image.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/InterpreterImage.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/InterpreterImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/MetadataDef.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/MetadataModule.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/MetadataModule.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/MetadataPool.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/MetadataPool.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/MetadataReader.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/MetadataUtil.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/MetadataUtil.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/MethodBodyCache.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/MethodBodyCache.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/Opcodes.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/Opcodes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/PDBImage.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/PDBImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/RawImage.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/RawImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/RawImageBase.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/RawImageBase.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/SuperSetAOTHomologousImage.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/SuperSetAOTHomologousImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/Tables.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/VTableSetup.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/metadata/VTableSetup.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/BasicBlockSpliter.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/BasicBlockSpliter.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/TemporaryMemoryArena.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/TemporaryMemoryArena.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/Transform.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/Transform.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/TransformContext.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/TransformContext.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/TransformContext_CallCommon.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/TransformContext_Instinct.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/TransformModule.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HybridCLRData/hybridclr_repo/hybridclr/transform/TransformModule.h" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3JH9Ke2FqyAFsNdvWS2UzHVcv79" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "cidr.known.project.marker": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="bb342741-f7db-4943-b3f1-9481851adbd7" name="更改" comment="" />
+      <created>1789307067011</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1789307067011</updated>
+      <workItem from="1789307071250" duration="351000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnityProjectDiscoverer">
+    <option name="unityProjectFolder" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.OperationCanceledException" breakIfHandledByOtherCode="false" displayValue="System.OperationCanceledException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.Tasks.TaskCanceledException" breakIfHandledByOtherCode="false" displayValue="System.Threading.Tasks.TaskCanceledException" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="3" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

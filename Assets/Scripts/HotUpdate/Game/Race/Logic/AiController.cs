@@ -21,7 +21,7 @@ namespace HotUpdate.Game.Race.Logic
             if (_avatar.IsDead || _avatar.IsCasting)
                 return; 
             
-            // 找最近的存活玩家
+            // 找最近的存活玩家（循环只负责找，不移动）
             LogicAvatar nearest = null;
             var nearestDistSq = Fixed64.MaxValue;
             foreach (var other in avatars)
@@ -36,26 +36,28 @@ namespace HotUpdate.Game.Race.Logic
                     nearestDistSq = d;
                     nearest = other;
                 }
+            }
+            
+            // 没有存活玩家
+            if (nearest == null)
+            {
+                _avatar.Move(FixedVector3.Zero);
+                return;
+            }
                 
-                // 没有存活玩家
-                if (nearest == null)
-                {
-                    _avatar.Move(FixedVector3.Zero);
-                }
-                
-                var dir = nearest.Position - _avatar.Position;
-                var attackRange  = AbilityTable.Get(AbilityTable.AttackId).Range;
-                var rangeSq = attackRange * attackRange;
-                if (dir.SqrMagnitude() <= rangeSq)
-                {
-                    _avatar.FaceToward(dir);
-                    _avatar.StartAbility(AbilityTable.AttackId);
-                }
-                else
-                {
-                    // 归一化后交给 Move，恒定速度
-                    _avatar.Move(dir.Normalized());
-                }
+            // 只朝最终确定的最近玩家移动/攻击一次
+            var dir = nearest.Position - _avatar.Position;
+            var attackRange  = AbilityTable.Get(AbilityTable.AttackId).Range;
+            var rangeSq = attackRange * attackRange;
+            if (dir.SqrMagnitude() <= rangeSq)
+            {
+                _avatar.FaceToward(dir);
+                _avatar.StartAbility(AbilityTable.AttackId);
+            }
+            else
+            {
+                // 归一化后交给 Move，恒定速度
+                _avatar.Move(dir.Normalized());
             }
         }
     }
