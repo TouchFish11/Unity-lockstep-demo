@@ -26,8 +26,8 @@ namespace Core.Editor.AssetBundles
         [Tooltip("热更程序集 DLL 的拷贝目标目录（HybridCLR 生成的 DLL 拷到这里）")]
         public string hotUpdateAssemblyTargetPath = "Assets/Editor/ArtRes/HotUpdate/";
 
-        [Tooltip("HybridCLR 生成的 DLL 源目录（相对项目根目录）")]
-        public string hybridCLRAssemblySourcesPath = "HybridCLRData/HotUpdateDlls/StandaloneWindows64/";
+        [Tooltip("HybridCLR 生成的 DLL 源目录（相对项目根目录，不含平台子目录，运行时按当前 BuildTarget 动态拼接）")]
+        public string hybridCLRAssemblySourcesPath = "HybridCLRData/HotUpdateDlls/";
 
         [Tooltip("参与热更的程序集名列表（用于拷贝 DLL 和生成依赖文件）")]
         public string[] hotUpdateAssemblies =

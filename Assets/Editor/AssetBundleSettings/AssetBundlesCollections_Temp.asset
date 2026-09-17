@@ -15,555 +15,555 @@ MonoBehaviour:
   assetBundleInfos:
   - assetBundleName: animation
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\Animation\Bot.controller
+    - assetPath: Assets/Editor/ArtRes/Animation/Bot.controller
       size: 12460
       name: Bot.controller
       hash: cb243ea874261dc3b0a24f5aee09953d076dcdcd7189cb69f3428477b95c0927
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\Animation\Role\Role_Controller.controller
+    - assetPath: Assets/Editor/ArtRes/Animation/Role/Role_Controller.controller
       size: 6869
       name: Role_Controller.controller
       hash: 9f5a747a5f10e8b483097fbb3ad7f4ebcbf6a2df2c060c797b35509b00a8c77f
       assetType: 0
   - assetBundleName: animator
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\Animator\Role1_Animator.controller
+    - assetPath: Assets/Editor/ArtRes/Animator/Role1_Animator.controller
       size: 12674
       name: Role1_Animator.controller
       hash: 870dceee928be99c6952edfee261f6abeaebf8862567e9476a9e55643f40544b
       assetType: 0
   - assetBundleName: fonts
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\Fonts\MSYH.TTC
+    - assetPath: Assets/Editor/ArtRes/Fonts/MSYH.TTC
       size: 19704352
       name: MSYH.TTC
       hash: d79c55e68b1131eea0cc1c47be4f572d964f28c682e143db2ad09c1e4cb07a3f
       assetType: 0
   - assetBundleName: gameconfig
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\GameConfig\ItemConfigs.json
+    - assetPath: Assets/Editor/ArtRes/GameConfig/ItemConfigs.json
       size: 2224
       name: ItemConfigs.json
       hash: fd8711db2cbfe53383482f279935d28383ed438046fd5daa7db48b51862e549a
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\GameConfig\PlayerControls.json
+    - assetPath: Assets/Editor/ArtRes/GameConfig/PlayerControls.json
       size: 7651
       name: PlayerControls.json
       hash: 26f0362e3b271be1f718a9e631d4e0c7ec798ad7c6393e4908781c079ec0d323
       assetType: 0
   - assetBundleName: hotupdate
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Base.dll.bytes
+    - assetPath: Assets/Editor/ArtRes/HotUpdate/HotUpdate.Base.dll.bytes
       size: 8192
       name: HotUpdate.Base.dll.bytes
-      hash: 9a1e62d6195925c68d0ff3127cf51d394ab5abfd9c2cf62baa33eeea3f42683e
+      hash: 2473661f56df18d5fd37207a5893d9f370c08c952ed3b30eca0f1a830026cc67
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Common.dll.bytes
+    - assetPath: Assets/Editor/ArtRes/HotUpdate/HotUpdate.Common.dll.bytes
       size: 24064
       name: HotUpdate.Common.dll.bytes
-      hash: 7e20addf84f156aac6ea7b8f74cf7acac75231a0414b8f66cd717df50f7b7688
+      hash: 118bfd88b027be3553d09df70a9befb0a667c2ffa9e4ba8b40637f8b8100a34d
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Game.dll.bytes
+    - assetPath: Assets/Editor/ArtRes/HotUpdate/HotUpdate.Game.dll.bytes
       size: 24576
       name: HotUpdate.Game.dll.bytes
-      hash: 1d5edfdf4794da5377d17e961ee678a6e95523d3bd5382664bb33a0e68d3ca09
+      hash: f0a3ea59efd03dab13b1f97b32a2a4ba5c93686697de01a6dcd04e9eca3b02aa
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.UI.dll.bytes
-      size: 49152
+    - assetPath: Assets/Editor/ArtRes/HotUpdate/HotUpdate.UI.dll.bytes
+      size: 50176
       name: HotUpdate.UI.dll.bytes
-      hash: 923b89489022cabb65bb323d3379818ac72a49541cd19422ad0ed6e4cdce4c74
+      hash: b99daac7c7ea140d9d064933535a521919b3a09133a47dd568a76bf63a61d659
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdate.Update.dll.bytes
+    - assetPath: Assets/Editor/ArtRes/HotUpdate/HotUpdate.Update.dll.bytes
       size: 7680
       name: HotUpdate.Update.dll.bytes
-      hash: 59dbd059400537922be42024b581db0232026fb9fc9f7a2c59980f1581b50da8
+      hash: f390c5b8fcb8e4a75c7e2200a8d5e5e14a96ec0f7aac1c3d4030ae63cd81ed0f
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\HotUpdate\HotUpdateAssemblySettings.json
+    - assetPath: Assets/Editor/ArtRes/HotUpdate/HotUpdateAssemblySettings.json
       size: 505
       name: HotUpdateAssemblySettings.json
       hash: af147a7534bdc13c51ddcf173ded4926b229fed0862daa6f1abb31977321a51c
       assetType: 0
   - assetBundleName: hotupdateaot
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\HotUpdateAOT\CoreModule.dll.bytes
-      size: 404992
+    - assetPath: Assets/Editor/ArtRes/HotUpdateAOT/CoreModule.dll.bytes
+      size: 408576
       name: CoreModule.dll.bytes
-      hash: 1a7e8149f4444da7cced748faf6bbc9e48a2728c0947ab9a243e10149b99ec48
+      hash: 8f58884e511a593f04cf5e32258481fab36861ecb6601f51c5c3e5f0f0d201d5
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\HotUpdateAOT\mscorlib.dll.bytes
-      size: 2338304
+    - assetPath: Assets/Editor/ArtRes/HotUpdateAOT/mscorlib.dll.bytes
+      size: 2322944
       name: mscorlib.dll.bytes
-      hash: 60eb767874df1f8d9a0230a7a9b52f099eb159e978d5b7b7653ce967dcf73732
+      hash: 9000869a7b625c7f74d27a9743a6522195b44fa40504b733038f1445e67541a0
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\HotUpdateAOT\System.Core.dll.bytes
+    - assetPath: Assets/Editor/ArtRes/HotUpdateAOT/System.Core.dll.bytes
       size: 427008
       name: System.Core.dll.bytes
-      hash: e91fd5688a3f26b8b2dcc7e4b5ac7bbfa41748bf8d421e0c00774401da1c0db0
+      hash: 5db62f3d1a45ac6a6bdec57b62493868fb11d42898500364530fc4d4b59b3cc5
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\HotUpdateAOT\Unity.InputSystem.dll.bytes
-      size: 1244672
+    - assetPath: Assets/Editor/ArtRes/HotUpdateAOT/Unity.InputSystem.dll.bytes
+      size: 1232384
       name: Unity.InputSystem.dll.bytes
-      hash: 64e4a61696829684b305a355ad71d141f9a67c2836ee5c7b32163ad78e537d18
+      hash: 369eec1e9bcc6f9d818dce1115c1ee986c95223b3e6ca7cc529d69190cfd3f08
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\HotUpdateAOT\UnityEngine.CoreModule.dll.bytes
-      size: 481792
+    - assetPath: Assets/Editor/ArtRes/HotUpdateAOT/UnityEngine.CoreModule.dll.bytes
+      size: 524800
       name: UnityEngine.CoreModule.dll.bytes
-      hash: 378645148b320274bf62fc47c553146bbfd0e5bfb632c7d778b3d1ab6007858b
+      hash: 93c62d32ae2acec3c4cdbb4e29bff7b681864ec2088250c47293e34549e998dd
       assetType: 0
   - assetBundleName: hotupdate_entry
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\HotUpdate_Entry\HotUpdateEntry.prefab
+    - assetPath: Assets/Editor/ArtRes/HotUpdate_Entry/HotUpdateEntry.prefab
       size: 1333
       name: HotUpdateEntry.prefab
       hash: 859b903807b710694d1775a0f2814663b3a1a163484199e590e0cf080eaac0a5
       assetType: 0
   - assetBundleName: mask
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\Mask\Bot\Bot_Mask.mask
+    - assetPath: Assets/Editor/ArtRes/Mask/Bot/Bot_Mask.mask
       size: 352
       name: Bot_Mask.mask
       hash: d356e18a973e0a6026f23b7e0a6d37f7834ef0bdc39c475dc534862eaa284fbe
       assetType: 0
   - assetBundleName: material
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\Material\Gray.mat
+    - assetPath: Assets/Editor/ArtRes/Material/Gray.mat
       size: 2202
       name: Gray.mat
       hash: 639d9c2a8faf4713d90c3793700b7b3c2e4cdbf72e4093e629ac3f557a559b62
       assetType: 0
   - assetBundleName: prefab
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\Prefab\AIRole.prefab
+    - assetPath: Assets/Editor/ArtRes/Prefab/AIRole.prefab
       size: 88448
       name: AIRole.prefab
       hash: 1b7fceec0c7c87364b5c7ba4d318be336c5ae9b9dec21b23a882ffeab673f11b
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\Prefab\Role1.prefab
+    - assetPath: Assets/Editor/ArtRes/Prefab/Role1.prefab
       size: 88415
       name: Role1.prefab
       hash: 7caafd850aa05f6c3600305710942cbb4a54a64d57e92d88b336b9790487c71a
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\Prefab\Sphere.prefab
+    - assetPath: Assets/Editor/ArtRes/Prefab/Sphere.prefab
       size: 3425
       name: Sphere.prefab
       hash: dbdc922d9c95b148e892241fe3d0127389d909e95bc3c4e95f6c04cbfd89d2dc
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\Prefab\FireFly\mc1.png
+    - assetPath: Assets/Editor/ArtRes/Prefab/FireFly/mc1.png
       size: 64509
       name: mc1.png
       hash: b27ed743548b98eca92f39cb8bc2156fb598828e1a29651cafb6e66321eebf16
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\Prefab\FireFly\mc3.png
+    - assetPath: Assets/Editor/ArtRes/Prefab/FireFly/mc3.png
       size: 33861
       name: mc3.png
       hash: 988d8189318072892936e5cf90582c6edfa8dea026c611ec2dcdde84279c1535
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\Prefab\FireFly\toon2.png
+    - assetPath: Assets/Editor/ArtRes/Prefab/FireFly/toon2.png
       size: 5586
       name: toon2.png
       hash: 9498ddbcb2e57a67e932deadf72d1001238a3f85f6aa58e4b8e4307ce2a47720
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\Prefab\FireFly\toon3.png
+    - assetPath: Assets/Editor/ArtRes/Prefab/FireFly/toon3.png
       size: 5628
       name: toon3.png
       hash: dad85338aa2800ef4cfeaab41b3767318441630163ec078a64ce0f0da87ad695
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u4F7F\u7528\u89C4\u5219.txt"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u4F7F\u7528\u89C4\u5219.txt"
       size: 399
       name: "\u4F7F\u7528\u89C4\u5219.txt"
       hash: 7aaceed25c4aeee2db86e49d66d740a4c491e7b8c87db8b297d2947d5f3208b3
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u53D1\u9970.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u53D1\u9970.mat"
       size: 2249
       name: "\u53D1\u9970.mat"
       hash: 6fa26b823db2069354863c2aa245b23c8264798e270181ba6581912afba242a1
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u53E3\u8154.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u53E3\u8154.mat"
       size: 2249
       name: "\u53E3\u8154.mat"
       hash: 7a6cee9b3ca852b8e96049b5f57a827b46d5647ea2699426d6c996bc50205c4e
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u5916\u5957.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u5916\u5957.mat"
       size: 2249
       name: "\u5916\u5957.mat"
       hash: c9f54054382ed20b2625786d25996a1a52a2b8f8b12dee2b634a5cf1ae8f166d
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u5934\u53D1.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u5934\u53D1.mat"
       size: 2249
       name: "\u5934\u53D1.mat"
       hash: a6ad3ed5ed3c86ca7f2c4a3c60b77743afaff3f524151903e27947480bddc010
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u5934\u53D1.png"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u5934\u53D1.png"
       size: 905422
       name: "\u5934\u53D1.png"
       hash: 196926aaca8dfa4fec25b48a91d60f30058774e677cd85282e91ee68d1b99a0d
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u624B\u5957.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u624B\u5957.mat"
       size: 2249
       name: "\u624B\u5957.mat"
       hash: fb951f3d3f558ead0f75606d2fd8c2c80109e4a49520de0ca4379ef013791c05
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u6B66\u5668.png"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u6B66\u5668.png"
       size: 1740219
       name: "\u6B66\u5668.png"
       hash: e2ef1ded0ab213336210ec2a394b0e255e7f36897d2dd2b6bc8c1179b95c62eb
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u6D41\u84243.0.fbx"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u6D41\u84243.0.fbx"
       size: 20227936
       name: "\u6D41\u84243.0.fbx"
       hash: 35e74cc0a3737100fdbf6ff767107462fe071ca7e631ae27444db58c2bb1bfb3
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u7259\u9F7F.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u7259\u9F7F.mat"
       size: 2249
       name: "\u7259\u9F7F.mat"
       hash: fe0356b24ef09ff52af8c0489cf1df73de1ee857a7a12fcbd52888498f720420
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u76AE\u80A4.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u76AE\u80A4.mat"
       size: 2249
       name: "\u76AE\u80A4.mat"
       hash: 6110e6cf565b17d619b6506a692401405ef01db53a3401ae4fa007801bd1429c
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u7709\u6BDB.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u7709\u6BDB.mat"
       size: 2249
       name: "\u7709\u6BDB.mat"
       hash: 74e278b3106900fc4867ac30ca0ddd5a46e322761e5019e575b8406fba36b637
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u773C\u767D.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u773C\u767D.mat"
       size: 2249
       name: "\u773C\u767D.mat"
       hash: fa1e7f8b0a4f7453ff6ee9c0d108a4c014813b142d343ae7ccab3e8345041eff
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u773C\u775B.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u773C\u775B.mat"
       size: 2249
       name: "\u773C\u775B.mat"
       hash: 28d9ce254225136bfffd32a6b007fac4b78949c560e81a58b49dcaef77782150
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u773C\u775B1.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u773C\u775B1.mat"
       size: 2250
       name: "\u773C\u775B1.mat"
       hash: 4327479a5c817cad8ff71db36ab6acd249a76e4fb59b372d63c4a13468f4ee8e
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u80A9\u5E26.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u80A9\u5E26.mat"
       size: 2249
       name: "\u80A9\u5E26.mat"
       hash: 2be29366d682b08b8307f66c389a0dd93824c132aa9e3a6ccc5ca552cbc5e817
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u80CC\u5E26.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u80CC\u5E26.mat"
       size: 2249
       name: "\u80CC\u5E26.mat"
       hash: e3b92419538a404d6444651a7bbce139990c79b3d0e071b51367aea0880bfe3a
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u80CC\u9970\u94C3\u94DB.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u80CC\u9970\u94C3\u94DB.mat"
       size: 2261
       name: "\u80CC\u9970\u94C3\u94DB.mat"
       hash: 052d2ac17fec87949a52d8025add0ad9fde57e6f359827579df113500767b6c7
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u80F8\u9970.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u80F8\u9970.mat"
       size: 2249
       name: "\u80F8\u9970.mat"
       hash: 73be8f11a11707e68a08e4c04934e04fe0ad4534372481b75212d6e6efa2aac1
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u8116\u9970.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u8116\u9970.mat"
       size: 2249
       name: "\u8116\u9970.mat"
       hash: cb031bf098163e24c76a1e6d35942fb8f2b7298622ff1e008355557dc8a771bb
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u8138.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u8138.mat"
       size: 2243
       name: "\u8138.mat"
       hash: 2db352c6e114e9cd1fb504f874e296a75cfb31f1dc2102e5af565fa16454478e
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u8138.png"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u8138.png"
       size: 221464
       name: "\u8138.png"
       hash: 5886dfe939c46d58303f35e3171a7b8999131852b7720924da09c5f3365f8568
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u820C\u5934.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u820C\u5934.mat"
       size: 2249
       name: "\u820C\u5934.mat"
       hash: d187d46b77a8544c9141f645c9f134dd1777ccc861698b9b0d3be9569efc9efe
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u8863\u670D.png"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u8863\u670D.png"
       size: 3293266
       name: "\u8863\u670D.png"
       hash: 66b3db83219d5da92570474802030a42071dcc0047101ab190101af9683c8637
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u8863\u9886.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u8863\u9886.mat"
       size: 2249
       name: "\u8863\u9886.mat"
       hash: 3aa712bdebad734f1f51890578539588b82947f6b255eba368d2c3086b0393c7
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u8863\u9970\u94C1.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u8863\u9970\u94C1.mat"
       size: 2255
       name: "\u8863\u9970\u94C1.mat"
       hash: 576da13ba7758ec66b321978520a36a146e0e6ab4644599a077acce326d91c73
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u8868\u60C5.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u8868\u60C5.mat"
       size: 2250
       name: "\u8868\u60C5.mat"
       hash: 45fef505e4efe22b922bd1bc21c3f9b7d6f810558c2febd45565beaa96545662
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u8868\u60C5.png"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u8868\u60C5.png"
       size: 136533
       name: "\u8868\u60C5.png"
       hash: fbd77c78e95fbb9e149e969705548017fabc3a169647385acedfdecc38605136
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u8896\u5B50.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u8896\u5B50.mat"
       size: 2249
       name: "\u8896\u5B50.mat"
       hash: 92c766bc4d27e4f320ce77a5b1c2fcf505327f13a7d2119b3edfeb29f1f2de07
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u8896\u5B50\u5185\u4FA7.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u8896\u5B50\u5185\u4FA7.mat"
       size: 2261
       name: "\u8896\u5B50\u5185\u4FA7.mat"
       hash: 9422dc78e3a11c762b9e45285431f370a029a8cc7e15a2074b0afe0bc4cff7e5
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u8896\u5B50\u9970.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u8896\u5B50\u9970.mat"
       size: 2255
       name: "\u8896\u5B50\u9970.mat"
       hash: fa00d90422123cb77752bd980242196fccc053c89374f256362c0da72ae2914c
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u889C\u5B50.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u889C\u5B50.mat"
       size: 2249
       name: "\u889C\u5B50.mat"
       hash: 23d6e7f71551042c616847821b4d3737b1bbcdb4e1cc51457f94028734c16ff0
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u88D9\u5B50.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u88D9\u5B50.mat"
       size: 2249
       name: "\u88D9\u5B50.mat"
       hash: 4894250795b96a1bab1051bb3edb681c91f64fdd71f579c9af4290839fdabb64
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u88D9\u5B501.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u88D9\u5B501.mat"
       size: 2250
       name: "\u88D9\u5B501.mat"
       hash: 6b8d03948d1711dcdc3dc6fb50111740afc67fd2ab86fc471cefb4e326af0e20
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u88D9\u5B50\u5185\u4FA7.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u88D9\u5B50\u5185\u4FA7.mat"
       size: 2261
       name: "\u88D9\u5B50\u5185\u4FA7.mat"
       hash: f08851a7855df219ee344253d3df232e5fee6b08fa7f937fa6a4cdc2798de323
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u88D9\u9970\u94C1.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u88D9\u9970\u94C1.mat"
       size: 2255
       name: "\u88D9\u9970\u94C1.mat"
       hash: 3895c57e78f162de2399aae15611f917e5af05590134de9677fce0dc30f2a857
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u978B\u5B50.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u978B\u5B50.mat"
       size: 2249
       name: "\u978B\u5B50.mat"
       hash: a8127dcbafb1c2011bb8344777a0cbb3b622a2004dc8cb48505382182f0638b5
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u978B\u5B50\u9970.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u978B\u5B50\u9970.mat"
       size: 2255
       name: "\u978B\u5B50\u9970.mat"
       hash: 41c4e11a50cbca87ccfb8ab7e47c6971ed39b212a172fb886628b0715fe9cbb6
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u978B\u5B50\u9970\u5185\u4FA7.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u978B\u5B50\u9970\u5185\u4FA7.mat"
       size: 2267
       name: "\u978B\u5B50\u9970\u5185\u4FA7.mat"
       hash: 68f970c60ee16c5ec542360cef3f1c5eeaa615a60a810eb56ee9f9b67859c0b7
       assetType: 0
-    - assetPath: "Assets\\Editor\\ArtRes\\Prefab\\FireFly\\\u9886\u5E26.mat"
+    - assetPath: "Assets/Editor/ArtRes/Prefab/FireFly/\u9886\u5E26.mat"
       size: 2249
       name: "\u9886\u5E26.mat"
       hash: c594c9dde5ed68241d844d8aaafcc0d2047698f77675a90db01f2d1eea3c54c9
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\Prefab\Scene\Floor.prefab
+    - assetPath: Assets/Editor/ArtRes/Prefab/Scene/Floor.prefab
       size: 3042
       name: Floor.prefab
       hash: 3bf0ad73322a60c222482973be40c9b4e218e341c41ed51638d46fc2f528914f
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\Prefab\Scene\Obstacle.prefab
+    - assetPath: Assets/Editor/ArtRes/Prefab/Scene/Obstacle.prefab
       size: 3050
       name: Obstacle.prefab
       hash: 480983210a66b0f1f79d5f1ff88d01414c17bba990e737f3d6cb879c4c0f226c
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\Prefab\Scene\Wall.prefab
+    - assetPath: Assets/Editor/ArtRes/Prefab/Scene/Wall.prefab
       size: 2985
       name: Wall.prefab
       hash: 7c5f037836db9359ef92bcdcf236cadeb802c2fe25d5e71346440544f15de742
       assetType: 0
   - assetBundleName: scenes
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\Scenes\ABTestScene.unity
+    - assetPath: Assets/Editor/ArtRes/Scenes/ABTestScene.unity
       size: 24890
       name: ABTestScene.unity
       hash: a60656a4848c37f679cfe4a59e6adfc03abec243c1559b6a34e004c1e31379b5
       assetType: 1
-    - assetPath: Assets\Editor\ArtRes\Scenes\GameScene.unity
+    - assetPath: Assets/Editor/ArtRes/Scenes/GameScene.unity
       size: 131567
       name: GameScene.unity
       hash: 39e2e7c79f0e333d3795ae1a1c93154d80bde4f3ef46a93f8ec479f1576474b8
       assetType: 1
-    - assetPath: Assets\Editor\ArtRes\Scenes\InventoryMainTestScene.unity
+    - assetPath: Assets/Editor/ArtRes/Scenes/InventoryMainTestScene.unity
       size: 34620
       name: InventoryMainTestScene.unity
       hash: f64c1f278e243d065015783d4ee7519e63a9b7b4d87bc6845741330eceafe6a1
       assetType: 1
-    - assetPath: Assets\Editor\ArtRes\Scenes\InventoryTestScene.unity
+    - assetPath: Assets/Editor/ArtRes/Scenes/InventoryTestScene.unity
       size: 8115
       name: InventoryTestScene.unity
       hash: 5aa6703c6bab78baef861f40cb5bc1df8f94c8cee1fb8b5f93fedaeb6244f774
       assetType: 1
-    - assetPath: Assets\Editor\ArtRes\Scenes\MainScene.unity
+    - assetPath: Assets/Editor/ArtRes/Scenes/MainScene.unity
       size: 13745
       name: MainScene.unity
       hash: 8eee0432e96aaa894b810adc9c1bf40bb90280055bf61f1595cb69916dae7b07
       assetType: 1
-    - assetPath: Assets\Editor\ArtRes\Scenes\NetTestScene.unity
-      size: 9429
+    - assetPath: Assets/Editor/ArtRes/Scenes/NetTestScene.unity
+      size: 9430
       name: NetTestScene.unity
-      hash: 9589d9ceaee14044326f6157d5e6def1ee078a68b404981b4998f574c44fa585
+      hash: 295bd82334ec4688689b72c8e1604e702a5aacf3f3251bf5282732fba7e50491
       assetType: 1
   - assetBundleName: spriteatlas
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\SpriteAtlas\Atlas_Item.spriteatlasv2
+    - assetPath: Assets/Editor/ArtRes/SpriteAtlas/Atlas_Item.spriteatlasv2
       size: 394
       name: Atlas_Item.spriteatlasv2
       hash: ef7211397fe66a98a1d9694f73b7add3b2b70eff68516e72722cb74b1ad00532
       assetType: 3
-    - assetPath: Assets\Editor\ArtRes\SpriteAtlas\Common.spriteatlasv2
+    - assetPath: Assets/Editor/ArtRes/SpriteAtlas/Common.spriteatlasv2
       size: 394
       name: Common.spriteatlasv2
       hash: 23d0db6055c774e9f8aa6492349f6ec3e816f5654c5f01507c9af7343685eb2f
       assetType: 3
   - assetBundleName: tmpasset
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH SDF FallBack.asset
+    - assetPath: Assets/Editor/ArtRes/TMPAsset/MSYH SDF FallBack.asset
       size: 7584
       name: MSYH SDF FallBack.asset
       hash: a5820bb197187e3c800be3356ec01169ca4a812134b9a8785e7697d216c86109
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\TMPAsset\MSYH_SDF.asset
-      size: 8413568
+    - assetPath: Assets/Editor/ArtRes/TMPAsset/MSYH_SDF.asset
+      size: 8171
       name: MSYH_SDF.asset
-      hash: 588d8a46d73440322c0e0ad7b4cf42b3a2b420fd4b0d747a1700b3dcde49efd9
+      hash: 58845cbedec0df7eef2c63ab5f441815fd035a7ae1a38d8b2943920159ad22fe
       assetType: 0
   - assetBundleName: ui
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\UI\UIRoot.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/UIRoot.prefab
       size: 13381
       name: UIRoot.prefab
       hash: 59fe70b92b5ec12bfd42dd1f9bbefe6be5da843d186946a010735f4bcf86a169
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Battle\Battle_Panel.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Battle/Battle_Panel.prefab
       size: 116839
       name: Battle_Panel.prefab
       hash: 71a5fa219d39bed6185e714317014be094045b49ba510037e147d7e1fa9a3083
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Begin\BeginView.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Begin/BeginView.prefab
       size: 45141
       name: BeginView.prefab
       hash: 8c6d374278397a3786e916d560caeb8dc7aea4003b7e320d2c79c2281a490676
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Inventory\InventoryPanel.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Inventory/InventoryPanel.prefab
       size: 159070
       name: InventoryPanel.prefab
       hash: d2d34fc1f494cf272cc75022827ef1c5394b9ed7dc96cf9c94916a2f164996d5
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemCell.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Inventory/ItemCell.prefab
       size: 31332
       name: ItemCell.prefab
       hash: da66b895b903bf88b09bdf4dc35bc1b3a51aba3edcfcb51dc04073502b194783
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemDetailPanelBase.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Inventory/ItemDetailPanelBase.prefab
       size: 3225
       name: ItemDetailPanelBase.prefab
       hash: 7f1f10c39c319af4c6734a8873d0f70a16a99b70df9eb46fba50c702f8baf3b6
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Inventory\ItemTypeOpt.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Inventory/ItemTypeOpt.prefab
       size: 7745
       name: ItemTypeOpt.prefab
       hash: d8fb489315d00d10db01dc35c0c2d9d11fa28d7581e46d23c7a0003183d11b26
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Inventory\DetailPanel\MaterialDetailPanel.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Inventory/DetailPanel/MaterialDetailPanel.prefab
       size: 13491
       name: MaterialDetailPanel.prefab
       hash: f380fe5b3ce26f7b0515f51d97d9c51d28d7ca510bd424410c4c3a437eadea67
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Inventory\DetailPanel\WeaponDetailPanel.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Inventory/DetailPanel/WeaponDetailPanel.prefab
       size: 21821
       name: WeaponDetailPanel.prefab
       hash: 278b3a813fc47c27f471da3783a88c195bff1613f70150c369d932725369ef30
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Main\Main_Chat_Panel.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Main/Main_Chat_Panel.prefab
       size: 72448
       name: Main_Chat_Panel.prefab
       hash: 145cf605995d9fd7f80d56616675f97278ddc834ffddc3456c105d79fa5b62dc
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Main\Main_Panel.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Main/Main_Panel.prefab
       size: 79817
       name: Main_Panel.prefab
       hash: a24409acd48a21168d30ce2137a28d28614945bfe47defb6a17b9cafc3fdfdee
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Main\Chat\Chat_UI.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Main/Chat/Chat_UI.prefab
       size: 7662
       name: Chat_UI.prefab
       hash: 8029d6de68b9e65fd096bc1651a113d32c9d0e0da849f412297c4aa491366186
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Main\Chat\Friend_UI.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Main/Chat/Friend_UI.prefab
       size: 9042
       name: Friend_UI.prefab
       hash: 3248bdc42d6fc8f19d4a077eb34150f39f3bb1e4532cbd711203e7aa4ec932eb
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Net\ConfirmView.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Net/ConfirmView.prefab
       size: 32068
       name: ConfirmView.prefab
       hash: f2bbf7f2cd112d501423059332b2bc790dce3f78fb45eaef5ccd4249e41aae79
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Net\ConnectPlayerObjUI.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Net/ConnectPlayerObjUI.prefab
       size: 8394
       name: ConnectPlayerObjUI.prefab
       hash: aa24340f1a685f777d97a64a254d393e868341d1374e6ecb0e72e0f8c1364525
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Net\GameView.prefab
-      size: 70509
+    - assetPath: Assets/Editor/ArtRes/UI/Net/GameView.prefab
+      size: 70087
       name: GameView.prefab
-      hash: 3922482573589c58905b487c8f71a1e640d77c9eb654cd17650ee6822f078b5a
+      hash: 8a67ba931cc7203591ff94c776ca6d00f7de7a16d1bdd03b1f7ade3d5037fe6e
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Net\LoadingPanel.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Net/LoadingPanel.prefab
       size: 1069146
       name: LoadingPanel.prefab
       hash: e5e9d8d13257ee776012dd05762d85d1c6fc225de01e842c3127ac90d5dd4dc7
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Net\ResultView.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Net/ResultView.prefab
       size: 21441
       name: ResultView.prefab
       hash: 3c8681f79639f8c8af40d967b71ac4c576f9e5c721ed871946cdc88802a559e4
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Net\Skill.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Net/Skill.prefab
       size: 11342
       name: Skill.prefab
       hash: 14102d04967b09ae1f7cabb5c0d2402a01c84796678e0d6e85aa00b4894f39de
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Net\StatusHUD.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Net/StatusHUD.prefab
       size: 20436
       name: StatusHUD.prefab
       hash: 2c44a04ee5d7485cf48de6d0fcab076f5d33431e229f7f4487a399418072099e
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Tip\TipPanel.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Tip/TipPanel.prefab
       size: 27838
       name: TipPanel.prefab
       hash: bb485865dc31b49f36e170afe6b02cc89e9fc6766104ad5452e124afb9b7f6b4
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Tip\UpdateTipView.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Tip/UpdateTipView.prefab
       size: 30274
       name: UpdateTipView.prefab
       hash: 9aafd6efeb172d8a29dbef3e1bfdb4b3041510a8490fda4a9f02b96e9ecefdb9
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\UI\Tip\Content\DeleteItemConfirmContent.prefab
+    - assetPath: Assets/Editor/ArtRes/UI/Tip/Content/DeleteItemConfirmContent.prefab
       size: 19481
       name: DeleteItemConfirmContent.prefab
       hash: 4a9e5703d6d793e285288942c20491f86e6a474588deec7f1b30bd0538c0d08c
       assetType: 0
   - assetBundleName: vfx
     assetInfos:
-    - assetPath: Assets\Editor\ArtRes\VFX\Role\AoeAttack.prefab
+    - assetPath: Assets/Editor/ArtRes/VFX/Role/AoeAttack.prefab
       size: 355824
       name: AoeAttack.prefab
       hash: d3bf567add7dc158dfe35a2620b15b1f34f79dd7ed18a8920ba3cfc04b65a0d4
       assetType: 0
-    - assetPath: Assets\Editor\ArtRes\VFX\Role\Attack1.prefab
+    - assetPath: Assets/Editor/ArtRes/VFX/Role/Attack1.prefab
       size: 474272
       name: Attack1.prefab
       hash: 938a3d1a875d6107c7be58457541992a1a42595ec95134ea7a05044e59443ef1

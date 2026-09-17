@@ -75,7 +75,7 @@ namespace Core.Editor.AssetBundles
             {
                 foreach (var fileInfo in fileInfoDic[abName])
                 {
-                    var dataPath = fileInfo.FullName.Substring(fileInfo.FullName.IndexOf("Assets", StringComparison.Ordinal));
+                    var dataPath = fileInfo.FullName.Substring(fileInfo.FullName.IndexOf("Assets", StringComparison.Ordinal)).Replace('\\', '/');
                     Progress($"Collecting Path：{dataPath}", (float)index++ / (total - 1));
 
                     EAssetType assetType;
@@ -235,7 +235,7 @@ namespace Core.Editor.AssetBundles
             {
                 foreach (var fileInfo in fileInfoDic[abName])
                 {
-                    var dataPath = fileInfo.FullName.Substring(fileInfo.FullName.IndexOf("Assets", StringComparison.Ordinal));
+                    var dataPath = fileInfo.FullName.Substring(fileInfo.FullName.IndexOf("Assets", StringComparison.Ordinal)).Replace('\\', '/');
                     var importer = AssetImporter.GetAtPath(dataPath);
                     if (importer && importer.assetBundleName != "")
                         importer.assetBundleName = "";

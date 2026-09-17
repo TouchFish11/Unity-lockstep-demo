@@ -9,16 +9,8 @@
     <type fullname="Core.DI.InjectAttribute" preserve="all" />
     <type fullname="Core.Global.Configs.GlobalSettings" preserve="all" />
     <type fullname="Core.Global.Configs.NetModuleConfig" preserve="all" />
+    <type fullname="Core.GlobalEvent.Event" preserve="all" />
     <type fullname="Core.GlobalEvent.EventSource" preserve="all" />
-    <type fullname="Core.GlobalEvent.Events.Net.ClientConfirmMatchStateEvent" preserve="all" />
-    <type fullname="Core.GlobalEvent.Events.Net.FrameCommandsEvent" preserve="all" />
-    <type fullname="Core.GlobalEvent.Events.Net.FrameHandleEvent" preserve="all" />
-    <type fullname="Core.GlobalEvent.Events.Net.MatchSuccessEvent" preserve="all" />
-    <type fullname="Core.GlobalEvent.Events.Net.OtherPlayerJoinEvent" preserve="all" />
-    <type fullname="Core.GlobalEvent.Events.Net.PlayerDisconnectedEvent" preserve="all" />
-    <type fullname="Core.GlobalEvent.Events.Net.PrepareRaceEvent" preserve="all" />
-    <type fullname="Core.GlobalEvent.Events.Net.RequestReconnectRaceEvent" preserve="all" />
-    <type fullname="Core.GlobalEvent.Events.Net.StartRaceEvent" preserve="all" />
     <type fullname="Core.GlobalEvent.IEventCenter" preserve="all" />
     <type fullname="Core.Inputs.IInputSystem" preserve="all" />
     <type fullname="Core.Inputs.Providers.IInputDataProvider" preserve="all" />
@@ -29,6 +21,16 @@
     <type fullname="Core.Math.Fixed64" preserve="all" />
     <type fullname="Core.Math.FixedVector3" preserve="all" />
     <type fullname="Core.Mono.IMonoAdapter" preserve="all" />
+    <type fullname="Core.Net.Events.ClientConfirmMatchStateEvent" preserve="all" />
+    <type fullname="Core.Net.Events.FrameCommandsEvent" preserve="all" />
+    <type fullname="Core.Net.Events.FrameHandleEvent" preserve="all" />
+    <type fullname="Core.Net.Events.MatchSuccessEvent" preserve="all" />
+    <type fullname="Core.Net.Events.OtherPlayerJoinEvent" preserve="all" />
+    <type fullname="Core.Net.Events.PlayerDisconnectedEvent" preserve="all" />
+    <type fullname="Core.Net.Events.PrepareRaceEvent" preserve="all" />
+    <type fullname="Core.Net.Events.RaceEndEvent" preserve="all" />
+    <type fullname="Core.Net.Events.RequestReconnectRaceEvent" preserve="all" />
+    <type fullname="Core.Net.Events.StartRaceEvent" preserve="all" />
     <type fullname="Core.Net.NetConfig" preserve="all" />
     <type fullname="Core.Net.Protocols.EProtocolChannel" preserve="all" />
     <type fullname="Core.Net.Protocols.FSync.EOptType" preserve="all" />
@@ -38,6 +40,7 @@
     <type fullname="Core.Net.Protocols.Tcp.Messages.Battle.C2S.C2S_MatchConfirmMessage" preserve="all" />
     <type fullname="Core.Net.Protocols.Tcp.Messages.Battle.C2S.C2S_MatchMessage" preserve="all" />
     <type fullname="Core.Net.Protocols.Tcp.Messages.Battle.C2S.C2S_ReadyMessage" preserve="all" />
+    <type fullname="Core.Net.Protocols.Tcp.Messages.Common.C2S_RaceEndMessage" preserve="all" />
     <type fullname="Core.Net.Protocols.Tcp.Messages.Common.C2S_RequestDisConnectMessage" preserve="all" />
     <type fullname="Core.Net.Protocols.Tcp.TcpMessage" preserve="all" />
     <type fullname="Core.Net.SyncModule.Interface.IHeartbeatService" preserve="all" />
@@ -55,6 +58,9 @@
     <type fullname="Core.UI.UIUtility" preserve="all" />
     <type fullname="Core.UI.ViewController.UIController`1" preserve="all" />
     <type fullname="Core.UI.ViewController.UIView" preserve="all" />
+  </assembly>
+  <assembly fullname="GameModule">
+    <type fullname="Game.Vfx.VfxTimer" preserve="all" />
   </assembly>
   <assembly fullname="Newtonsoft.Json">
     <type fullname="Newtonsoft.Json.JsonObjectAttribute" preserve="all" />
@@ -78,12 +84,17 @@
   <assembly fullname="UnityEngine.CoreModule">
     <type fullname="UnityEngine.Application" preserve="all" />
     <type fullname="UnityEngine.Behaviour" preserve="all" />
+    <type fullname="UnityEngine.Bounds" preserve="all" />
     <type fullname="UnityEngine.Camera" preserve="all" />
+    <type fullname="UnityEngine.Color" preserve="all" />
     <type fullname="UnityEngine.Component" preserve="all" />
     <type fullname="UnityEngine.CreateAssetMenuAttribute" preserve="all" />
     <type fullname="UnityEngine.Debug" preserve="all" />
     <type fullname="UnityEngine.GameObject" preserve="all" />
+    <type fullname="UnityEngine.Gizmos" preserve="all" />
     <type fullname="UnityEngine.Mathf" preserve="all" />
+    <type fullname="UnityEngine.Mesh" preserve="all" />
+    <type fullname="UnityEngine.MeshFilter" preserve="all" />
     <type fullname="UnityEngine.MonoBehaviour" preserve="all" />
     <type fullname="UnityEngine.Object" preserve="all" />
     <type fullname="UnityEngine.Quaternion" preserve="all" />
@@ -96,8 +107,8 @@
     <type fullname="UnityEngine.Vector3" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.UI">
-    <type fullname="UnityEngine.EventSystems.PointerEventData" preserve="all" />
     <type fullname="UnityEngine.UI.Button" preserve="all" />
+    <type fullname="UnityEngine.UI.Image" preserve="all" />
     <type fullname="UnityEngine.UI.InputField" preserve="all" />
     <type fullname="UnityEngine.UI.ScrollRect" preserve="all" />
     <type fullname="UnityEngine.UI.Text" preserve="all" />
@@ -111,11 +122,13 @@
     <type fullname="System.CodeDom.Compiler.GeneratedCodeAttribute" preserve="all" />
     <type fullname="System.Collections.Generic.CollectionExtensions" preserve="all" />
     <type fullname="System.Collections.Generic.Dictionary`2" preserve="all" />
+    <type fullname="System.Collections.Generic.Dictionary`2/KeyCollection" preserve="all" />
     <type fullname="System.Collections.Generic.Dictionary`2/ValueCollection" preserve="all" />
     <type fullname="System.Collections.Generic.Dictionary`2/ValueCollection/Enumerator" preserve="all" />
     <type fullname="System.Collections.Generic.IEnumerable`1" preserve="all" />
     <type fullname="System.Collections.Generic.IEnumerator`1" preserve="all" />
     <type fullname="System.Collections.Generic.IReadOnlyDictionary`2" preserve="all" />
+    <type fullname="System.Collections.Generic.IReadOnlyList`1" preserve="all" />
     <type fullname="System.Collections.Generic.List`1" preserve="all" />
     <type fullname="System.Collections.Generic.List`1/Enumerator" preserve="all" />
     <type fullname="System.Collections.IEnumerator" preserve="all" />

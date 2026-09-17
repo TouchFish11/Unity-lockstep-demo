@@ -107,7 +107,7 @@ namespace Core.Log
             
             var formattedMsg = _logBuilder.ToString();
             // 编辑器：输出到 Console
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_ANDROID
             switch (logLevel)
             {
                 case ELogLevel.Debug:
@@ -141,7 +141,7 @@ namespace Core.Log
             _logBuilder.Append($":{exception}");
             _logBuilder.Append(Environment.NewLine);
             
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_ANDROID
             Debug.LogException(exception);
 #endif
             // 放入日志队列

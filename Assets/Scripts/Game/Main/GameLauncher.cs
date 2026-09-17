@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -20,11 +21,38 @@ namespace Game
     {
         [SerializeField] private string bootConfigFileName = "BootConfig.json";
         private BootConfig bootConfig;
-        
+        private readonly TaskCompletionSource<bool> _copyCompletion = new();
+
+        private void Awake()
+        {
+            Debug.Log(Application.persistentDataPath);
+#if UNITY_ANDROID && !UNITY_EDITOR
+            StartCoroutine(CopyCoroutine());
+#endif
+        }
+
+        private IEnumerator CopyCoroutine()
+        {
+            yield return StreamingAssetsCopier.CopyFirstPackageToPersistent();
+            try
+            {
+                _copyCompletion.TrySetResult(true);
+            }
+            catch (Exception e)
+            {
+                _copyCompletion.TrySetException(e);
+            }
+        }
+
         private async void Start()
         {
             try
             {
+                // Android 真机：先拷贝首包 AB 到 persistentDataPath（必须在 InitCore 之前，
+                // 因为 InitCore 里的 AssetBundleManager.Init 会读 catalog，此时 persistent 必须已有文件）
+#if UNITY_ANDROID && !UNITY_EDITOR
+                await _copyCompletion.Task;
+#endif
                 // 注册框架
                 await RegisterCore.InitCore();
                 // 加载启动配置
@@ -37,7 +65,7 @@ namespace Game
             }
             catch (Exception e)
             {
-                Logger.LogException(ELogTags.GameLauncher, e);
+                Debug.LogException(e);
             }
         }
         
@@ -51,8 +79,9 @@ namespace Game
                 Logger.LogError(ELogTags.GameLauncher, $"无法加载启动配置，使用默认硬编码包名");
                 bootConfig = new BootConfig
                 {
-                    aotDllBundleName = "hotupdateaot.assetbundle",
-                    hotfixDllBundleName = "hotupdate.assetbundle"
+                    aotDllBundleName = "hotupdateaot",
+                    hotfixDllBundleName = "hotupdate",
+                    hotfixObjKey = "HotUpdateEntry"
                 };
             }
 
@@ -68,7 +97,7 @@ namespace Game
             {
                 dllDic.Add(asset.name, asset.bytes);
             }
-            hotUpdateManager.LoadMetadataForAOTAssemblies(dllDic); 
+            hotUpdateManager.LoadMetadataForAOTAssemblies(dllDic);
 #endif
             
             // 加载所有热更dll资源

@@ -27,9 +27,12 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// Core.UI.ViewController.UIController.<Init>d__11<object>
 	// Core.UI.ViewController.UIController<object>
 	// System.Action<Core.AssetBundles.Management.AssetHandle>
+	// System.Action<Core.Math.FixedVector3>
 	// System.Action<Core.Net.Protocols.FSync.InputCommand>
 	// System.Action<Core.Net.Protocols.Tcp.ConnectResult>
+	// System.Action<HotUpdate.Game.Race.Present.PresentEvent>
 	// System.Action<UnityEngine.InputSystem.InputAction.CallbackContext>
+	// System.Action<int>
 	// System.Action<long>
 	// System.Action<object,UnityEngine.Vector2>
 	// System.Action<object,byte>
@@ -38,37 +41,49 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Action<object,object>
 	// System.Action<object>
 	// System.Collections.Generic.ArraySortHelper<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.ArraySortHelper<Core.Math.FixedVector3>
 	// System.Collections.Generic.ArraySortHelper<Core.Net.Protocols.FSync.InputCommand>
+	// System.Collections.Generic.ArraySortHelper<HotUpdate.Game.Race.Present.PresentEvent>
+	// System.Collections.Generic.ArraySortHelper<int>
 	// System.Collections.Generic.ArraySortHelper<object>
 	// System.Collections.Generic.Comparer<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.Comparer<Core.Math.FixedVector3>
 	// System.Collections.Generic.Comparer<Core.Net.Protocols.FSync.InputCommand>
+	// System.Collections.Generic.Comparer<HotUpdate.Game.Race.Present.PresentEvent>
+	// System.Collections.Generic.Comparer<int>
 	// System.Collections.Generic.Comparer<object>
 	// System.Collections.Generic.Dictionary.Enumerator<byte,object>
+	// System.Collections.Generic.Dictionary.Enumerator<int,int>
 	// System.Collections.Generic.Dictionary.Enumerator<int,object>
 	// System.Collections.Generic.Dictionary.Enumerator<object,Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Collections.Generic.Dictionary.Enumerator<object,Core.AssetBundles.Management.AssetHandle>
 	// System.Collections.Generic.Dictionary.Enumerator<object,object>
 	// System.Collections.Generic.Dictionary.KeyCollection.Enumerator<byte,object>
+	// System.Collections.Generic.Dictionary.KeyCollection.Enumerator<int,int>
 	// System.Collections.Generic.Dictionary.KeyCollection.Enumerator<int,object>
 	// System.Collections.Generic.Dictionary.KeyCollection.Enumerator<object,Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Collections.Generic.Dictionary.KeyCollection.Enumerator<object,Core.AssetBundles.Management.AssetHandle>
 	// System.Collections.Generic.Dictionary.KeyCollection.Enumerator<object,object>
 	// System.Collections.Generic.Dictionary.KeyCollection<byte,object>
+	// System.Collections.Generic.Dictionary.KeyCollection<int,int>
 	// System.Collections.Generic.Dictionary.KeyCollection<int,object>
 	// System.Collections.Generic.Dictionary.KeyCollection<object,Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Collections.Generic.Dictionary.KeyCollection<object,Core.AssetBundles.Management.AssetHandle>
 	// System.Collections.Generic.Dictionary.KeyCollection<object,object>
 	// System.Collections.Generic.Dictionary.ValueCollection.Enumerator<byte,object>
+	// System.Collections.Generic.Dictionary.ValueCollection.Enumerator<int,int>
 	// System.Collections.Generic.Dictionary.ValueCollection.Enumerator<int,object>
 	// System.Collections.Generic.Dictionary.ValueCollection.Enumerator<object,Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Collections.Generic.Dictionary.ValueCollection.Enumerator<object,Core.AssetBundles.Management.AssetHandle>
 	// System.Collections.Generic.Dictionary.ValueCollection.Enumerator<object,object>
 	// System.Collections.Generic.Dictionary.ValueCollection<byte,object>
+	// System.Collections.Generic.Dictionary.ValueCollection<int,int>
 	// System.Collections.Generic.Dictionary.ValueCollection<int,object>
 	// System.Collections.Generic.Dictionary.ValueCollection<object,Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Collections.Generic.Dictionary.ValueCollection<object,Core.AssetBundles.Management.AssetHandle>
 	// System.Collections.Generic.Dictionary.ValueCollection<object,object>
 	// System.Collections.Generic.Dictionary<byte,object>
+	// System.Collections.Generic.Dictionary<int,int>
 	// System.Collections.Generic.Dictionary<int,object>
 	// System.Collections.Generic.Dictionary<object,Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Collections.Generic.Dictionary<object,Core.AssetBundles.Management.AssetHandle>
@@ -81,52 +96,81 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Collections.Generic.HashSet.Enumerator<object>
 	// System.Collections.Generic.HashSet<object>
 	// System.Collections.Generic.ICollection<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.ICollection<Core.Math.FixedVector3>
 	// System.Collections.Generic.ICollection<Core.Net.Protocols.FSync.InputCommand>
+	// System.Collections.Generic.ICollection<HotUpdate.Game.Race.Present.PresentEvent>
 	// System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<byte,object>>
+	// System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<int,int>>
 	// System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<int,object>>
 	// System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle<object>>>
 	// System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle>>
 	// System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object,object>>
+	// System.Collections.Generic.ICollection<int>
 	// System.Collections.Generic.ICollection<object>
 	// System.Collections.Generic.IComparer<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.IComparer<Core.Math.FixedVector3>
 	// System.Collections.Generic.IComparer<Core.Net.Protocols.FSync.InputCommand>
+	// System.Collections.Generic.IComparer<HotUpdate.Game.Race.Present.PresentEvent>
+	// System.Collections.Generic.IComparer<int>
 	// System.Collections.Generic.IComparer<object>
 	// System.Collections.Generic.IEnumerable<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.IEnumerable<Core.Math.FixedVector3>
 	// System.Collections.Generic.IEnumerable<Core.Net.Protocols.FSync.InputCommand>
+	// System.Collections.Generic.IEnumerable<HotUpdate.Game.Race.Present.PresentEvent>
 	// System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<byte,object>>
+	// System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<int,int>>
 	// System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<int,object>>
 	// System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle<object>>>
 	// System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle>>
 	// System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<object,object>>
+	// System.Collections.Generic.IEnumerable<int>
 	// System.Collections.Generic.IEnumerable<object>
 	// System.Collections.Generic.IEnumerator<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.IEnumerator<Core.Math.FixedVector3>
 	// System.Collections.Generic.IEnumerator<Core.Net.Protocols.FSync.InputCommand>
+	// System.Collections.Generic.IEnumerator<HotUpdate.Game.Race.Present.PresentEvent>
 	// System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<byte,object>>
+	// System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<int,int>>
 	// System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<int,object>>
 	// System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle<object>>>
 	// System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle>>
 	// System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<object,object>>
+	// System.Collections.Generic.IEnumerator<int>
 	// System.Collections.Generic.IEnumerator<object>
 	// System.Collections.Generic.IEqualityComparer<byte>
 	// System.Collections.Generic.IEqualityComparer<int>
 	// System.Collections.Generic.IEqualityComparer<object>
 	// System.Collections.Generic.IList<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.IList<Core.Math.FixedVector3>
 	// System.Collections.Generic.IList<Core.Net.Protocols.FSync.InputCommand>
+	// System.Collections.Generic.IList<HotUpdate.Game.Race.Present.PresentEvent>
+	// System.Collections.Generic.IList<int>
 	// System.Collections.Generic.IList<object>
+	// System.Collections.Generic.IReadOnlyDictionary<int,int>
 	// System.Collections.Generic.IReadOnlyDictionary<int,object>
 	// System.Collections.Generic.KeyValuePair<byte,object>
+	// System.Collections.Generic.KeyValuePair<int,int>
 	// System.Collections.Generic.KeyValuePair<int,object>
 	// System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Collections.Generic.KeyValuePair<object,Core.AssetBundles.Management.AssetHandle>
 	// System.Collections.Generic.KeyValuePair<object,object>
 	// System.Collections.Generic.List.Enumerator<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.List.Enumerator<Core.Math.FixedVector3>
 	// System.Collections.Generic.List.Enumerator<Core.Net.Protocols.FSync.InputCommand>
+	// System.Collections.Generic.List.Enumerator<HotUpdate.Game.Race.Present.PresentEvent>
+	// System.Collections.Generic.List.Enumerator<int>
 	// System.Collections.Generic.List.Enumerator<object>
 	// System.Collections.Generic.List<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.List<Core.Math.FixedVector3>
 	// System.Collections.Generic.List<Core.Net.Protocols.FSync.InputCommand>
+	// System.Collections.Generic.List<HotUpdate.Game.Race.Present.PresentEvent>
+	// System.Collections.Generic.List<int>
 	// System.Collections.Generic.List<object>
 	// System.Collections.Generic.ObjectComparer<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.Generic.ObjectComparer<Core.Math.FixedVector3>
 	// System.Collections.Generic.ObjectComparer<Core.Net.Protocols.FSync.InputCommand>
+	// System.Collections.Generic.ObjectComparer<HotUpdate.Game.Race.Present.PresentEvent>
+	// System.Collections.Generic.ObjectComparer<int>
 	// System.Collections.Generic.ObjectComparer<object>
 	// System.Collections.Generic.ObjectEqualityComparer<Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Collections.Generic.ObjectEqualityComparer<Core.AssetBundles.Management.AssetHandle>
@@ -138,10 +182,16 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Collections.Generic.Stack.Enumerator<object>
 	// System.Collections.Generic.Stack<object>
 	// System.Collections.ObjectModel.ReadOnlyCollection<Core.AssetBundles.Management.AssetHandle>
+	// System.Collections.ObjectModel.ReadOnlyCollection<Core.Math.FixedVector3>
 	// System.Collections.ObjectModel.ReadOnlyCollection<Core.Net.Protocols.FSync.InputCommand>
+	// System.Collections.ObjectModel.ReadOnlyCollection<HotUpdate.Game.Race.Present.PresentEvent>
+	// System.Collections.ObjectModel.ReadOnlyCollection<int>
 	// System.Collections.ObjectModel.ReadOnlyCollection<object>
 	// System.Comparison<Core.AssetBundles.Management.AssetHandle>
+	// System.Comparison<Core.Math.FixedVector3>
 	// System.Comparison<Core.Net.Protocols.FSync.InputCommand>
+	// System.Comparison<HotUpdate.Game.Race.Present.PresentEvent>
+	// System.Comparison<int>
 	// System.Comparison<object>
 	// System.Converter<Core.AssetBundles.Management.AssetHandle,object>
 	// System.Func<Core.AssetBundles.Management.AssetHandle<object>>
@@ -153,7 +203,10 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Func<object>
 	// System.Nullable<int>
 	// System.Predicate<Core.AssetBundles.Management.AssetHandle>
+	// System.Predicate<Core.Math.FixedVector3>
 	// System.Predicate<Core.Net.Protocols.FSync.InputCommand>
+	// System.Predicate<HotUpdate.Game.Race.Present.PresentEvent>
+	// System.Predicate<int>
 	// System.Predicate<object>
 	// System.Runtime.CompilerServices.AsyncTaskMethodBuilder<Core.AssetBundles.Management.AssetHandle<object>>
 	// System.Runtime.CompilerServices.AsyncTaskMethodBuilder<System.Threading.Tasks.VoidTaskResult>
@@ -196,6 +249,8 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// System.Threading.Tasks.Task<object> Core.UI.IUIManager.CreateViewAsync<object,object>(string,Core.UI.E_UILayer,UnityEngine.Vector2,UnityEngine.Quaternion)
 		// object Core.UI.IUIManager.GetController<object>()
 		// object[] System.Array.Empty<object>()
+		// int System.Collections.Generic.CollectionExtensions.GetValueOrDefault<int,int>(System.Collections.Generic.IReadOnlyDictionary<int,int>,int)
+		// int System.Collections.Generic.CollectionExtensions.GetValueOrDefault<int,int>(System.Collections.Generic.IReadOnlyDictionary<int,int>,int,int)
 		// object System.Collections.Generic.CollectionExtensions.GetValueOrDefault<int,object>(System.Collections.Generic.IReadOnlyDictionary<int,object>,int)
 		// object System.Collections.Generic.CollectionExtensions.GetValueOrDefault<int,object>(System.Collections.Generic.IReadOnlyDictionary<int,object>,int,object)
 		// System.Void System.Runtime.CompilerServices.AsyncTaskMethodBuilder.AwaitUnsafeOnCompleted<System.Runtime.CompilerServices.TaskAwaiter,object>(System.Runtime.CompilerServices.TaskAwaiter&,object&)
@@ -215,6 +270,8 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// int Unity.Collections.LowLevel.Unsafe.UnsafeUtility.SizeOf<UnityEngine.Vector2>()
 		// object UnityEngine.Component.GetComponentInChildren<object>()
 		// object UnityEngine.GameObject.AddComponent<object>()
+		// object UnityEngine.GameObject.GetComponentInChildren<object>()
+		// object UnityEngine.GameObject.GetComponentInChildren<object>(bool)
 		// UnityEngine.Vector2 UnityEngine.InputSystem.InputAction.CallbackContext.ReadValue<UnityEngine.Vector2>()
 		// UnityEngine.Vector2 UnityEngine.InputSystem.InputActionState.ApplyProcessors<UnityEngine.Vector2>(int,UnityEngine.Vector2,UnityEngine.InputSystem.InputControl<UnityEngine.Vector2>)
 		// UnityEngine.Vector2 UnityEngine.InputSystem.InputActionState.ReadValue<UnityEngine.Vector2>(int,int,bool)

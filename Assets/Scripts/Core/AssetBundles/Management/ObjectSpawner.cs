@@ -92,11 +92,11 @@ namespace Core.AssetBundles.Management
             }
             catch (Exception e)
             {
-                GameAsset.Release(_keyToHandleMap[key]);
+                if (_keyToHandleMap.TryGetValue(key, out var failedHandle))
+                    GameAsset.Release(failedHandle);
                 _assetKeys.Remove(key);
                 _keyToHandleMap.Remove(key);
-                // TODO：抛异常
-                Logger.LogError(ELogTags.Asset, $"[{nameof(ObjectSpawner)}]: Create '{key}' obj error,{e.Message}");
+                Logger.LogError(ELogTags.Asset, $"[{nameof(ObjectSpawner)}]: Create '{key}' obj error,{e}");
                 return null;
             }
             finally

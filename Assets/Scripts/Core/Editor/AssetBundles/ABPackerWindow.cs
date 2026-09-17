@@ -29,7 +29,7 @@ namespace Core.Editor.AssetBundles
 
         // --- 配置参数 ---
         private AssetBundleSettings settings;   // 跨项目配置（从 SO 读）
-        private BuildTarget targetPlatform = BuildTarget.StandaloneWindows64;
+        private BuildTarget targetPlatform;
         private BuildAssetBundleOptions buildOptions = BuildAssetBundleOptions.ChunkBasedCompression;
         private string outputPath;
         private string serverDataPath;          // 由 settings 计算
@@ -64,6 +64,7 @@ namespace Core.Editor.AssetBundles
 
         private void OnEnable()
         {
+            targetPlatform = EditorUserBuildSettings.activeBuildTarget;
             settings = AssetBundleSettings.LoadOrCreate();
 
             outputPath = Path.Combine(Application.dataPath, "AssetBundles", EditorUserBuildSettings.activeBuildTarget.ToString());
@@ -421,7 +422,7 @@ namespace Core.Editor.AssetBundles
                 AppendToLog($"路径：{settings.hybridCLRAssemblySourcesPath}不存在，请先生成热更程序集");
                 return;
             }
-            var srcDir = new DirectoryInfo(settings.hybridCLRAssemblySourcesPath);
+            var srcDir = new DirectoryInfo(Path.Combine(settings.hybridCLRAssemblySourcesPath, EditorUserBuildSettings.activeBuildTarget.ToString()));
             var targetDir = new DirectoryInfo(settings.hotUpdateAssemblyTargetPath);
             foreach (var file in targetDir.GetFiles()) file.Delete();
             AppendToLog("--- Copy HotUpdate Dlls ---");

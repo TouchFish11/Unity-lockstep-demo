@@ -24,7 +24,7 @@ MonoBehaviour:
     poolMinSize: 10
     poolMaxSize: 50
   resourcesModuleConfig:
-    abLoadPath: 0
+    abLoadPath: 1
     criticalActiveThreshold: 8
     bundleSlidingWindowMaxCount: 10
     maxDurationPerWindow: 30
@@ -41,7 +41,7 @@ MonoBehaviour:
     speedUpdateInterval: 1
   netModuleConfig:
     netConfig:
-      serverIp: 127.0.0.1
+      serverIp: 192.168.0.6
       serverPort: 8080
       resolver:
         rid: 1694531220504838155
@@ -65,7 +65,7 @@ MonoBehaviour:
     heartMsgSendIntervalTime: 5000
     heartTimeoutThreshold: 15000
   userModuleConfig:
-    userDataPath: 0
+    userDataPath: 1
   references:
     version: 2
     RefIds:

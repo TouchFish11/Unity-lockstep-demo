@@ -77,4 +77,8 @@ crashlytics-build.properties
 # 排除资源
 Assets/Editor/ArtRes
 
+Assets/AssetBundles/Android/
+
 Assets/ImportRes
+
+/HybridCLRData/

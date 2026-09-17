@@ -84,13 +84,16 @@ namespace Core.Utility
             JsonRuntimeLoadPath = Path.Combine(_persistentPath, "Json"); // 运行时Json目录
             GlobalSettingsPath = Path.Combine("Global");
             
-            // 自动创建所有核心业务目录（不存在则创建）
-            CreateDirectory(UserDataLocalSavePath);
+            // 只创建可写目录（persistentDataPath 下的）。StreamingAssets/Resources 在 Android 上是 APK 内只读区，打包时已存在，不能运行时创建。
             CreateDirectory(LogLocalSavePath);
             CreateDirectory(TableInfoLocalLoadPath);
-            CreateDirectory(LoadAbPath);
             CreateDirectory(JsonRuntimeLoadPath);
-            CreateDirectory(GlobalSettingsPath);
+
+            // UserData / AB 目录仅当配置为 Persistent 时才需运行时创建；Streaming 只读，跳过
+            if (GlobalSettings.Instance.userModuleConfig.userDataPath == EDataLoadPath.Persistent)
+                CreateDirectory(UserDataLocalSavePath);
+            if (GlobalSettings.Instance.resourcesModuleConfig.abLoadPath == EDataLoadPath.Persistent)
+                CreateDirectory(LoadAbPath);
         }
 
         /// <summary>
