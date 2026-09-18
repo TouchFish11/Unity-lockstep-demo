@@ -94,7 +94,7 @@ namespace HotUpdate.Game.Race.Logic
                 {
                     ResolveAbility(attacker);
                     var up = new FixedVector3(Fixed64.Zero, Fixed64.One, Fixed64.Zero);
-                    AddEffect(attacker.CurrentAbility.EffectId, attacker.Position + up);
+                    AddEffect(attacker.CurrentAbility.EffectId, attacker.Position + up, attacker.Facing);
                 }
             }
 
@@ -176,7 +176,7 @@ namespace HotUpdate.Game.Race.Logic
             }
         }
 
-        private void AddEffect(int effectId, FixedVector3 pos)
+        private void AddEffect(int effectId, FixedVector3 pos, FixedVector3 dir)
         {
             _presentEvent ??= EventSource.Get<PresentEventsEvent>();
             _presentEvent.Events.Add(new PresentEvent
@@ -184,6 +184,7 @@ namespace HotUpdate.Game.Race.Logic
                 Type = EPresentEventType.SpawnEffect,
                 Id = effectId,
                 Pos = pos,
+                Dir = dir,
             });
         }
         

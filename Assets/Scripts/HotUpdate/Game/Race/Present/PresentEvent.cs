@@ -16,5 +16,6 @@ namespace HotUpdate.Game.Race.Present
         public EPresentEventType Type;
         public int Id;             // 特效/音效 ID
         public FixedVector3 Pos;
+        public FixedVector3 Dir;   // 特效朝向（攻击方向）
     }
 }

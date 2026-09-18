@@ -1,0 +1,25 @@
+ManifestFileVersion: 0
+CRC: 96313469
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8646bb07bdf1a48b609664cbef9f0a3d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 033fafe2c9f6c610c3a734393882fd4c
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 8646bb07bdf1a48b609664cbef9f0a3d
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Editor/ArtRes/SpriteAtlas/Common.spriteatlasv2
+- Assets/Editor/ArtRes/SpriteAtlas/Atlas_Item.spriteatlasv2
+Dependencies: []

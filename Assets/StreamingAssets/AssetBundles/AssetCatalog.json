@@ -208,7 +208,7 @@
       "bundleName": "tmpasset",
       "assetName": "Assets/Editor/ArtRes/TMPAsset/MSYH_SDF.asset",
       "assetType": "Object",
-      "assetSize": 8171
+      "assetSize": 8416800
     },
     "MSYH SDF FallBack": {
       "$type": "Core.AssetBundles.Management.AssetEntry, CoreModule",
@@ -3140,8 +3140,8 @@
       "animation": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "animation",
-        "size": 186424,
-        "hash": "e78d1445b338b2c6206fc138621f7ea30cd71795632e65ec311c69db3bc75ea2",
+        "size": 186423,
+        "hash": "1b4a9328657d96b86c3984eef3c25765959f6f93d257a216c1cb1641d6b783d4",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
@@ -3153,7 +3153,7 @@
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "fonts",
         "size": 13644515,
-        "hash": "9fb333d97fb8a89b740d5221d13ab5b03d7e3f38de845b989d4f955ea234e64e",
+        "hash": "de49c30971ca60a442404c3eacf5998f24e19f9ce79dbe66ad2b8c3352d0e9ee",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3163,7 +3163,7 @@
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "gameconfig",
         "size": 3388,
-        "hash": "3c546e920c3346a311eb3eb2d4684babbb35238b311bfbbe8df9ace66d12e37a",
+        "hash": "4ad032034c22fd8606a404c2446f581581823ec1cf24db9cd5eb1decdd75df28",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3172,8 +3172,8 @@
       "hotupdate": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate",
-        "size": 58948,
-        "hash": "375653b08b96d34619877c1add641da9d3bc2989da587882feebb99ac0a113fe",
+        "size": 59231,
+        "hash": "4b6e886765f1df3396d6f4524df87be0de24bce33cfa409ae4427541785e4be1",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3183,7 +3183,7 @@
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdate_entry",
         "size": 2318,
-        "hash": "702a6b09cc8b1ddb5baced4c829840bbbd457fb2848a62297f690d2bedf38335",
+        "hash": "85501b49113e4c12c817b270873bb22d9a749133f1be8ce9a1b388e6c67bc8cf",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3193,7 +3193,7 @@
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "mask",
         "size": 1291,
-        "hash": "37beb493c45bd0d82af4d1e7213c4492ef6727f6b5b370b177a8762cac48f52a",
+        "hash": "1f8d0e6cb509294c49ba449630a3deef3a7fcba6d3c87c7223ffad4aaed6e536",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3202,8 +3202,8 @@
       "material": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "material",
-        "size": 118734,
-        "hash": "c5f29949e32a8339fffcd730b74e7f0c5ff5f116060eb515d868196802620083",
+        "size": 41609,
+        "hash": "677905e407e3e1b2e15e4a35781c3cf185dcccfab9628c66d19bf3a19dd9128f",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3212,8 +3212,8 @@
       "prefab": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "prefab",
-        "size": 6031395,
-        "hash": "2b8bd748ffe8984c245d3246d793beb7543aadc9b70c5a931608384dd34f8708",
+        "size": 4874913,
+        "hash": "bb3be6706cdb5543511ef40c8bc8e48b021803d555a15fd416c5819b2a6d4378",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3222,8 +3222,8 @@
       "scenes": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "scenes",
-        "size": 11662139,
-        "hash": "02008b369c7453f067b3cae289ebd0111f18a3fd518c3cc04725a62f64c9835a",
+        "size": 12129813,
+        "hash": "490f296c70d848e0f7e88c1b23050250939aa182b523966a588528202da15cf8",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
@@ -3239,8 +3239,8 @@
       "spriteatlas": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "spriteatlas",
-        "size": 2640295,
-        "hash": "dfcf998c48a317bd64add9ead77bfbf1b12178c869a4cc1fd038e2d2fe7443d1",
+        "size": 3302183,
+        "hash": "2427fdb2305ecdeb6c2bbf6778a9ab32d26af723f6e1f135eca307d52c2b89d4",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3249,8 +3249,8 @@
       "tmpasset": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "tmpasset",
-        "size": 40962,
-        "hash": "44e4dbae9c41145135f7585a3b8a0ed536fe77aca04e9f7f63f21b196ac9e092",
+        "size": 130763,
+        "hash": "ed2f22bfcd6437bad6dd9667b2c43e380028c508d37dcd01d29df9b8364b74e6",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
@@ -3261,8 +3261,8 @@
       "ui": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "ui",
-        "size": 610646,
-        "hash": "33dcfe3e26ac4f9233a0be606d16da2c615c84842c27fbfc472a8099d746084f",
+        "size": 597656,
+        "hash": "7b336d1f33c155ebcb2b4dfbad32b09c16f7a63ea921fe14a726c6f4b344553d",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": [
@@ -3275,7 +3275,7 @@
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "hotupdateaot",
         "size": 2272279,
-        "hash": "5fce45362288e46ca6fdc4a59836f0c249f8d7aa5419017680aa17ad83197383",
+        "hash": "0f934e966824cfbbf70f7b067133f1df640626c04cde9d6c92e8bb0eb5f55d3d",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3284,8 +3284,8 @@
       "animator": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "animator",
-        "size": 40615,
-        "hash": "04791630a96d301c794b9d60ebc120c5de479595c0fbfb5fd4bbc930f1520330",
+        "size": 40614,
+        "hash": "cbf7b7670206922d05cefe4c5e241925b9f6f1b916a4a26e363997ebfcc6d37a",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []
@@ -3294,8 +3294,8 @@
       "vfx": {
         "$type": "Core.AssetBundles.Collection.ABPackageInfo, CoreModule",
         "name": "vfx",
-        "size": 207233,
-        "hash": "e53dbe1254775369d488f935a50065328e3c511ed62e9ea4d05ff56d7a99a55e",
+        "size": 243262,
+        "hash": "30824d59718ff728f3541dc25324fdba03e8d5a24f0f9a5fffdfd8c01f856104",
         "dependencies": {
           "$type": "System.String[], mscorlib",
           "$values": []

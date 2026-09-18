@@ -213,7 +213,10 @@ namespace HotUpdate.UI
                     continue;
                 if (!_effectKeyMap.TryGetValue(e.Id, out var key) || string.IsNullOrEmpty(key))
                     continue;
-                var timer = await _objectSpawner.SpawnAsync<VfxTimer>(key, null, e.Pos.ToVector3(), Quaternion.identity);
+                var rotation = e.Dir.SqrMagnitude() != Fixed64.Zero
+                    ? Quaternion.LookRotation(e.Dir.ToVector3())
+                    : Quaternion.identity;
+                var timer = await _objectSpawner.SpawnAsync<VfxTimer>(key, null, e.Pos.ToVector3(), rotation);
                 timer.overCallback += () =>
                 {
                     _objectSpawner.Release(timer);
@@ -255,6 +258,8 @@ namespace HotUpdate.UI
             var floor = await _objectSpawner.SpawnAsync<GameObject>(AssetKeys.Floor, null, new Vector3(cx, 0f, cz), Quaternion.identity);
             var floorSize = GetMeshSize(floor);
             floor.transform.localScale = new Vector3(lenX / floorSize.x, 1f, lenZ / floorSize.z);
+            // 地面 pivot 在中心，下移半个厚度让上表面贴到 Y=0（人物脚底地面），否则人物会埋进地面
+            floor.transform.position = new Vector3(cx, -floorSize.y / 2f, cz);
             _levelVisuals.Add(floor);
 
             // 4面墙（单位立方体，pivot 中心，边长 1；sx/sz 是沿世界 X/Z 的缩放）

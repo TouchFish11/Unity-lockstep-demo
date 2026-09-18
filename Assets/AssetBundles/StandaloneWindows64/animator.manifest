@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 3467050728
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d3fb17af7f4886ad2b66f1bcaa0993b0
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 147058da82bee871bbce28e472030442
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: d3fb17af7f4886ad2b66f1bcaa0993b0
+HashAppended: 0
+ClassTypes:
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Editor/ArtRes/Animator/Role1_Animator.controller
+Dependencies: []
